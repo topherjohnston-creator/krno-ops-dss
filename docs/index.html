@@ -1987,8 +1987,44 @@
                         }
 
                         const card = document.createElement('div');
+
+                        // Card display should lead with operational risk and magnitude,
+                        // not a large probability number. Probability remains available
+                        // in the tooltip as a matrix input where applicable.
                         const cardActive = h.risk >= 2;   // bright border for MINOR+
                         const cardDimmed = h.risk === 0;  // fully dimmed if no threat at all
+                        const riskLabel = h.risk === 0 ? 'NO DATA' : config.name.toUpperCase();
+                        const riskColor = h.risk >= 2 ? borderColor : '#a1a1aa';
+
+                        const firstFinite = (...vals) => {
+                            for (const v of vals) {
+                                const n = Number(v);
+                                if (Number.isFinite(n)) return n;
+                            }
+                            return null;
+                        };
+
+                        let primaryMetric = displayMetric;
+                        let secondaryMetric = '';
+
+                        if (refKey === 'WIND') {
+                            // This is the preferred card headline for wind:
+                            // the P50/central NBM 24-hour maximum wind gust variable.
+                            const g24 = firstFinite(
+                                threatData?.g24_p50_mph,
+                                threatData?.g24_mph,
+                                threatData?.gust_mph,
+                                h.g24_p50_mph,
+                                h.g24_mph,
+                                h.gust_mph
+                            );
+
+                            if (g24 !== null) {
+                                primaryMetric = `24-hr max gust: ${Math.round(g24)} mph`;
+                                secondaryMetric = displayMetric ? `Threshold: ${displayMetric}` : '';
+                            }
+                        }
+
                         card.className = 'ops-card flex flex-col justify-between p-3';
                         if (cardActive) {
                             // MINOR+ — bright border and tint
@@ -1996,40 +2032,51 @@
                             card.style.backgroundColor  = borderColor + '1a';
                             card.style.opacity          = '1';
                         } else if (!cardDimmed) {
-                            // LITTLE TO NONE — subtle border, show prob, slightly dimmed
+                            // LITTLE TO NONE — subtle border, slightly dimmed
                             card.style.border           = `1px solid ${borderColor}`;
                             card.style.backgroundColor  = '';
                             card.style.opacity          = '0.7';
                         } else {
-                            // risk=0 — fully dimmed, no prob
+                            // risk=0 — fully dimmed
                             card.style.border           = '1px solid rgba(255,255,255,0.06)';
                             card.style.backgroundColor  = '';
                             card.style.opacity          = '0.38';
                         }
+
                         card.innerHTML = `
                             <div class="flex justify-between items-start z-10">
-                                <div style="display:flex;align-items:flex-end;gap:3px;">
-                                    <div class="hazard-val" style="color:${valColor}">${displayVal}<span class="percent-sign">%</span></div>
-                                    <span class="prob-label">PROB</span>
+                                <div>
+                                    <div class="hazard-label">${h.name}</div>
+                                    <div class="hazard-val" style="color:${riskColor}; font-size:2.15rem; line-height:1.0; letter-spacing:-1px; display:block;">
+                                        ${riskLabel}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="z-10 mt-1">
-                                <div class="hazard-label">${h.name}</div>
-                                <div class="hazard-criteria" style="color:${isGrey ? '#52525b' : cardActive ? '#a1a1aa' : '#71717a'}">${displayMetric}</div>
+                            <div class="z-10 mt-2">
+                                <div class="hazard-criteria" style="color:${isGrey ? '#52525b' : cardActive ? '#d4d4d8' : '#a1a1aa'}; font-size:0.72rem; line-height:1.2;">
+                                    ${primaryMetric}
+                                </div>
+                                ${secondaryMetric ? `<div class="hazard-criteria" style="color:#71717a; font-size:0.62rem; line-height:1.2;">${secondaryMetric}</div>` : ''}
                                 <div class="hazard-time" style="color:${isGrey ? 'transparent' : cardActive ? config.color : '#52525b'}">${timeString}</div>
                             </div>
                             <i class="ph ${h.icon} watermark-icon" style="color: ${borderColor};"></i>
                         `;
                         
+                        const probabilityLine = Number.isFinite(Number(h.prob)) && Number(h.prob) > 0
+                            ? `<div class="text-[10px] text-gray-400 mt-1">Matrix input probability: ${Math.round(h.prob)}%</div>`
+                            : '';
+
                         const tHtml = `
                             <div class="flex justify-between border-b border-gray-700 pb-1 mb-2">
                                 <span class="font-bold uppercase text-gray-400">${h.name}</span>
-                                <span class="font-mono text-${isGrey ? 'gray-500' : 'white'}">${displayVal}% Prob</span>
+                                <span class="font-mono" style="color:${borderColor};">${riskLabel}</span>
                             </div>
                             <div class="mb-2">
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded" style="background-color: ${config.color}; color: ${config.textColor}">RISK: ${h.risk === 0 ? 'NONE' : config.name.toUpperCase()}</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded" style="background-color: ${config.color}; color: ${config.textColor}">RISK: ${riskLabel}</span>
                             </div>
-                            ${h.risk > 0 && displayMetric ? `<div class="text-[10px] italic text-gray-400 bg-gray-800 p-1 rounded mb-1">Threshold: ${displayMetric}</div>` : ''}
+                            ${primaryMetric ? `<div class="text-[10px] italic text-gray-300 bg-gray-800 p-1 rounded mb-1">${primaryMetric}</div>` : ''}
+                            ${secondaryMetric ? `<div class="text-[10px] italic text-gray-400 bg-gray-900 p-1 rounded mb-1">${secondaryMetric}</div>` : ''}
+                            ${probabilityLine}
                             ${h.prob > 0 && h.prep ? `<div class="mt-1 text-[10px] text-gray-300 border-t border-gray-700 pt-1"><span class="font-bold text-gray-500 uppercase">Action:</span> ${h.prep}</div>` : ''}
                         `;
                         card.addEventListener('mouseenter', () => showTooltip(tHtml));
