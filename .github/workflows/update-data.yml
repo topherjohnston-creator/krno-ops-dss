@@ -54,6 +54,10 @@ jobs:
         run: |
           python scripts/test_extract_wind24.py
 
+      - name: Test NBM WINDPROB extraction
+        run: |
+          python scripts/test_extract_windprob.py
+
       - name: Test NBM visibility extraction
         run: |
           python scripts/test_extract_visibility.py
