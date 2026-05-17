@@ -1,21 +1,22 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-17T05:28:54Z",
-  "cycle_utc_iso": "2026-05-17T03:00:00Z",
-  "cycle": "MOCK 03Z",
+  "generated_utc": "2026-05-17T05:36:25Z",
+  "cycle_utc_iso": "2026-05-16T18:00:00Z",
+  "cycle": "NBM 18Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 72,
-      "risk": 4,
-      "level": 4,
-      "metric": "58-65 mph",
-      "peak_start_fxx": 6,
-      "peak_end_fxx": 9,
-      "driver": "P50 24-hr max gust near 62 mph",
-      "g24_p10_mph": 45,
-      "g24_p50_mph": 62,
-      "g24_p90_mph": 72
+      "prob": 50,
+      "risk": 1,
+      "level": 2,
+      "metric": "30-45 mph",
+      "peak_start_fxx": 23,
+      "peak_end_fxx": 24,
+      "driver": "NBM 24-hr max gust 35.8 mph / 31.1 kt",
+      "g24_mps": 16.0,
+      "g24_mph": 35.8,
+      "g24_kt": 31.1,
+      "methodology": "Wind severity uses NBM 24-hour GUST. Hourly GUST only shapes timing."
     },
     "VISIBILITY": {
       "prob": 68,
@@ -84,14 +85,14 @@
   "hazards": [
     {
       "id": "WIND",
-      "name": "WIND",
-      "risk_level": 4,
-      "impact_level": 4,
-      "probability": 72,
-      "peak_start_fxx": 6,
-      "peak_end_fxx": 9,
-      "metric": "58-65 mph",
-      "driver": "P50 24-hr max gust near 62 mph"
+      "name": "Wind",
+      "risk_level": 1,
+      "impact_level": 2,
+      "probability": 50,
+      "peak_start_fxx": 23,
+      "peak_end_fxx": 24,
+      "metric": "30-45 mph",
+      "driver": "NBM 24-hr max gust 35.8 mph"
     },
     {
       "id": "VISIBILITY",
