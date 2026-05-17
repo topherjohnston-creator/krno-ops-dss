@@ -1,0 +1,109 @@
+{
+  "site": "KRNO",
+  "generated_utc": "2026-05-16T00:00:00Z",
+  "valid_period": "next_24_hours",
+  "methodology": {
+    "severity_source": "24-hour max/min NBM Core products",
+    "timing_source": "hourly NBM Core products",
+    "risk_formula": "Impact x Likelihood",
+    "layout": "8 hazards ranked highest to lowest, 4 top row and 4 bottom row"
+  },
+  "hazards": [
+    {
+      "id": "Wind",
+      "name": "Wind",
+      "risk_level": 4,
+      "risk_label": "Major",
+      "impact_level": 4,
+      "likelihood": "Likely",
+      "probability": 72,
+      "peak_time": "21Z-00Z",
+      "driver": "P50 24-hr max gust near 62 mph",
+      "criteria": "58-65 mph"
+    },
+    {
+      "id": "Visibility",
+      "name": "Visibility",
+      "risk_level": 3,
+      "risk_label": "Moderate",
+      "impact_level": 3,
+      "likelihood": "Likely",
+      "probability": 68,
+      "peak_time": "20Z-23Z",
+      "driver": "Visibility 1-3 SM possible",
+      "criteria": "1-3 SM"
+    },
+    {
+      "id": "Snow",
+      "name": "Snow",
+      "risk_level": 2,
+      "risk_label": "Minor",
+      "impact_level": 2,
+      "likelihood": "As Likely As Not",
+      "probability": 45,
+      "peak_time": "09Z-15Z",
+      "driver": "Trace to light accumulation possible",
+      "criteria": "Trace"
+    },
+    {
+      "id": "Rain",
+      "name": "Rain/Flooding",
+      "risk_level": 2,
+      "risk_label": "Minor",
+      "impact_level": 2,
+      "likelihood": "As Likely As Not",
+      "probability": 42,
+      "peak_time": "18Z-00Z",
+      "driver": "0.10-0.25 in/hr rainfall rate possible",
+      "criteria": "0.10-0.25 in/hr"
+    },
+    {
+      "id": "Lightning",
+      "name": "Lightning",
+      "risk_level": 2,
+      "risk_label": "Minor",
+      "impact_level": 2,
+      "likelihood": "As Likely As Not",
+      "probability": 35,
+      "peak_time": "20Z-02Z",
+      "driver": "Thunder probability elevated",
+      "criteria": "5-25% chance"
+    },
+    {
+      "id": "FlashFreeze",
+      "name": "Flash Freeze",
+      "risk_level": 1,
+      "risk_label": "Little to None",
+      "impact_level": 1,
+      "likelihood": "Unlikely",
+      "probability": 20,
+      "peak_time": "12Z-15Z",
+      "driver": "Low confidence in wet surface plus subfreezing wet-bulb overlap",
+      "criteria": "Dry and >32F Tw"
+    },
+    {
+      "id": "Temperature",
+      "name": "Temperature",
+      "risk_level": 1,
+      "risk_label": "Little to None",
+      "impact_level": 1,
+      "likelihood": "Likely",
+      "probability": 70,
+      "peak_time": "12Z-16Z",
+      "driver": "Temperatures near normal operational range",
+      "criteria": "32-95F"
+    },
+    {
+      "id": "FZRA",
+      "name": "Freezing Rain",
+      "risk_level": 1,
+      "risk_label": "Little to None",
+      "impact_level": 1,
+      "likelihood": "Very Unlikely",
+      "probability": 5,
+      "peak_time": "None",
+      "driver": "No meaningful freezing rain signal",
+      "criteria": "None"
+    }
+  ]
+}
