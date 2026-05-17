@@ -24,12 +24,37 @@ def utc_now() -> str:
 
 
 def get_ob_value(observations: dict[str, Any], prefixes: list[str]) -> Any:
+    """Return first matching Synoptic observation value by prefix."""
     for prefix in prefixes:
         for key, value in observations.items():
             if key.startswith(prefix):
                 if isinstance(value, dict) and "value" in value:
                     return value["value"]
                 return value
+    return None
+
+
+def get_ob_time(observations: dict[str, Any]) -> str | None:
+    """Return a reliable timestamp from the most relevant current observations."""
+    preferred_keys = [
+        "air_temp_value_1",
+        "wind_speed_value_1",
+        "wind_direction_value_1",
+        "visibility_value_1",
+        "metar_value_1",
+        "relative_humidity_value_1",
+        "dew_point_temperature_value_1d",
+    ]
+
+    for key in preferred_keys:
+        value = observations.get(key)
+        if isinstance(value, dict) and "date_time" in value:
+            return value["date_time"]
+
+    for value in observations.values():
+        if isinstance(value, dict) and "date_time" in value:
+            return value["date_time"]
+
     return None
 
 
@@ -50,6 +75,7 @@ def build_error_obs(message: str, raw: dict[str, Any] | None = None) -> dict[str
         "dewpoint_f": None,
         "relative_humidity": None,
         "precip_1hr_in": None,
+        "metar": None,
         "raw": raw or {},
     }
 
@@ -84,18 +110,9 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         station = stations[0]
 
     observations = station.get("OBSERVATIONS", {})
+    observed_utc = get_ob_time(observations)
 
-    observed_utc = get_ob_value(
-        observations,
-        [
-            "date_time",
-            "air_temp",
-            "wind_speed",
-            "wind_direction",
-        ],
-    )
-
-    return {
+    obs = {
         "site": SITE,
         "source": "Synoptic API",
         "generated_utc": utc_now(),
@@ -121,8 +138,11 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
                 "precip_accum",
             ],
         ),
+        "metar": get_ob_value(observations, ["metar"]),
         "raw": station,
     }
+
+    return obs
 
 
 def main() -> None:
