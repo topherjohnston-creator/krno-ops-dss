@@ -12,7 +12,10 @@ import requests
 OUT = Path("docs")
 OUT.mkdir(exist_ok=True)
 
-STATION = "KRNO"
+SITE = "KRNO"
+KRNO_LAT = 39.4991
+KRNO_LON = -119.7681
+
 API_URL = "https://api.synopticdata.com/v2/stations/latest"
 
 
@@ -21,7 +24,6 @@ def utc_now() -> str:
 
 
 def get_ob_value(observations: dict[str, Any], prefixes: list[str]) -> Any:
-    """Return first matching Synoptic observation value by prefix."""
     for prefix in prefixes:
         for key, value in observations.items():
             if key.startswith(prefix):
@@ -31,14 +33,14 @@ def get_ob_value(observations: dict[str, Any], prefixes: list[str]) -> Any:
     return None
 
 
-def build_error_obs(message: str) -> dict[str, Any]:
+def build_error_obs(message: str, raw: dict[str, Any] | None = None) -> dict[str, Any]:
     return {
-        "site": STATION,
+        "site": SITE,
         "source": "Synoptic API",
         "generated_utc": utc_now(),
         "status": "error",
         "message": message,
-        "station": STATION,
+        "station": SITE,
         "observed_utc": None,
         "wind_dir_deg": None,
         "wind_speed_kt": None,
@@ -48,13 +50,13 @@ def build_error_obs(message: str) -> dict[str, Any]:
         "dewpoint_f": None,
         "relative_humidity": None,
         "precip_1hr_in": None,
-        "raw": {},
+        "raw": raw or {},
     }
 
 
 def fetch_synoptic_latest(token: str) -> dict[str, Any]:
     params = {
-        "stid": STATION,
+        "radius": f"{KRNO_LAT},{KRNO_LON},10",
         "token": token,
         "units": "english,speed|knots,temp|fahrenheit,precip|inch",
         "output": "json",
@@ -67,10 +69,20 @@ def fetch_synoptic_latest(token: str) -> dict[str, Any]:
 
 def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
     stations = payload.get("STATION", [])
-    if not stations:
-        return build_error_obs("No station data returned from Synoptic API.")
 
-    station = stations[0]
+    if not stations:
+        return build_error_obs("No stations returned within 10 miles of KRNO.", payload)
+
+    # Prefer KRNO if returned; otherwise use the first/nearest returned station.
+    station = None
+    for candidate in stations:
+        if candidate.get("STID") == "KRNO":
+            station = candidate
+            break
+
+    if station is None:
+        station = stations[0]
+
     observations = station.get("OBSERVATIONS", {})
 
     observed_utc = get_ob_value(
@@ -83,12 +95,12 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         ],
     )
 
-    obs = {
-        "site": STATION,
+    return {
+        "site": SITE,
         "source": "Synoptic API",
         "generated_utc": utc_now(),
         "status": "ok",
-        "station": station.get("STID", STATION),
+        "station": station.get("STID"),
         "name": station.get("NAME"),
         "latitude": station.get("LATITUDE"),
         "longitude": station.get("LONGITUDE"),
@@ -111,8 +123,6 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         ),
         "raw": station,
     }
-
-    return obs
 
 
 def main() -> None:
