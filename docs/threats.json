@@ -1,8 +1,8 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-17T22:16:55Z",
+  "generated_utc": "2026-05-17T22:44:20Z",
   "cycle_utc_iso": "2026-05-17T12:00:00Z",
-  "cycle": "NBM 12Z",
+  "cycle": "NBM Core 12Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
@@ -93,17 +93,79 @@
       "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
-      "prob": 10,
+      "prob": 1.0,
       "risk": 1,
-      "level": 1,
-      "metric": ">5 SM",
-      "display_label": "Min visibility",
+      "risk_label": "Little to None",
+      "level": 3,
+      "metric": "<3 SM",
+      "display_label": "Lowest visibility",
       "display_value": "10.1 SM",
       "min_visibility_sm": 10.07,
-      "peak_start_fxx": 1,
-      "peak_end_fxx": 3,
-      "driver": "NBM minimum visibility 10.1 SM",
-      "methodology": "Visibility severity uses minimum hourly NBM VIS through 24 hours. Timeline uses 3-hour block minimum visibility."
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 3.0,
+          "label": "Visibility <5 SM",
+          "max_probability_fxx": 6,
+          "max_probability_valid_utc": "2026-05-17T18:00:00Z"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 1.0,
+          "label": "Visibility <3 SM",
+          "max_probability_fxx": 5,
+          "max_probability_valid_utc": "2026-05-17T17:00:00Z"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM",
+          "max_probability_fxx": 1,
+          "max_probability_valid_utc": "2026-05-17T13:00:00Z"
+        }
+      },
+      "risk_candidates": [
+        {
+          "threshold_key": "lt_5_sm",
+          "threshold_sm": 5.0,
+          "impact_level": 2,
+          "probability": 3.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "source_fxx": 6,
+          "source_valid_utc": "2026-05-17T18:00:00Z"
+        },
+        {
+          "threshold_key": "lt_3_sm",
+          "threshold_sm": 3.0,
+          "impact_level": 3,
+          "probability": 1.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "source_fxx": 5,
+          "source_valid_utc": "2026-05-17T17:00:00Z"
+        },
+        {
+          "threshold_key": "lt_1_sm",
+          "threshold_sm": 1.0,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "source_fxx": 1,
+          "source_valid_utc": "2026-05-17T13:00:00Z"
+        }
+      ],
+      "peak_start_fxx": 4,
+      "peak_end_fxx": 6,
+      "driver": "1.0% chance visibility <3 SM",
+      "methodology": "Visibility risk uses NBM Core hourly probability fields for visibility below 5, 3, and 1 SM. The maximum hourly probability from f001-f024 is used for each threshold, then probability x impact determines risk. NBM Core did not provide a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
     },
     "SNOW": {
       "prob": 45,
@@ -180,14 +242,16 @@
       "id": "VISIBILITY",
       "name": "Visibility",
       "risk_level": 1,
-      "impact_level": 1,
-      "probability": 10,
-      "peak_start_fxx": 1,
-      "peak_end_fxx": 3,
-      "metric": ">5 SM",
-      "driver": "NBM minimum visibility 10.1 SM",
-      "display_label": "Min visibility",
-      "display_value": "10.1 SM"
+      "impact_level": 3,
+      "probability": 1.0,
+      "peak_start_fxx": 4,
+      "peak_end_fxx": 6,
+      "metric": "<3 SM",
+      "driver": "1.0% chance visibility <3 SM",
+      "risk_label": "Little to None",
+      "display_label": "Lowest visibility",
+      "display_value": "10.1 SM",
+      "min_visibility_sm": 10.07
     },
     {
       "id": "SNOW",
