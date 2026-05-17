@@ -34,9 +34,9 @@ jobs:
         run: |
           python scripts/build_real_qmd_wind_outputs.py
 
-      - name: Build real NBM visibility outputs
+      - name: Build Core probability-based visibility outputs
         run: |
-          python scripts/build_real_visibility_outputs.py
+          python scripts/build_real_core_visibility_outputs.py
 
       - name: Inspect NBM Core inventory
         run: |
