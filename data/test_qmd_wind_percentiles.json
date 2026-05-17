@@ -1,0 +1,52 @@
+{
+  "site": "KRNO",
+  "source": "NBM QMD direct byte-range download",
+  "cycle_utc": "2026-05-17T12:00:00Z",
+  "valid_utc": "2026-05-18T12:00:00Z",
+  "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260517/12/qmd/blend.t12z.qmd.f024.co.grib2",
+  "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260517/12/qmd/blend.t12z.qmd.f024.co.grib2.idx",
+  "variable": "QMD 24-hour maximum 10-meter wind gust percentile curve",
+  "display_value": {
+    "label": "24-hr max gust",
+    "source_percentile": 0.0,
+    "gust_mps": 0.0,
+    "gust_mph": 0.0,
+    "gust_kt": 0.0
+  },
+  "airport_threshold_probabilities": {
+    "gt_30_mph": {
+      "threshold_mph": 30.0,
+      "threshold_mps": 13.411,
+      "exceedance_probability_percent": 100.0,
+      "method": "linear interpolation across official QMD percentile levels"
+    },
+    "gt_45_mph": {
+      "threshold_mph": 45.0,
+      "threshold_mps": 20.117,
+      "exceedance_probability_percent": 100.0,
+      "method": "linear interpolation across official QMD percentile levels"
+    },
+    "gt_58_mph": {
+      "threshold_mph": 58.0,
+      "threshold_mps": 25.928,
+      "exceedance_probability_percent": 100.0,
+      "method": "linear interpolation across official QMD percentile levels"
+    },
+    "gt_65_mph": {
+      "threshold_mph": 65.0,
+      "threshold_mps": 29.058,
+      "exceedance_probability_percent": 100.0,
+      "method": "linear interpolation across official QMD percentile levels"
+    }
+  },
+  "percentile_curve": [
+    {
+      "percentile": 0.0,
+      "gust_mps": 0.0,
+      "gust_mph": 0.0,
+      "gust_kt": 0.0,
+      "variable": "i10fg"
+    }
+  ],
+  "methodology": "Displayed wind magnitude is the QMD 50th percentile of the 24-hour maximum 10-meter wind gust. Exact airport exceedance probabilities for 30, 45, 58, and 65 mph are derived by linear interpolation across official QMD percentile levels downloaded by GRIB2 byte range from the QMD IDX file."
+}
