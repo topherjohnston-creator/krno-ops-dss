@@ -42,6 +42,10 @@ jobs:
         run: |
           python scripts/inspect_nbm_inventory.py
 
+      - name: Find NBM probability fields
+        run: |
+          python scripts/find_probability_fields.py
+
       - name: Test hourly NBM wind extraction
         run: |
           python scripts/test_extract_wind.py
