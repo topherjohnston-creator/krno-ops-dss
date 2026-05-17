@@ -30,13 +30,17 @@ jobs:
         run: |
           python scripts/build_mock_outputs.py
 
-      - name: Inspect NBM Core inventory
+      - name: Inspect NBM inventory
         run: |
           python scripts/inspect_nbm_inventory.py
 
-      - name: Test NBM wind extraction
+      - name: Test hourly NBM wind extraction
         run: |
           python scripts/test_extract_wind.py
+
+      - name: Test 24-hour NBM wind extraction
+        run: |
+          python scripts/test_extract_wind24.py
 
       - name: Extract Synoptic observations
         env:
