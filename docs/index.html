@@ -2046,10 +2046,10 @@
                         card.innerHTML = `
                             <div class="flex justify-between items-start z-10">
                                 <div>
-                                    <div class="hazard-label">${h.name}</div>
-                                    <div class="hazard-val" style="color:${riskColor}; font-size:2.15rem; line-height:1.0; letter-spacing:-1px; display:block;">
-                                        ${riskLabel}
+                                    <div class="hazard-val" style="color:${riskColor}; font-size:2.35rem; line-height:0.95; letter-spacing:-1px; display:block; text-transform:uppercase;">
+                                        ${h.name}
                                     </div>
+                                    <div class="hazard-label" style="color:${isGrey ? '#52525b' : cardActive ? borderColor : '#a1a1aa'}; margin-top:4px;">${riskLabel}</div>
                                 </div>
                             </div>
                             <div class="z-10 mt-2">
