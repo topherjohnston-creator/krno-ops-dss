@@ -58,7 +58,7 @@ def fetch_synoptic_latest(token: str) -> dict[str, Any]:
     params = {
         "radius": f"{KRNO_LAT},{KRNO_LON},10",
         "token": token,
-        "units": "english,speed|knots,temp|fahrenheit,precip|inch",
+        "units": "english",
         "output": "json",
     }
 
