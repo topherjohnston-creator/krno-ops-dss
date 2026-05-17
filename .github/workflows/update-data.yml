@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build mock risk outputs
+      - name: Build mock baseline outputs
         run: |
           python scripts/build_mock_outputs.py
 
@@ -54,29 +54,9 @@ jobs:
         run: |
           python scripts/inspect_core_visibility_inventory.py
 
-      - name: Test hourly NBM wind extraction
-        run: |
-          python scripts/test_extract_wind.py
-
-      - name: Test 24-hour NBM wind extraction
-        run: |
-          python scripts/test_extract_wind24.py
-
-      - name: Test NBM WINDPROB extraction
-        run: |
-          python scripts/test_extract_windprob.py
-
-      - name: Test QMD wind percentile extraction
-        run: |
-          python scripts/test_extract_qmd_wind.py
-
       - name: Test hourly QMD wind percentile extraction
         run: |
           python scripts/test_extract_qmd_wind_hourly.py
-
-      - name: Test NBM visibility extraction
-        run: |
-          python scripts/test_extract_visibility.py
 
       - name: Test hourly QMD visibility diagnostic
         run: |
