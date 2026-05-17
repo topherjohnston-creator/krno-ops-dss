@@ -38,37 +38,9 @@ jobs:
         run: |
           python scripts/build_real_core_visibility_outputs.py
 
-      - name: Inspect NBM Core inventory
-        run: |
-          python scripts/inspect_nbm_inventory.py
-
-      - name: Find NBM probability fields
-        run: |
-          python scripts/find_probability_fields.py
-
-      - name: Inspect NBM QMD inventory
-        run: |
-          python scripts/inspect_qmd_inventory.py
-
-      - name: Inspect Core visibility probability fields
-        run: |
-          python scripts/inspect_core_visibility_inventory.py
-
-      - name: Inspect Core rain probability fields
-        run: |
-          python scripts/inspect_core_rain_inventory.py
-
       - name: Inspect QMD rain percentile fields
         run: |
           python scripts/inspect_qmd_rain_inventory.py
-
-      - name: Test hourly QMD wind percentile extraction
-        run: |
-          python scripts/test_extract_qmd_wind_hourly.py
-
-      - name: Test hourly QMD visibility diagnostic
-        run: |
-          python scripts/test_extract_qmd_visibility_hourly.py
 
       - name: Extract Synoptic observations
         env:
