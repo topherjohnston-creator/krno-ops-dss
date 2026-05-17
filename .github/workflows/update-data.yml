@@ -62,6 +62,10 @@ jobs:
         run: |
           python scripts/test_extract_windprob.py
 
+      - name: Test QMD wind percentile extraction
+        run: |
+          python scripts/test_extract_qmd_wind.py
+
       - name: Test NBM visibility extraction
         run: |
           python scripts/test_extract_visibility.py
