@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-17T18:19:51Z",
+  "generated_utc": "2026-05-17T18:32:04Z",
   "cycle_utc_iso": "2026-05-17T12:00:00Z",
   "cycle": "NBM 12Z",
   "valid_period": "next_48_hours",
@@ -19,13 +19,17 @@
       "methodology": "Wind severity uses NBM 24-hour GUST. Hourly GUST only shapes timing."
     },
     "VISIBILITY": {
-      "prob": 68,
-      "risk": 3,
-      "level": 3,
-      "metric": "1-3 SM",
-      "peak_start_fxx": 6,
-      "peak_end_fxx": 10,
-      "driver": "Visibility restriction possible"
+      "prob": 10,
+      "risk": 1,
+      "level": 1,
+      "metric": ">5 SM",
+      "display_label": "Min visibility",
+      "display_value": "10.1 SM",
+      "min_visibility_sm": 10.07,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "driver": "NBM minimum visibility 10.1 SM",
+      "methodology": "Visibility severity uses minimum hourly NBM VIS through 24 hours. Timeline uses 3-hour block minimum visibility."
     },
     "SNOW": {
       "prob": 45,
@@ -96,14 +100,16 @@
     },
     {
       "id": "VISIBILITY",
-      "name": "VISIBILITY",
-      "risk_level": 3,
-      "impact_level": 3,
-      "probability": 68,
-      "peak_start_fxx": 6,
-      "peak_end_fxx": 10,
-      "metric": "1-3 SM",
-      "driver": "Visibility restriction possible"
+      "name": "Visibility",
+      "risk_level": 1,
+      "impact_level": 1,
+      "probability": 10,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "metric": ">5 SM",
+      "driver": "NBM minimum visibility 10.1 SM",
+      "display_label": "Min visibility",
+      "display_value": "10.1 SM"
     },
     {
       "id": "SNOW",
