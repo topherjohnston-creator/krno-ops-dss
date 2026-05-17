@@ -38,13 +38,17 @@ jobs:
         run: |
           python scripts/build_real_visibility_outputs.py
 
-      - name: Inspect NBM inventory
+      - name: Inspect NBM Core inventory
         run: |
           python scripts/inspect_nbm_inventory.py
 
       - name: Find NBM probability fields
         run: |
           python scripts/find_probability_fields.py
+
+      - name: Inspect NBM QMD inventory
+        run: |
+          python scripts/inspect_qmd_inventory.py
 
       - name: Test hourly NBM wind extraction
         run: |
