@@ -30,9 +30,9 @@ jobs:
         run: |
           python scripts/build_mock_outputs.py
 
-      - name: Build real NBM wind outputs
+      - name: Build QMD probability-based wind outputs
         run: |
-          python scripts/build_real_wind_outputs.py
+          python scripts/build_real_qmd_wind_outputs.py
 
       - name: Build real NBM visibility outputs
         run: |
