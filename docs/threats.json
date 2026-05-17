@@ -1,22 +1,96 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-17T20:14:42Z",
+  "generated_utc": "2026-05-17T20:39:28Z",
   "cycle_utc_iso": "2026-05-17T12:00:00Z",
   "cycle": "NBM 12Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 20,
-      "risk": 1,
-      "level": 1,
-      "metric": "<30 mph",
-      "peak_start_fxx": 7,
-      "peak_end_fxx": 9,
-      "driver": "NBM 24-hr max gust 2.7 mph / 2.3 kt",
-      "g24_mps": 1.2,
-      "g24_mph": 2.7,
-      "g24_kt": 2.3,
-      "methodology": "Wind severity uses NBM 24-hour GUST. Hourly GUST only shapes timing."
+      "prob": 0.0,
+      "risk": 2,
+      "risk_label": "Minor",
+      "level": 5,
+      "metric": ">65 mph threshold",
+      "display_label": "24-hr max gust",
+      "display_value": "41 mph",
+      "g24_p50_mph": 40.9,
+      "g24_p50_kt": 35.6,
+      "threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 80.9,
+          "max_probability_fxx": 11,
+          "max_probability_valid_utc": "2026-05-17T23:00:00Z"
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 31.1,
+          "max_probability_fxx": 15,
+          "max_probability_valid_utc": "2026-05-18T03:00:00Z"
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0,
+          "max_probability_fxx": 1,
+          "max_probability_valid_utc": "2026-05-17T13:00:00Z"
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0,
+          "max_probability_fxx": 1,
+          "max_probability_valid_utc": "2026-05-17T13:00:00Z"
+        }
+      },
+      "risk_candidates": [
+        {
+          "threshold_key": "gt_30_mph",
+          "threshold_mph": 30.0,
+          "impact_level": 2,
+          "probability": 80.9,
+          "risk": 2,
+          "risk_label": "Minor",
+          "source_fxx": 11,
+          "source_valid_utc": "2026-05-17T23:00:00Z"
+        },
+        {
+          "threshold_key": "gt_45_mph",
+          "threshold_mph": 45.0,
+          "impact_level": 3,
+          "probability": 31.1,
+          "risk": 2,
+          "risk_label": "Minor",
+          "source_fxx": 15,
+          "source_valid_utc": "2026-05-18T03:00:00Z"
+        },
+        {
+          "threshold_key": "gt_58_mph",
+          "threshold_mph": 58.0,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 2,
+          "risk_label": "Minor",
+          "source_fxx": 1,
+          "source_valid_utc": "2026-05-17T13:00:00Z"
+        },
+        {
+          "threshold_key": "gt_65_mph",
+          "threshold_mph": 65.0,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 2,
+          "risk_label": "Minor",
+          "source_fxx": 1,
+          "source_valid_utc": "2026-05-17T13:00:00Z"
+        }
+      ],
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 2,
+      "driver": "QMD max hourly P50 gust 40.9 mph; 0.0% chance >65 mph",
+      "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
       "prob": 10,
@@ -90,13 +164,17 @@
     {
       "id": "WIND",
       "name": "Wind",
-      "risk_level": 1,
-      "impact_level": 1,
-      "probability": 20,
-      "peak_start_fxx": 7,
-      "peak_end_fxx": 9,
-      "metric": "<30 mph",
-      "driver": "NBM 24-hr max gust 2.7 mph"
+      "risk_level": 2,
+      "impact_level": 5,
+      "probability": 0.0,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 2,
+      "metric": ">65 mph threshold",
+      "driver": "QMD max hourly P50 gust 40.9 mph; 0.0% chance >65 mph",
+      "risk_label": "Minor",
+      "display_label": "24-hr max gust",
+      "display_value": "41 mph",
+      "g24_p50_mph": 40.9
     },
     {
       "id": "VISIBILITY",
