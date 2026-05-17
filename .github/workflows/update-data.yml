@@ -30,6 +30,10 @@ jobs:
         run: |
           python scripts/build_mock_outputs.py
 
+      - name: Build real NBM wind outputs
+        run: |
+          python scripts/build_real_wind_outputs.py
+
       - name: Inspect NBM inventory
         run: |
           python scripts/inspect_nbm_inventory.py
@@ -53,5 +57,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/*.json data/*.csv data/*.txt data/*.json
-          git commit -m "Update KRNO Ops DSS data and NBM test output" || echo "No changes to commit"
+          git commit -m "Update KRNO Ops DSS data and real wind output" || echo "No changes to commit"
           git push
