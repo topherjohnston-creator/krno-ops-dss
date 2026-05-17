@@ -313,12 +313,19 @@ def matrix_risk(probability: float, impact_level: int) -> int:
     """Probability x impact risk matrix.
 
     Returns:
+    0 = None
     1 = Little to None
     2 = Minor
     3 = Moderate
     4 = Major
     5 = Extreme
     """
+
+    # Critical fix:
+    # A zero-probability high-impact threshold must not drive the risk card.
+    if probability <= 0:
+        return 0
+
     likelihood = probability_to_likelihood(probability)
 
     matrix = {
