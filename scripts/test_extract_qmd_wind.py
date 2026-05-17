@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import json
 import re
+import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 
-from herbie import Herbie
+import numpy as np
+import requests
+import xarray as xr
 
 
 OUT = Path("data")
@@ -17,7 +20,6 @@ KRNO_LON = -119.7681
 
 MPS_TO_MPH = 2.2369362921
 MPS_TO_KT = 1.9438444924
-
 
 AIRPORT_THRESHOLDS_MPH = {
     "gt_30_mph": 30.0,
@@ -34,103 +36,226 @@ def latest_cycle_utc() -> datetime:
     return cycle - timedelta(hours=6)
 
 
-def clean_attr_value(value: Any) -> Any:
-    if isinstance(value, (str, int, float, bool)) or value is None:
-        return value
-    return str(value)
-
-
-def extract_percentile_from_attrs(attrs: dict[str, Any]) -> float | None:
-    """Try to identify the QMD percentile level from GRIB metadata."""
-    candidates = [
-        attrs.get("percentileValue"),
-        attrs.get("GRIB_percentileValue"),
-        attrs.get("GRIB_percentile"),
-        attrs.get("percentile"),
-    ]
-
-    for candidate in candidates:
-        if candidate is None:
-            continue
-        try:
-            return float(candidate)
-        except Exception:
-            pass
-
-    # Fallback: search all attribute text for strings like "50% level".
-    text = " ".join(str(v) for v in attrs.values())
-    match = re.search(r"(\d+(?:\.\d+)?)\s*%\s*level", text, re.IGNORECASE)
-    if match:
-        return float(match.group(1))
-
-    return None
-
-
-def nearest_point_dataset(cycle: datetime, fxx: int, search: str):
-    H = Herbie(
-        cycle.strftime("%Y-%m-%d %H:%M"),
-        model="nbm",
-        product="qmd",
-        fxx=fxx,
+def qmd_urls(cycle: datetime, fxx: int) -> tuple[str, str]:
+    ymd = cycle.strftime("%Y%m%d")
+    hh = cycle.strftime("%H")
+    base = (
+        "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/"
+        f"blend.{ymd}/{hh}/qmd/blend.t{hh}z.qmd.f{fxx:03d}.co.grib2"
     )
-
-    ds = H.xarray(search)
-    point = ds.herbie.nearest_points(points=[(KRNO_LON, KRNO_LAT)])
-
-    return ds, point
+    return base, base + ".idx"
 
 
-def extract_qmd_gust_percentiles(cycle: datetime) -> list[dict[str, Any]]:
-    """Extract QMD 24-hour max gust percentile fields at KRNO."""
-    search = ":GUST:10 m above ground:24 hour fcst:.*% level"
+def fetch_text(url: str) -> str:
+    response = requests.get(url, timeout=60)
+    response.raise_for_status()
+    return response.text
 
-    ds, point = nearest_point_dataset(cycle, 24, search)
 
+def parse_idx(idx_text: str) -> list[dict[str, Any]]:
     rows = []
+    lines = idx_text.splitlines()
 
-    for var in list(point.data_vars):
-        da = point[var]
-        attrs = {k: clean_attr_value(v) for k, v in da.attrs.items()}
+    for i, line in enumerate(lines):
+        parts = line.split(":", 2)
+        if len(parts) < 3:
+            continue
 
-        percentile = extract_percentile_from_attrs(attrs)
+        msg_num = int(parts[0])
+        start_byte = int(parts[1])
 
-        gust_mps = float(da.values.squeeze())
-        gust_mph = gust_mps * MPS_TO_MPH
-        gust_kt = gust_mps * MPS_TO_KT
+        if i + 1 < len(lines):
+            next_start = int(lines[i + 1].split(":", 2)[1])
+            end_byte = next_start - 1
+        else:
+            end_byte = None
 
         rows.append(
             {
-                "variable": var,
-                "percentile": percentile,
-                "gust_mps": round(gust_mps, 3),
-                "gust_mph": round(gust_mph, 2),
-                "gust_kt": round(gust_kt, 2),
-                "attrs": attrs,
+                "msg_num": msg_num,
+                "start_byte": start_byte,
+                "end_byte": end_byte,
+                "line": line,
             }
         )
-
-    # Remove rows where percentile could not be identified, then sort.
-    rows = [r for r in rows if r["percentile"] is not None]
-    rows.sort(key=lambda r: r["percentile"])
 
     return rows
 
 
-def probability_exceeding_from_percentiles(
-    percentile_rows: list[dict[str, Any]],
-    threshold_mph: float,
-) -> float:
-    """Derive exact exceedance probability from QMD percentile curve.
+def percentile_from_idx_line(line: str) -> float | None:
+    match = re.search(r":(\d+(?:\.\d+)?)%\s+level", line)
+    if not match:
+        return None
+    return float(match.group(1))
 
-    Percentile curve gives gust magnitude at percentile p.
-    We estimate CDF(threshold) by linear interpolation between surrounding
-    percentile levels, then return exceedance probability = 100 - CDF.
 
-    Assumption:
-    - Percentile rows are official QMD percentile levels.
-    - Linear interpolation is used between adjacent percentile levels.
-    """
+def select_qmd_gust_percentile_messages(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    selected = []
 
+    for row in rows:
+        line = row["line"]
+
+        if ":GUST:10 m above ground:24 hour fcst:" not in line:
+            continue
+
+        if "% level" not in line:
+            continue
+
+        percentile = percentile_from_idx_line(line)
+        if percentile is None:
+            continue
+
+        row = dict(row)
+        row["percentile"] = percentile
+        selected.append(row)
+
+    selected.sort(key=lambda r: r["percentile"])
+    return selected
+
+
+def download_byte_ranges(grib_url: str, rows: list[dict[str, Any]], out_path: Path) -> None:
+    with out_path.open("wb") as f:
+        for row in rows:
+            start = row["start_byte"]
+            end = row["end_byte"]
+
+            headers = {}
+            if end is not None:
+                headers["Range"] = f"bytes={start}-{end}"
+            else:
+                headers["Range"] = f"bytes={start}-"
+
+            response = requests.get(grib_url, headers=headers, timeout=120)
+            response.raise_for_status()
+            f.write(response.content)
+
+
+def find_lat_lon_names(ds: xr.Dataset) -> tuple[str, str]:
+    lat_candidates = ["latitude", "lat", "LAT"]
+    lon_candidates = ["longitude", "lon", "LON"]
+
+    lat_name = None
+    lon_name = None
+
+    for name in lat_candidates:
+        if name in ds:
+            lat_name = name
+            break
+
+    for name in lon_candidates:
+        if name in ds:
+            lon_name = name
+            break
+
+    if lat_name is None or lon_name is None:
+        raise RuntimeError(f"Could not find latitude/longitude variables. Dataset variables: {list(ds.variables)}")
+
+    return lat_name, lon_name
+
+
+def nearest_grid_indices(ds: xr.Dataset) -> tuple[int, int]:
+    lat_name, lon_name = find_lat_lon_names(ds)
+
+    lat = ds[lat_name].values
+    lon = ds[lon_name].values
+
+    target_lon = KRNO_LON
+
+    # Convert target longitude to 0-360 if dataset uses that convention.
+    if np.nanmax(lon) > 180 and target_lon < 0:
+        target_lon = target_lon + 360
+
+    distance = (lat - KRNO_LAT) ** 2 + (lon - target_lon) ** 2
+    iy, ix = np.unravel_index(np.nanargmin(distance), distance.shape)
+
+    return int(iy), int(ix)
+
+
+def extract_percentile_rows_from_grib(grib_path: Path, selected_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    ds = xr.open_dataset(
+        grib_path,
+        engine="cfgrib",
+        backend_kwargs={
+            "indexpath": "",
+        },
+    )
+
+    iy, ix = nearest_grid_indices(ds)
+
+    data_vars = list(ds.data_vars)
+    if not data_vars:
+        raise RuntimeError("No data variables found in QMD subset GRIB.")
+
+    var_name = data_vars[0]
+    da = ds[var_name]
+
+    percentile_rows = []
+
+    # Most likely structure: one variable with a percentile dimension.
+    percentile_coord_name = None
+    for coord in da.coords:
+        if "percentile" in coord.lower():
+            percentile_coord_name = coord
+            break
+
+    if percentile_coord_name:
+        percentiles = da[percentile_coord_name].values
+
+        for idx, percentile in enumerate(percentiles):
+            field = da.isel({percentile_coord_name: idx})
+            value_mps = float(field.values.squeeze()[iy, ix])
+
+            percentile_rows.append(
+                {
+                    "percentile": float(percentile),
+                    "gust_mps": round(value_mps, 3),
+                    "gust_mph": round(value_mps * MPS_TO_MPH, 2),
+                    "gust_kt": round(value_mps * MPS_TO_KT, 2),
+                    "variable": var_name,
+                }
+            )
+
+    else:
+        # Fallback: assume messages remained in selected-row order.
+        values = da.values
+
+        if values.ndim == 2:
+            # Only one field came through.
+            value_mps = float(values[iy, ix])
+            percentile = selected_rows[0]["percentile"]
+            percentile_rows.append(
+                {
+                    "percentile": float(percentile),
+                    "gust_mps": round(value_mps, 3),
+                    "gust_mph": round(value_mps * MPS_TO_MPH, 2),
+                    "gust_kt": round(value_mps * MPS_TO_KT, 2),
+                    "variable": var_name,
+                }
+            )
+        else:
+            # Try first dimension as message/percentile dimension.
+            for idx, row in enumerate(selected_rows):
+                if idx >= values.shape[0]:
+                    break
+
+                value_mps = float(values[idx, iy, ix])
+                percentile_rows.append(
+                    {
+                        "percentile": float(row["percentile"]),
+                        "gust_mps": round(value_mps, 3),
+                        "gust_mph": round(value_mps * MPS_TO_MPH, 2),
+                        "gust_kt": round(value_mps * MPS_TO_KT, 2),
+                        "variable": var_name,
+                    }
+                )
+
+    percentile_rows.sort(key=lambda r: r["percentile"])
+    ds.close()
+
+    return percentile_rows
+
+
+def probability_exceeding_from_percentiles(percentile_rows: list[dict[str, Any]], threshold_mph: float) -> float:
     points = [
         (float(row["percentile"]), float(row["gust_mph"]))
         for row in percentile_rows
@@ -142,19 +267,15 @@ def probability_exceeding_from_percentiles(
     if not points:
         raise RuntimeError("No percentile points available.")
 
-    # If threshold is below or equal to the lowest percentile magnitude,
-    # exceedance is essentially 100 minus the lowest percentile.
     lowest_p, lowest_v = points[0]
+    highest_p, highest_v = points[-1]
+
     if threshold_mph <= lowest_v:
         return round(100.0 - lowest_p, 1)
 
-    # If threshold is above the highest percentile magnitude,
-    # exceedance is essentially 0.
-    highest_p, highest_v = points[-1]
     if threshold_mph >= highest_v:
         return round(max(0.0, 100.0 - highest_p), 1)
 
-    # Find the bracketing percentile magnitudes.
     for (p0, v0), (p1, v1) in zip(points[:-1], points[1:]):
         if v0 <= threshold_mph <= v1:
             if v1 == v0:
@@ -170,11 +291,10 @@ def probability_exceeding_from_percentiles(
 
 
 def get_p50(percentile_rows: list[dict[str, Any]]) -> dict[str, Any] | None:
-    exact = [r for r in percentile_rows if float(r["percentile"]) == 50.0]
-    if exact:
-        return exact[0]
+    for row in percentile_rows:
+        if float(row["percentile"]) == 50.0:
+            return row
 
-    # Fallback: nearest percentile to 50.
     if not percentile_rows:
         return None
 
@@ -183,10 +303,27 @@ def get_p50(percentile_rows: list[dict[str, Any]]) -> dict[str, Any] | None:
 
 def main() -> None:
     cycle = latest_cycle_utc()
+    fxx = 24
 
     print(f"Extracting QMD wind percentile curve for cycle {cycle:%Y-%m-%d %HZ}")
 
-    percentile_rows = extract_qmd_gust_percentiles(cycle)
+    grib_url, idx_url = qmd_urls(cycle, fxx)
+
+    idx_text = fetch_text(idx_url)
+    idx_rows = parse_idx(idx_text)
+    selected_rows = select_qmd_gust_percentile_messages(idx_rows)
+
+    if not selected_rows:
+        raise RuntimeError("No QMD GUST 24-hour percentile messages found in IDX.")
+
+    selected_idx_path = OUT / "test_qmd_wind_selected_idx_lines.txt"
+    selected_idx_path.write_text("\n".join(row["line"] for row in selected_rows))
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        grib_path = Path(tmpdir) / "qmd_gust_percentiles.grib2"
+        download_byte_ranges(grib_url, selected_rows, grib_path)
+        percentile_rows = extract_percentile_rows_from_grib(grib_path, selected_rows)
+
     p50 = get_p50(percentile_rows)
 
     exact_probabilities = {}
@@ -204,9 +341,11 @@ def main() -> None:
 
     output = {
         "site": "KRNO",
-        "source": "NBM QMD via Herbie",
+        "source": "NBM QMD direct byte-range download",
         "cycle_utc": cycle.isoformat().replace("+00:00", "Z"),
         "valid_utc": (cycle + timedelta(hours=24)).isoformat().replace("+00:00", "Z"),
+        "grib_url": grib_url,
+        "idx_url": idx_url,
         "variable": "QMD 24-hour maximum 10-meter wind gust percentile curve",
         "display_value": {
             "label": "24-hr max gust",
@@ -216,21 +355,12 @@ def main() -> None:
             "gust_kt": p50["gust_kt"] if p50 else None,
         },
         "airport_threshold_probabilities": exact_probabilities,
-        "percentile_curve": [
-            {
-                "percentile": row["percentile"],
-                "gust_mps": row["gust_mps"],
-                "gust_mph": row["gust_mph"],
-                "gust_kt": row["gust_kt"],
-                "variable": row["variable"],
-            }
-            for row in percentile_rows
-        ],
+        "percentile_curve": percentile_rows,
         "methodology": (
             "Displayed wind magnitude is the QMD 50th percentile of the 24-hour maximum "
             "10-meter wind gust. Exact airport exceedance probabilities for 30, 45, 58, "
-            "and 65 mph are derived by linear interpolation across the official QMD "
-            "percentile curve."
+            "and 65 mph are derived by linear interpolation across official QMD "
+            "percentile levels downloaded by GRIB2 byte range from the QMD IDX file."
         ),
     }
 
