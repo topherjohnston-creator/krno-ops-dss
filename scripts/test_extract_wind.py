@@ -13,6 +13,9 @@ OUT.mkdir(exist_ok=True)
 KRNO_LAT = 39.4991
 KRNO_LON = -119.7681
 
+MPS_TO_MPH = 2.2369362921
+MPS_TO_KT = 1.9438444924
+
 
 def latest_cycle_utc() -> datetime:
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
@@ -26,7 +29,7 @@ def main() -> None:
 
     results = []
 
-    for fxx in range(1, 7):
+    for fxx in range(1, 25):
         print(f"Extracting GUST f{fxx:03d} from {cycle:%Y-%m-%d %HZ}")
 
         H = Herbie(
@@ -39,19 +42,24 @@ def main() -> None:
         ds = H.xarray(":GUST:10 m above ground:")
         point = ds.herbie.nearest_points(points=[(KRNO_LON, KRNO_LAT)])
 
-        # Try to find the gust variable automatically.
         data_vars = list(point.data_vars)
         gust_var = data_vars[0]
 
-        value = float(point[gust_var].values.squeeze())
+        gust_mps = float(point[gust_var].values.squeeze())
+        gust_mph = gust_mps * MPS_TO_MPH
+        gust_kt = gust_mps * MPS_TO_KT
+
+        valid_time = cycle + timedelta(hours=fxx)
 
         results.append(
             {
                 "cycle_utc": cycle.isoformat().replace("+00:00", "Z"),
+                "valid_utc": valid_time.isoformat().replace("+00:00", "Z"),
                 "fxx": fxx,
                 "variable": gust_var,
-                "gust_raw": value,
-                "note": "Raw units from GRIB; verify m/s vs kt before operational use.",
+                "gust_mps": round(gust_mps, 1),
+                "gust_mph": round(gust_mph, 1),
+                "gust_kt": round(gust_kt, 1),
             }
         )
 
@@ -59,6 +67,7 @@ def main() -> None:
         "site": "KRNO",
         "source": "NBM CONUS via Herbie",
         "variable": "GUST",
+        "units_assumption": "GRIB gust values are meters per second; converted to mph and knots.",
         "points": results,
     }
 
