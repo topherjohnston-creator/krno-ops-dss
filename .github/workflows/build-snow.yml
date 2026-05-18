@@ -92,6 +92,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
+          git add data/nbm_core_snow.json || true
           git add data/krno_snow_risk.json || true
           git add data/krno_snow_hourly.json || true
           git add data/krno_snow_debug.json || true
