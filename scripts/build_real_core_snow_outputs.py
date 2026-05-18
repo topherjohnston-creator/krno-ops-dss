@@ -78,13 +78,18 @@ def parse_cycle_arg(cycle_arg: str | None) -> datetime | None:
 
 def latest_cycle_utc() -> datetime:
     """
-    Use the most recent likely complete 6-hour NBM cycle.
-    Lag one cycle to reduce failures from partially available NOMADS files.
+    Use an older likely-complete NBM cycle.
+
+    QMD files can lag behind the current NBM cycle on NOMADS.
+    Using the immediately previous 6-hour cycle can fail with 404s,
+    especially for f001. Lag by 12 hours to avoid partially available
+    QMD cycles.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-    return cycle - timedelta(hours=6)
+
+    return cycle - timedelta(hours=12)
 
 
 def core_grib_url(cycle: datetime, fxx: int) -> str:
