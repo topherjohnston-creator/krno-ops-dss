@@ -755,47 +755,101 @@ def main() -> None:
         timeline_path,
         {
             "site": "KRNO",
-            "block_hours": 6,
+            "block_hours": 3,
             "blocks": [],
             "block_hazards": [],
         },
     )
 
+    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM QMD {cycle.strftime('%HZ')}"
-    timeline_payload["block_hours"] = 6
+    timeline_payload["block_hours"] = 3
 
-    blocks = timeline_payload.setdefault("blocks", [])
-    block_hazards = timeline_payload.setdefault("block_hazards", [])
+    old_blocks = timeline_payload.get("blocks", [])
+    old_block_hazards = timeline_payload.get("block_hazards", [])
 
-    while len(blocks) < 8:
-        bi = len(blocks)
-        blocks.append({"start_fxx": bi * 6, "end_fxx": bi * 6 + 6})
+    new_blocks = []
+    new_block_hazards = []
 
-    while len(block_hazards) < 8:
-        block_hazards.append({})
+    def window_for_3hr_block(start_fxx: int, end_fxx: int) -> dict[str, Any] | None:
+        midpoint = (start_fxx + end_fxx) / 2.0
+        for window in ok_windows:
+            # QMD rain windows use hour ranges 0-6, 6-12, etc.
+            # Assign each 3-hour dashboard block to the overlapping 6-hour QMD window.
+            if float(window["start_hour"]) < midpoint <= float(window["end_hour"]):
+                return window
+            if midpoint == 1.0 and int(window["start_hour"]) == 0:
+                return window
+        return None
 
-    for i, window in enumerate(ok_windows[:8]):
-        block_risk = window["risk_evaluation"]["best"]
+    for bi in range(16):
+        start_fxx = bi * 3 + 1
+        end_fxx = min((bi + 1) * 3, 48)
 
-        blocks[i]["start_fxx"] = int(window["start_hour"])
-        blocks[i]["end_fxx"] = int(window["end_hour"])
-        blocks[i]["RAIN"] = window.get("display_apcp_in")
+        old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
+        old_hazards = (
+            old_block_hazards[bi]
+            if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
+            else {}
+        )
 
-        block_hazards[i]["RAIN"] = {
-            "prob": round(float(block_risk["probability"]), 1),
-            "risk": int(block_risk["risk"]),
-            "level": int(block_risk["impact_level"]),
-            "threshold_in": block_risk["threshold_in"],
-            "threshold_mm": block_risk["threshold_mm"],
-            "metric": block_risk["label"],
-            "window": "6 hr",
-            "rainfall_6hr_in": window.get("display_apcp_in"),
-            "driver": f"{block_risk['probability']:.1f}% chance {block_risk['label']}",
-        }
+        window = window_for_3hr_block(start_fxx, end_fxx)
 
-        block_hazards[i]["RAIN_FLOODING"] = block_hazards[i]["RAIN"]
+        new_block = dict(old_block)
+        new_block["start_fxx"] = start_fxx
+        new_block["end_fxx"] = end_fxx
+
+        new_hazard_block = dict(old_hazards)
+
+        if window is not None:
+            block_risk = window["risk_evaluation"]["best"]
+            rain_value = window.get("display_apcp_in")
+
+            new_block["RAIN"] = rain_value
+
+            rain_block_payload = {
+                "prob": round(float(block_risk["probability"]), 1),
+                "risk": int(block_risk["risk"]),
+                "risk_label": risk_label(int(block_risk["risk"])),
+                "level": int(block_risk["impact_level"]),
+                "threshold_in": block_risk["threshold_in"],
+                "threshold_mm": block_risk["threshold_mm"],
+                "metric": block_risk["label"],
+                "window": "6 hr",
+                "rainfall_6hr_in": rain_value,
+                "source_fxx": int(window["fxx"]),
+                "source_window": f"f{int(window['start_hour']):03d}-f{int(window['end_hour']):03d}",
+                "driver": f"{block_risk['probability']:.1f}% chance {block_risk['label']}",
+            }
+
+            new_hazard_block["RAIN"] = rain_block_payload
+            new_hazard_block["RAIN_FLOODING"] = rain_block_payload
+        else:
+            new_block["RAIN"] = None
+            rain_block_payload = {
+                "prob": 0.0,
+                "risk": 0,
+                "risk_label": "None",
+                "level": 0,
+                "threshold_in": None,
+                "threshold_mm": None,
+                "metric": "N/A",
+                "window": "6 hr",
+                "rainfall_6hr_in": None,
+                "source_fxx": None,
+                "source_window": None,
+                "driver": "No QMD rain window available for this block",
+            }
+            new_hazard_block["RAIN"] = rain_block_payload
+            new_hazard_block["RAIN_FLOODING"] = rain_block_payload
+
+        new_blocks.append(new_block)
+        new_block_hazards.append(new_hazard_block)
+
+    timeline_payload["blocks"] = new_blocks
+    timeline_payload["block_hazards"] = new_block_hazards
 
     threats_path.write_text(json.dumps(threats_payload, indent=2))
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
