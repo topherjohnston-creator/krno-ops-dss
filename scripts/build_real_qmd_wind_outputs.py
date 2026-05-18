@@ -45,17 +45,14 @@ def utc_now() -> str:
 
 def latest_cycle_utc() -> datetime:
     """
-    Use an older likely-complete NBM cycle.
+    Use a likely-complete NBM QMD cycle.
 
-    QMD files can lag behind the current NBM cycle on NOMADS.
-    Using the immediately previous 6-hour cycle can fail with 404s,
-    especially for f001. Lag by 12 hours to avoid partially available
-    QMD cycles.
+    NOMADS/QMD files can lag or post partially. A 12-hour lag
+    avoids most f001/f009 byte-range/availability failures.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-
     return cycle - timedelta(hours=12)
 
 
@@ -223,6 +220,12 @@ def extract_percentile_rows_for_hour(
     selected_rows: list[dict[str, Any]],
     fxx: int,
 ) -> list[dict[str, Any]]:
+    """Extract QMD percentile rows for one forecast hour.
+
+    NOMADS occasionally returns a corrupt or incomplete byte-range message
+    for one percentile while the rest of the file is usable. Do not crash the
+    whole workflow on one bad percentile. Skip the bad message and continue.
+    """
     percentile_rows = []
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -232,8 +235,15 @@ def extract_percentile_rows_for_hour(
             percentile = float(row["percentile"])
             msg_path = tmp / f"qmd_gust_f{fxx:03d}_p{percentile:g}.grib2"
 
-            download_one_message(grib_url, row, msg_path)
-            var_name, value_mps = extract_value_from_message(msg_path)
+            try:
+                download_one_message(grib_url, row, msg_path)
+                var_name, value_mps = extract_value_from_message(msg_path)
+            except Exception as exc:
+                print(
+                    f"Warning: skipped QMD wind f{fxx:03d} p{percentile:g} "
+                    f"because the GRIB message could not be read: {exc}"
+                )
+                continue
 
             percentile_rows.append(
                 {
@@ -415,6 +425,19 @@ def extract_hourly_qmd_wind(cycle: datetime) -> list[dict[str, Any]]:
             continue
 
         percentile_rows = extract_percentile_rows_for_hour(grib_url, selected_rows, fxx)
+
+        if len(percentile_rows) < 2:
+            hourly_results.append(
+                {
+                    "fxx": fxx,
+                    "valid_utc": (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z"),
+                    "status": "error",
+                    "message": f"Only {len(percentile_rows)} readable QMD GUST percentile messages found for f{fxx:03d}",
+                    "percentile_curve": percentile_rows,
+                }
+            )
+            continue
+
         p50 = get_p50(percentile_rows)
 
         probs = {}
@@ -631,36 +654,46 @@ def main() -> None:
         },
     )
 
+    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM QMD {cycle.strftime('%HZ')}"
+    timeline_payload["block_hours"] = 3
 
-    blocks = timeline_payload.setdefault("blocks", [])
-    block_hazards = timeline_payload.setdefault("block_hazards", [])
+    old_blocks = timeline_payload.get("blocks", [])
+    old_block_hazards = timeline_payload.get("block_hazards", [])
 
-    while len(blocks) < 8:
-        bi = len(blocks)
-        blocks.append({"start_fxx": bi * 3 + 1, "end_fxx": bi * 3 + 3})
+    new_blocks = []
+    new_block_hazards = []
 
-    while len(block_hazards) < 8:
-        block_hazards.append({})
-
-    for bi in range(8):
+    for bi in range(16):
         start_fxx = bi * 3 + 1
         end_fxx = bi * 3 + 3
 
+        old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
+        old_hazards = (
+            old_block_hazards[bi]
+            if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
+            else {}
+        )
+
+        new_block = dict(old_block)
+        new_hazard_block = dict(old_hazards)
+        new_block["start_fxx"] = start_fxx
+        new_block["end_fxx"] = end_fxx
+
         block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
-        if not block_hours:
-            continue
+        if block_hours:
+            block_peak_p50 = max(block_hours, key=lambda h: h.get("p50_gust_mph") or -999)
+            block_eval = block_wind_risk(block_hours)
+            new_block["GST"] = round(float(block_peak_p50["p50_gust_mph"]), 1)
+            new_hazard_block["WIND"] = block_eval
 
-        block_peak_p50 = max(block_hours, key=lambda h: h.get("p50_gust_mph") or -999)
-        block_eval = block_wind_risk(block_hours)
+        new_blocks.append(new_block)
+        new_block_hazards.append(new_hazard_block)
 
-        blocks[bi]["start_fxx"] = start_fxx
-        blocks[bi]["end_fxx"] = end_fxx
-        blocks[bi]["GST"] = round(float(block_peak_p50["p50_gust_mph"]), 1)
-
-        block_hazards[bi]["WIND"] = block_eval
+    timeline_payload["blocks"] = new_blocks
+    timeline_payload["block_hazards"] = new_block_hazards
 
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
 
