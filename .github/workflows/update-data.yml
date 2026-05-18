@@ -51,12 +51,6 @@ jobs:
         run: |
           python scripts/build_real_core_snow_outputs.py
 
-      - name: Extract Synoptic observations
-        env:
-          SYNOPTIC_TOKEN: ${{ secrets.SYNOPTIC_TOKEN }}
-        run: |
-          python scripts/extract_synoptic_obs.py
-
       - name: Commit updated files
         run: |
           git config user.name "github-actions[bot]"
