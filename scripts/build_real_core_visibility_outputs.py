@@ -157,7 +157,7 @@ def visibility_metric_from_threshold(threshold_sm: float) -> str:
 def extract_hourly_visibility(cycle: datetime) -> list[dict[str, Any]]:
     hourly_results = []
 
-    for fxx in range(1, 25):
+    for fxx in range(1, 49):
         print(f"Processing Core visibility f{fxx:03d}")
 
         valid_utc = (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z")
@@ -333,7 +333,7 @@ def main() -> None:
 
     peak_fxx = int(best.get("source_fxx") or min_vis_hour["fxx"])
     peak_start_fxx = max(1, peak_fxx - 1)
-    peak_end_fxx = min(24, peak_fxx + 1)
+    peak_end_fxx = min(48, peak_fxx + 1)
 
     display_value = f"{min_vis_sm:.1f} SM" if min_vis_sm is not None else "N/A"
     metric = visibility_metric_from_threshold(float(best["threshold_sm"]))
@@ -372,7 +372,7 @@ def main() -> None:
         ),
         "methodology": (
             "Visibility risk uses NBM Core hourly probability fields for visibility below "
-            "5, 3, and 1 SM. The maximum hourly probability from f001-f024 is used for each "
+            "5, 3, and 1 SM. The maximum hourly probability from f001-f048 is used for each "
             "threshold, then probability x impact determines risk. NBM Core did not provide "
             "a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
         ),
@@ -430,6 +430,8 @@ def main() -> None:
     threats_path.write_text(json.dumps(threats_payload, indent=2))
 
     # Update timeline.json.
+    # Frontend expects 16 blocks x 3 hours = 48 hours.
+    # Normalize the timeline to prevent stale 8-block or mock structures from persisting.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
@@ -441,38 +443,63 @@ def main() -> None:
         },
     )
 
+    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM Core {cycle.strftime('%HZ')}"
+    timeline_payload["block_hours"] = 3
 
-    blocks = timeline_payload.setdefault("blocks", [])
-    block_hazards = timeline_payload.setdefault("block_hazards", [])
+    old_blocks = timeline_payload.get("blocks", [])
+    old_block_hazards = timeline_payload.get("block_hazards", [])
 
-    while len(blocks) < 8:
-        bi = len(blocks)
-        blocks.append({"start_fxx": bi * 3 + 1, "end_fxx": bi * 3 + 3})
+    new_blocks = []
+    new_block_hazards = []
 
-    while len(block_hazards) < 8:
-        block_hazards.append({})
-
-    for bi in range(8):
+    for bi in range(16):
         start_fxx = bi * 3 + 1
-        end_fxx = bi * 3 + 3
+        end_fxx = min((bi + 1) * 3, 48)
+
+        old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
+        old_hazards = (
+            old_block_hazards[bi]
+            if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
+            else {}
+        )
 
         block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
-        if not block_hours:
-            continue
 
-        valid_block_vis = [h for h in block_hours if h.get("visibility_sm") is not None]
-        if valid_block_vis:
-            block_min_vis = min(valid_block_vis, key=lambda h: h["visibility_sm"])
-            blocks[bi]["VIS"] = round(float(block_min_vis["visibility_sm"]), 2)
+        new_block = dict(old_block)
+        new_block["start_fxx"] = start_fxx
+        new_block["end_fxx"] = end_fxx
 
-        block_eval = block_visibility_risk(block_hours)
+        new_hazard_block = dict(old_hazards)
 
-        blocks[bi]["start_fxx"] = start_fxx
-        blocks[bi]["end_fxx"] = end_fxx
-        block_hazards[bi]["VISIBILITY"] = block_eval
+        if block_hours:
+            valid_block_vis = [h for h in block_hours if h.get("visibility_sm") is not None]
+            if valid_block_vis:
+                block_min_vis = min(valid_block_vis, key=lambda h: h["visibility_sm"])
+                new_block["VIS"] = round(float(block_min_vis["visibility_sm"]), 2)
+            else:
+                new_block["VIS"] = None
+
+            new_hazard_block["VISIBILITY"] = block_visibility_risk(block_hours)
+        else:
+            new_block["VIS"] = None
+            new_hazard_block["VISIBILITY"] = {
+                "prob": 0.0,
+                "risk": 0,
+                "level": 0,
+                "threshold_sm": None,
+                "source_fxx": None,
+                "metric": "N/A",
+                "driver": "No visibility data available for this block",
+            }
+
+        new_blocks.append(new_block)
+        new_block_hazards.append(new_hazard_block)
+
+    timeline_payload["blocks"] = new_blocks
+    timeline_payload["block_hazards"] = new_block_hazards
 
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
 
@@ -483,7 +510,7 @@ def main() -> None:
         "generated_utc": generated,
         "display_value": {
             "label": "Lowest visibility",
-            "method": "minimum hourly NBM Core deterministic VIS from f001-f024",
+            "method": "minimum hourly NBM Core deterministic VIS from f001-f048",
             "source_fxx": min_vis_hour["fxx"],
             "valid_utc": min_vis_hour["valid_utc"],
             "visibility_sm": round(min_vis_sm, 2) if min_vis_sm is not None else None,
@@ -491,7 +518,7 @@ def main() -> None:
         "airport_threshold_probabilities": {
             "method": (
                 "For each visibility threshold, probability is the maximum hourly probability "
-                "from f001-f024. Probabilities use direct NBM Core probability fields."
+                "from f001-f048. Probabilities use direct NBM Core probability fields."
             ),
             "thresholds": threshold_probs,
         },
