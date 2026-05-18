@@ -26,6 +26,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Scan Core snow probability fields
+        run: |
+          python scripts/scan_core_snow_probability_fields.py
+
       - name: Build mock baseline outputs
         run: |
           python scripts/build_mock_outputs.py
