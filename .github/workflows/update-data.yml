@@ -35,6 +35,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Scan Core freezing rain probability fields
+        run: |
+          python scripts/scan_core_fzra_probability_fields.py
+
       - name: Build QMD probability-based wind outputs
         run: |
           python scripts/build_real_qmd_wind_outputs.py
