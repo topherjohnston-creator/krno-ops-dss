@@ -1,0 +1,105 @@
+name: Build KRNO Snow Risk Outputs
+
+on:
+  workflow_dispatch:
+    inputs:
+      cycle:
+        description: "NBM cycle in YYYYMMDDHH format. Leave blank for latest available."
+        required: false
+        default: ""
+
+  schedule:
+    # Runs after NBM 00Z/06Z/12Z/18Z cycles should be available.
+    # Adjust later if NOMADS latency requires more time.
+    - cron: "45 2,8,14,20 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build-snow:
+    name: Build NBM Core snow probability outputs
+    runs-on: ubuntu-latest
+
+    env:
+      SITE: KRNO
+      SITE_LAT: "39.4991"
+      SITE_LON: "-119.7681"
+      NBM_DOMAIN: co
+      NBM_PRODUCT: core
+      OUTPUT_DIR: data
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libeccodes0 \
+            libeccodes-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install \
+            numpy \
+            pandas \
+            requests \
+            xarray \
+            cfgrib \
+            eccodes \
+            pyproj
+
+      - name: Show run configuration
+        run: |
+          echo "SITE=$SITE"
+          echo "SITE_LAT=$SITE_LAT"
+          echo "SITE_LON=$SITE_LON"
+          echo "NBM_DOMAIN=$NBM_DOMAIN"
+          echo "NBM_PRODUCT=$NBM_PRODUCT"
+          echo "OUTPUT_DIR=$OUTPUT_DIR"
+          echo "Manual cycle input='${{ github.event.inputs.cycle }}'"
+
+      - name: Build snow outputs
+        run: |
+          if [ -n "${{ github.event.inputs.cycle }}" ]; then
+            python scripts/build_real_core_snow_outputs.py --cycle "${{ github.event.inputs.cycle }}"
+          else
+            python scripts/build_real_core_snow_outputs.py
+          fi
+
+      - name: List output files
+        run: |
+          echo "Generated files:"
+          find "$OUTPUT_DIR" -type f -maxdepth 3 | sort || true
+
+      - name: Validate snow risk JSON
+        run: |
+          test -f data/krno_snow_risk.json
+          python -m json.tool data/krno_snow_risk.json > /tmp/krno_snow_risk.pretty.json
+          echo "Validated data/krno_snow_risk.json"
+
+      - name: Commit generated snow data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add data/krno_snow_risk.json || true
+          git add data/krno_snow_hourly.json || true
+          git add data/krno_snow_debug.json || true
+          git add data/krno_hazards.json || true
+
+          if git diff --cached --quiet; then
+            echo "No snow output changes to commit."
+          else
+            git commit -m "Update KRNO snow risk outputs"
+            git push
+          fi
