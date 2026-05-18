@@ -752,44 +752,59 @@ def main() -> None:
         )
 
     # Update timeline.json.
+    # Frontend expects 16 blocks x 3 hours = 48 hours.
+    # Normalize the timeline here so old 6-hour/mock blocks do not persist.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
         {
             "site": "KRNO",
-            "block_hours": 6,
+            "block_hours": 3,
             "blocks": [],
             "block_hazards": [],
         },
     )
 
+    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM Core {cycle.strftime('%HZ')}"
-    timeline_payload["block_hours"] = 6
+    timeline_payload["block_hours"] = 3
 
-    blocks = timeline_payload.setdefault("blocks", [])
-    block_hazards = timeline_payload.setdefault("block_hazards", [])
+    old_blocks = timeline_payload.get("blocks", [])
+    old_block_hazards = timeline_payload.get("block_hazards", [])
 
-    while len(blocks) < 8:
-        bi = len(blocks)
-        blocks.append({"start_fxx": bi * 6, "end_fxx": bi * 6 + 6})
+    new_blocks = []
+    new_block_hazards = []
 
-    while len(block_hazards) < 8:
-        block_hazards.append({})
+    for i in range(16):
+        start_fxx = i * 3 + 1
+        end_fxx = min((i + 1) * 3, 48)
 
-    for i in range(8):
-        start_fxx = i * 6 + 1
-        end_fxx = min((i + 1) * 6, 48)
+        old_block = old_blocks[i] if i < len(old_blocks) and isinstance(old_blocks[i], dict) else {}
+        old_hazards = (
+            old_block_hazards[i]
+            if i < len(old_block_hazards) and isinstance(old_block_hazards[i], dict)
+            else {}
+        )
 
         block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
         block_eval = block_snow_risk(block_hours)
 
-        blocks[i]["start_fxx"] = start_fxx
-        blocks[i]["end_fxx"] = end_fxx
-        blocks[i]["SNOW"] = block_eval.get("snow_1hr_in")
+        new_block = dict(old_block)
+        new_block["start_fxx"] = start_fxx
+        new_block["end_fxx"] = end_fxx
+        new_block["SNOW"] = block_eval.get("snow_1hr_in")
+        new_block["s3hr_in"] = block_eval.get("snow_1hr_in")
 
-        block_hazards[i]["SNOW"] = block_eval
+        new_hazard_block = dict(old_hazards)
+        new_hazard_block["SNOW"] = block_eval
+
+        new_blocks.append(new_block)
+        new_block_hazards.append(new_hazard_block)
+
+    timeline_payload["blocks"] = new_blocks
+    timeline_payload["block_hazards"] = new_block_hazards
 
     threats_path.write_text(json.dumps(threats_payload, indent=2))
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
