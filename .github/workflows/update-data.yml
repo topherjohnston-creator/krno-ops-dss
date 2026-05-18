@@ -49,7 +49,7 @@ jobs:
 
       - name: Build Core snow probability outputs
         run: |
-          python scripts/build_snow.py
+          python scripts/build_real_core_snow_outputs.py
 
       - name: Extract Synoptic observations
         env:
