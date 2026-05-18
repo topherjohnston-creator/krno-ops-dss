@@ -38,9 +38,9 @@ jobs:
         run: |
           python scripts/build_real_core_visibility_outputs.py
 
-      - name: Inspect QMD rain percentile fields
+      - name: Build QMD rain flooding outputs
         run: |
-          python scripts/inspect_qmd_rain_inventory.py
+          python scripts/build_real_qmd_rain_outputs.py
 
       - name: Extract Synoptic observations
         env:
