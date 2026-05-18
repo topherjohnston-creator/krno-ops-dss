@@ -1,0 +1,36 @@
+{
+  "site": "KRNO",
+  "source": "NBM Core direct byte-range download",
+  "cycle_utc": "2026-05-18T06:00:00Z",
+  "generated_utc": "2026-05-18T21:12:50Z",
+  "hazard": "FZRA",
+  "prob": 0.0,
+  "risk": 1,
+  "risk_label": "Little to None",
+  "level": 1,
+  "metric": "0\" / 6 hr",
+  "display_label": "6-hr freezing rain",
+  "display_value": "0\"",
+  "fzra_6hr_in": 0.0,
+  "threshold_in": 0.0,
+  "threshold_mm": 0.0,
+  "window": "6 hr",
+  "peak_start_fxx": 1,
+  "peak_end_fxx": 6,
+  "ops_label": "No freezing rain signal",
+  "driver": "0.0% chance 0\" / 6 hr",
+  "diagnostic_probabilities": {
+    "gt_1p00_in_6hr": {
+      "threshold_mm": 25.4,
+      "threshold_in": 1.0,
+      "impact_level": 5,
+      "label": ">1.00 in / 6 hr",
+      "ops_label": "Extreme icing diagnostic threshold",
+      "probability_percent": 0.0,
+      "status": "ok",
+      "variable": "FICEAC",
+      "idx_line": "63:59892296:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+    }
+  },
+  "methodology": "Freezing rain risk uses official NBM Core 6-hour FICEAC exceedance probabilities. Thresholds are >0.01, >0.10, >0.25, and >0.50 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. The >1.00 inch threshold is retained as a diagnostic field but is not used as the primary risk driver."
+}

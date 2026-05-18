@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-18T20:49:13Z",
+  "generated_utc": "2026-05-18T21:13:04Z",
   "cycle_utc_iso": "2026-05-18T06:00:00Z",
   "cycle": "NBM Core 06Z",
   "block_hours": 3,
@@ -18,7 +18,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 4,
@@ -33,7 +34,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 7,
@@ -48,7 +50,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 10,
@@ -63,7 +66,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 13,
@@ -78,7 +82,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 16,
@@ -93,7 +98,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 19,
@@ -108,7 +114,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 22,
@@ -123,7 +130,8 @@
       "I01": 0,
       "s3hr_in": 0.0,
       "RAIN": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 25,
@@ -137,7 +145,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 28,
@@ -151,7 +160,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 31,
@@ -165,7 +175,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 34,
@@ -179,7 +190,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 37,
@@ -193,7 +205,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 40,
@@ -207,7 +220,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 43,
@@ -221,7 +235,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     },
     {
       "start_fxx": 46,
@@ -235,7 +250,8 @@
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
-      "SNOW": 0.0
+      "SNOW": 0.0,
+      "FZRA": 0.0
     }
   ],
   "block_hazards": [
@@ -293,9 +309,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 6,
+        "source_window": "f001-f006",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -363,9 +388,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 6,
+        "source_window": "f001-f006",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -433,9 +467,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 12,
+        "source_window": "f007-f012",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -503,9 +546,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 12,
+        "source_window": "f007-f012",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -573,9 +625,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 18,
+        "source_window": "f013-f018",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -643,9 +704,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 18,
+        "source_window": "f013-f018",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -713,9 +783,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 24,
+        "source_window": "f019-f024",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -783,9 +862,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 24,
+        "source_window": "f019-f024",
+        "driver": "0.0% chance 0\" / 6 hr"
       },
       "RAIN_FLOODING": {
         "prob": 0.0,
@@ -843,9 +931,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 30,
+        "source_window": "f025-f030",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -892,9 +989,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 30,
+        "source_window": "f025-f030",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -941,9 +1047,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 36,
+        "source_window": "f031-f036",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -990,9 +1105,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 36,
+        "source_window": "f031-f036",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -1039,9 +1163,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 42,
+        "source_window": "f037-f042",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -1088,9 +1221,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 42,
+        "source_window": "f037-f042",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -1137,9 +1279,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 48,
+        "source_window": "f043-f048",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     },
     {
@@ -1186,9 +1337,18 @@
         "level": 1
       },
       "FZRA": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
+        "prob": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 48,
+        "source_window": "f043-f048",
+        "driver": "0.0% chance 0\" / 6 hr"
       }
     }
   ]

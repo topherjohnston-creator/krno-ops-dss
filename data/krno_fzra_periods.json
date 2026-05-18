@@ -1,0 +1,1208 @@
+{
+  "site": "KRNO",
+  "source": "NBM Core direct byte-range download",
+  "cycle_utc": "2026-05-18T06:00:00Z",
+  "generated_utc": "2026-05-18T21:12:50Z",
+  "periods": [
+    {
+      "fxx": 6,
+      "start_fxx": 1,
+      "end_fxx": 6,
+      "status": "ok",
+      "valid_utc": "2026-05-18T12:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f006.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f006.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:58004084:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:58486479:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:58955503:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:59423917:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:59892296:d=2026051806:FICEAC:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:50216149:d=2026051806:FICEAC:surface:0-6 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 6,
+          "valid_utc": "2026-05-18T12:00:00Z",
+          "start_fxx": 1,
+          "end_fxx": 6
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 6,
+            "valid_utc": "2026-05-18T12:00:00Z",
+            "start_fxx": 1,
+            "end_fxx": 6
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 6,
+            "valid_utc": "2026-05-18T12:00:00Z",
+            "start_fxx": 1,
+            "end_fxx": 6
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 6,
+            "valid_utc": "2026-05-18T12:00:00Z",
+            "start_fxx": 1,
+            "end_fxx": 6
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 6,
+            "valid_utc": "2026-05-18T12:00:00Z",
+            "start_fxx": 1,
+            "end_fxx": 6
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 12,
+      "start_fxx": 7,
+      "end_fxx": 12,
+      "status": "ok",
+      "valid_utc": "2026-05-18T18:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f012.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f012.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:60072974:d=2026051806:FICEAC:surface:6-12 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:60554640:d=2026051806:FICEAC:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:61024215:d=2026051806:FICEAC:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:61492718:d=2026051806:FICEAC:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:61961097:d=2026051806:FICEAC:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:52277391:d=2026051806:FICEAC:surface:6-12 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 12,
+          "valid_utc": "2026-05-18T18:00:00Z",
+          "start_fxx": 7,
+          "end_fxx": 12
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 12,
+            "valid_utc": "2026-05-18T18:00:00Z",
+            "start_fxx": 7,
+            "end_fxx": 12
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 12,
+            "valid_utc": "2026-05-18T18:00:00Z",
+            "start_fxx": 7,
+            "end_fxx": 12
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 12,
+            "valid_utc": "2026-05-18T18:00:00Z",
+            "start_fxx": 7,
+            "end_fxx": 12
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 12,
+            "valid_utc": "2026-05-18T18:00:00Z",
+            "start_fxx": 7,
+            "end_fxx": 12
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 18,
+      "start_fxx": 13,
+      "end_fxx": 18,
+      "status": "ok",
+      "valid_utc": "2026-05-19T00:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f018.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f018.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:57871918:d=2026051806:FICEAC:surface:12-18 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:58346929:d=2026051806:FICEAC:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:58816100:d=2026051806:FICEAC:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:59284479:d=2026051806:FICEAC:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:59752858:d=2026051806:FICEAC:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:50128724:d=2026051806:FICEAC:surface:12-18 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 18,
+          "valid_utc": "2026-05-19T00:00:00Z",
+          "start_fxx": 13,
+          "end_fxx": 18
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 18,
+            "valid_utc": "2026-05-19T00:00:00Z",
+            "start_fxx": 13,
+            "end_fxx": 18
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 18,
+            "valid_utc": "2026-05-19T00:00:00Z",
+            "start_fxx": 13,
+            "end_fxx": 18
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 18,
+            "valid_utc": "2026-05-19T00:00:00Z",
+            "start_fxx": 13,
+            "end_fxx": 18
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 18,
+            "valid_utc": "2026-05-19T00:00:00Z",
+            "start_fxx": 13,
+            "end_fxx": 18
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 24,
+      "start_fxx": 19,
+      "end_fxx": 24,
+      "status": "ok",
+      "valid_utc": "2026-05-19T06:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f024.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f024.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:55008502:d=2026051806:FICEAC:surface:18-24 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:55490551:d=2026051806:FICEAC:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:55959745:d=2026051806:FICEAC:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:56428124:d=2026051806:FICEAC:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:56896503:d=2026051806:FICEAC:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:47141368:d=2026051806:FICEAC:surface:18-24 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 24,
+          "valid_utc": "2026-05-19T06:00:00Z",
+          "start_fxx": 19,
+          "end_fxx": 24
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 24,
+            "valid_utc": "2026-05-19T06:00:00Z",
+            "start_fxx": 19,
+            "end_fxx": 24
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 24,
+            "valid_utc": "2026-05-19T06:00:00Z",
+            "start_fxx": 19,
+            "end_fxx": 24
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 24,
+            "valid_utc": "2026-05-19T06:00:00Z",
+            "start_fxx": 19,
+            "end_fxx": 24
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 24,
+            "valid_utc": "2026-05-19T06:00:00Z",
+            "start_fxx": 19,
+            "end_fxx": 24
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 30,
+      "start_fxx": 25,
+      "end_fxx": 30,
+      "status": "ok",
+      "valid_utc": "2026-05-19T12:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f030.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f030.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:56629949:d=2026051806:FICEAC:surface:24-30 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:57131511:d=2026051806:FICEAC:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:57612523:d=2026051806:FICEAC:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:58084350:d=2026051806:FICEAC:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:58552729:d=2026051806:FICEAC:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:48348940:d=2026051806:FICEAC:surface:24-30 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 30,
+          "valid_utc": "2026-05-19T12:00:00Z",
+          "start_fxx": 25,
+          "end_fxx": 30
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 30,
+            "valid_utc": "2026-05-19T12:00:00Z",
+            "start_fxx": 25,
+            "end_fxx": 30
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 30,
+            "valid_utc": "2026-05-19T12:00:00Z",
+            "start_fxx": 25,
+            "end_fxx": 30
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 30,
+            "valid_utc": "2026-05-19T12:00:00Z",
+            "start_fxx": 25,
+            "end_fxx": 30
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 30,
+            "valid_utc": "2026-05-19T12:00:00Z",
+            "start_fxx": 25,
+            "end_fxx": 30
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 36,
+      "start_fxx": 31,
+      "end_fxx": 36,
+      "status": "ok",
+      "valid_utc": "2026-05-19T18:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f036.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f036.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "59:58867305:d=2026051806:FICEAC:surface:30-36 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "60:59363804:d=2026051806:FICEAC:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "61:59846459:d=2026051806:FICEAC:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "62:60322839:d=2026051806:FICEAC:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "63:60792185:d=2026051806:FICEAC:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "42:50603676:d=2026051806:FICEAC:surface:30-36 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 36,
+          "valid_utc": "2026-05-19T18:00:00Z",
+          "start_fxx": 31,
+          "end_fxx": 36
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 36,
+            "valid_utc": "2026-05-19T18:00:00Z",
+            "start_fxx": 31,
+            "end_fxx": 36
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 36,
+            "valid_utc": "2026-05-19T18:00:00Z",
+            "start_fxx": 31,
+            "end_fxx": 36
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 36,
+            "valid_utc": "2026-05-19T18:00:00Z",
+            "start_fxx": 31,
+            "end_fxx": 36
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 36,
+            "valid_utc": "2026-05-19T18:00:00Z",
+            "start_fxx": 31,
+            "end_fxx": 36
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 42,
+      "start_fxx": 37,
+      "end_fxx": 42,
+      "status": "ok",
+      "valid_utc": "2026-05-20T00:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f042.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f042.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "46:44633310:d=2026051806:FICEAC:surface:36-42 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "47:45115231:d=2026051806:FICEAC:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "48:45587890:d=2026051806:FICEAC:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "49:46057231:d=2026051806:FICEAC:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "50:46525610:d=2026051806:FICEAC:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "29:36711992:d=2026051806:FICEAC:surface:36-42 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 42,
+          "valid_utc": "2026-05-20T00:00:00Z",
+          "start_fxx": 37,
+          "end_fxx": 42
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 42,
+            "valid_utc": "2026-05-20T00:00:00Z",
+            "start_fxx": 37,
+            "end_fxx": 42
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 42,
+            "valid_utc": "2026-05-20T00:00:00Z",
+            "start_fxx": 37,
+            "end_fxx": 42
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 42,
+            "valid_utc": "2026-05-20T00:00:00Z",
+            "start_fxx": 37,
+            "end_fxx": 42
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 42,
+            "valid_utc": "2026-05-20T00:00:00Z",
+            "start_fxx": 37,
+            "end_fxx": 42
+          }
+        ]
+      }
+    },
+    {
+      "fxx": 48,
+      "start_fxx": 43,
+      "end_fxx": 48,
+      "status": "ok",
+      "valid_utc": "2026-05-20T06:00:00Z",
+      "grib_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f048.co.grib2",
+      "idx_url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/blend/prod/blend.20260518/06/core/blend.t06z.core.f048.co.grib2.idx",
+      "threshold_probabilities": {
+        "gt_0p01_in_6hr": {
+          "threshold_mm": 0.254,
+          "threshold_in": 0.01,
+          "impact_level": 2,
+          "label": ">0.01 in / 6 hr",
+          "ops_label": "Treatment awareness / slick surfaces possible",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "46:40314846:d=2026051806:FICEAC:surface:42-48 hour acc fcst:prob >0.254:prob fcst 255/255"
+        },
+        "gt_0p10_in_6hr": {
+          "threshold_mm": 2.54,
+          "threshold_in": 0.1,
+          "impact_level": 3,
+          "label": ">0.10 in / 6 hr",
+          "ops_label": "Active pavement treatment likely",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "47:40798808:d=2026051806:FICEAC:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
+        },
+        "gt_0p25_in_6hr": {
+          "threshold_mm": 6.35,
+          "threshold_in": 0.25,
+          "impact_level": 4,
+          "label": ">0.25 in / 6 hr",
+          "ops_label": "Significant icing / ground ops impacts",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "48:41267554:d=2026051806:FICEAC:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
+        },
+        "gt_0p50_in_6hr": {
+          "threshold_mm": 12.7,
+          "threshold_in": 0.5,
+          "impact_level": 5,
+          "label": ">0.50 in / 6 hr",
+          "ops_label": "Major icing risk",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "49:41735933:d=2026051806:FICEAC:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
+        }
+      },
+      "diagnostic_probabilities": {
+        "gt_1p00_in_6hr": {
+          "threshold_mm": 25.4,
+          "threshold_in": 1.0,
+          "impact_level": 5,
+          "label": ">1.00 in / 6 hr",
+          "ops_label": "Extreme icing diagnostic threshold",
+          "probability_percent": 0.0,
+          "status": "ok",
+          "variable": "FICEAC",
+          "idx_line": "50:42204312:d=2026051806:FICEAC:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
+        }
+      },
+      "display_fzra_in": 0.0,
+      "display_source": "NBM Core deterministic 6-hour FICEAC",
+      "display_idx_line": "29:32430786:d=2026051806:FICEAC:surface:42-48 hour acc fcst:",
+      "risk_evaluation": {
+        "best": {
+          "threshold_key": "zero_fzra",
+          "threshold_mm": 0.0,
+          "threshold_in": 0.0,
+          "impact_level": 1,
+          "probability": 0.0,
+          "risk": 1,
+          "risk_label": "Little to None",
+          "label": "0\" / 6 hr",
+          "ops_label": "No freezing rain signal",
+          "fxx": 48,
+          "valid_utc": "2026-05-20T06:00:00Z",
+          "start_fxx": 43,
+          "end_fxx": 48
+        },
+        "candidates": [
+          {
+            "threshold_key": "gt_0p01_in_6hr",
+            "threshold_mm": 0.254,
+            "threshold_in": 0.01,
+            "impact_level": 2,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.01 in / 6 hr",
+            "ops_label": "Treatment awareness / slick surfaces possible",
+            "fxx": 48,
+            "valid_utc": "2026-05-20T06:00:00Z",
+            "start_fxx": 43,
+            "end_fxx": 48
+          },
+          {
+            "threshold_key": "gt_0p10_in_6hr",
+            "threshold_mm": 2.54,
+            "threshold_in": 0.1,
+            "impact_level": 3,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.10 in / 6 hr",
+            "ops_label": "Active pavement treatment likely",
+            "fxx": 48,
+            "valid_utc": "2026-05-20T06:00:00Z",
+            "start_fxx": 43,
+            "end_fxx": 48
+          },
+          {
+            "threshold_key": "gt_0p25_in_6hr",
+            "threshold_mm": 6.35,
+            "threshold_in": 0.25,
+            "impact_level": 4,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.25 in / 6 hr",
+            "ops_label": "Significant icing / ground ops impacts",
+            "fxx": 48,
+            "valid_utc": "2026-05-20T06:00:00Z",
+            "start_fxx": 43,
+            "end_fxx": 48
+          },
+          {
+            "threshold_key": "gt_0p50_in_6hr",
+            "threshold_mm": 12.7,
+            "threshold_in": 0.5,
+            "impact_level": 5,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": ">0.50 in / 6 hr",
+            "ops_label": "Major icing risk",
+            "fxx": 48,
+            "valid_utc": "2026-05-20T06:00:00Z",
+            "start_fxx": 43,
+            "end_fxx": 48
+          }
+        ]
+      }
+    }
+  ]
+}
