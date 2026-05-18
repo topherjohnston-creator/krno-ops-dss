@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-krno-observations
+  cancel-in-progress: true
+
 jobs:
   update-obs:
     runs-on: ubuntu-latest
@@ -39,7 +43,6 @@ jobs:
 
           git add docs/observations.json || true
           git add data/observations.json || true
-          git add data/*.json || true
 
           git commit -m "Update KRNO observations" || echo "No changes to commit"
           git push
