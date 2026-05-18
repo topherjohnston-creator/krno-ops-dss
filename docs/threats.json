@@ -1,48 +1,48 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-18T04:51:52Z",
-  "cycle_utc_iso": "2026-05-17T18:00:00Z",
-  "cycle": "NBM QMD 18Z",
+  "generated_utc": "2026-05-18T10:44:37Z",
+  "cycle_utc_iso": "2026-05-18T00:00:00Z",
+  "cycle": "NBM QMD 00Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 37.4,
+      "prob": 29.7,
       "risk": 2,
       "risk_label": "Minor",
       "level": 3,
       "metric": ">45 mph threshold",
       "display_label": "24-hr max gust",
-      "display_value": "42 mph",
-      "g24_p50_mph": 41.8,
-      "g24_p50_kt": 36.4,
+      "display_value": "41 mph",
+      "g24_p50_mph": 40.9,
+      "g24_p50_kt": 35.6,
       "threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 83.2,
-          "max_probability_fxx": 5,
-          "max_probability_valid_utc": "2026-05-17T23:00:00Z"
+          "exceedance_probability_percent": 83.4,
+          "max_probability_fxx": 2,
+          "max_probability_valid_utc": "2026-05-18T02:00:00Z"
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
           "threshold_mps": 20.117,
-          "exceedance_probability_percent": 37.4,
-          "max_probability_fxx": 4,
-          "max_probability_valid_utc": "2026-05-17T22:00:00Z"
+          "exceedance_probability_percent": 29.7,
+          "max_probability_fxx": 3,
+          "max_probability_valid_utc": "2026-05-18T03:00:00Z"
         },
         "gt_58_mph": {
           "threshold_mph": 58.0,
           "threshold_mps": 25.928,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-17T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-18T01:00:00Z"
         },
         "gt_65_mph": {
           "threshold_mph": 65.0,
           "threshold_mps": 29.058,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-17T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-18T01:00:00Z"
         }
       },
       "risk_candidates": [
@@ -50,21 +50,21 @@
           "threshold_key": "gt_30_mph",
           "threshold_mph": 30.0,
           "impact_level": 2,
-          "probability": 83.2,
+          "probability": 83.4,
           "risk": 2,
           "risk_label": "Minor",
-          "source_fxx": 5,
-          "source_valid_utc": "2026-05-17T23:00:00Z"
+          "source_fxx": 2,
+          "source_valid_utc": "2026-05-18T02:00:00Z"
         },
         {
           "threshold_key": "gt_45_mph",
           "threshold_mph": 45.0,
           "impact_level": 3,
-          "probability": 37.4,
+          "probability": 29.7,
           "risk": 2,
           "risk_label": "Minor",
-          "source_fxx": 4,
-          "source_valid_utc": "2026-05-17T22:00:00Z"
+          "source_fxx": 3,
+          "source_valid_utc": "2026-05-18T03:00:00Z"
         },
         {
           "threshold_key": "gt_58_mph",
@@ -74,7 +74,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-17T19:00:00Z"
+          "source_valid_utc": "2026-05-18T01:00:00Z"
         },
         {
           "threshold_key": "gt_65_mph",
@@ -84,12 +84,12 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-17T19:00:00Z"
+          "source_valid_utc": "2026-05-18T01:00:00Z"
         }
       ],
-      "peak_start_fxx": 3,
-      "peak_end_fxx": 5,
-      "driver": "QMD max hourly P50 gust 41.8 mph; 37.4% chance >45 mph",
+      "peak_start_fxx": 2,
+      "peak_end_fxx": 4,
+      "driver": "QMD max hourly P50 gust 40.9 mph; 29.7% chance >45 mph",
       "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
@@ -109,7 +109,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <5 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-17T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-18T01:00:00Z"
         },
         "lt_3_sm": {
           "threshold_sm": 3.0,
@@ -118,7 +118,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <3 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-17T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-18T01:00:00Z"
         },
         "lt_1_sm": {
           "threshold_sm": 1.0,
@@ -127,7 +127,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <1 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-17T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-18T01:00:00Z"
         }
       },
       "risk_candidates": [
@@ -139,7 +139,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-17T19:00:00Z"
+          "source_valid_utc": "2026-05-18T01:00:00Z"
         },
         {
           "threshold_key": "lt_3_sm",
@@ -149,7 +149,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-17T19:00:00Z"
+          "source_valid_utc": "2026-05-18T01:00:00Z"
         },
         {
           "threshold_key": "lt_1_sm",
@@ -159,7 +159,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-17T19:00:00Z"
+          "source_valid_utc": "2026-05-18T01:00:00Z"
         }
       ],
       "peak_start_fxx": 1,
@@ -201,7 +201,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192587489:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182985216:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -211,7 +211,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195069500:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185434738:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -221,7 +221,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197096554:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:187433999:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -231,7 +231,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:198669511:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:189030557:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f012_6_12hr": {
@@ -243,7 +243,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:185047741:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182792734:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -253,7 +253,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187555006:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185181428:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -263,7 +263,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:189595918:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:187070284:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -273,7 +273,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:191228651:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188628426:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f018_12_18hr": {
@@ -285,7 +285,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:182856479:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:197490655:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -295,7 +295,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:185231368:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:199864276:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -305,7 +305,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187132936:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:201756021:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -315,7 +315,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188697393:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:203290549:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f024_18_24hr": {
@@ -327,7 +327,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:197689926:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:192991160:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -337,7 +337,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:200090446:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:195649248:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -347,7 +347,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:202003971:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:197825429:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -357,7 +357,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:203554075:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:199530652:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f030_24_30hr": {
@@ -369,7 +369,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:193159344:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:185021779:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -379,7 +379,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195852683:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:187541841:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -389,7 +389,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198039254:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:189582160:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -399,7 +399,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199770328:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:191243731:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f036_30_36hr": {
@@ -411,7 +411,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184827655:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182750011:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -421,7 +421,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187363731:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185077783:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -431,7 +431,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:189400328:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:186973389:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -441,7 +441,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:191081465:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188588775:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f042_36_42hr": {
@@ -453,7 +453,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:182462772:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:197189811:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -463,7 +463,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184805967:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:199533218:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -473,7 +473,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186726303:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:201450081:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -483,7 +483,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188346243:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:203031075:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f048_42_48hr": {
@@ -495,7 +495,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:197175390:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:193339716:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -505,7 +505,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:199516081:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:196009235:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -515,7 +515,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:201411078:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:198222127:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -525,7 +525,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:202995628:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:200003560:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         }
       },
@@ -542,7 +542,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -556,7 +556,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -570,7 +570,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -584,7 +584,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -598,7 +598,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -612,7 +612,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -626,7 +626,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -640,7 +640,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -654,7 +654,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -668,7 +668,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -682,7 +682,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -696,7 +696,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -710,7 +710,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -724,7 +724,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -738,7 +738,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -752,7 +752,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -766,7 +766,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -780,7 +780,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -794,7 +794,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -808,7 +808,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -822,7 +822,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -836,7 +836,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -850,7 +850,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -864,7 +864,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -878,7 +878,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -892,7 +892,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -906,7 +906,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -920,7 +920,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -934,7 +934,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -948,7 +948,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -962,7 +962,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -976,7 +976,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         }
       ],
       "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is <0.10 inches in 6 hours with Little to None risk."
@@ -1042,7 +1042,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192587489:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182985216:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1052,7 +1052,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195069500:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185434738:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1062,7 +1062,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197096554:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:187433999:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1072,7 +1072,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:198669511:d=2026051718:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:189030557:d=2026051800:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f012_6_12hr": {
@@ -1084,7 +1084,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:185047741:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182792734:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1094,7 +1094,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187555006:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185181428:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1104,7 +1104,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:189595918:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:187070284:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1114,7 +1114,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:191228651:d=2026051718:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188628426:d=2026051800:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f018_12_18hr": {
@@ -1126,7 +1126,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:182856479:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:197490655:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1136,7 +1136,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:185231368:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:199864276:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1146,7 +1146,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187132936:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:201756021:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1156,7 +1156,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188697393:d=2026051718:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:203290549:d=2026051800:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f024_18_24hr": {
@@ -1168,7 +1168,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:197689926:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:192991160:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1178,7 +1178,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:200090446:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:195649248:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1188,7 +1188,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:202003971:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:197825429:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1198,7 +1198,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:203554075:d=2026051718:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:199530652:d=2026051800:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f030_24_30hr": {
@@ -1210,7 +1210,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:193159344:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:185021779:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1220,7 +1220,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195852683:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:187541841:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1230,7 +1230,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198039254:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:189582160:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1240,7 +1240,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199770328:d=2026051718:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:191243731:d=2026051800:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f036_30_36hr": {
@@ -1252,7 +1252,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184827655:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182750011:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1262,7 +1262,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:187363731:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:185077783:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1272,7 +1272,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:189400328:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:186973389:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1282,7 +1282,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:191081465:d=2026051718:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188588775:d=2026051800:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f042_36_42hr": {
@@ -1294,7 +1294,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:182462772:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:197189811:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1304,7 +1304,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184805967:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:199533218:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1314,7 +1314,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186726303:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:201450081:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1324,7 +1324,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188346243:d=2026051718:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:203031075:d=2026051800:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f048_42_48hr": {
@@ -1336,7 +1336,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:197175390:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:193339716:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -1346,7 +1346,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:199516081:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:196009235:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -1356,7 +1356,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:201411078:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:198222127:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -1366,7 +1366,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:202995628:d=2026051718:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:200003560:d=2026051800:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         }
       },
@@ -1383,7 +1383,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1397,7 +1397,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1411,7 +1411,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1425,7 +1425,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-18T00:00:00Z"
+          "valid_utc": "2026-05-18T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1439,7 +1439,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1453,7 +1453,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1467,7 +1467,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1481,7 +1481,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-18T06:00:00Z"
+          "valid_utc": "2026-05-18T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1495,7 +1495,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1509,7 +1509,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1523,7 +1523,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1537,7 +1537,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-18T12:00:00Z"
+          "valid_utc": "2026-05-18T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1551,7 +1551,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1565,7 +1565,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1579,7 +1579,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1593,7 +1593,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-18T18:00:00Z"
+          "valid_utc": "2026-05-19T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1607,7 +1607,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1621,7 +1621,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1635,7 +1635,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1649,7 +1649,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-19T00:00:00Z"
+          "valid_utc": "2026-05-19T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1663,7 +1663,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1677,7 +1677,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1691,7 +1691,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1705,7 +1705,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-19T06:00:00Z"
+          "valid_utc": "2026-05-19T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1719,7 +1719,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1733,7 +1733,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1747,7 +1747,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1761,7 +1761,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-19T12:00:00Z"
+          "valid_utc": "2026-05-19T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -1775,7 +1775,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -1789,7 +1789,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -1803,7 +1803,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -1817,7 +1817,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-19T18:00:00Z"
+          "valid_utc": "2026-05-20T00:00:00Z"
         }
       ],
       "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is <0.10 inches in 6 hours with Little to None risk."
@@ -1829,15 +1829,15 @@
       "name": "Wind",
       "risk_level": 2,
       "impact_level": 3,
-      "probability": 37.4,
-      "peak_start_fxx": 3,
-      "peak_end_fxx": 5,
+      "probability": 29.7,
+      "peak_start_fxx": 2,
+      "peak_end_fxx": 4,
       "metric": ">45 mph threshold",
-      "driver": "QMD max hourly P50 gust 41.8 mph; 37.4% chance >45 mph",
+      "driver": "QMD max hourly P50 gust 40.9 mph; 29.7% chance >45 mph",
       "risk_label": "Minor",
       "display_label": "24-hr max gust",
-      "display_value": "42 mph",
-      "g24_p50_mph": 41.8
+      "display_value": "41 mph",
+      "g24_p50_mph": 40.9
     },
     {
       "id": "VISIBILITY",
