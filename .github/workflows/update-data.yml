@@ -35,10 +35,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build mock baseline outputs
-        run: |
-          python scripts/build_mock_outputs.py
-
       - name: Build QMD probability-based wind outputs
         run: |
           python scripts/build_real_qmd_wind_outputs.py
