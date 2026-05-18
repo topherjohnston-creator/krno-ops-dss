@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import math
-import re
 import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -23,7 +22,6 @@ KRNO_LON = -119.7681
 MM_TO_IN = 0.03937007874015748
 
 # KRNO / Reno-area rain/flooding thresholds using official QMD 6-hour accumulation probabilities.
-# QMD thresholds are in millimeters.
 RAIN_THRESHOLDS = {
     "gt_0p10_in_6hr": {
         "threshold_in": 0.10,
@@ -51,8 +49,7 @@ RAIN_THRESHOLDS = {
     },
 }
 
-# Use official QMD 6-hour windows.
-# f006 = 0-6 hr, f012 = 6-12 hr, etc.
+# Official QMD 6-hour precipitation windows.
 QMD_RAIN_WINDOWS = [
     {"fxx": 6, "start_hour": 0, "end_hour": 6},
     {"fxx": 12, "start_hour": 6, "end_hour": 12},
@@ -72,8 +69,7 @@ def utc_now() -> str:
 def latest_cycle_utc() -> datetime:
     """
     Use the most recent likely complete 6-hour NBM cycle.
-
-    We lag one cycle to reduce failures from partially available NOMADS files.
+    Lag one cycle to reduce failures from partially available NOMADS files.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
@@ -137,10 +133,6 @@ def parse_idx(idx_text: str) -> list[dict[str, Any]]:
 
 
 def threshold_text_variants(mm: float) -> list[str]:
-    """
-    Build text variants because IDX thresholds can appear as:
-    2.54, 2.540, 12.7, 12.70, etc.
-    """
     variants = {
         f"{mm:g}",
         f"{mm:.1f}",
@@ -148,7 +140,6 @@ def threshold_text_variants(mm: float) -> list[str]:
         f"{mm:.3f}",
     }
 
-    # Avoid variants like 2.5 for 2.54 when .1f rounds too coarsely.
     if abs(mm - 2.54) < 0.001:
         variants.update({"2.54", "2.540"})
     if abs(mm - 6.35) < 0.001:
@@ -164,9 +155,8 @@ def threshold_text_variants(mm: float) -> list[str]:
 
 
 def line_matches_window(line: str, start_hour: int, end_hour: int) -> bool:
-    upper = line.upper()
-    expected = f"{start_hour}-{end_hour} HOUR ACC FCST".upper()
-    return expected in upper
+    expected = f"{start_hour}-{end_hour} hour acc fcst"
+    return expected.lower() in line.lower()
 
 
 def find_qmd_apcp_probability_row(
@@ -187,9 +177,7 @@ def find_qmd_apcp_probability_row(
             continue
 
         for variant in threshold_text_variants(threshold_mm):
-            if f"prob >{variant}" in line:
-                return row
-            if f"PROB >{variant}" in upper:
+            if f"prob >{variant}" in line.lower():
                 return row
 
     return None
@@ -201,8 +189,7 @@ def find_qmd_apcp_percentile_row(
     end_hour: int,
     percentile: int = 50,
 ) -> dict[str, Any] | None:
-    wanted_a = f"{percentile}% level".upper()
-    wanted_b = f":{percentile}% LEVEL".upper()
+    wanted = f"{percentile}% level".upper()
 
     for row in idx_rows:
         line = row["line"]
@@ -212,7 +199,7 @@ def find_qmd_apcp_percentile_row(
             continue
         if not line_matches_window(line, start_hour, end_hour):
             continue
-        if wanted_a in upper or wanted_b in upper:
+        if wanted in upper:
             return row
 
     return None
@@ -233,8 +220,6 @@ def find_qmd_apcp_deterministic_row(
             continue
         if "% LEVEL" in upper:
             continue
-        if "PERCENTILE" in upper:
-            continue
         if not line_matches_window(line, start_hour, end_hour):
             continue
 
@@ -244,11 +229,10 @@ def find_qmd_apcp_deterministic_row(
 
 
 def download_grib_message(grib_url: str, row: dict[str, Any], path: Path) -> None:
-    headers = {}
     if row.get("end_byte") is not None:
-        headers["Range"] = f"bytes={row['start_byte']}-{row['end_byte']}"
+        headers = {"Range": f"bytes={row['start_byte']}-{row['end_byte']}"}
     else:
-        headers["Range"] = f"bytes={row['start_byte']}-"
+        headers = {"Range": f"bytes={row['start_byte']}-"}
 
     last_error = None
 
@@ -312,20 +296,18 @@ def nearest_grid_value(ds: xr.Dataset) -> tuple[str, float]:
     lat = ds[lat_name]
     lon = ds[lon_name]
 
-    target_lon = normalize_lon(KRNO_LON)
+    target_lon_360 = normalize_lon(KRNO_LON)
 
-    # Handle 1D or 2D coordinate grids.
     if lat.ndim == 1 and lon.ndim == 1:
         lat_idx = int(abs(lat - KRNO_LAT).argmin())
-        lon_idx = int(abs(lon - target_lon).argmin())
+        lon_idx = int(abs(lon - target_lon_360).argmin())
         value = ds[var_name].isel({lat_name: lat_idx, lon_name: lon_idx}).values
     else:
         lon_values = lon.values
         lat_values = lat.values
 
-        # Some grids use -180 to 180, others 0 to 360.
         if float(lon_values.max()) > 180:
-            target_lon_for_grid = target_lon
+            target_lon_for_grid = target_lon_360
         else:
             target_lon_for_grid = KRNO_LON
 
@@ -334,6 +316,7 @@ def nearest_grid_value(ds: xr.Dataset) -> tuple[str, float]:
 
         dims = ds[var_name].dims
         indexers = {}
+
         if lat.dims:
             for dim, idx in zip(lat.dims, [iy, ix]):
                 if dim in dims:
@@ -377,15 +360,6 @@ def extract_qmd_value(grib_url: str, row: dict[str, Any], label: str) -> tuple[s
 
 
 def probability_to_likelihood(probability: float) -> int:
-    """
-    Return 1-5 likelihood category.
-
-    1 = Extremely unlikely, <10%
-    2 = Unlikely, 10-32%
-    3 = About as likely as not, 33-65%
-    4 = Likely, 66-89%
-    5 = Very likely, >=90%
-    """
     if probability >= 90:
         return 5
     if probability >= 66:
@@ -398,17 +372,6 @@ def probability_to_likelihood(probability: float) -> int:
 
 
 def matrix_risk(probability: float, impact_level: int) -> int:
-    """
-    Probability x impact risk matrix.
-
-    Returns:
-    0 = None
-    1 = Little to None
-    2 = Minor
-    3 = Moderate
-    4 = Major
-    5 = Extreme
-    """
     if probability <= 0:
         return 0
 
@@ -437,10 +400,21 @@ def risk_label(risk: int) -> str:
     }.get(risk, "Unknown")
 
 
-def load_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
-    if not path.exists():
-        return fallback
-    return json.loads(path.read_text())
+def dry_rain_best(window: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "threshold_key": "lt_0p10_in_6hr",
+        "threshold_in": 0.10,
+        "threshold_mm": 2.54,
+        "impact_level": 1,
+        "probability": 0.0,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "label": "<0.10 in / 6 hr",
+        "fxx": window["fxx"],
+        "start_hour": window["start_hour"],
+        "end_hour": window["end_hour"],
+        "valid_utc": window["valid_utc"],
+    }
 
 
 def evaluate_window_risk(window: dict[str, Any]) -> dict[str, Any]:
@@ -468,12 +442,27 @@ def evaluate_window_risk(window: dict[str, Any]) -> dict[str, Any]:
             }
         )
 
-    best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
+    # Critical dry-period fix:
+    # If every threshold probability is zero, do not allow >1.00" / 6 hr to win a tie.
+    if all(float(c["probability"]) <= 0 for c in candidates):
+        return {
+            "best": dry_rain_best(window),
+            "candidates": candidates,
+        }
+
+    # Highest risk wins. Tie-breaker favors higher probability before higher impact.
+    best = max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
 
     return {
         "best": best,
         "candidates": candidates,
     }
+
+
+def load_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
+    if not path.exists():
+        return fallback
+    return json.loads(path.read_text())
 
 
 def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
@@ -488,6 +477,7 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
 
         grib_url = qmd_grib_url(cycle, fxx)
         idx_url = qmd_idx_url(cycle, fxx)
+        valid_utc = (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z")
 
         try:
             idx_text = fetch_text(idx_url)
@@ -496,12 +486,13 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
             results.append(
                 {
                     **window,
-                    "valid_utc": (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z"),
+                    "valid_utc": valid_utc,
                     "status": "error",
                     "message": f"Could not fetch/parse IDX: {exc}",
                     "threshold_probabilities": {},
                     "p50_apcp_in": None,
                     "deterministic_apcp_in": None,
+                    "display_apcp_in": None,
                 }
             )
             continue
@@ -549,7 +540,6 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
                     "idx_line": row["line"],
                 }
 
-        # Display value: prefer QMD P50 6-hour APCP. Fallback to deterministic APCP.
         p50_apcp_in = None
         p50_idx_line = None
         deterministic_apcp_in = None
@@ -602,7 +592,7 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
         result = {
             **window,
             "status": "ok",
-            "valid_utc": (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z"),
+            "valid_utc": valid_utc,
             "grib_url": grib_url,
             "idx_url": idx_url,
             "threshold_probabilities": threshold_probs,
@@ -615,7 +605,6 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
         }
 
         result["risk_evaluation"] = evaluate_window_risk(result)
-
         results.append(result)
 
     return results
@@ -637,30 +626,29 @@ def main() -> None:
     for window in ok_windows:
         all_candidates.extend(window["risk_evaluation"]["candidates"])
 
-    best = max(all_candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
+    if all(float(c["probability"]) <= 0 for c in all_candidates):
+        best = dry_rain_best(ok_windows[0])
+    else:
+        best = max(all_candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
 
     best_window = next(
-        w for w in ok_windows
-        if w["fxx"] == best["fxx"]
+        (w for w in ok_windows if w["fxx"] == best["fxx"]),
+        ok_windows[0],
     )
 
     display_apcp_in = best_window.get("display_apcp_in")
+
     if display_apcp_in is None:
-        # Fallback: use max available display amount.
         available = [w for w in ok_windows if w.get("display_apcp_in") is not None]
         if available:
             best_window = max(available, key=lambda w: w["display_apcp_in"])
             display_apcp_in = best_window.get("display_apcp_in")
 
-    if display_apcp_in is None:
-        display_value = "N/A"
-    else:
-        display_value = f'{display_apcp_in:.2f}"'
+    display_value = "N/A" if display_apcp_in is None else f'{display_apcp_in:.2f}"'
 
     peak_start_fxx = int(best_window["start_hour"])
     peak_end_fxx = int(best_window["end_hour"])
 
-    # Update threats.json.
     threats_path = DOCS / "threats.json"
     threats_payload = load_json(
         threats_path,
@@ -691,9 +679,7 @@ def main() -> None:
         "window": "6 hr",
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
-        "driver": (
-            f"{best['probability']:.1f}% chance {best['label']}"
-        ),
+        "driver": f"{best['probability']:.1f}% chance {best['label']}",
         "threshold_probabilities": {
             f"f{w['fxx']:03d}_{w['start_hour']}_{w['end_hour']}hr": w["threshold_probabilities"]
             for w in ok_windows
@@ -703,12 +689,11 @@ def main() -> None:
             "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. "
             "KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, "
             "mapped to impact levels 2 through 5. Each threshold probability is passed through "
-            "the probability x impact risk matrix. Display rainfall uses the QMD 50th percentile "
-            "6-hour APCP when available, otherwise deterministic APCP."
+            "the probability x impact risk matrix. If all probabilities are zero, the selected "
+            "driver is <0.10 inches in 6 hours with Little to None risk."
         ),
     }
 
-    # Use both keys for compatibility while front-end naming is settled.
     threats_payload["threats"]["RAIN"] = rain_payload
     threats_payload["threats"]["RAIN_FLOODING"] = rain_payload
 
@@ -760,7 +745,6 @@ def main() -> None:
 
     update_hazard("RAIN", "Rain/Flooding")
 
-    # Update timeline.json.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
@@ -831,7 +815,9 @@ def main() -> None:
         "methodology": (
             "QMD 6-hour APCP probabilities are used directly for KRNO/Reno drainage risk. "
             "Thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours. "
-            "The highest probability x impact matrix result determines the rain/flooding risk."
+            "The highest probability x impact matrix result determines the rain/flooding risk. "
+            "If all threshold probabilities are zero, selected_risk is <0.10 inches in 6 hours "
+            "with Little to None risk."
         ),
     }
 
