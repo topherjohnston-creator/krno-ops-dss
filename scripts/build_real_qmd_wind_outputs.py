@@ -44,16 +44,10 @@ def utc_now() -> str:
 
 
 def latest_cycle_utc() -> datetime:
-    """
-    Use a likely-complete NBM QMD cycle.
-
-    NOMADS/QMD files can lag or post partially. A 12-hour lag
-    avoids most f001/f009 byte-range/availability failures.
-    """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-    return cycle - timedelta(hours=12)
+    return cycle - timedelta(hours=6)
 
 
 def qmd_urls(cycle: datetime, fxx: int) -> tuple[str, str]:
@@ -220,12 +214,6 @@ def extract_percentile_rows_for_hour(
     selected_rows: list[dict[str, Any]],
     fxx: int,
 ) -> list[dict[str, Any]]:
-    """Extract QMD percentile rows for one forecast hour.
-
-    NOMADS occasionally returns a corrupt or incomplete byte-range message
-    for one percentile while the rest of the file is usable. Do not crash the
-    whole workflow on one bad percentile. Skip the bad message and continue.
-    """
     percentile_rows = []
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -235,15 +223,8 @@ def extract_percentile_rows_for_hour(
             percentile = float(row["percentile"])
             msg_path = tmp / f"qmd_gust_f{fxx:03d}_p{percentile:g}.grib2"
 
-            try:
-                download_one_message(grib_url, row, msg_path)
-                var_name, value_mps = extract_value_from_message(msg_path)
-            except Exception as exc:
-                print(
-                    f"Warning: skipped QMD wind f{fxx:03d} p{percentile:g} "
-                    f"because the GRIB message could not be read: {exc}"
-                )
-                continue
+            download_one_message(grib_url, row, msg_path)
+            var_name, value_mps = extract_value_from_message(msg_path)
 
             percentile_rows.append(
                 {
@@ -370,6 +351,19 @@ def risk_label(risk: int) -> str:
     }.get(risk, "Unknown")
 
 
+def no_wind_best(source_hour: dict[str, Any] | None = None) -> dict[str, Any]:
+    return {
+        "threshold_key": "no_wind_signal",
+        "threshold_mph": 0.0,
+        "impact_level": 0,
+        "probability": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "source_fxx": source_hour.get("fxx") if source_hour else None,
+        "source_valid_utc": source_hour.get("valid_utc") if source_hour else None,
+    }
+
+
 def evaluate_wind_risk(threshold_probs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     candidates = []
 
@@ -391,8 +385,11 @@ def evaluate_wind_risk(threshold_probs: dict[str, dict[str, Any]]) -> dict[str, 
             }
         )
 
-    # Highest risk wins. Tie-breaker: higher impact, then higher probability.
-    best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
+    if not candidates or all(float(c["probability"]) <= 0 for c in candidates):
+        best = no_wind_best()
+    else:
+        # Highest risk wins. Tie-breaker: higher impact, then higher probability.
+        best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
 
     return {
         "best": best,
@@ -425,19 +422,6 @@ def extract_hourly_qmd_wind(cycle: datetime) -> list[dict[str, Any]]:
             continue
 
         percentile_rows = extract_percentile_rows_for_hour(grib_url, selected_rows, fxx)
-
-        if len(percentile_rows) < 2:
-            hourly_results.append(
-                {
-                    "fxx": fxx,
-                    "valid_utc": (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z"),
-                    "status": "error",
-                    "message": f"Only {len(percentile_rows)} readable QMD GUST percentile messages found for f{fxx:03d}",
-                    "percentile_curve": percentile_rows,
-                }
-            )
-            continue
-
         p50 = get_p50(percentile_rows)
 
         probs = {}
@@ -510,17 +494,27 @@ def block_wind_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
                 }
             )
 
-    if not candidates:
-        return {"prob": 0, "risk": 0, "level": 0}
+    if not candidates or all(float(c["probability"]) <= 0 for c in candidates):
+        return {
+            "prob": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "level": 0,
+            "threshold_mph": 0.0,
+            "source_fxx": None,
+            "driver": "No wind signal",
+        }
 
     best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
 
     return {
         "prob": round(best["probability"], 1),
         "risk": int(best["risk"]),
+        "risk_label": risk_label(int(best["risk"])),
         "level": int(best["impact_level"]),
         "threshold_mph": best["threshold_mph"],
         "source_fxx": best["fxx"],
+        "driver": f"{best['probability']:.1f}% chance >{best['threshold_mph']:.0f} mph",
     }
 
 
@@ -564,12 +558,25 @@ def main() -> None:
     threats_payload["cycle"] = f"NBM QMD {cycle.strftime('%HZ')}"
     threats_payload.setdefault("threats", {})
 
+    selected_prob = round(float(best["probability"]), 1)
+    selected_risk = int(best["risk"])
+    selected_level = int(best["impact_level"])
+    selected_metric = "No wind signal" if selected_prob <= 0 else f">{int(best['threshold_mph'])} mph threshold"
+    selected_driver = (
+        "No wind signal"
+        if selected_prob <= 0
+        else (
+            f"QMD max hourly P50 gust {display_gust_mph:.1f} mph; "
+            f"{best['probability']:.1f}% chance >{best['threshold_mph']:.0f} mph"
+        )
+    )
+
     threats_payload["threats"]["WIND"] = {
-        "prob": round(float(best["probability"]), 1),
-        "risk": int(best["risk"]),
-        "risk_label": best["risk_label"],
-        "level": int(best["impact_level"]),
-        "metric": f">{int(best['threshold_mph'])} mph threshold",
+        "prob": selected_prob,
+        "risk": selected_risk,
+        "risk_label": risk_label(selected_risk),
+        "level": selected_level,
+        "metric": selected_metric,
         "display_label": "24-hr max gust",
         "display_value": f"{display_gust_mph:.0f} mph",
         "g24_p50_mph": round(display_gust_mph, 1),
@@ -578,10 +585,7 @@ def main() -> None:
         "risk_candidates": risk_eval["candidates"],
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
-        "driver": (
-            f"QMD max hourly P50 gust {display_gust_mph:.1f} mph; "
-            f"{best['probability']:.1f}% chance >{best['threshold_mph']:.0f} mph"
-        ),
+        "driver": selected_driver,
         "methodology": (
             "Wind display uses maximum hourly QMD P50 gust from f001-f024. "
             "Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph "
@@ -599,13 +603,13 @@ def main() -> None:
                     {
                         "id": "WIND",
                         "name": "Wind",
-                        "risk_level": int(best["risk"]),
-                        "risk_label": best["risk_label"],
-                        "impact_level": int(best["impact_level"]),
-                        "probability": round(float(best["probability"]), 1),
+                        "risk_level": selected_risk,
+                        "risk_label": risk_label(selected_risk),
+                        "impact_level": selected_level,
+                        "probability": selected_prob,
                         "peak_start_fxx": peak_start_fxx,
                         "peak_end_fxx": peak_end_fxx,
-                        "metric": f">{int(best['threshold_mph'])} mph threshold",
+                        "metric": selected_metric,
                         "display_label": "24-hr max gust",
                         "display_value": f"{display_gust_mph:.0f} mph",
                         "g24_p50_mph": round(display_gust_mph, 1),
@@ -623,13 +627,13 @@ def main() -> None:
                 {
                     "id": "WIND",
                     "name": "Wind",
-                    "risk_level": int(best["risk"]),
-                    "risk_label": best["risk_label"],
-                    "impact_level": int(best["impact_level"]),
-                    "probability": round(float(best["probability"]), 1),
+                    "risk_level": selected_risk,
+                    "risk_label": risk_label(selected_risk),
+                    "impact_level": selected_level,
+                    "probability": selected_prob,
                     "peak_start_fxx": peak_start_fxx,
                     "peak_end_fxx": peak_end_fxx,
-                    "metric": f">{int(best['threshold_mph'])} mph threshold",
+                    "metric": selected_metric,
                     "display_label": "24-hr max gust",
                     "display_value": f"{display_gust_mph:.0f} mph",
                     "g24_p50_mph": round(display_gust_mph, 1),
@@ -654,7 +658,6 @@ def main() -> None:
         },
     )
 
-    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM QMD {cycle.strftime('%HZ')}"
@@ -662,38 +665,42 @@ def main() -> None:
 
     old_blocks = timeline_payload.get("blocks", [])
     old_block_hazards = timeline_payload.get("block_hazards", [])
-
-    new_blocks = []
-    new_block_hazards = []
+    blocks = []
+    block_hazards = []
 
     for bi in range(16):
         start_fxx = bi * 3 + 1
-        end_fxx = bi * 3 + 3
+        end_fxx = min((bi + 1) * 3, 48)
 
         old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
-        old_hazards = (
+        old_hazard_block = (
             old_block_hazards[bi]
             if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
             else {}
         )
 
+        block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
         new_block = dict(old_block)
-        new_hazard_block = dict(old_hazards)
+        new_hazard_block = dict(old_hazard_block)
+
         new_block["start_fxx"] = start_fxx
         new_block["end_fxx"] = end_fxx
 
-        block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
         if block_hours:
             block_peak_p50 = max(block_hours, key=lambda h: h.get("p50_gust_mph") or -999)
+            if block_peak_p50.get("p50_gust_mph") is not None:
+                new_block["GST"] = round(float(block_peak_p50["p50_gust_mph"]), 1)
             block_eval = block_wind_risk(block_hours)
-            new_block["GST"] = round(float(block_peak_p50["p50_gust_mph"]), 1)
-            new_hazard_block["WIND"] = block_eval
+        else:
+            new_block["GST"] = None
+            block_eval = block_wind_risk([])
 
-        new_blocks.append(new_block)
-        new_block_hazards.append(new_hazard_block)
+        new_hazard_block["WIND"] = block_eval
+        blocks.append(new_block)
+        block_hazards.append(new_hazard_block)
 
-    timeline_payload["blocks"] = new_blocks
-    timeline_payload["block_hazards"] = new_block_hazards
+    timeline_payload["blocks"] = blocks
+    timeline_payload["block_hazards"] = block_hazards
 
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
 
