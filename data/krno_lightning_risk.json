@@ -1,0 +1,64 @@
+{
+  "prob": 100.0,
+  "risk": 5,
+  "risk_label": "Extreme",
+  "level": 5,
+  "metric": ">75%",
+  "display_label": "Lightning chance",
+  "display_value": ">75%",
+  "window": "1 hr",
+  "peak_start_fxx": 41,
+  "peak_end_fxx": 43,
+  "ops_label": "Ramp/safety closure very likely",
+  "driver": "100.0% chance of lightning",
+  "source_fxx": 42,
+  "source_valid_utc": "2026-05-21T00:00:00Z",
+  "threshold_bins": [
+    {
+      "key": "lt_5_percent",
+      "min_prob": 0.0,
+      "max_prob": 5.0,
+      "impact_level": 1,
+      "risk": 1,
+      "metric": "<5%",
+      "ops_label": "Ramp/safety closure unlikely"
+    },
+    {
+      "key": "5_to_25_percent",
+      "min_prob": 5.0,
+      "max_prob": 25.0,
+      "impact_level": 2,
+      "risk": 2,
+      "metric": "5-25%",
+      "ops_label": "Ramp/safety closure possible"
+    },
+    {
+      "key": "25_to_50_percent",
+      "min_prob": 25.0,
+      "max_prob": 50.0,
+      "impact_level": 3,
+      "risk": 3,
+      "metric": "25-50%",
+      "ops_label": "Ramp/safety closure increasingly likely"
+    },
+    {
+      "key": "50_to_75_percent",
+      "min_prob": 50.0,
+      "max_prob": 75.0,
+      "impact_level": 4,
+      "risk": 4,
+      "metric": "50-75%",
+      "ops_label": "Ramp/safety closure likely"
+    },
+    {
+      "key": "gt_75_percent",
+      "min_prob": 75.0,
+      "max_prob": 101.0,
+      "impact_level": 5,
+      "risk": 5,
+      "metric": ">75%",
+      "ops_label": "Ramp/safety closure very likely"
+    }
+  ],
+  "methodology": "Lightning risk uses official NBM Core lightning/thunder probability fields at KRNO. Operational categories are <5%, 5-25%, 25-50%, 50-75%, and >75% chance, corresponding to impact/risk levels 1 through 5 for ramp/safety closure decisions. If probability is zero, selected risk is None."
+}
