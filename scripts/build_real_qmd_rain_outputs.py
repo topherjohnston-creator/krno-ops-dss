@@ -459,6 +459,50 @@ def evaluate_window_risk(window: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+
+
+def block_rain_risk(window: dict[str, Any]) -> dict[str, Any]:
+    """Return the 3-hour timeline hazard object using the matching 6-hour rain window.
+
+    QMD rain probabilities are 6-hour windows, but the frontend timeline is 3-hour blocks.
+    Each 3-hour block inherits the best probability x impact result from the enclosing
+    6-hour QMD window. If every threshold probability is zero, force risk None.
+    """
+    best = window["risk_evaluation"]["best"]
+
+    prob = round(float(best.get("probability", 0.0)), 1)
+    risk = int(best.get("risk", 0))
+    level = int(best.get("impact_level", 0))
+
+    if prob <= 0:
+        return {
+            "prob": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "level": 0,
+            "threshold_in": 0.0,
+            "threshold_mm": 0.0,
+            "metric": '0" / 6 hr',
+            "window": "6 hr",
+            "rainfall_6hr_in": window.get("display_apcp_in"),
+            "source_fxx": window.get("fxx"),
+            "driver": "No rain/flooding signal",
+        }
+
+    return {
+        "prob": prob,
+        "risk": risk,
+        "risk_label": risk_label(risk),
+        "level": level,
+        "threshold_in": best.get("threshold_in"),
+        "threshold_mm": best.get("threshold_mm"),
+        "metric": best.get("label"),
+        "window": "6 hr",
+        "rainfall_6hr_in": window.get("display_apcp_in"),
+        "source_fxx": best.get("fxx"),
+        "driver": f"{prob:.1f}% chance {best.get('label')}",
+    }
+
 def load_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
     if not path.exists():
         return fallback
@@ -679,7 +723,7 @@ def main() -> None:
         "window": "6 hr",
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
-        "driver": f"{best['probability']:.1f}% chance {best['label']}",
+        "driver": "No rain/flooding signal" if round(float(best["probability"]), 1) <= 0 else f"{best['probability']:.1f}% chance {best['label']}",
         "threshold_probabilities": {
             f"f{w['fxx']:03d}_{w['start_hour']}_{w['end_hour']}hr": w["threshold_probabilities"]
             for w in ok_windows
@@ -719,7 +763,7 @@ def main() -> None:
                         "display_label": "6-hr rainfall",
                         "display_value": display_value,
                         "rainfall_6hr_in": round(float(display_apcp_in), 3) if display_apcp_in is not None else None,
-                        "driver": f"{best['probability']:.1f}% chance {best['label']}",
+                        "driver": "No rain/flooding signal" if round(float(best["probability"]), 1) <= 0 else f"{best['probability']:.1f}% chance {best['label']}",
                     }
                 )
                 found = True
@@ -740,7 +784,7 @@ def main() -> None:
                     "display_label": "6-hr rainfall",
                     "display_value": display_value,
                     "rainfall_6hr_in": round(float(display_apcp_in), 3) if display_apcp_in is not None else None,
-                    "driver": f"{best['probability']:.1f}% chance {best['label']}",
+                    "driver": "No rain/flooding signal" if round(float(best["probability"]), 1) <= 0 else f"{best['probability']:.1f}% chance {best['label']}",
                 }
             )
 
