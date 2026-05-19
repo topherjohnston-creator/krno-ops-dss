@@ -1,0 +1,1288 @@
+{
+  "summary": {
+    "total_findings": 161,
+    "text_findings": 136,
+    "timeline_json_findings": 22,
+    "threats_json_findings": 3
+  },
+  "timeline_writers": [
+    {
+      "file": "docs/index.html",
+      "line": 497,
+      "pattern": "timeline_writer",
+      "text": "let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 498,
+      "pattern": "timeline_writer",
+      "text": "let nbmBlockHazards = null;   // timeline.json block_hazards"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1831,
+      "pattern": "timeline_writer",
+      "text": "const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1843,
+      "pattern": "timeline_writer",
+      "text": "// GitHub Actions writes threats.json and timeline.json every hour"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1893,
+      "pattern": "timeline_writer",
+      "text": "// NBM blocks from timeline.json (assigned to module-scope vars)"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 80,
+      "pattern": "timeline_writer",
+      "text": "path = Path(\"docs/timeline.json\")"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 87,
+      "pattern": "timeline_writer",
+      "text": "\"message\": \"docs/timeline.json does not exist\","
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 222,
+      "pattern": "timeline_writer",
+      "text": "(OUT / \"timeline.json\").write_text(json.dumps(timeline, indent=2))"
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 224,
+      "pattern": "timeline_writer",
+      "text": "print(\"Wrote docs/threats.json and docs/timeline.json\")"
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 839,
+      "pattern": "timeline_writer",
+      "text": "# Update docs/timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 841,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 900,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json FZRA\")"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 755,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 758,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 811,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 842,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json SNOW\")"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 432,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 435,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 504,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 537,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 777,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 842,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 872,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 645,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 646,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 698,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 734,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json WIND\")"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 241,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json VISIBILITY fields while preserving other hazards."
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 242,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 290,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 310,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 271,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json WIND fields while preserving other hazards."
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 272,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 324,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 347,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json WIND\")"
+    },
+    {
+      "file": "scripts/extract_nbm.py",
+      "line": 8,
+      "pattern": "timeline_writer",
+      "text": "- Write docs/threats.json and docs/timeline.json."
+    }
+  ],
+  "findings": [
+    {
+      "file": "data/nbm_qmd_rain.json",
+      "line": 6,
+      "pattern": "rain_flooding_key",
+      "text": "\"hazard\": \"RAIN_FLOODING\","
+    },
+    {
+      "file": "data/nbm_qmd_wind.json",
+      "line": 54,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "data/nbm_qmd_wind.json",
+      "line": 65,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "docs/index.html",
+      "line": 497,
+      "pattern": "timeline_writer",
+      "text": "let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 498,
+      "pattern": "timeline_writer",
+      "text": "let nbmBlockHazards = null;   // timeline.json block_hazards"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1831,
+      "pattern": "timeline_writer",
+      "text": "const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1843,
+      "pattern": "timeline_writer",
+      "text": "// GitHub Actions writes threats.json and timeline.json every hour"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1893,
+      "pattern": "timeline_writer",
+      "text": "// NBM blocks from timeline.json (assigned to module-scope vars)"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1830,
+      "pattern": "threats_writer",
+      "text": "const _threatsFile  = _testMode ? `threats_${_testMode}.json`  : 'threats.json';"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1843,
+      "pattern": "threats_writer",
+      "text": "// GitHub Actions writes threats.json and timeline.json every hour"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 1871,
+      "pattern": "threats_writer",
+      "text": "// peak_start_fxx values in threats.json are offsets from this time"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 161,
+      "pattern": "little_to_none_literal",
+      "text": "<div class=\"flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold\"><div class=\"w-3 h-3\" style=\"background-color: #3f3f46;\"></div>Little to None</div>"
+    },
+    {
+      "file": "docs/index.html",
+      "line": 474,
+      "pattern": "little_to_none_literal",
+      "text": "1: { name: \"Little to None\", color: '#3f3f46', textColor: '#71717a' },"
+    },
+    {
+      "file": "docs/threats.json",
+      "line": 3554,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/threats.json",
+      "line": 11,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "docs/threats.json",
+      "line": 55,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "docs/threats.json",
+      "line": 4371,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 23,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 40,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 57,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 74,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 91,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 108,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 125,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 142,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 159,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 176,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 193,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 210,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 227,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 244,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 261,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 278,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": 0.0"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 351,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 433,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 515,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 597,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 679,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 761,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 843,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 925,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1005,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1085,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1165,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1245,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1325,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1405,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1485,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "docs/timeline.json",
+      "line": 1565,
+      "pattern": "rain_flooding_key",
+      "text": "\"RAIN_FLOODING\": {"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 23,
+      "pattern": "rain_flooding_key",
+      "text": "\"rain_flooding_key\": re.compile(r\"RAIN_FLOODING\"),"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 218,
+      "pattern": "rain_flooding_key",
+      "text": "if \"RAIN_FLOODING\" in threats:"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 223,
+      "pattern": "rain_flooding_key",
+      "text": "\"key\": \"RAIN_FLOODING\","
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 224,
+      "pattern": "rain_flooding_key",
+      "text": "\"message\": \"Use RAIN only unless frontend explicitly needs RAIN_FLOODING.\","
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 80,
+      "pattern": "timeline_writer",
+      "text": "path = Path(\"docs/timeline.json\")"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 87,
+      "pattern": "timeline_writer",
+      "text": "\"message\": \"docs/timeline.json does not exist\","
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 193,
+      "pattern": "threats_writer",
+      "text": "path = Path(\"docs/threats.json\")"
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 200,
+      "pattern": "threats_writer",
+      "text": "\"message\": \"docs/threats.json does not exist\","
+    },
+    {
+      "file": "scripts/audit_repo_outputs.py",
+      "line": 27,
+      "pattern": "little_to_none_literal",
+      "text": "\"little_to_none_literal\": re.compile(r\"Little to None\"),"
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 222,
+      "pattern": "timeline_writer",
+      "text": "(OUT / \"timeline.json\").write_text(json.dumps(timeline, indent=2))"
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 224,
+      "pattern": "timeline_writer",
+      "text": "print(\"Wrote docs/threats.json and docs/timeline.json\")"
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 221,
+      "pattern": "threats_writer",
+      "text": "(OUT / \"threats.json\").write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_mock_outputs.py",
+      "line": 224,
+      "pattern": "threats_writer",
+      "text": "print(\"Wrote docs/threats.json and docs/timeline.json\")"
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 839,
+      "pattern": "timeline_writer",
+      "text": "# Update docs/timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 841,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 900,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json FZRA\")"
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 790,
+      "pattern": "threats_writer",
+      "text": "# Update docs/threats.json."
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 791,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 899,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json FZRA\")"
+    },
+    {
+      "file": "scripts/build_real_core_fzra_outputs.py",
+      "line": 420,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 755,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 758,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 811,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 842,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json SNOW\")"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 681,
+      "pattern": "threats_writer",
+      "text": "# Update threats.json."
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 682,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 810,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 841,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json SNOW\")"
+    },
+    {
+      "file": "scripts/build_real_core_snow_outputs.py",
+      "line": 406,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 432,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 435,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 504,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 537,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 341,
+      "pattern": "threats_writer",
+      "text": "# Update threats.json."
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 342,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 430,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 536,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 112,
+      "pattern": "little_to_none_literal",
+      "text": "1 = Little to None"
+    },
+    {
+      "file": "scripts/build_real_core_visibility_outputs.py",
+      "line": 139,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 727,
+      "pattern": "rain_flooding_key",
+      "text": "threats_payload[\"threats\"][\"RAIN_FLOODING\"] = rain_payload"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 829,
+      "pattern": "rain_flooding_key",
+      "text": "new_block[\"RAIN_FLOODING\"] = matching_window.get(\"display_apcp_in\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 833,
+      "pattern": "rain_flooding_key",
+      "text": "new_hazard_block[\"RAIN_FLOODING\"] = rain_block"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 849,
+      "pattern": "rain_flooding_key",
+      "text": "\"hazard\": \"RAIN_FLOODING\","
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 871,
+      "pattern": "rain_flooding_key",
+      "text": "print(\"Updated docs/threats.json RAIN / RAIN_FLOODING\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 872,
+      "pattern": "rain_flooding_key",
+      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 777,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 842,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 872,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 681,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 841,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 871,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json RAIN / RAIN_FLOODING\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 400,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "scripts/build_real_qmd_rain_outputs.py",
+      "line": 414,
+      "pattern": "little_to_none_literal",
+      "text": "not Little to None. This matches the rule we are applying across hazards:"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 645,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json."
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 646,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 698,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 734,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json WIND\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 551,
+      "pattern": "threats_writer",
+      "text": "# Update threats.json."
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 552,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 643,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 733,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json WIND\")"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 336,
+      "pattern": "little_to_none_literal",
+      "text": "1 = Little to None"
+    },
+    {
+      "file": "scripts/build_real_qmd_wind_outputs.py",
+      "line": 365,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 272,
+      "pattern": "range_8_blocks",
+      "text": "for bi in range(8):"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 260,
+      "pattern": "while_len_blocks_8",
+      "text": "while len(blocks) < 8:"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 241,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json VISIBILITY fields while preserving other hazards."
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 242,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 290,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 310,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 168,
+      "pattern": "threats_writer",
+      "text": "# Update threats.json while preserving other hazards."
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 169,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 239,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 309,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json VISIBILITY\")"
+    },
+    {
+      "file": "scripts/build_real_visibility_outputs.py",
+      "line": 80,
+      "pattern": "little_to_none_literal",
+      "text": "- Impact 1 = Little to None"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 303,
+      "pattern": "range_8_blocks",
+      "text": "for bi in range(8):"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 291,
+      "pattern": "while_len_blocks_8",
+      "text": "while len(blocks) < 8:"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 271,
+      "pattern": "timeline_writer",
+      "text": "# Update timeline.json WIND fields while preserving other hazards."
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 272,
+      "pattern": "timeline_writer",
+      "text": "timeline_path = DOCS / \"timeline.json\""
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 324,
+      "pattern": "timeline_writer",
+      "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 347,
+      "pattern": "timeline_writer",
+      "text": "print(\"Updated docs/timeline.json WIND\")"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 202,
+      "pattern": "threats_writer",
+      "text": "# Update threats.json while preserving non-wind mock hazards."
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 203,
+      "pattern": "threats_writer",
+      "text": "threats_path = DOCS / \"threats.json\""
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 269,
+      "pattern": "threats_writer",
+      "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
+    },
+    {
+      "file": "scripts/build_real_wind_outputs.py",
+      "line": 346,
+      "pattern": "threats_writer",
+      "text": "print(\"Updated docs/threats.json WIND\")"
+    },
+    {
+      "file": "scripts/extract_nbm.py",
+      "line": 8,
+      "pattern": "timeline_writer",
+      "text": "- Write docs/threats.json and docs/timeline.json."
+    },
+    {
+      "file": "scripts/extract_nbm.py",
+      "line": 8,
+      "pattern": "threats_writer",
+      "text": "- Write docs/threats.json and docs/timeline.json."
+    },
+    {
+      "file": "scripts/risk_engine.py",
+      "line": 25,
+      "pattern": "little_to_none_literal",
+      "text": "1: \"Little to None\","
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 0,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 0,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 1,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 1,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 2,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 2,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 3,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 3,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 4,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 4,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 5,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 6,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 7,
+      "hazard": "WIND",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 5
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 7,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 8,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 9,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 10,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 11,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 12,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 13,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 14,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/timeline.json",
+      "type": "zero_probability_not_none_in_timeline",
+      "block_index": 15,
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": null,
+      "level": 4
+    },
+    {
+      "file": "docs/threats.json",
+      "type": "deprecated_key_present",
+      "key": "RAIN_FLOODING",
+      "message": "Use RAIN only unless frontend explicitly needs RAIN_FLOODING."
+    },
+    {
+      "file": "docs/threats.json",
+      "type": "zero_probability_not_none_in_threats",
+      "hazard": "VISIBILITY",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": "None",
+      "level": 4
+    },
+    {
+      "file": "docs/threats.json",
+      "type": "zero_probability_not_none_in_hazards_array",
+      "hazard": "VISIBILITY",
+      "probability": 0.0,
+      "risk_level": 0,
+      "risk_label": "None",
+      "impact_level": 4
+    }
+  ]
+}

@@ -1,15 +1,15 @@
 {
   "site": "KRNO",
   "source": "NBM QMD direct byte-range download",
-  "cycle_utc": "2026-05-19T00:00:00Z",
-  "generated_utc": "2026-05-19T17:49:56Z",
+  "cycle_utc": "2026-05-19T06:00:00Z",
+  "generated_utc": "2026-05-19T19:21:55Z",
   "display_value": {
     "label": "24-hr max gust",
     "method": "maximum hourly QMD P50 gust from f001-f024",
-    "source_fxx": 1,
-    "valid_utc": "2026-05-19T01:00:00Z",
-    "gust_mph": 16.3,
-    "gust_kt": 14.2
+    "source_fxx": 19,
+    "valid_utc": "2026-05-20T01:00:00Z",
+    "gust_mph": 10.5,
+    "gust_kt": 9.1
   },
   "airport_threshold_probabilities": {
     "method": "For each airport threshold, probability is the maximum hourly exceedance probability from f001-f024. Hourly exceedance probabilities are derived by linear interpolation across official QMD percentile levels.",
@@ -17,30 +17,30 @@
       "gt_30_mph": {
         "threshold_mph": 30.0,
         "threshold_mps": 13.411,
-        "exceedance_probability_percent": 8.9,
-        "max_probability_fxx": 2,
-        "max_probability_valid_utc": "2026-05-19T02:00:00Z"
+        "exceedance_probability_percent": 2.2,
+        "max_probability_fxx": 21,
+        "max_probability_valid_utc": "2026-05-20T03:00:00Z"
       },
       "gt_45_mph": {
         "threshold_mph": 45.0,
         "threshold_mps": 20.117,
         "exceedance_probability_percent": 0.0,
         "max_probability_fxx": 1,
-        "max_probability_valid_utc": "2026-05-19T01:00:00Z"
+        "max_probability_valid_utc": "2026-05-19T07:00:00Z"
       },
       "gt_58_mph": {
         "threshold_mph": 58.0,
         "threshold_mps": 25.928,
         "exceedance_probability_percent": 0.0,
         "max_probability_fxx": 1,
-        "max_probability_valid_utc": "2026-05-19T01:00:00Z"
+        "max_probability_valid_utc": "2026-05-19T07:00:00Z"
       },
       "gt_65_mph": {
         "threshold_mph": 65.0,
         "threshold_mps": 29.058,
         "exceedance_probability_percent": 0.0,
         "max_probability_fxx": 1,
-        "max_probability_valid_utc": "2026-05-19T01:00:00Z"
+        "max_probability_valid_utc": "2026-05-19T07:00:00Z"
       }
     }
   },
@@ -49,22 +49,22 @@
       "threshold_key": "gt_30_mph",
       "threshold_mph": 30.0,
       "impact_level": 2,
-      "probability": 8.9,
+      "probability": 2.2,
       "risk": 1,
       "risk_label": "Little to None",
-      "source_fxx": 2,
-      "source_valid_utc": "2026-05-19T02:00:00Z"
+      "source_fxx": 21,
+      "source_valid_utc": "2026-05-20T03:00:00Z"
     },
     "candidates": [
       {
         "threshold_key": "gt_30_mph",
         "threshold_mph": 30.0,
         "impact_level": 2,
-        "probability": 8.9,
+        "probability": 2.2,
         "risk": 1,
         "risk_label": "Little to None",
-        "source_fxx": 2,
-        "source_valid_utc": "2026-05-19T02:00:00Z"
+        "source_fxx": 21,
+        "source_valid_utc": "2026-05-20T03:00:00Z"
       },
       {
         "threshold_key": "gt_45_mph",
@@ -74,7 +74,7 @@
         "risk": 0,
         "risk_label": "None",
         "source_fxx": 1,
-        "source_valid_utc": "2026-05-19T01:00:00Z"
+        "source_valid_utc": "2026-05-19T07:00:00Z"
       },
       {
         "threshold_key": "gt_58_mph",
@@ -84,7 +84,7 @@
         "risk": 0,
         "risk_label": "None",
         "source_fxx": 1,
-        "source_valid_utc": "2026-05-19T01:00:00Z"
+        "source_valid_utc": "2026-05-19T07:00:00Z"
       },
       {
         "threshold_key": "gt_65_mph",
@@ -94,22 +94,22 @@
         "risk": 0,
         "risk_label": "None",
         "source_fxx": 1,
-        "source_valid_utc": "2026-05-19T01:00:00Z"
+        "source_valid_utc": "2026-05-19T07:00:00Z"
       }
     ]
   },
   "hourly_results": [
     {
       "fxx": 1,
-      "valid_utc": "2026-05-19T01:00:00Z",
+      "valid_utc": "2026-05-19T07:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 16.33,
-      "p50_gust_kt": 14.19,
+      "p50_gust_mph": 1.79,
+      "p50_gust_kt": 1.56,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 4.1
+          "exceedance_probability_percent": 0.0
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -130,342 +130,164 @@
       "percentile_curve": [
         {
           "percentile": 0.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
           "variable": "i10fg"
         },
         {
           "percentile": 5.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
           "variable": "i10fg"
         },
         {
           "percentile": 10.0,
-          "gust_mps": 4.2,
-          "gust_mph": 9.4,
-          "gust_kt": 8.16,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
           "variable": "i10fg"
         },
         {
           "percentile": 15.0,
-          "gust_mps": 4.5,
-          "gust_mph": 10.07,
-          "gust_kt": 8.75,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
           "percentile": 20.0,
-          "gust_mps": 4.8,
-          "gust_mph": 10.74,
-          "gust_kt": 9.33,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
           "percentile": 25.0,
-          "gust_mps": 5.0,
-          "gust_mph": 11.18,
-          "gust_kt": 9.72,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 30.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 35.0,
-          "gust_mps": 5.3,
-          "gust_mph": 11.86,
-          "gust_kt": 10.3,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 40.0,
-          "gust_mps": 5.8,
-          "gust_mph": 12.97,
-          "gust_kt": 11.27,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
           "percentile": 45.0,
-          "gust_mps": 6.4,
-          "gust_mph": 14.32,
-          "gust_kt": 12.44,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
           "variable": "i10fg"
         },
         {
           "percentile": 50.0,
-          "gust_mps": 7.3,
-          "gust_mph": 16.33,
-          "gust_kt": 14.19,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
           "variable": "i10fg"
         },
         {
           "percentile": 55.0,
-          "gust_mps": 8.3,
-          "gust_mph": 18.57,
-          "gust_kt": 16.13,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
           "variable": "i10fg"
         },
         {
           "percentile": 60.0,
-          "gust_mps": 9.6,
-          "gust_mph": 21.47,
-          "gust_kt": 18.66,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
           "percentile": 65.0,
-          "gust_mps": 9.9,
-          "gust_mph": 22.15,
-          "gust_kt": 19.24,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
           "percentile": 70.0,
-          "gust_mps": 10.3,
-          "gust_mph": 23.04,
-          "gust_kt": 20.02,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
           "variable": "i10fg"
         },
         {
           "percentile": 75.0,
-          "gust_mps": 10.7,
-          "gust_mph": 23.94,
-          "gust_kt": 20.8,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
           "variable": "i10fg"
         },
         {
           "percentile": 80.0,
-          "gust_mps": 11.2,
-          "gust_mph": 25.05,
-          "gust_kt": 21.77,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
           "variable": "i10fg"
         },
         {
           "percentile": 85.0,
-          "gust_mps": 11.5,
-          "gust_mph": 25.72,
-          "gust_kt": 22.35,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
           "variable": "i10fg"
         },
         {
           "percentile": 90.0,
-          "gust_mps": 12.0,
-          "gust_mph": 26.84,
-          "gust_kt": 23.33,
+          "gust_mps": 2.9,
+          "gust_mph": 6.49,
+          "gust_kt": 5.64,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
-          "gust_mps": 12.8,
-          "gust_mph": 28.63,
-          "gust_kt": 24.88,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 16.2,
-          "gust_mph": 36.24,
-          "gust_kt": 31.49,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 2,
-      "valid_utc": "2026-05-19T02:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 11.86,
-      "p50_gust_kt": 10.3,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 8.9
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 1.6,
-          "gust_mph": 3.58,
-          "gust_kt": 3.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 3.9,
-          "gust_mph": 8.72,
-          "gust_kt": 7.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 4.1,
-          "gust_mph": 9.17,
-          "gust_kt": 7.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 4.4,
-          "gust_mph": 9.84,
-          "gust_kt": 8.55,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
           "gust_mps": 4.7,
           "gust_mph": 10.51,
           "gust_kt": 9.14,
           "variable": "i10fg"
         },
         {
-          "percentile": 50.0,
-          "gust_mps": 5.3,
-          "gust_mph": 11.86,
-          "gust_kt": 10.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 6.1,
-          "gust_mph": 13.65,
-          "gust_kt": 11.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 10.5,
-          "gust_mph": 23.49,
-          "gust_kt": 20.41,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 11.0,
-          "gust_mph": 24.61,
-          "gust_kt": 21.38,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 11.6,
-          "gust_mph": 25.95,
-          "gust_kt": 22.55,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 11.9,
-          "gust_mph": 26.62,
-          "gust_kt": 23.13,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 12.4,
-          "gust_mph": 27.74,
-          "gust_kt": 24.1,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 12.8,
-          "gust_mph": 28.63,
-          "gust_kt": 24.88,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 13.1,
-          "gust_mph": 29.3,
-          "gust_kt": 25.46,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 14.5,
-          "gust_mph": 32.44,
-          "gust_kt": 28.19,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 100.0,
-          "gust_mps": 16.9,
-          "gust_mph": 37.8,
-          "gust_kt": 32.85,
+          "gust_mps": 8.6,
+          "gust_mph": 19.24,
+          "gust_kt": 16.72,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 3,
-      "valid_utc": "2026-05-19T03:00:00Z",
+      "fxx": 2,
+      "valid_utc": "2026-05-19T08:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 8.5,
-      "p50_gust_kt": 7.39,
+      "p50_gust_mph": 2.24,
+      "p50_gust_kt": 1.94,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 8.8
+          "exceedance_probability_percent": 0.0
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -486,1049 +308,159 @@
       "percentile_curve": [
         {
           "percentile": 0.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
           "gust_mps": 0.5,
           "gust_mph": 1.12,
           "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
-          "percentile": 5.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 15.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 20.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 2.6,
-          "gust_mph": 5.82,
-          "gust_kt": 5.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 3.5,
-          "gust_mph": 7.83,
-          "gust_kt": 6.8,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 3.8,
-          "gust_mph": 8.5,
-          "gust_kt": 7.39,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 4.0,
-          "gust_mph": 8.95,
-          "gust_kt": 7.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 4.5,
-          "gust_mph": 10.07,
-          "gust_kt": 8.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 9.3,
-          "gust_mph": 20.8,
-          "gust_kt": 18.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 10.0,
-          "gust_mph": 22.37,
-          "gust_kt": 19.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 10.5,
-          "gust_mph": 23.49,
-          "gust_kt": 20.41,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 11.3,
-          "gust_mph": 25.28,
-          "gust_kt": 21.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 12.0,
-          "gust_mph": 26.84,
-          "gust_kt": 23.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 12.8,
-          "gust_mph": 28.63,
-          "gust_kt": 24.88,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 15.3,
-          "gust_mph": 34.23,
-          "gust_kt": 29.74,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 18.6,
-          "gust_mph": 41.61,
-          "gust_kt": 36.16,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 4,
-      "valid_utc": "2026-05-19T04:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 6.49,
-      "p50_gust_kt": 5.64,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
           "gust_mps": 0.6,
           "gust_mph": 1.34,
           "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
-          "percentile": 5.0,
+          "percentile": 25.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
           "gust_mps": 1.1,
           "gust_mph": 2.46,
           "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
-          "percentile": 10.0,
-          "gust_mps": 1.6,
-          "gust_mph": 3.58,
-          "gust_kt": 3.11,
+          "percentile": 60.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
-          "percentile": 15.0,
+          "percentile": 65.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
           "gust_mps": 1.7,
           "gust_mph": 3.8,
           "gust_kt": 3.3,
           "variable": "i10fg"
         },
         {
-          "percentile": 20.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
+          "percentile": 85.0,
           "gust_mps": 1.9,
           "gust_mph": 4.25,
           "gust_kt": 3.69,
           "variable": "i10fg"
         },
         {
-          "percentile": 30.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 3.2,
-          "gust_mph": 7.16,
-          "gust_kt": 6.22,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 4.0,
-          "gust_mph": 8.95,
-          "gust_kt": 7.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 5.4,
-          "gust_mph": 12.08,
-          "gust_kt": 10.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 6.0,
-          "gust_mph": 13.42,
-          "gust_kt": 11.66,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 6.5,
-          "gust_mph": 14.54,
-          "gust_kt": 12.63,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 7.6,
-          "gust_mph": 17.0,
-          "gust_kt": 14.77,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 90.0,
-          "gust_mps": 9.0,
-          "gust_mph": 20.13,
-          "gust_kt": 17.49,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 10.3,
-          "gust_mph": 23.04,
-          "gust_kt": 20.02,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 13.2,
-          "gust_mph": 29.53,
-          "gust_kt": 25.66,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 5,
-      "valid_utc": "2026-05-19T05:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 5.14,
-      "p50_gust_kt": 4.47,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 1.6,
-          "gust_mph": 3.58,
-          "gust_kt": 3.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 1.7,
-          "gust_mph": 3.8,
-          "gust_kt": 3.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 2.0,
-          "gust_mph": 4.47,
-          "gust_kt": 3.89,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 2.4,
-          "gust_mph": 5.37,
-          "gust_kt": 4.67,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
           "gust_mps": 2.6,
           "gust_mph": 5.82,
           "gust_kt": 5.05,
           "variable": "i10fg"
         },
         {
-          "percentile": 65.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 3.0,
-          "gust_mph": 6.71,
-          "gust_kt": 5.83,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 3.2,
-          "gust_mph": 7.16,
-          "gust_kt": 6.22,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 4.1,
-          "gust_mph": 9.17,
-          "gust_kt": 7.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 4.6,
-          "gust_mph": 10.29,
-          "gust_kt": 8.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 95.0,
-          "gust_mps": 6.2,
-          "gust_mph": 13.87,
-          "gust_kt": 12.05,
+          "gust_mps": 3.8,
+          "gust_mph": 8.5,
+          "gust_kt": 7.39,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 8.8,
-          "gust_mph": 19.69,
-          "gust_kt": 17.11,
+          "gust_mps": 7.2,
+          "gust_mph": 16.11,
+          "gust_kt": 14.0,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 6,
-      "valid_utc": "2026-05-19T06:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 3.36,
-      "p50_gust_kt": 2.92,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 1.1,
-          "gust_mph": 2.46,
-          "gust_kt": 2.14,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 1.3,
-          "gust_mph": 2.91,
-          "gust_kt": 2.53,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 1.7,
-          "gust_mph": 3.8,
-          "gust_kt": 3.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 3.0,
-          "gust_mph": 6.71,
-          "gust_kt": 5.83,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 6.7,
-          "gust_mph": 14.99,
-          "gust_kt": 13.02,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 7,
-      "valid_utc": "2026-05-19T07:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 2.01,
-      "p50_gust_kt": 1.75,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 1.1,
-          "gust_mph": 2.46,
-          "gust_kt": 2.14,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 1.7,
-          "gust_mph": 3.8,
-          "gust_kt": 3.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 2.0,
-          "gust_mph": 4.47,
-          "gust_kt": 3.89,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 3.0,
-          "gust_mph": 6.71,
-          "gust_kt": 5.83,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 4.3,
-          "gust_mph": 9.62,
-          "gust_kt": 8.36,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 8,
-      "valid_utc": "2026-05-19T08:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 1.79,
-      "p50_gust_kt": 1.56,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 1.3,
-          "gust_mph": 2.91,
-          "gust_kt": 2.53,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 2.0,
-          "gust_mph": 4.47,
-          "gust_kt": 3.89,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 9,
+      "fxx": 3,
       "valid_utc": "2026-05-19T09:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 1.79,
-      "p50_gust_kt": 1.56,
+      "p50_gust_mph": 2.46,
+      "p50_gust_kt": 2.14,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
@@ -1561,79 +493,79 @@
         },
         {
           "percentile": 5.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 10.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
           "gust_mps": 0.5,
           "gust_mph": 1.12,
           "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
-          "percentile": 35.0,
+          "percentile": 15.0,
           "gust_mps": 0.6,
           "gust_mph": 1.34,
           "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
-          "percentile": 40.0,
+          "percentile": 20.0,
           "gust_mps": 0.7,
           "gust_mph": 1.57,
           "gust_kt": 1.36,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
+          "percentile": 25.0,
           "gust_mps": 0.8,
           "gust_mph": 1.79,
           "gust_kt": 1.56,
           "variable": "i10fg"
         },
         {
-          "percentile": 55.0,
+          "percentile": 30.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
           "gust_mps": 0.9,
           "gust_mph": 2.01,
           "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
@@ -1645,16 +577,16 @@
         },
         {
           "percentile": 65.0,
-          "gust_mps": 1.1,
-          "gust_mph": 2.46,
-          "gust_kt": 2.14,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
           "variable": "i10fg"
         },
         {
           "percentile": 70.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
           "variable": "i10fg"
         },
         {
@@ -1666,43 +598,43 @@
         },
         {
           "percentile": 80.0,
-          "gust_mps": 1.6,
-          "gust_mph": 3.58,
-          "gust_kt": 3.11,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
           "variable": "i10fg"
         },
         {
           "percentile": 85.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
           "variable": "i10fg"
         },
         {
           "percentile": 90.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 10,
+      "fxx": 4,
       "valid_utc": "2026-05-19T10:00:00Z",
       "status": "ok",
       "p50_gust_mph": 1.79,
@@ -1739,37 +671,37 @@
         },
         {
           "percentile": 5.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
           "percentile": 10.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
           "percentile": 15.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 20.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 25.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
@@ -1781,9 +713,9 @@
         },
         {
           "percentile": 35.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
           "variable": "i10fg"
         },
         {
@@ -1816,16 +748,16 @@
         },
         {
           "percentile": 60.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
           "variable": "i10fg"
         },
         {
           "percentile": 65.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
           "variable": "i10fg"
         },
         {
@@ -1837,54 +769,54 @@
         },
         {
           "percentile": 75.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
           "gust_mps": 1.2,
           "gust_mph": 2.68,
           "gust_kt": 2.33,
           "variable": "i10fg"
         },
         {
-          "percentile": 80.0,
+          "percentile": 85.0,
           "gust_mps": 1.3,
           "gust_mph": 2.91,
           "gust_kt": 2.53,
           "variable": "i10fg"
         },
         {
-          "percentile": 85.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 90.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
+          "gust_mps": 2.1,
+          "gust_mph": 4.7,
+          "gust_kt": 4.08,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 3.3,
-          "gust_mph": 7.38,
-          "gust_kt": 6.41,
+          "gust_mps": 3.8,
+          "gust_mph": 8.5,
+          "gust_kt": 7.39,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 11,
+      "fxx": 5,
       "valid_utc": "2026-05-19T11:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 1.57,
-      "p50_gust_kt": 1.36,
+      "p50_gust_mph": 1.12,
+      "p50_gust_kt": 0.97,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
@@ -1924,86 +856,86 @@
         },
         {
           "percentile": 10.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
           "gust_mps": 0.3,
           "gust_mph": 0.67,
           "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
-          "percentile": 15.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 25.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
           "percentile": 30.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 35.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
           "gust_mps": 0.5,
           "gust_mph": 1.12,
           "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
-          "percentile": 40.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 45.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 50.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
           "percentile": 55.0,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
           "gust_mps": 0.7,
           "gust_mph": 1.57,
           "gust_kt": 1.36,
           "variable": "i10fg"
         },
         {
-          "percentile": 60.0,
+          "percentile": 65.0,
           "gust_mps": 0.8,
           "gust_mph": 1.79,
           "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
           "variable": "i10fg"
         },
         {
@@ -2022,47 +954,47 @@
         },
         {
           "percentile": 80.0,
-          "gust_mps": 1.1,
-          "gust_mph": 2.46,
-          "gust_kt": 2.14,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
           "variable": "i10fg"
         },
         {
           "percentile": 85.0,
-          "gust_mps": 1.3,
-          "gust_mph": 2.91,
-          "gust_kt": 2.53,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
           "variable": "i10fg"
         },
         {
           "percentile": 90.0,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
           "gust_mps": 1.9,
           "gust_mph": 4.25,
           "gust_kt": 3.69,
           "variable": "i10fg"
         },
         {
-          "percentile": 95.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 100.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 12,
+      "fxx": 6,
       "valid_utc": "2026-05-19T12:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 1.57,
-      "p50_gust_kt": 1.36,
+      "p50_gust_mph": 1.12,
+      "p50_gust_kt": 0.97,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
@@ -2109,79 +1041,79 @@
         },
         {
           "percentile": 15.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
           "gust_mps": 0.3,
           "gust_mph": 0.67,
           "gust_kt": 0.58,
           "variable": "i10fg"
         },
         {
-          "percentile": 20.0,
+          "percentile": 30.0,
           "gust_mps": 0.4,
           "gust_mph": 0.89,
           "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
-          "percentile": 25.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 35.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 40.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
           "gust_mps": 0.6,
           "gust_mph": 1.34,
           "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 60.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
           "variable": "i10fg"
         },
         {
           "percentile": 65.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
           "variable": "i10fg"
         },
         {
@@ -2200,225 +1132,47 @@
         },
         {
           "percentile": 80.0,
-          "gust_mps": 1.1,
-          "gust_mph": 2.46,
-          "gust_kt": 2.14,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 3.3,
-          "gust_mph": 7.38,
-          "gust_kt": 6.41,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 13,
-      "valid_utc": "2026-05-19T13:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 1.57,
-      "p50_gust_kt": 1.36,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 0.5,
-          "gust_mph": 1.12,
-          "gust_kt": 0.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 0.8,
-          "gust_mph": 1.79,
-          "gust_kt": 1.56,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
           "gust_mps": 1.2,
           "gust_mph": 2.68,
           "gust_kt": 2.33,
           "variable": "i10fg"
         },
         {
-          "percentile": 90.0,
+          "percentile": 85.0,
           "gust_mps": 1.4,
           "gust_mph": 3.13,
           "gust_kt": 2.72,
           "variable": "i10fg"
         },
         {
-          "percentile": 95.0,
+          "percentile": 90.0,
           "gust_mps": 1.6,
           "gust_mph": 3.58,
           "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
+          "percentile": 95.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 100.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 14,
-      "valid_utc": "2026-05-19T14:00:00Z",
+      "fxx": 7,
+      "valid_utc": "2026-05-19T13:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 2.01,
-      "p50_gust_kt": 1.75,
+      "p50_gust_mph": 1.34,
+      "p50_gust_kt": 1.17,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
@@ -2458,9 +1212,187 @@
         },
         {
           "percentile": 10.0,
+          "gust_mps": 0.2,
+          "gust_mph": 0.45,
+          "gust_kt": 0.39,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 8,
+      "valid_utc": "2026-05-19T14:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 1.57,
+      "p50_gust_kt": 1.36,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
           "gust_mps": 0.0,
           "gust_mph": 0.0,
           "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 0.2,
+          "gust_mph": 0.45,
+          "gust_kt": 0.39,
           "variable": "i10fg"
         },
         {
@@ -2486,9 +1418,9 @@
         },
         {
           "percentile": 30.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
@@ -2500,99 +1432,99 @@
         },
         {
           "percentile": 40.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
           "gust_mps": 0.6,
           "gust_mph": 1.34,
           "gust_kt": 1.17,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
+          "percentile": 50.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
           "gust_mps": 0.8,
           "gust_mph": 1.79,
           "gust_kt": 1.56,
           "variable": "i10fg"
         },
         {
-          "percentile": 50.0,
+          "percentile": 60.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
           "gust_mps": 0.9,
           "gust_mph": 2.01,
           "gust_kt": 1.75,
           "variable": "i10fg"
         },
         {
-          "percentile": 55.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
+          "percentile": 70.0,
           "gust_mps": 1.1,
           "gust_mph": 2.46,
           "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
-          "percentile": 65.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
+          "percentile": 75.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
           "variable": "i10fg"
         },
         {
-          "percentile": 70.0,
+          "percentile": 80.0,
           "gust_mps": 1.3,
           "gust_mph": 2.91,
           "gust_kt": 2.53,
           "variable": "i10fg"
         },
         {
-          "percentile": 75.0,
+          "percentile": 85.0,
           "gust_mps": 1.4,
           "gust_mph": 3.13,
           "gust_kt": 2.72,
           "variable": "i10fg"
         },
         {
-          "percentile": 80.0,
+          "percentile": 90.0,
           "gust_mps": 1.5,
           "gust_mph": 3.36,
           "gust_kt": 2.92,
           "variable": "i10fg"
         },
         {
-          "percentile": 85.0,
+          "percentile": 95.0,
           "gust_mps": 1.6,
           "gust_mph": 3.58,
           "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
-          "percentile": 90.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 100.0,
-          "gust_mps": 2.6,
-          "gust_mph": 5.82,
-          "gust_kt": 5.05,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 15,
+      "fxx": 9,
       "valid_utc": "2026-05-19T15:00:00Z",
       "status": "ok",
       "p50_gust_mph": 1.79,
@@ -2650,9 +1582,9 @@
         },
         {
           "percentile": 20.0,
-          "gust_mps": 0.3,
-          "gust_mph": 0.67,
-          "gust_kt": 0.58,
+          "gust_mps": 0.2,
+          "gust_mph": 0.45,
+          "gust_kt": 0.39,
           "variable": "i10fg"
         },
         {
@@ -2699,82 +1631,82 @@
         },
         {
           "percentile": 55.0,
-          "gust_mps": 1.0,
-          "gust_mph": 2.24,
-          "gust_kt": 1.94,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
           "variable": "i10fg"
         },
         {
           "percentile": 60.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
           "gust_mps": 1.4,
           "gust_mph": 3.13,
           "gust_kt": 2.72,
           "variable": "i10fg"
         },
         {
-          "percentile": 65.0,
+          "percentile": 75.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
           "gust_mps": 1.7,
           "gust_mph": 3.8,
           "gust_kt": 3.3,
           "variable": "i10fg"
         },
         {
-          "percentile": 70.0,
+          "percentile": 90.0,
           "gust_mps": 1.8,
           "gust_mph": 4.03,
           "gust_kt": 3.5,
           "variable": "i10fg"
         },
         {
-          "percentile": 75.0,
-          "gust_mps": 1.9,
-          "gust_mph": 4.25,
-          "gust_kt": 3.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
+          "percentile": 95.0,
           "gust_mps": 2.0,
           "gust_mph": 4.47,
           "gust_kt": 3.89,
           "variable": "i10fg"
         },
         {
-          "percentile": 85.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 100.0,
-          "gust_mps": 3.2,
-          "gust_mph": 7.16,
-          "gust_kt": 6.22,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 16,
+      "fxx": 10,
       "valid_utc": "2026-05-19T16:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 3.36,
-      "p50_gust_kt": 2.92,
+      "p50_gust_mph": 3.13,
+      "p50_gust_kt": 2.72,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
@@ -2800,16 +1732,16 @@
       "percentile_curve": [
         {
           "percentile": 0.0,
-          "gust_mps": 0.0,
-          "gust_mph": 0.0,
-          "gust_kt": 0.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 5.0,
-          "gust_mps": 0.4,
-          "gust_mph": 0.89,
-          "gust_kt": 0.78,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
           "variable": "i10fg"
         },
         {
@@ -2870,756 +1802,578 @@
         },
         {
           "percentile": 50.0,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
           "gust_mps": 1.5,
           "gust_mph": 3.36,
           "gust_kt": 2.92,
           "variable": "i10fg"
         },
         {
-          "percentile": 55.0,
+          "percentile": 60.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
           "gust_mps": 1.6,
           "gust_mph": 3.58,
           "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
-          "percentile": 60.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 70.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 2.6,
-          "gust_mph": 5.82,
-          "gust_kt": 5.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 3.2,
-          "gust_mph": 7.16,
-          "gust_kt": 6.22,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 4.9,
-          "gust_mph": 10.96,
-          "gust_kt": 9.52,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 17,
-      "valid_utc": "2026-05-19T17:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 6.49,
-      "p50_gust_kt": 5.64,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 0.6,
-          "gust_mph": 1.34,
-          "gust_kt": 1.17,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 0.9,
-          "gust_mph": 2.01,
-          "gust_kt": 1.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 1.9,
-          "gust_mph": 4.25,
-          "gust_kt": 3.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 2.6,
-          "gust_mph": 5.82,
-          "gust_kt": 5.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 3.9,
-          "gust_mph": 8.72,
-          "gust_kt": 7.58,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 4.3,
-          "gust_mph": 9.62,
-          "gust_kt": 8.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 4.6,
-          "gust_mph": 10.29,
-          "gust_kt": 8.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 5.1,
-          "gust_mph": 11.41,
-          "gust_kt": 9.91,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 5.5,
-          "gust_mph": 12.3,
-          "gust_kt": 10.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 6.2,
-          "gust_mph": 13.87,
-          "gust_kt": 12.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 7.9,
-          "gust_mph": 17.67,
-          "gust_kt": 15.36,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 18,
-      "valid_utc": "2026-05-19T18:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 10.74,
-      "p50_gust_kt": 9.33,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 1.2,
-          "gust_mph": 2.68,
-          "gust_kt": 2.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
-          "gust_mps": 1.6,
-          "gust_mph": 3.58,
-          "gust_kt": 3.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 1.9,
-          "gust_mph": 4.25,
-          "gust_kt": 3.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 2.4,
-          "gust_mph": 5.37,
-          "gust_kt": 4.67,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 3.3,
-          "gust_mph": 7.38,
-          "gust_kt": 6.41,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 3.5,
-          "gust_mph": 7.83,
-          "gust_kt": 6.8,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 3.8,
-          "gust_mph": 8.5,
-          "gust_kt": 7.39,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 4.1,
-          "gust_mph": 9.17,
-          "gust_kt": 7.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 4.5,
-          "gust_mph": 10.07,
-          "gust_kt": 8.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 4.8,
-          "gust_mph": 10.74,
-          "gust_kt": 9.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 4.9,
-          "gust_mph": 10.96,
-          "gust_kt": 9.52,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 5.4,
-          "gust_mph": 12.08,
-          "gust_kt": 10.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 5.8,
-          "gust_mph": 12.97,
-          "gust_kt": 11.27,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 6.0,
-          "gust_mph": 13.42,
-          "gust_kt": 11.66,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 6.2,
-          "gust_mph": 13.87,
-          "gust_kt": 12.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 6.6,
-          "gust_mph": 14.76,
-          "gust_kt": 12.83,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 7.1,
-          "gust_mph": 15.88,
-          "gust_kt": 13.8,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 7.9,
-          "gust_mph": 17.67,
-          "gust_kt": 15.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 10.3,
-          "gust_mph": 23.04,
-          "gust_kt": 20.02,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 19,
-      "valid_utc": "2026-05-19T19:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 10.51,
-      "p50_gust_kt": 9.14,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 1.4,
-          "gust_mph": 3.13,
-          "gust_kt": 2.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
           "gust_mps": 1.7,
           "gust_mph": 3.8,
           "gust_kt": 3.3,
           "variable": "i10fg"
         },
         {
-          "percentile": 10.0,
-          "gust_mps": 1.9,
-          "gust_mph": 4.25,
-          "gust_kt": 3.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 2.8,
-          "gust_mph": 6.26,
-          "gust_kt": 5.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 3.2,
-          "gust_mph": 7.16,
-          "gust_kt": 6.22,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 4.1,
-          "gust_mph": 9.17,
-          "gust_kt": 7.97,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 4.4,
-          "gust_mph": 9.84,
-          "gust_kt": 8.55,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 4.7,
-          "gust_mph": 10.51,
-          "gust_kt": 9.14,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 5.6,
-          "gust_mph": 12.53,
-          "gust_kt": 10.89,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 5.8,
-          "gust_mph": 12.97,
-          "gust_kt": 11.27,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 5.9,
-          "gust_mph": 13.2,
-          "gust_kt": 11.47,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 75.0,
-          "gust_mps": 6.2,
-          "gust_mph": 13.87,
-          "gust_kt": 12.05,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 6.4,
-          "gust_mph": 14.32,
-          "gust_kt": 12.44,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 6.8,
-          "gust_mph": 15.21,
-          "gust_kt": 13.22,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 7.3,
-          "gust_mph": 16.33,
-          "gust_kt": 14.19,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 7.6,
-          "gust_mph": 17.0,
-          "gust_kt": 14.77,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 9.8,
-          "gust_mph": 21.92,
-          "gust_kt": 19.05,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 20,
-      "valid_utc": "2026-05-19T20:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 10.07,
-      "p50_gust_kt": 8.75,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 1.7,
-          "gust_mph": 3.8,
-          "gust_kt": 3.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
           "gust_mps": 1.8,
           "gust_mph": 4.03,
           "gust_kt": 3.5,
           "variable": "i10fg"
         },
         {
-          "percentile": 10.0,
+          "percentile": 80.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
           "gust_mps": 2.0,
           "gust_mph": 4.47,
           "gust_kt": 3.89,
           "variable": "i10fg"
         },
         {
+          "percentile": 90.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 3.4,
+          "gust_mph": 7.61,
+          "gust_kt": 6.61,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 11,
+      "valid_utc": "2026-05-19T17:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 6.04,
+      "p50_gust_kt": 5.25,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 15.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
           "percentile": 20.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
           "gust_mps": 2.3,
           "gust_mph": 5.14,
           "gust_kt": 4.47,
           "variable": "i10fg"
         },
         {
-          "percentile": 25.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
+          "percentile": 40.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
           "variable": "i10fg"
         },
         {
-          "percentile": 30.0,
+          "percentile": 45.0,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 2.7,
+          "gust_mph": 6.04,
+          "gust_kt": 5.25,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
           "gust_mps": 2.8,
           "gust_mph": 6.26,
           "gust_kt": 5.44,
           "variable": "i10fg"
         },
         {
-          "percentile": 35.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
+          "percentile": 60.0,
+          "gust_mps": 3.0,
+          "gust_mph": 6.71,
+          "gust_kt": 5.83,
           "variable": "i10fg"
         },
         {
-          "percentile": 40.0,
-          "gust_mps": 4.0,
-          "gust_mph": 8.95,
-          "gust_kt": 7.78,
+          "percentile": 65.0,
+          "gust_mps": 3.1,
+          "gust_mph": 6.93,
+          "gust_kt": 6.03,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
-          "gust_mps": 4.2,
-          "gust_mph": 9.4,
-          "gust_kt": 8.16,
+          "percentile": 70.0,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
           "variable": "i10fg"
         },
         {
-          "percentile": 50.0,
+          "percentile": 75.0,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 3.6,
+          "gust_mph": 8.05,
+          "gust_kt": 7.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 3.8,
+          "gust_mph": 8.5,
+          "gust_kt": 7.39,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
           "gust_mps": 4.5,
           "gust_mph": 10.07,
           "gust_kt": 8.75,
           "variable": "i10fg"
         },
         {
+          "percentile": 100.0,
+          "gust_mps": 6.4,
+          "gust_mph": 14.32,
+          "gust_kt": 12.44,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 12,
+      "valid_utc": "2026-05-19T18:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 9.4,
+      "p50_gust_kt": 8.16,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.9,
+          "gust_mph": 6.49,
+          "gust_kt": 5.64,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 3.4,
+          "gust_mph": 7.61,
+          "gust_kt": 6.61,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 3.7,
+          "gust_mph": 8.28,
+          "gust_kt": 7.19,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 3.9,
+          "gust_mph": 8.72,
+          "gust_kt": 7.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 4.2,
+          "gust_mph": 9.4,
+          "gust_kt": 8.16,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 55.0,
-          "gust_mps": 4.9,
-          "gust_mph": 10.96,
-          "gust_kt": 9.52,
+          "gust_mps": 4.3,
+          "gust_mph": 9.62,
+          "gust_kt": 8.36,
           "variable": "i10fg"
         },
         {
           "percentile": 60.0,
+          "gust_mps": 4.5,
+          "gust_mph": 10.07,
+          "gust_kt": 8.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
           "gust_mps": 5.1,
           "gust_mph": 11.41,
           "gust_kt": 9.91,
           "variable": "i10fg"
         },
         {
-          "percentile": 65.0,
+          "percentile": 75.0,
           "gust_mps": 5.3,
           "gust_mph": 11.86,
           "gust_kt": 10.3,
           "variable": "i10fg"
         },
         {
-          "percentile": 70.0,
+          "percentile": 80.0,
           "gust_mps": 5.5,
           "gust_mph": 12.3,
           "gust_kt": 10.69,
           "variable": "i10fg"
         },
         {
+          "percentile": 85.0,
+          "gust_mps": 6.1,
+          "gust_mph": 13.65,
+          "gust_kt": 11.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 6.3,
+          "gust_mph": 14.09,
+          "gust_kt": 12.25,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 6.9,
+          "gust_mph": 15.43,
+          "gust_kt": 13.41,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 7.7,
+          "gust_mph": 17.22,
+          "gust_kt": 14.97,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 13,
+      "valid_utc": "2026-05-19T19:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 9.62,
+      "p50_gust_kt": 8.36,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 2.1,
+          "gust_mph": 4.7,
+          "gust_kt": 4.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.5,
+          "gust_mph": 5.59,
+          "gust_kt": 4.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.8,
+          "gust_mph": 6.26,
+          "gust_kt": 5.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 3.6,
+          "gust_mph": 8.05,
+          "gust_kt": 7.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 4.3,
+          "gust_mph": 9.62,
+          "gust_kt": 8.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 4.7,
+          "gust_mph": 10.51,
+          "gust_kt": 9.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 4.9,
+          "gust_mph": 10.96,
+          "gust_kt": 9.52,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 5.2,
+          "gust_mph": 11.63,
+          "gust_kt": 10.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 5.4,
+          "gust_mph": 12.08,
+          "gust_kt": 10.5,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 75.0,
-          "gust_mps": 5.7,
-          "gust_mph": 12.75,
-          "gust_kt": 11.08,
+          "gust_mps": 5.8,
+          "gust_mph": 12.97,
+          "gust_kt": 11.27,
           "variable": "i10fg"
         },
         {
@@ -3631,9 +2385,9 @@
         },
         {
           "percentile": 85.0,
-          "gust_mps": 6.5,
-          "gust_mph": 14.54,
-          "gust_kt": 12.63,
+          "gust_mps": 6.4,
+          "gust_mph": 14.32,
+          "gust_kt": 12.44,
           "variable": "i10fg"
         },
         {
@@ -3645,23 +2399,557 @@
         },
         {
           "percentile": 95.0,
-          "gust_mps": 7.6,
-          "gust_mph": 17.0,
-          "gust_kt": 14.77,
+          "gust_mps": 7.2,
+          "gust_mph": 16.11,
+          "gust_kt": 14.0,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 8.3,
-          "gust_mph": 18.57,
-          "gust_kt": 16.13,
+          "gust_mps": 7.9,
+          "gust_mph": 17.67,
+          "gust_kt": 15.36,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 21,
+      "fxx": 14,
+      "valid_utc": "2026-05-19T20:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 9.62,
+      "p50_gust_kt": 8.36,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 2.1,
+          "gust_mph": 4.7,
+          "gust_kt": 4.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.5,
+          "gust_mph": 5.59,
+          "gust_kt": 4.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 2.8,
+          "gust_mph": 6.26,
+          "gust_kt": 5.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 3.7,
+          "gust_mph": 8.28,
+          "gust_kt": 7.19,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 4.0,
+          "gust_mph": 8.95,
+          "gust_kt": 7.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 4.3,
+          "gust_mph": 9.62,
+          "gust_kt": 8.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 4.6,
+          "gust_mph": 10.29,
+          "gust_kt": 8.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 5.0,
+          "gust_mph": 11.18,
+          "gust_kt": 9.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 5.1,
+          "gust_mph": 11.41,
+          "gust_kt": 9.91,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 5.4,
+          "gust_mph": 12.08,
+          "gust_kt": 10.5,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 5.8,
+          "gust_mph": 12.97,
+          "gust_kt": 11.27,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 6.1,
+          "gust_mph": 13.65,
+          "gust_kt": 11.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 6.5,
+          "gust_mph": 14.54,
+          "gust_kt": 12.63,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 6.8,
+          "gust_mph": 15.21,
+          "gust_kt": 13.22,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 8.1,
+          "gust_mph": 18.12,
+          "gust_kt": 15.75,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 15,
       "valid_utc": "2026-05-19T21:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 8.72,
+      "p50_gust_kt": 7.58,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 2.9,
+          "gust_mph": 6.49,
+          "gust_kt": 5.64,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 3.4,
+          "gust_mph": 7.61,
+          "gust_kt": 6.61,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 3.7,
+          "gust_mph": 8.28,
+          "gust_kt": 7.19,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 3.9,
+          "gust_mph": 8.72,
+          "gust_kt": 7.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 4.4,
+          "gust_mph": 9.84,
+          "gust_kt": 8.55,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 4.5,
+          "gust_mph": 10.07,
+          "gust_kt": 8.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 4.9,
+          "gust_mph": 10.96,
+          "gust_kt": 9.52,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 5.1,
+          "gust_mph": 11.41,
+          "gust_kt": 9.91,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 5.3,
+          "gust_mph": 11.86,
+          "gust_kt": 10.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 5.5,
+          "gust_mph": 12.3,
+          "gust_kt": 10.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 5.7,
+          "gust_mph": 12.75,
+          "gust_kt": 11.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 6.6,
+          "gust_mph": 14.76,
+          "gust_kt": 12.83,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 9.9,
+          "gust_mph": 22.15,
+          "gust_kt": 19.24,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 16,
+      "valid_utc": "2026-05-19T22:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 8.72,
+      "p50_gust_kt": 7.58,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.5,
+          "gust_mph": 5.59,
+          "gust_kt": 4.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.7,
+          "gust_mph": 6.04,
+          "gust_kt": 5.25,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 2.7,
+          "gust_mph": 6.04,
+          "gust_kt": 5.25,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 3.0,
+          "gust_mph": 6.71,
+          "gust_kt": 5.83,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 3.4,
+          "gust_mph": 7.61,
+          "gust_kt": 6.61,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 3.9,
+          "gust_mph": 8.72,
+          "gust_kt": 7.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 4.4,
+          "gust_mph": 9.84,
+          "gust_kt": 8.55,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 4.7,
+          "gust_mph": 10.51,
+          "gust_kt": 9.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 5.1,
+          "gust_mph": 11.41,
+          "gust_kt": 9.91,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 5.3,
+          "gust_mph": 11.86,
+          "gust_kt": 10.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 5.6,
+          "gust_mph": 12.53,
+          "gust_kt": 10.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 6.1,
+          "gust_mph": 13.65,
+          "gust_kt": 11.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 6.7,
+          "gust_mph": 14.99,
+          "gust_kt": 13.02,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 11.5,
+          "gust_mph": 25.72,
+          "gust_kt": 22.35,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 17,
+      "valid_utc": "2026-05-19T23:00:00Z",
       "status": "ok",
       "p50_gust_mph": 8.95,
       "p50_gust_kt": 7.78,
@@ -3669,7 +2957,7 @@
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
+          "exceedance_probability_percent": 0.1
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -3697,184 +2985,6 @@
         },
         {
           "percentile": 5.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 10.0,
-          "gust_mps": 1.7,
-          "gust_mph": 3.8,
-          "gust_kt": 3.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 15.0,
-          "gust_mps": 1.8,
-          "gust_mph": 4.03,
-          "gust_kt": 3.5,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 1.9,
-          "gust_mph": 4.25,
-          "gust_kt": 3.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 2.1,
-          "gust_mph": 4.7,
-          "gust_kt": 4.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 2.4,
-          "gust_mph": 5.37,
-          "gust_kt": 4.67,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 40.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 45.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
-          "gust_mps": 4.0,
-          "gust_mph": 8.95,
-          "gust_kt": 7.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 4.3,
-          "gust_mph": 9.62,
-          "gust_kt": 8.36,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 4.5,
-          "gust_mph": 10.07,
-          "gust_kt": 8.75,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
-          "gust_mps": 4.6,
-          "gust_mph": 10.29,
-          "gust_kt": 8.94,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 4.8,
-          "gust_mph": 10.74,
-          "gust_kt": 9.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 5.0,
-          "gust_mph": 11.18,
-          "gust_kt": 9.72,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 5.3,
-          "gust_mph": 11.86,
-          "gust_kt": 10.3,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
-          "gust_mps": 5.7,
-          "gust_mph": 12.75,
-          "gust_kt": 11.08,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 90.0,
-          "gust_mps": 6.3,
-          "gust_mph": 14.09,
-          "gust_kt": 12.25,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 95.0,
-          "gust_mps": 6.9,
-          "gust_mph": 15.43,
-          "gust_kt": 13.41,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 100.0,
-          "gust_mps": 9.2,
-          "gust_mph": 20.58,
-          "gust_kt": 17.88,
-          "variable": "i10fg"
-        }
-      ]
-    },
-    {
-      "fxx": 22,
-      "valid_utc": "2026-05-19T22:00:00Z",
-      "status": "ok",
-      "p50_gust_mph": 7.61,
-      "p50_gust_kt": 6.61,
-      "airport_threshold_probabilities": {
-        "gt_30_mph": {
-          "threshold_mph": 30.0,
-          "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_45_mph": {
-          "threshold_mph": 45.0,
-          "threshold_mps": 20.117,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_58_mph": {
-          "threshold_mph": 58.0,
-          "threshold_mps": 25.928,
-          "exceedance_probability_percent": 0.0
-        },
-        "gt_65_mph": {
-          "threshold_mph": 65.0,
-          "threshold_mps": 29.058,
-          "exceedance_probability_percent": 0.0
-        }
-      },
-      "percentile_curve": [
-        {
-          "percentile": 0.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 5.0,
           "gust_mps": 1.9,
           "gust_mph": 4.25,
           "gust_kt": 3.69,
@@ -3882,150 +2992,150 @@
         },
         {
           "percentile": 10.0,
-          "gust_mps": 2.2,
-          "gust_mph": 4.92,
-          "gust_kt": 4.28,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
           "variable": "i10fg"
         },
         {
           "percentile": 15.0,
-          "gust_mps": 2.4,
-          "gust_mph": 5.37,
-          "gust_kt": 4.67,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 25.0,
-          "gust_mps": 2.5,
-          "gust_mph": 5.59,
-          "gust_kt": 4.86,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
           "gust_mps": 2.7,
           "gust_mph": 6.04,
           "gust_kt": 5.25,
           "variable": "i10fg"
         },
         {
-          "percentile": 35.0,
+          "percentile": 20.0,
+          "gust_mps": 2.8,
+          "gust_mph": 6.26,
+          "gust_kt": 5.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
           "gust_mps": 2.9,
           "gust_mph": 6.49,
           "gust_kt": 5.64,
           "variable": "i10fg"
         },
         {
-          "percentile": 40.0,
-          "gust_mps": 3.0,
-          "gust_mph": 6.71,
-          "gust_kt": 5.83,
+          "percentile": 30.0,
+          "gust_mps": 3.2,
+          "gust_mph": 7.16,
+          "gust_kt": 6.22,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
+          "percentile": 35.0,
           "gust_mps": 3.3,
           "gust_mph": 7.38,
           "gust_kt": 6.41,
           "variable": "i10fg"
         },
         {
+          "percentile": 40.0,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 3.7,
+          "gust_mph": 8.28,
+          "gust_kt": 7.19,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 50.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 60.0,
-          "gust_mps": 3.8,
-          "gust_mph": 8.5,
-          "gust_kt": 7.39,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 65.0,
           "gust_mps": 4.0,
           "gust_mph": 8.95,
           "gust_kt": 7.78,
           "variable": "i10fg"
         },
         {
-          "percentile": 70.0,
+          "percentile": 55.0,
           "gust_mps": 4.3,
           "gust_mph": 9.62,
           "gust_kt": 8.36,
           "variable": "i10fg"
         },
         {
-          "percentile": 75.0,
+          "percentile": 60.0,
           "gust_mps": 4.5,
           "gust_mph": 10.07,
           "gust_kt": 8.75,
           "variable": "i10fg"
         },
         {
+          "percentile": 65.0,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 5.0,
+          "gust_mph": 11.18,
+          "gust_kt": 9.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 5.4,
+          "gust_mph": 12.08,
+          "gust_kt": 10.5,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 80.0,
-          "gust_mps": 4.7,
-          "gust_mph": 10.51,
-          "gust_kt": 9.14,
+          "gust_mps": 5.8,
+          "gust_mph": 12.97,
+          "gust_kt": 11.27,
           "variable": "i10fg"
         },
         {
           "percentile": 85.0,
-          "gust_mps": 5.5,
-          "gust_mph": 12.3,
-          "gust_kt": 10.69,
+          "gust_mps": 5.9,
+          "gust_mph": 13.2,
+          "gust_kt": 11.47,
           "variable": "i10fg"
         },
         {
           "percentile": 90.0,
-          "gust_mps": 6.1,
-          "gust_mph": 13.65,
-          "gust_kt": 11.86,
+          "gust_mps": 6.4,
+          "gust_mph": 14.32,
+          "gust_kt": 12.44,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
-          "gust_mps": 6.7,
-          "gust_mph": 14.99,
-          "gust_kt": 13.02,
+          "gust_mps": 7.1,
+          "gust_mph": 15.88,
+          "gust_kt": 13.8,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 11.4,
-          "gust_mph": 25.5,
-          "gust_kt": 22.16,
+          "gust_mps": 13.6,
+          "gust_mph": 30.42,
+          "gust_kt": 26.44,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 23,
-      "valid_utc": "2026-05-19T23:00:00Z",
+      "fxx": 18,
+      "valid_utc": "2026-05-20T00:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 8.28,
-      "p50_gust_kt": 7.19,
+      "p50_gust_mph": 10.07,
+      "p50_gust_kt": 8.75,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 0.0
+          "exceedance_probability_percent": 1.0
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -4060,150 +3170,150 @@
         },
         {
           "percentile": 10.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
           "variable": "i10fg"
         },
         {
           "percentile": 15.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 20.0,
           "gust_mps": 2.8,
           "gust_mph": 6.26,
           "gust_kt": 5.44,
           "variable": "i10fg"
         },
         {
-          "percentile": 25.0,
-          "gust_mps": 2.9,
-          "gust_mph": 6.49,
-          "gust_kt": 5.64,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 3.1,
-          "gust_mph": 6.93,
-          "gust_kt": 6.03,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 35.0,
+          "percentile": 20.0,
           "gust_mps": 3.2,
           "gust_mph": 7.16,
           "gust_kt": 6.22,
           "variable": "i10fg"
         },
         {
-          "percentile": 40.0,
+          "percentile": 25.0,
           "gust_mps": 3.4,
           "gust_mph": 7.61,
           "gust_kt": 6.61,
           "variable": "i10fg"
         },
         {
-          "percentile": 45.0,
+          "percentile": 30.0,
           "gust_mps": 3.5,
           "gust_mph": 7.83,
           "gust_kt": 6.8,
           "variable": "i10fg"
         },
         {
-          "percentile": 50.0,
-          "gust_mps": 3.7,
-          "gust_mph": 8.28,
-          "gust_kt": 7.19,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 55.0,
+          "percentile": 35.0,
           "gust_mps": 3.8,
           "gust_mph": 8.5,
           "gust_kt": 7.39,
           "variable": "i10fg"
         },
         {
-          "percentile": 60.0,
-          "gust_mps": 3.9,
-          "gust_mph": 8.72,
-          "gust_kt": 7.58,
+          "percentile": 40.0,
+          "gust_mps": 4.0,
+          "gust_mph": 8.95,
+          "gust_kt": 7.78,
           "variable": "i10fg"
         },
         {
-          "percentile": 65.0,
-          "gust_mps": 4.1,
-          "gust_mph": 9.17,
-          "gust_kt": 7.97,
+          "percentile": 45.0,
+          "gust_mps": 4.2,
+          "gust_mph": 9.4,
+          "gust_kt": 8.16,
           "variable": "i10fg"
         },
         {
-          "percentile": 70.0,
-          "gust_mps": 4.3,
-          "gust_mph": 9.62,
-          "gust_kt": 8.36,
+          "percentile": 50.0,
+          "gust_mps": 4.5,
+          "gust_mph": 10.07,
+          "gust_kt": 8.75,
           "variable": "i10fg"
         },
         {
-          "percentile": 75.0,
+          "percentile": 55.0,
           "gust_mps": 4.6,
           "gust_mph": 10.29,
           "gust_kt": 8.94,
           "variable": "i10fg"
         },
         {
+          "percentile": 60.0,
+          "gust_mps": 4.8,
+          "gust_mph": 10.74,
+          "gust_kt": 9.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 5.0,
+          "gust_mph": 11.18,
+          "gust_kt": 9.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 5.3,
+          "gust_mph": 11.86,
+          "gust_kt": 10.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 5.5,
+          "gust_mph": 12.3,
+          "gust_kt": 10.69,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 80.0,
-          "gust_mps": 4.9,
-          "gust_mph": 10.96,
-          "gust_kt": 9.52,
+          "gust_mps": 5.8,
+          "gust_mph": 12.97,
+          "gust_kt": 11.27,
           "variable": "i10fg"
         },
         {
           "percentile": 85.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
+          "gust_mps": 6.3,
+          "gust_mph": 14.09,
+          "gust_kt": 12.25,
           "variable": "i10fg"
         },
         {
           "percentile": 90.0,
-          "gust_mps": 6.2,
-          "gust_mph": 13.87,
-          "gust_kt": 12.05,
+          "gust_mps": 6.8,
+          "gust_mph": 15.21,
+          "gust_kt": 13.22,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
-          "gust_mps": 7.1,
-          "gust_mph": 15.88,
-          "gust_kt": 13.8,
+          "gust_mps": 7.9,
+          "gust_mph": 17.67,
+          "gust_kt": 15.36,
           "variable": "i10fg"
         },
         {
           "percentile": 100.0,
-          "gust_mps": 13.4,
-          "gust_mph": 29.97,
-          "gust_kt": 26.05,
+          "gust_mps": 14.8,
+          "gust_mph": 33.11,
+          "gust_kt": 28.77,
           "variable": "i10fg"
         }
       ]
     },
     {
-      "fxx": 24,
-      "valid_utc": "2026-05-20T00:00:00Z",
+      "fxx": 19,
+      "valid_utc": "2026-05-20T01:00:00Z",
       "status": "ok",
-      "p50_gust_mph": 9.62,
-      "p50_gust_kt": 8.36,
+      "p50_gust_mph": 10.51,
+      "p50_gust_kt": 9.14,
       "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 1.0
+          "exceedance_probability_percent": 0.0
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -4224,149 +3334,1039 @@
       "percentile_curve": [
         {
           "percentile": 0.0,
-          "gust_mps": 0.7,
-          "gust_mph": 1.57,
-          "gust_kt": 1.36,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
           "variable": "i10fg"
         },
         {
           "percentile": 5.0,
-          "gust_mps": 1.5,
-          "gust_mph": 3.36,
-          "gust_kt": 2.92,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
           "variable": "i10fg"
         },
         {
           "percentile": 10.0,
-          "gust_mps": 2.3,
-          "gust_mph": 5.14,
-          "gust_kt": 4.47,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
           "variable": "i10fg"
         },
         {
           "percentile": 15.0,
-          "gust_mps": 2.7,
-          "gust_mph": 6.04,
-          "gust_kt": 5.25,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
           "variable": "i10fg"
         },
         {
           "percentile": 20.0,
+          "gust_mps": 2.9,
+          "gust_mph": 6.49,
+          "gust_kt": 5.64,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 3.0,
+          "gust_mph": 6.71,
+          "gust_kt": 5.83,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
           "gust_mps": 3.1,
           "gust_mph": 6.93,
           "gust_kt": 6.03,
           "variable": "i10fg"
         },
         {
-          "percentile": 25.0,
-          "gust_mps": 3.4,
-          "gust_mph": 7.61,
-          "gust_kt": 6.61,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 30.0,
-          "gust_mps": 3.6,
-          "gust_mph": 8.05,
-          "gust_kt": 7.0,
-          "variable": "i10fg"
-        },
-        {
           "percentile": 35.0,
-          "gust_mps": 3.8,
-          "gust_mph": 8.5,
-          "gust_kt": 7.39,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
           "variable": "i10fg"
         },
         {
           "percentile": 40.0,
-          "gust_mps": 3.9,
-          "gust_mph": 8.72,
-          "gust_kt": 7.58,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
           "variable": "i10fg"
         },
         {
           "percentile": 45.0,
-          "gust_mps": 4.0,
-          "gust_mph": 8.95,
-          "gust_kt": 7.78,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 50.0,
           "gust_mps": 4.3,
           "gust_mph": 9.62,
           "gust_kt": 8.36,
           "variable": "i10fg"
         },
         {
+          "percentile": 50.0,
+          "gust_mps": 4.7,
+          "gust_mph": 10.51,
+          "gust_kt": 9.14,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 55.0,
-          "gust_mps": 4.4,
-          "gust_mph": 9.84,
-          "gust_kt": 8.55,
+          "gust_mps": 5.0,
+          "gust_mph": 11.18,
+          "gust_kt": 9.72,
           "variable": "i10fg"
         },
         {
           "percentile": 60.0,
-          "gust_mps": 4.6,
-          "gust_mph": 10.29,
-          "gust_kt": 8.94,
+          "gust_mps": 5.6,
+          "gust_mph": 12.53,
+          "gust_kt": 10.89,
           "variable": "i10fg"
         },
         {
           "percentile": 65.0,
-          "gust_mps": 4.8,
-          "gust_mph": 10.74,
-          "gust_kt": 9.33,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 70.0,
-          "gust_mps": 5.1,
-          "gust_mph": 11.41,
-          "gust_kt": 9.91,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 75.0,
-          "gust_mps": 5.2,
-          "gust_mph": 11.63,
-          "gust_kt": 10.11,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 80.0,
-          "gust_mps": 5.5,
-          "gust_mph": 12.3,
-          "gust_kt": 10.69,
-          "variable": "i10fg"
-        },
-        {
-          "percentile": 85.0,
           "gust_mps": 6.0,
           "gust_mph": 13.42,
           "gust_kt": 11.66,
           "variable": "i10fg"
         },
         {
+          "percentile": 70.0,
+          "gust_mps": 6.4,
+          "gust_mph": 14.32,
+          "gust_kt": 12.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 6.8,
+          "gust_mph": 15.21,
+          "gust_kt": 13.22,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 7.2,
+          "gust_mph": 16.11,
+          "gust_kt": 14.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 7.7,
+          "gust_mph": 17.22,
+          "gust_kt": 14.97,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 90.0,
-          "gust_mps": 6.9,
-          "gust_mph": 15.43,
-          "gust_kt": 13.41,
+          "gust_mps": 7.9,
+          "gust_mph": 17.67,
+          "gust_kt": 15.36,
           "variable": "i10fg"
         },
         {
           "percentile": 95.0,
+          "gust_mps": 8.5,
+          "gust_mph": 19.01,
+          "gust_kt": 16.52,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 10.1,
+          "gust_mph": 22.59,
+          "gust_kt": 19.63,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 20,
+      "valid_utc": "2026-05-20T02:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 7.38,
+      "p50_gust_kt": 6.41,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 1.4,
+          "gust_mph": 3.13,
+          "gust_kt": 2.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 1.8,
+          "gust_mph": 4.03,
+          "gust_kt": 3.5,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 2.5,
+          "gust_mph": 5.59,
+          "gust_kt": 4.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 2.8,
+          "gust_mph": 6.26,
+          "gust_kt": 5.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 3.1,
+          "gust_mph": 6.93,
+          "gust_kt": 6.03,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 3.9,
+          "gust_mph": 8.72,
+          "gust_kt": 7.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
           "gust_mps": 7.6,
           "gust_mph": 17.0,
           "gust_kt": 14.77,
           "variable": "i10fg"
         },
         {
+          "percentile": 70.0,
+          "gust_mps": 8.6,
+          "gust_mph": 19.24,
+          "gust_kt": 16.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 9.3,
+          "gust_mph": 20.8,
+          "gust_kt": 18.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 9.7,
+          "gust_mph": 21.7,
+          "gust_kt": 18.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 10.1,
+          "gust_mph": 22.59,
+          "gust_kt": 19.63,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 10.9,
+          "gust_mph": 24.38,
+          "gust_kt": 21.19,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 11.7,
+          "gust_mph": 26.17,
+          "gust_kt": 22.74,
+          "variable": "i10fg"
+        },
+        {
           "percentile": 100.0,
-          "gust_mps": 14.8,
-          "gust_mph": 33.11,
-          "gust_kt": 28.77,
+          "gust_mps": 12.9,
+          "gust_mph": 28.86,
+          "gust_kt": 25.08,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 21,
+      "valid_utc": "2026-05-20T03:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 5.82,
+      "p50_gust_kt": 5.05,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 2.2
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.6,
+          "gust_mph": 1.34,
+          "gust_kt": 1.17,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 3.0,
+          "gust_mph": 6.71,
+          "gust_kt": 5.83,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 4.2,
+          "gust_mph": 9.4,
+          "gust_kt": 8.16,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 7.3,
+          "gust_mph": 16.33,
+          "gust_kt": 14.19,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 8.6,
+          "gust_mph": 19.24,
+          "gust_kt": 16.72,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 9.0,
+          "gust_mph": 20.13,
+          "gust_kt": 17.49,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 9.2,
+          "gust_mph": 20.58,
+          "gust_kt": 17.88,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 10.0,
+          "gust_mph": 22.37,
+          "gust_kt": 19.44,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 11.5,
+          "gust_mph": 25.72,
+          "gust_kt": 22.35,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 11.9,
+          "gust_mph": 26.62,
+          "gust_kt": 23.13,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 14.6,
+          "gust_mph": 32.66,
+          "gust_kt": 28.38,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 22,
+      "valid_utc": "2026-05-20T04:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 4.92,
+      "p50_gust_kt": 4.28,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 1.8,
+          "gust_mph": 4.03,
+          "gust_kt": 3.5,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 2.2,
+          "gust_mph": 4.92,
+          "gust_kt": 4.28,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 2.6,
+          "gust_mph": 5.82,
+          "gust_kt": 5.05,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 2.7,
+          "gust_mph": 6.04,
+          "gust_kt": 5.25,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 3.5,
+          "gust_mph": 7.83,
+          "gust_kt": 6.8,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 4.1,
+          "gust_mph": 9.17,
+          "gust_kt": 7.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 4.6,
+          "gust_mph": 10.29,
+          "gust_kt": 8.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 4.9,
+          "gust_mph": 10.96,
+          "gust_kt": 9.52,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 5.6,
+          "gust_mph": 12.53,
+          "gust_kt": 10.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 8.3,
+          "gust_mph": 18.57,
+          "gust_kt": 16.13,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 23,
+      "valid_utc": "2026-05-20T05:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 3.58,
+      "p50_gust_kt": 3.11,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 1.1,
+          "gust_mph": 2.46,
+          "gust_kt": 2.14,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 1.6,
+          "gust_mph": 3.58,
+          "gust_kt": 3.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 1.7,
+          "gust_mph": 3.8,
+          "gust_kt": 3.3,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 1.8,
+          "gust_mph": 4.03,
+          "gust_kt": 3.5,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 2.0,
+          "gust_mph": 4.47,
+          "gust_kt": 3.89,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 2.1,
+          "gust_mph": 4.7,
+          "gust_kt": 4.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 2.4,
+          "gust_mph": 5.37,
+          "gust_kt": 4.67,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 2.9,
+          "gust_mph": 6.49,
+          "gust_kt": 5.64,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 3.4,
+          "gust_mph": 7.61,
+          "gust_kt": 6.61,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 3.8,
+          "gust_mph": 8.5,
+          "gust_kt": 7.39,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 7.5,
+          "gust_mph": 16.78,
+          "gust_kt": 14.58,
+          "variable": "i10fg"
+        }
+      ]
+    },
+    {
+      "fxx": 24,
+      "valid_utc": "2026-05-20T06:00:00Z",
+      "status": "ok",
+      "p50_gust_mph": 3.36,
+      "p50_gust_kt": 2.92,
+      "airport_threshold_probabilities": {
+        "gt_30_mph": {
+          "threshold_mph": 30.0,
+          "threshold_mps": 13.411,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_45_mph": {
+          "threshold_mph": 45.0,
+          "threshold_mps": 20.117,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_58_mph": {
+          "threshold_mph": 58.0,
+          "threshold_mps": 25.928,
+          "exceedance_probability_percent": 0.0
+        },
+        "gt_65_mph": {
+          "threshold_mph": 65.0,
+          "threshold_mps": 29.058,
+          "exceedance_probability_percent": 0.0
+        }
+      },
+      "percentile_curve": [
+        {
+          "percentile": 0.0,
+          "gust_mps": 0.0,
+          "gust_mph": 0.0,
+          "gust_kt": 0.0,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 5.0,
+          "gust_mps": 0.3,
+          "gust_mph": 0.67,
+          "gust_kt": 0.58,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 10.0,
+          "gust_mps": 0.4,
+          "gust_mph": 0.89,
+          "gust_kt": 0.78,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 15.0,
+          "gust_mps": 0.5,
+          "gust_mph": 1.12,
+          "gust_kt": 0.97,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 20.0,
+          "gust_mps": 0.7,
+          "gust_mph": 1.57,
+          "gust_kt": 1.36,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 25.0,
+          "gust_mps": 0.8,
+          "gust_mph": 1.79,
+          "gust_kt": 1.56,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 30.0,
+          "gust_mps": 0.9,
+          "gust_mph": 2.01,
+          "gust_kt": 1.75,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 35.0,
+          "gust_mps": 1.0,
+          "gust_mph": 2.24,
+          "gust_kt": 1.94,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 40.0,
+          "gust_mps": 1.2,
+          "gust_mph": 2.68,
+          "gust_kt": 2.33,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 45.0,
+          "gust_mps": 1.3,
+          "gust_mph": 2.91,
+          "gust_kt": 2.53,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 50.0,
+          "gust_mps": 1.5,
+          "gust_mph": 3.36,
+          "gust_kt": 2.92,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 55.0,
+          "gust_mps": 1.8,
+          "gust_mph": 4.03,
+          "gust_kt": 3.5,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 60.0,
+          "gust_mps": 1.9,
+          "gust_mph": 4.25,
+          "gust_kt": 3.69,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 65.0,
+          "gust_mps": 2.1,
+          "gust_mph": 4.7,
+          "gust_kt": 4.08,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 70.0,
+          "gust_mps": 2.3,
+          "gust_mph": 5.14,
+          "gust_kt": 4.47,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 75.0,
+          "gust_mps": 2.5,
+          "gust_mph": 5.59,
+          "gust_kt": 4.86,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 80.0,
+          "gust_mps": 3.3,
+          "gust_mph": 7.38,
+          "gust_kt": 6.41,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 85.0,
+          "gust_mps": 4.4,
+          "gust_mph": 9.84,
+          "gust_kt": 8.55,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 90.0,
+          "gust_mps": 4.9,
+          "gust_mph": 10.96,
+          "gust_kt": 9.52,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 95.0,
+          "gust_mps": 5.2,
+          "gust_mph": 11.63,
+          "gust_kt": 10.11,
+          "variable": "i10fg"
+        },
+        {
+          "percentile": 100.0,
+          "gust_mps": 8.1,
+          "gust_mph": 18.12,
+          "gust_kt": 15.75,
           "variable": "i10fg"
         }
       ]
