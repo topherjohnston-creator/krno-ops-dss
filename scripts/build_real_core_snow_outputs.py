@@ -78,17 +78,13 @@ def parse_cycle_arg(cycle_arg: str | None) -> datetime | None:
 
 def latest_cycle_utc() -> datetime:
     """
-    Use an older likely-complete NBM cycle.
-
-    NBM files can lag behind the current cycle on NOMADS.
-    Using the immediately previous 6-hour cycle can fail with 404s,
-    especially for f001. Lag by 12 hours to avoid partially available cycles.
+    Use the most recent likely complete 6-hour NBM cycle.
+    Lag one cycle to reduce failures from partially available NOMADS files.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-
-    return cycle - timedelta(hours=12)
+    return cycle - timedelta(hours=6)
 
 
 def core_grib_url(cycle: datetime, fxx: int) -> str:
@@ -107,15 +103,7 @@ def core_idx_url(cycle: datetime, fxx: int) -> str:
 def fetch_text(url: str, timeout: int = 60) -> str:
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()
-
-    text = response.text
-
-    # NOMADS occasionally returns an HTML error page instead of a clean IDX file.
-    lowered = text[:500].lower()
-    if "<html" in lowered or "<!doctype html" in lowered:
-        raise RuntimeError(f"Non-IDX HTML response from {url}")
-
-    return text
+    return response.text
 
 
 def parse_idx(idx_text: str) -> list[dict[str, Any]]:
@@ -418,7 +406,7 @@ def no_snow_best(hour: dict[str, Any]) -> dict[str, Any]:
         "threshold_key": "zero_snow",
         "threshold_in": 0.0,
         "threshold_m": 0.0,
-        "impact_level": 0,
+        "impact_level": 1,
         "probability": 0.0,
         "risk": 0,
         "risk_label": "None",
@@ -594,8 +582,7 @@ def block_snow_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
         return {
             "prob": 0.0,
             "risk": 0,
-            "risk_label": "None",
-            "level": 0,
+            "level": 1,
             "metric": '0" / hr',
             "driver": "No snow signal",
         }
@@ -615,7 +602,6 @@ def block_snow_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "prob": round(float(best["probability"]), 1),
         "risk": int(best["risk"]),
-        "risk_label": risk_label(int(best["risk"])),
         "level": int(best["impact_level"]),
         "threshold_in": best["threshold_in"],
         "threshold_m": best["threshold_m"],
@@ -623,7 +609,7 @@ def block_snow_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
         "ops_label": best["ops_label"],
         "snow_1hr_in": block_max_snow,
         "source_fxx": best["fxx"],
-        "driver": "No snow signal" if float(best["probability"]) <= 0 else f"{best['probability']:.1f}% chance {best['label']}",
+        "driver": f"{best['probability']:.1f}% chance {best['label']}",
     }
 
 
@@ -669,12 +655,6 @@ def main() -> None:
     peak_start_fxx = max(1, peak_fxx - 1)
     peak_end_fxx = min(48, peak_fxx + 1)
 
-    selected_prob = round(float(best["probability"]), 1)
-    selected_risk = int(best["risk"])
-    selected_risk_label = risk_label(selected_risk)
-    selected_level = int(best["impact_level"])
-    selected_driver = "No snow signal" if selected_prob <= 0 else f"{selected_prob:.1f}% chance {best['label']}"
-
     # Update threats.json.
     threats_path = DOCS / "threats.json"
     threats_payload = load_json(
@@ -693,10 +673,10 @@ def main() -> None:
     threats_payload.setdefault("threats", {})
 
     snow_payload = {
-        "prob": selected_prob,
-        "risk": selected_risk,
-        "risk_label": selected_risk_label,
-        "level": selected_level,
+        "prob": round(float(best["probability"]), 1),
+        "risk": int(best["risk"]),
+        "risk_label": risk_label(int(best["risk"])),
+        "level": int(best["impact_level"]),
         "metric": best["label"],
         "display_label": "1-hr snow",
         "display_value": display_value,
@@ -707,7 +687,7 @@ def main() -> None:
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
         "ops_label": best["ops_label"],
-        "driver": selected_driver,
+        "driver": f"{best['probability']:.1f}% chance {best['label']}",
         "risk_candidates": [
             c
             for h in ok_hours
@@ -718,7 +698,8 @@ def main() -> None:
             "KRNO plow/treatment operations begin at trace/light snow. Thresholds are "
             ">0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels "
             "2 through 5. Each threshold probability is passed through the probability x "
-            "impact risk matrix. If all probabilities are zero, selected risk is None."
+            "impact risk matrix. If all probabilities are zero, selected risk is 0 inches "
+            "per hour with None risk."
         ),
     }
 
@@ -733,10 +714,10 @@ def main() -> None:
                 {
                     "id": "SNOW",
                     "name": "Snow",
-                    "risk_level": selected_risk,
-                    "risk_label": selected_risk_label,
-                    "impact_level": selected_level,
-                    "probability": selected_prob,
+                    "risk_level": int(best["risk"]),
+                    "risk_label": risk_label(int(best["risk"])),
+                    "impact_level": int(best["impact_level"]),
+                    "probability": round(float(best["probability"]), 1),
                     "peak_start_fxx": peak_start_fxx,
                     "peak_end_fxx": peak_end_fxx,
                     "metric": best["label"],
@@ -744,7 +725,7 @@ def main() -> None:
                     "display_value": display_value,
                     "snow_1hr_in": round(float(display_snow_in), 3) if display_snow_in is not None else None,
                     "ops_label": best["ops_label"],
-                    "driver": selected_driver,
+                    "driver": f"{best['probability']:.1f}% chance {best['label']}",
                 }
             )
             found = True
@@ -755,10 +736,10 @@ def main() -> None:
             {
                 "id": "SNOW",
                 "name": "Snow",
-                "risk_level": selected_risk,
-                "risk_label": selected_risk_label,
-                "impact_level": selected_level,
-                "probability": selected_prob,
+                "risk_level": int(best["risk"]),
+                "risk_label": risk_label(int(best["risk"])),
+                "impact_level": int(best["impact_level"]),
+                "probability": round(float(best["probability"]), 1),
                 "peak_start_fxx": peak_start_fxx,
                 "peak_end_fxx": peak_end_fxx,
                 "metric": best["label"],
@@ -766,64 +747,49 @@ def main() -> None:
                 "display_value": display_value,
                 "snow_1hr_in": round(float(display_snow_in), 3) if display_snow_in is not None else None,
                 "ops_label": best["ops_label"],
-                "driver": selected_driver,
+                "driver": f"{best['probability']:.1f}% chance {best['label']}",
             }
         )
 
     # Update timeline.json.
-    # Frontend expects 16 blocks x 3 hours = 48 hours.
-    # Normalize the timeline here so old 6-hour/mock blocks do not persist.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
         {
             "site": "KRNO",
-            "block_hours": 3,
+            "block_hours": 6,
             "blocks": [],
             "block_hazards": [],
         },
     )
 
-    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM Core {cycle.strftime('%HZ')}"
-    timeline_payload["block_hours"] = 3
+    timeline_payload["block_hours"] = 6
 
-    old_blocks = timeline_payload.get("blocks", [])
-    old_block_hazards = timeline_payload.get("block_hazards", [])
+    blocks = timeline_payload.setdefault("blocks", [])
+    block_hazards = timeline_payload.setdefault("block_hazards", [])
 
-    new_blocks = []
-    new_block_hazards = []
+    while len(blocks) < 8:
+        bi = len(blocks)
+        blocks.append({"start_fxx": bi * 6, "end_fxx": bi * 6 + 6})
 
-    for i in range(16):
-        start_fxx = i * 3 + 1
-        end_fxx = min((i + 1) * 3, 48)
+    while len(block_hazards) < 8:
+        block_hazards.append({})
 
-        old_block = old_blocks[i] if i < len(old_blocks) and isinstance(old_blocks[i], dict) else {}
-        old_hazards = (
-            old_block_hazards[i]
-            if i < len(old_block_hazards) and isinstance(old_block_hazards[i], dict)
-            else {}
-        )
+    for i in range(8):
+        start_fxx = i * 6 + 1
+        end_fxx = min((i + 1) * 6, 48)
 
         block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
         block_eval = block_snow_risk(block_hours)
 
-        new_block = dict(old_block)
-        new_block["start_fxx"] = start_fxx
-        new_block["end_fxx"] = end_fxx
-        new_block["SNOW"] = block_eval.get("snow_1hr_in")
-        new_block["s3hr_in"] = block_eval.get("snow_1hr_in")
+        blocks[i]["start_fxx"] = start_fxx
+        blocks[i]["end_fxx"] = end_fxx
+        blocks[i]["SNOW"] = block_eval.get("snow_1hr_in")
 
-        new_hazard_block = dict(old_hazards)
-        new_hazard_block["SNOW"] = block_eval
-
-        new_blocks.append(new_block)
-        new_block_hazards.append(new_hazard_block)
-
-    timeline_payload["blocks"] = new_blocks
-    timeline_payload["block_hazards"] = new_block_hazards
+        block_hazards[i]["SNOW"] = block_eval
 
     threats_path.write_text(json.dumps(threats_payload, indent=2))
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
@@ -846,8 +812,7 @@ def main() -> None:
         "methodology": (
             "Core 1-hour ASNOW probabilities are used directly for KRNO snow/plow risk. "
             "Plow/treatment operations begin with trace/light snow. Thresholds are >0.10, "
-            ">0.50, >1.00, and >2.00 inches per hour. If all threshold probabilities are "
-            "zero, selected risk is None."
+            ">0.50, >1.00, and >2.00 inches per hour."
         ),
     }
 
