@@ -98,13 +98,7 @@ def qmd_idx_url(cycle: datetime, fxx: int) -> str:
 def fetch_text(url: str, timeout: int = 60) -> str:
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()
-
-    text = response.text
-    lowered = text[:500].lower()
-    if "<html" in lowered or "<!doctype html" in lowered:
-        raise RuntimeError(f"Non-IDX HTML response from {url}")
-
-    return text
+    return response.text
 
 
 def parse_idx(idx_text: str) -> list[dict[str, Any]]:
@@ -412,15 +406,23 @@ def risk_label(risk: int) -> str:
 
 
 def dry_rain_best(window: dict[str, Any]) -> dict[str, Any]:
+    """
+    Dry-period fallback.
+
+    Important:
+    If all threshold probabilities are zero, selected risk must be None,
+    not Little to None. This matches the rule we are applying across hazards:
+    probability = 0 means risk = 0 / None.
+    """
     return {
-        "threshold_key": "zero_rain",
-        "threshold_in": 0.0,
-        "threshold_mm": 0.0,
+        "threshold_key": "lt_0p10_in_6hr",
+        "threshold_in": 0.10,
+        "threshold_mm": 2.54,
         "impact_level": 0,
         "probability": 0.0,
         "risk": 0,
         "risk_label": "None",
-        "label": "0.00 in / 6 hr",
+        "label": "<0.10 in / 6 hr",
         "fxx": window["fxx"],
         "start_hour": window["start_hour"],
         "end_hour": window["end_hour"],
@@ -453,8 +455,7 @@ def evaluate_window_risk(window: dict[str, Any]) -> dict[str, Any]:
             }
         )
 
-    # Critical dry-period fix:
-    # If every threshold probability is zero, do not allow >1.00" / 6 hr to win a tie.
+    # If every threshold probability is zero, selected risk is None.
     if all(float(c["probability"]) <= 0 for c in candidates):
         return {
             "best": dry_rain_best(window),
@@ -621,6 +622,23 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
     return results
 
 
+def block_rain_risk(window: dict[str, Any]) -> dict[str, Any]:
+    block_risk = window["risk_evaluation"]["best"]
+
+    return {
+        "prob": round(float(block_risk["probability"]), 1),
+        "risk": int(block_risk["risk"]),
+        "risk_label": risk_label(int(block_risk["risk"])),
+        "level": int(block_risk["impact_level"]),
+        "threshold_in": block_risk["threshold_in"],
+        "threshold_mm": block_risk["threshold_mm"],
+        "metric": block_risk["label"],
+        "window": "6 hr",
+        "rainfall_6hr_in": window.get("display_apcp_in"),
+        "driver": f"{block_risk['probability']:.1f}% chance {block_risk['label']}",
+    }
+
+
 def main() -> None:
     cycle = latest_cycle_utc()
     generated = utc_now()
@@ -655,17 +673,7 @@ def main() -> None:
             best_window = max(available, key=lambda w: w["display_apcp_in"])
             display_apcp_in = best_window.get("display_apcp_in")
 
-    selected_prob = round(float(best["probability"]), 1)
-    selected_risk = int(best["risk"])
-    selected_risk_label = risk_label(selected_risk)
-    selected_level = int(best["impact_level"])
-    selected_driver = "No rain/flooding signal" if selected_prob <= 0 else f"{selected_prob:.1f}% chance {best['label']}"
-
-    if selected_prob <= 0:
-        display_value = '0.00"'
-        display_apcp_in = 0.0 if display_apcp_in is None else display_apcp_in
-    else:
-        display_value = "N/A" if display_apcp_in is None else f'{display_apcp_in:.2f}"'
+    display_value = "N/A" if display_apcp_in is None else f'{display_apcp_in:.2f}"'
 
     peak_start_fxx = int(best_window["start_hour"])
     peak_end_fxx = int(best_window["end_hour"])
@@ -687,10 +695,10 @@ def main() -> None:
     threats_payload.setdefault("threats", {})
 
     rain_payload = {
-        "prob": selected_prob,
-        "risk": selected_risk,
-        "risk_label": selected_risk_label,
-        "level": selected_level,
+        "prob": round(float(best["probability"]), 1),
+        "risk": int(best["risk"]),
+        "risk_label": risk_label(int(best["risk"])),
+        "level": int(best["impact_level"]),
         "metric": best["label"],
         "display_label": "6-hr rainfall",
         "display_value": display_value,
@@ -700,7 +708,7 @@ def main() -> None:
         "window": "6 hr",
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
-        "driver": selected_driver,
+        "driver": f"{best['probability']:.1f}% chance {best['label']}",
         "threshold_probabilities": {
             f"f{w['fxx']:03d}_{w['start_hour']}_{w['end_hour']}hr": w["threshold_probabilities"]
             for w in ok_windows
@@ -711,7 +719,7 @@ def main() -> None:
             "KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, "
             "mapped to impact levels 2 through 5. Each threshold probability is passed through "
             "the probability x impact risk matrix. If all probabilities are zero, the selected "
-            "risk is None and the driver is no rain/flooding signal."
+            "risk is None."
         ),
     }
 
@@ -729,17 +737,17 @@ def main() -> None:
                     {
                         "id": hazard_id,
                         "name": hazard_name,
-                        "risk_level": selected_risk,
-                        "risk_label": selected_risk_label,
-                        "impact_level": selected_level,
-                        "probability": selected_prob,
+                        "risk_level": int(best["risk"]),
+                        "risk_label": risk_label(int(best["risk"])),
+                        "impact_level": int(best["impact_level"]),
+                        "probability": round(float(best["probability"]), 1),
                         "peak_start_fxx": peak_start_fxx,
                         "peak_end_fxx": peak_end_fxx,
                         "metric": best["label"],
                         "display_label": "6-hr rainfall",
                         "display_value": display_value,
                         "rainfall_6hr_in": round(float(display_apcp_in), 3) if display_apcp_in is not None else None,
-                        "driver": selected_driver,
+                        "driver": f"{best['probability']:.1f}% chance {best['label']}",
                     }
                 )
                 found = True
@@ -750,17 +758,17 @@ def main() -> None:
                 {
                     "id": hazard_id,
                     "name": hazard_name,
-                    "risk_level": selected_risk,
-                    "risk_label": selected_risk_label,
-                    "impact_level": selected_level,
-                    "probability": selected_prob,
+                    "risk_level": int(best["risk"]),
+                    "risk_label": risk_label(int(best["risk"])),
+                    "impact_level": int(best["impact_level"]),
+                    "probability": round(float(best["probability"]), 1),
                     "peak_start_fxx": peak_start_fxx,
                     "peak_end_fxx": peak_end_fxx,
                     "metric": best["label"],
                     "display_label": "6-hr rainfall",
                     "display_value": display_value,
                     "rainfall_6hr_in": round(float(display_apcp_in), 3) if display_apcp_in is not None else None,
-                    "driver": selected_driver,
+                    "driver": f"{best['probability']:.1f}% chance {best['label']}",
                 }
             )
 
@@ -789,82 +797,40 @@ def main() -> None:
     new_blocks = []
     new_block_hazards = []
 
-    def window_for_3hr_block(start_fxx: int, end_fxx: int) -> dict[str, Any] | None:
-        midpoint = (start_fxx + end_fxx) / 2.0
-        for window in ok_windows:
-            # QMD rain windows use hour ranges 0-6, 6-12, etc.
-            # Assign each 3-hour dashboard block to the overlapping 6-hour QMD window.
-            if float(window["start_hour"]) < midpoint <= float(window["end_hour"]):
-                return window
-            if midpoint == 1.0 and int(window["start_hour"]) == 0:
-                return window
-        return None
+    # Frontend expects 16 blocks x 3 hours = 48 hours.
+    # Rain QMD is 6-hourly, so each 6-hour rain window is copied into
+    # the two matching 3-hour display blocks.
+    for i in range(16):
+        start_fxx = i * 3
+        end_fxx = start_fxx + 3
 
-    for bi in range(16):
-        start_fxx = bi * 3 + 1
-        end_fxx = min((bi + 1) * 3, 48)
-
-        old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
-        old_hazards = (
-            old_block_hazards[bi]
-            if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
+        old_block = old_blocks[i] if i < len(old_blocks) and isinstance(old_blocks[i], dict) else {}
+        old_hazard_block = (
+            old_block_hazards[i]
+            if i < len(old_block_hazards) and isinstance(old_block_hazards[i], dict)
             else {}
         )
 
-        window = window_for_3hr_block(start_fxx, end_fxx)
+        matching_window = None
+        for window in ok_windows:
+            if window["start_hour"] <= start_fxx and end_fxx <= window["end_hour"]:
+                matching_window = window
+                break
+
+        if matching_window is None:
+            matching_window = ok_windows[min(i // 2, len(ok_windows) - 1)]
+
+        rain_block = block_rain_risk(matching_window)
 
         new_block = dict(old_block)
         new_block["start_fxx"] = start_fxx
         new_block["end_fxx"] = end_fxx
+        new_block["RAIN"] = matching_window.get("display_apcp_in")
+        new_block["RAIN_FLOODING"] = matching_window.get("display_apcp_in")
 
-        new_hazard_block = dict(old_hazards)
-
-        if window is not None:
-            block_risk = window["risk_evaluation"]["best"]
-            rain_value = window.get("display_apcp_in")
-
-            new_block["RAIN"] = rain_value
-
-            block_prob = round(float(block_risk["probability"]), 1)
-            block_risk_level = int(block_risk["risk"])
-            block_level = int(block_risk["impact_level"])
-            block_driver = "No rain/flooding signal" if block_prob <= 0 else f"{block_prob:.1f}% chance {block_risk['label']}"
-
-            rain_block_payload = {
-                "prob": block_prob,
-                "risk": block_risk_level,
-                "risk_label": risk_label(block_risk_level),
-                "level": block_level,
-                "threshold_in": block_risk["threshold_in"],
-                "threshold_mm": block_risk["threshold_mm"],
-                "metric": block_risk["label"],
-                "window": "6 hr",
-                "rainfall_6hr_in": rain_value,
-                "source_fxx": int(window["fxx"]),
-                "source_window": f"f{int(window['start_hour']):03d}-f{int(window['end_hour']):03d}",
-                "driver": block_driver,
-            }
-
-            new_hazard_block["RAIN"] = rain_block_payload
-            new_hazard_block["RAIN_FLOODING"] = rain_block_payload
-        else:
-            new_block["RAIN"] = None
-            rain_block_payload = {
-                "prob": 0.0,
-                "risk": 0,
-                "risk_label": "None",
-                "level": 0,
-                "threshold_in": None,
-                "threshold_mm": None,
-                "metric": "N/A",
-                "window": "6 hr",
-                "rainfall_6hr_in": None,
-                "source_fxx": None,
-                "source_window": None,
-                "driver": "No QMD rain window available for this block",
-            }
-            new_hazard_block["RAIN"] = rain_block_payload
-            new_hazard_block["RAIN_FLOODING"] = rain_block_payload
+        new_hazard_block = dict(old_hazard_block)
+        new_hazard_block["RAIN"] = rain_block
+        new_hazard_block["RAIN_FLOODING"] = rain_block
 
         new_blocks.append(new_block)
         new_block_hazards.append(new_hazard_block)
@@ -896,7 +862,7 @@ def main() -> None:
             "QMD 6-hour APCP probabilities are used directly for KRNO/Reno drainage risk. "
             "Thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours. "
             "The highest probability x impact matrix result determines the rain/flooding risk. "
-            "If all threshold probabilities are zero, selected_risk is None with no rain/flooding signal."
+            "If all threshold probabilities are zero, selected_risk is None."
         ),
     }
 
