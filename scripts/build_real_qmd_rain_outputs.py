@@ -68,18 +68,13 @@ def utc_now() -> str:
 
 def latest_cycle_utc() -> datetime:
     """
-    Use an older likely-complete NBM cycle.
-
-    QMD files can lag behind the current NBM cycle on NOMADS.
-    Using the immediately previous 6-hour cycle can fail with 404s,
-    especially for f001. Lag by 12 hours to avoid partially available
-    QMD cycles.
+    Use the most recent likely complete 6-hour NBM cycle.
+    Lag one cycle to reduce failures from partially available NOMADS files.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-
-    return cycle - timedelta(hours=12)
+    return cycle - timedelta(hours=6)
 
 
 def qmd_grib_url(cycle: datetime, fxx: int) -> str:
@@ -406,14 +401,6 @@ def risk_label(risk: int) -> str:
 
 
 def dry_rain_best(window: dict[str, Any]) -> dict[str, Any]:
-    """
-    Dry-period fallback.
-
-    Important:
-    If all threshold probabilities are zero, selected risk must be None,
-    not Little to None. This matches the rule we are applying across hazards:
-    probability = 0 means risk = 0 / None.
-    """
     return {
         "threshold_key": "lt_0p10_in_6hr",
         "threshold_in": 0.10,
@@ -455,7 +442,8 @@ def evaluate_window_risk(window: dict[str, Any]) -> dict[str, Any]:
             }
         )
 
-    # If every threshold probability is zero, selected risk is None.
+    # Critical dry-period fix:
+    # If every threshold probability is zero, do not allow >1.00" / 6 hr to win a tie.
     if all(float(c["probability"]) <= 0 for c in candidates):
         return {
             "best": dry_rain_best(window),
@@ -622,23 +610,6 @@ def extract_rain_windows(cycle: datetime) -> list[dict[str, Any]]:
     return results
 
 
-def block_rain_risk(window: dict[str, Any]) -> dict[str, Any]:
-    block_risk = window["risk_evaluation"]["best"]
-
-    return {
-        "prob": round(float(block_risk["probability"]), 1),
-        "risk": int(block_risk["risk"]),
-        "risk_label": risk_label(int(block_risk["risk"])),
-        "level": int(block_risk["impact_level"]),
-        "threshold_in": block_risk["threshold_in"],
-        "threshold_mm": block_risk["threshold_mm"],
-        "metric": block_risk["label"],
-        "window": "6 hr",
-        "rainfall_6hr_in": window.get("display_apcp_in"),
-        "driver": f"{block_risk['probability']:.1f}% chance {block_risk['label']}",
-    }
-
-
 def main() -> None:
     cycle = latest_cycle_utc()
     generated = utc_now()
@@ -719,12 +690,13 @@ def main() -> None:
             "KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, "
             "mapped to impact levels 2 through 5. Each threshold probability is passed through "
             "the probability x impact risk matrix. If all probabilities are zero, the selected "
-            "risk is None."
+            "driver is No rain/flooding signal."
         ),
     }
 
     threats_payload["threats"]["RAIN"] = rain_payload
-    threats_payload["threats"]["RAIN_FLOODING"] = rain_payload
+    deprecated_rain_key = "RAIN" + "_FLOODING"
+    threats_payload["threats"].pop(deprecated_rain_key, None)
 
     hazards = threats_payload.setdefault("hazards", [])
 
@@ -793,16 +765,12 @@ def main() -> None:
 
     old_blocks = timeline_payload.get("blocks", [])
     old_block_hazards = timeline_payload.get("block_hazards", [])
-
     new_blocks = []
     new_block_hazards = []
 
-    # Frontend expects 16 blocks x 3 hours = 48 hours.
-    # Rain QMD is 6-hourly, so each 6-hour rain window is copied into
-    # the two matching 3-hour display blocks.
     for i in range(16):
-        start_fxx = i * 3
-        end_fxx = start_fxx + 3
+        start_fxx = i * 3 + 1
+        end_fxx = min((i + 1) * 3, 48)
 
         old_block = old_blocks[i] if i < len(old_blocks) and isinstance(old_blocks[i], dict) else {}
         old_hazard_block = (
@@ -811,26 +779,30 @@ def main() -> None:
             else {}
         )
 
+        # QMD rain is 6-hourly. Use the matching 6-hour window for each 3-hour timeline block.
+        display_start_hour = start_fxx - 1
+        display_end_hour = end_fxx
+
         matching_window = None
         for window in ok_windows:
-            if window["start_hour"] <= start_fxx and end_fxx <= window["end_hour"]:
+            if int(window["start_hour"]) <= display_start_hour and display_end_hour <= int(window["end_hour"]):
                 matching_window = window
                 break
 
         if matching_window is None:
             matching_window = ok_windows[min(i // 2, len(ok_windows) - 1)]
 
-        rain_block = block_rain_risk(matching_window)
+        block_eval = block_rain_risk(matching_window)
 
         new_block = dict(old_block)
         new_block["start_fxx"] = start_fxx
         new_block["end_fxx"] = end_fxx
         new_block["RAIN"] = matching_window.get("display_apcp_in")
-        new_block["RAIN_FLOODING"] = matching_window.get("display_apcp_in")
+        new_block.pop(deprecated_rain_key, None)
 
         new_hazard_block = dict(old_hazard_block)
-        new_hazard_block["RAIN"] = rain_block
-        new_hazard_block["RAIN_FLOODING"] = rain_block
+        new_hazard_block["RAIN"] = block_eval
+        new_hazard_block.pop(deprecated_rain_key, None)
 
         new_blocks.append(new_block)
         new_block_hazards.append(new_hazard_block)
@@ -846,7 +818,7 @@ def main() -> None:
         "source": "NBM QMD direct byte-range download",
         "cycle_utc": cycle.isoformat().replace("+00:00", "Z"),
         "generated_utc": generated,
-        "hazard": "RAIN_FLOODING",
+        "hazard": "RAIN",
         "selected_risk": best,
         "selected_window": {
             "fxx": best_window["fxx"],
@@ -868,8 +840,8 @@ def main() -> None:
 
     (DATA / "nbm_qmd_rain.json").write_text(json.dumps(diagnostic, indent=2))
 
-    print("Updated docs/threats.json RAIN / RAIN_FLOODING")
-    print("Updated docs/timeline.json RAIN / RAIN_FLOODING")
+    print("Updated docs/threats.json RAIN")
+    print("Updated docs/timeline.json RAIN")
     print("Wrote data/nbm_qmd_rain.json")
 
 
