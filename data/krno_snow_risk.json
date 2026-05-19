@@ -1,8 +1,8 @@
 {
   "prob": 0.0,
-  "risk": 1,
-  "risk_label": "Little to None",
-  "level": 1,
+  "risk": 0,
+  "risk_label": "None",
+  "level": 0,
   "metric": "0\" / hr",
   "display_label": "1-hr snow",
   "display_value": "0\"",
@@ -13,7 +13,7 @@
   "peak_start_fxx": 1,
   "peak_end_fxx": 2,
   "ops_label": "No plow/treatment operations",
-  "driver": "0.0% chance 0\" / hr",
+  "driver": "No snow signal",
   "risk_candidates": [
     {
       "threshold_key": "gt_0p10_in_hr",
@@ -2512,5 +2512,5 @@
       "valid_utc": "2026-05-20T12:00:00Z"
     }
   ],
-  "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is 0 inches per hour with Little to None risk."
+  "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is None."
 }

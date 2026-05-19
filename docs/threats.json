@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-19T01:44:22Z",
+  "generated_utc": "2026-05-19T02:04:19Z",
   "cycle_utc_iso": "2026-05-18T12:00:00Z",
   "cycle": "NBM Core 12Z",
   "valid_period": "next_48_hours",
@@ -169,9 +169,9 @@
     },
     "SNOW": {
       "prob": 0.0,
-      "risk": 1,
-      "risk_label": "Little to None",
-      "level": 1,
+      "risk": 0,
+      "risk_label": "None",
+      "level": 0,
       "metric": "0\" / hr",
       "display_label": "1-hr snow",
       "display_value": "0\"",
@@ -182,7 +182,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 2,
       "ops_label": "No plow/treatment operations",
-      "driver": "0.0% chance 0\" / hr",
+      "driver": "No snow signal",
       "risk_candidates": [
         {
           "threshold_key": "gt_0p10_in_hr",
@@ -2681,7 +2681,7 @@
           "valid_utc": "2026-05-20T12:00:00Z"
         }
       ],
-      "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is 0 inches per hour with Little to None risk."
+      "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is None."
     },
     "RAIN": {
       "prob": 0.0,
@@ -3519,7 +3519,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-18T12:00:00Z",
-      "generated_utc": "2026-05-19T01:44:05Z",
+      "generated_utc": "2026-05-19T02:04:07Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 1,
@@ -4391,14 +4391,14 @@
     {
       "id": "SNOW",
       "name": "Snow",
-      "risk_level": 1,
-      "impact_level": 1,
+      "risk_level": 0,
+      "impact_level": 0,
       "probability": 0.0,
       "peak_start_fxx": 1,
       "peak_end_fxx": 2,
       "metric": "0\" / hr",
-      "driver": "0.0% chance 0\" / hr",
-      "risk_label": "Little to None",
+      "driver": "No snow signal",
+      "risk_label": "None",
       "display_label": "1-hr snow",
       "display_value": "0\"",
       "snow_1hr_in": 0.0,
