@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import re
 import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -23,54 +22,38 @@ KRNO_LON = -119.7681
 
 FXX_HOURS = list(range(1, 49))
 
-# User-defined KRNO Ops DSS lightning categories.
-# These are treated as the operational risk category for lightning because the
-# airport decision threshold is the probability of lightning itself.
-LIGHTNING_BINS = [
+# Lightning impact thresholds based on probability of lightning/thunder.
+# These are not accumulation/exceedance thresholds. The NBM value itself is the probability.
+LIGHTNING_IMPACT_THRESHOLDS = [
     {
-        "key": "lt_5_percent",
-        "min_prob": 0.0,
-        "max_prob": 5.0,
-        "impact_level": 1,
-        "risk": 1,
-        "metric": "<5%",
-        "ops_label": "Ramp/safety closure unlikely",
+        "min_prob": 75.0,
+        "impact_level": 5,
+        "metric": "Lightning chance: >75%",
+        "ops_label": "Ramp/safety closure very likely",
     },
     {
-        "key": "5_to_25_percent",
-        "min_prob": 5.0,
-        "max_prob": 25.0,
-        "impact_level": 2,
-        "risk": 2,
-        "metric": "5-25%",
-        "ops_label": "Ramp/safety closure possible",
-    },
-    {
-        "key": "25_to_50_percent",
-        "min_prob": 25.0,
-        "max_prob": 50.0,
-        "impact_level": 3,
-        "risk": 3,
-        "metric": "25-50%",
-        "ops_label": "Ramp/safety closure increasingly likely",
-    },
-    {
-        "key": "50_to_75_percent",
         "min_prob": 50.0,
-        "max_prob": 75.0,
         "impact_level": 4,
-        "risk": 4,
-        "metric": "50-75%",
+        "metric": "Lightning chance: 50-75%",
         "ops_label": "Ramp/safety closure likely",
     },
     {
-        "key": "gt_75_percent",
-        "min_prob": 75.0,
-        "max_prob": 101.0,
-        "impact_level": 5,
-        "risk": 5,
-        "metric": ">75%",
-        "ops_label": "Ramp/safety closure very likely",
+        "min_prob": 25.0,
+        "impact_level": 3,
+        "metric": "Lightning chance: 25-50%",
+        "ops_label": "Ramp/safety closure possible",
+    },
+    {
+        "min_prob": 5.0,
+        "impact_level": 2,
+        "metric": "Lightning chance: 5-25%",
+        "ops_label": "Ramp/safety closure unlikely but possible",
+    },
+    {
+        "min_prob": 0.0,
+        "impact_level": 1,
+        "metric": "Lightning chance: <5%",
+        "ops_label": "No meaningful lightning operational impact",
     },
 ]
 
@@ -97,8 +80,8 @@ def latest_cycle_utc() -> datetime:
     """
     Use an older likely-complete NBM cycle.
 
-    NOMADS can expose partial current-cycle files. Lagging by 12 hours keeps
-    this builder aligned with the other backend builders and avoids most 404s.
+    NOMADS can lag behind the current NBM cycle, especially for early forecast hours.
+    Lag by 12 hours to avoid partially available cycles.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
@@ -126,11 +109,12 @@ def fetch_text(url: str, timeout: int = 60) -> str:
 
 
 def parse_idx(idx_text: str) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
+    rows = []
     lines = idx_text.splitlines()
 
     for i, line in enumerate(lines):
         parts = line.split(":")
+
         if len(parts) < 3:
             continue
 
@@ -141,15 +125,14 @@ def parse_idx(idx_text: str) -> list[dict[str, Any]]:
             continue
 
         end_byte = None
-        for j in range(i + 1, len(lines)):
-            next_parts = lines[j].split(":")
-            if len(next_parts) < 2:
-                continue
-            try:
-                end_byte = int(next_parts[1]) - 1
-                break
-            except ValueError:
-                continue
+
+        if i + 1 < len(lines):
+            next_parts = lines[i + 1].split(":")
+            if len(next_parts) >= 2:
+                try:
+                    end_byte = int(next_parts[1]) - 1
+                except ValueError:
+                    end_byte = None
 
         rows.append(
             {
@@ -163,107 +146,120 @@ def parse_idx(idx_text: str) -> list[dict[str, Any]]:
     return rows
 
 
-def forecast_period_from_line(line: str) -> tuple[int | None, int | None]:
-    """Return start/end forecast-hour window if present in the IDX line."""
+def forecast_period_matches(line: str, fxx: int) -> bool:
+    """
+    Match exact one-hour forecast periods:
+    f001 = 0-1 hour fcst
+    f002 = 1-2 hour fcst
+    etc.
+    """
+    lower = line.lower()
+    start = fxx - 1
+    end = fxx
+
+    possible_periods = [
+        f"{start}-{end} hour fcst",
+        f"{start}-{end} hour acc fcst",
+    ]
+
+    return any(period in lower for period in possible_periods)
+
+
+def is_probability_threshold_line(line: str) -> bool:
     lower = line.lower()
 
-    match = re.search(r"(\d+)\s*-\s*(\d+)\s*hour", lower)
-    if match:
-        return int(match.group(1)), int(match.group(2))
+    # These are probability-of-exceedance/categorical threshold lines.
+    # They are not the actual lightning probability value we want.
+    bad_patterns = [
+        "prob >",
+        "prob >=",
+        "prob <",
+        "prob <=",
+        "% level",
+        "prob fcst",
+    ]
 
-    match = re.search(r"(\d+)\s*hour", lower)
-    if match:
-        hour = int(match.group(1))
-        return hour, hour
-
-    return None, None
+    return any(pattern in lower for pattern in bad_patterns)
 
 
-def is_lightning_probability_line(line: str) -> bool:
+def is_lightning_candidate_line(line: str, fxx: int) -> bool:
+    """
+    Prefer actual thunder/lightning probability fields, not threshold-probability lines.
+
+    This intentionally excludes lines containing:
+    - prob >
+    - prob fcst
+    - percentile levels
+
+    because those can produce false 100% outputs.
+    """
     upper = line.upper()
-    lower = line.lower()
 
-    has_lightning_term = any(
-        term in upper
-        for term in (
-            ":TSTM:",
-            ":LTNG:",
-            ":LTP:",
-            "LIGHTNING",
-            "THUNDER",
-            "TSTM",
-            "LTNG",
-        )
-    )
+    lightning_terms = [
+        ":TSTM:",
+        ":LTNG:",
+        ":LTG:",
+        ":LTP:",
+        ":TSTORM:",
+        ":THUNDER:",
+    ]
 
-    if not has_lightning_term:
+    if not any(term in upper for term in lightning_terms):
         return False
 
-    # NBM Core lightning/thunder fields should be probability-like. Keep this
-    # broad because NBM IDX wording can vary by cycle/version.
-    has_probability_term = (
-        "PROB" in upper
-        or "PROBABILITY" in upper
-        or "%" in line
-        or "thunder" in lower
-        or "tstm" in lower
-        or "ltng" in lower
-    )
-
-    if not has_probability_term:
+    if not forecast_period_matches(line, fxx):
         return False
 
-    # Avoid unrelated products if NBM ever adds diagnostic thunder fields.
-    if any(bad in upper for bad in ("APCP", "ASNOW", "GUST", "VIS", "TMP", "TMAX", "TMIN")):
+    if is_probability_threshold_line(line):
         return False
 
     return True
 
 
-def lightning_row_score(row: dict[str, Any], fxx: int) -> tuple[int, int, int]:
+def is_lightning_fallback_line(line: str, fxx: int) -> bool:
     """
-    Higher score is better.
+    Last-resort fallback only.
 
-    Prefer rows ending at the target fxx and, when multiple valid periods exist,
-    prefer the shortest period. Then prefer explicit probability wording.
+    Some NBM Core inventories may store thunder probability as a probability-style field.
+    If no clean deterministic/probability field is present, this fallback allows a thunder
+    probability line, but still rejects percentiles and unrelated fields.
     """
-    line = row["line"]
     upper = line.upper()
-    start, end = forecast_period_from_line(line)
+    lower = line.lower()
 
-    exact_end_score = 0
-    duration_score = 0
+    lightning_terms = [
+        ":TSTM:",
+        ":LTNG:",
+        ":LTG:",
+        ":LTP:",
+        ":TSTORM:",
+        ":THUNDER:",
+    ]
 
-    if end == fxx:
-        exact_end_score = 100
-        if start is not None:
-            duration = max(0, end - start)
-            duration_score = max(0, 50 - duration)
+    if not any(term in upper for term in lightning_terms):
+        return False
 
-    probability_score = 10 if "PROB" in upper or "PROBABILITY" in upper else 0
-    direct_term_score = 5 if ":TSTM:" in upper or ":LTNG:" in upper else 0
+    if not forecast_period_matches(line, fxx):
+        return False
 
-    return exact_end_score + duration_score + probability_score + direct_term_score, probability_score, direct_term_score
+    if "% level" in lower:
+        return False
+
+    return True
 
 
-def find_lightning_probability_row(idx_rows: list[dict[str, Any]], fxx: int) -> dict[str, Any] | None:
-    candidates = [row for row in idx_rows if is_lightning_probability_line(row["line"])]
+def find_lightning_row(idx_rows: list[dict[str, Any]], fxx: int) -> dict[str, Any] | None:
+    clean_candidates = [row for row in idx_rows if is_lightning_candidate_line(row["line"], fxx)]
 
-    if not candidates:
-        return None
+    if clean_candidates:
+        return clean_candidates[0]
 
-    # First choice: line period ends at fxx.
-    ending_at_fxx = []
-    for row in candidates:
-        _, end = forecast_period_from_line(row["line"])
-        if end == fxx:
-            ending_at_fxx.append(row)
+    fallback_candidates = [row for row in idx_rows if is_lightning_fallback_line(row["line"], fxx)]
 
-    if ending_at_fxx:
-        return max(ending_at_fxx, key=lambda r: lightning_row_score(r, fxx))
+    if fallback_candidates:
+        return fallback_candidates[0]
 
-    # Fallback: first probability-like lightning row in the file.
-    return max(candidates, key=lambda r: lightning_row_score(r, fxx))
+    return None
 
 
 def download_grib_message(grib_url: str, row: dict[str, Any], path: Path) -> None:
@@ -280,6 +276,7 @@ def download_grib_message(grib_url: str, row: dict[str, Any], path: Path) -> Non
             response.raise_for_status()
 
             content = response.content
+
             if len(content) < 100:
                 raise RuntimeError(f"Downloaded GRIB message too small: {len(content)} bytes")
 
@@ -325,6 +322,7 @@ def find_lat_lon_names(ds: xr.Dataset) -> tuple[str, str]:
 
 def nearest_grid_value(ds: xr.Dataset) -> tuple[str, float]:
     data_vars = list(ds.data_vars)
+
     if not data_vars:
         raise RuntimeError("No data variables in GRIB message.")
 
@@ -353,7 +351,7 @@ def nearest_grid_value(ds: xr.Dataset) -> tuple[str, float]:
         iy, ix = [int(v) for v in divmod(int(dist2.argmin()), dist2.shape[1])]
 
         dims = ds[var_name].dims
-        indexers: dict[str, int] = {}
+        indexers = {}
 
         if lat.dims:
             for dim, idx in zip(lat.dims, [iy, ix]):
@@ -397,14 +395,52 @@ def extract_core_value(grib_url: str, row: dict[str, Any], label: str) -> tuple[
         return extract_value_from_message(path)
 
 
-def normalize_probability(value: float) -> float:
+def normalize_probability(raw_value: float) -> float:
     """
-    NBM probability fields are normally percent values, but this protects against
-    0-1 probability fields if encountered.
+    Convert lightning field value to percent.
+
+    Supports:
+    - 0 to 100 percent
+    - 0 to 1 fraction
+
+    Rejects impossible values by clipping after conversion.
     """
+    value = float(raw_value)
+
     if value <= 1.0:
-        return max(0.0, min(100.0, value * 100.0))
-    return max(0.0, min(100.0, value))
+        value *= 100.0
+
+    return round(max(0.0, min(100.0, value)), 1)
+
+
+def probability_to_likelihood(probability: float) -> int:
+    if probability >= 90:
+        return 5
+    if probability >= 66:
+        return 4
+    if probability >= 33:
+        return 3
+    if probability >= 10:
+        return 2
+    return 1
+
+
+def matrix_risk(probability: float, impact_level: int) -> int:
+    if probability <= 0:
+        return 0
+
+    likelihood = probability_to_likelihood(probability)
+
+    matrix = {
+        1: {1: 1, 2: 1, 3: 1, 4: 2, 5: 2},
+        2: {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
+        3: {1: 1, 2: 2, 3: 2, 4: 3, 5: 4},
+        4: {1: 1, 2: 2, 3: 3, 4: 4, 5: 4},
+        5: {1: 1, 2: 2, 3: 3, 4: 4, 5: 5},
+    }
+
+    safe_impact = max(1, min(5, int(impact_level)))
+    return matrix[likelihood][safe_impact]
 
 
 def risk_label(risk: int) -> str:
@@ -418,67 +454,50 @@ def risk_label(risk: int) -> str:
     }.get(risk, "Unknown")
 
 
-def evaluate_lightning_probability(probability: float) -> dict[str, Any]:
-    probability = round(float(probability), 1)
-
+def classify_lightning_probability(probability: float) -> dict[str, Any]:
     if probability <= 0:
         return {
-            "prob": 0.0,
+            "probability": 0.0,
+            "impact_level": 1,
             "risk": 0,
             "risk_label": "None",
-            "level": 1,
-            "metric": "<5%",
+            "metric": "Lightning chance: 0%",
             "ops_label": "No lightning signal",
-            "driver": "0.0% chance of lightning",
-            "threshold_key": "zero_lightning",
         }
 
-    for item in LIGHTNING_BINS:
-        if item["min_prob"] <= probability < item["max_prob"]:
+    for threshold in LIGHTNING_IMPACT_THRESHOLDS:
+        if probability >= threshold["min_prob"]:
+            impact_level = int(threshold["impact_level"])
+            risk = matrix_risk(probability, impact_level)
+
             return {
-                "prob": probability,
-                "risk": int(item["risk"]),
-                "risk_label": risk_label(int(item["risk"])),
-                "level": int(item["impact_level"]),
-                "metric": item["metric"],
-                "ops_label": item["ops_label"],
-                "driver": f"{probability:.1f}% chance of lightning",
-                "threshold_key": item["key"],
+                "probability": round(float(probability), 1),
+                "impact_level": impact_level,
+                "risk": risk,
+                "risk_label": risk_label(risk),
+                "metric": threshold["metric"],
+                "ops_label": threshold["ops_label"],
             }
 
-    top = LIGHTNING_BINS[-1]
     return {
-        "prob": probability,
-        "risk": int(top["risk"]),
-        "risk_label": risk_label(int(top["risk"])),
-        "level": int(top["impact_level"]),
-        "metric": top["metric"],
-        "ops_label": top["ops_label"],
-        "driver": f"{probability:.1f}% chance of lightning",
-        "threshold_key": top["key"],
-    }
-
-
-def no_lightning_hour(fxx: int, valid_utc: str, message: str = "No lightning probability row found") -> dict[str, Any]:
-    evaluated = evaluate_lightning_probability(0.0)
-    return {
-        "fxx": fxx,
-        "valid_utc": valid_utc,
-        "status": "missing",
-        "message": message,
-        "probability_percent": 0.0,
-        "risk_evaluation": evaluated,
+        "probability": round(float(probability), 1),
+        "impact_level": 1,
+        "risk": matrix_risk(probability, 1),
+        "risk_label": risk_label(matrix_risk(probability, 1)),
+        "metric": "Lightning chance: <5%",
+        "ops_label": "No meaningful lightning operational impact",
     }
 
 
 def load_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
     if not path.exists():
         return fallback
+
     return json.loads(path.read_text())
 
 
 def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
-    results: list[dict[str, Any]] = []
+    results = []
 
     for fxx in FXX_HOURS:
         print(f"Processing Core lightning f{fxx:03d}")
@@ -492,28 +511,50 @@ def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
             idx_rows = parse_idx(idx_text)
         except Exception as exc:
             results.append(
-                no_lightning_hour(
-                    fxx=fxx,
-                    valid_utc=valid_utc,
-                    message=f"Could not fetch/parse IDX: {exc}",
-                )
+                {
+                    "fxx": fxx,
+                    "valid_utc": valid_utc,
+                    "status": "error",
+                    "message": f"Could not fetch/parse IDX: {exc}",
+                    "probability": 0.0,
+                    "raw_value": None,
+                    "idx_line": None,
+                    "risk_evaluation": classify_lightning_probability(0.0),
+                }
             )
             continue
 
-        row = find_lightning_probability_row(idx_rows, fxx)
+        row = find_lightning_row(idx_rows, fxx)
 
         if row is None:
-            results.append(no_lightning_hour(fxx=fxx, valid_utc=valid_utc))
+            results.append(
+                {
+                    "fxx": fxx,
+                    "valid_utc": valid_utc,
+                    "status": "missing",
+                    "message": "No Core thunder/lightning probability row found",
+                    "probability": 0.0,
+                    "raw_value": None,
+                    "idx_line": None,
+                    "risk_evaluation": classify_lightning_probability(0.0),
+                    "candidate_lines": [
+                        r["line"]
+                        for r in idx_rows
+                        if any(term in r["line"].upper() for term in [":TSTM:", ":LTNG:", ":LTG:", ":LTP:", ":TSTORM:", ":THUNDER:"])
+                    ],
+                }
+            )
             continue
 
         try:
-            var_name, raw_probability = extract_core_value(
+            var_name, raw_value = extract_core_value(
                 grib_url=grib_url,
                 row=row,
                 label=f"core_lightning_f{fxx:03d}",
             )
-            probability = round(normalize_probability(float(raw_probability)), 1)
-            evaluated = evaluate_lightning_probability(probability)
+
+            probability = normalize_probability(raw_value)
+            evaluation = classify_lightning_probability(probability)
 
             results.append(
                 {
@@ -522,11 +563,11 @@ def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
                     "status": "ok",
                     "grib_url": grib_url,
                     "idx_url": idx_url,
-                    "idx_line": row["line"],
                     "variable": var_name,
-                    "raw_probability_value": float(raw_probability),
-                    "probability_percent": probability,
-                    "risk_evaluation": evaluated,
+                    "raw_value": float(raw_value),
+                    "probability": probability,
+                    "idx_line": row["line"],
+                    "risk_evaluation": evaluation,
                 }
             )
 
@@ -537,49 +578,73 @@ def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
                     "valid_utc": valid_utc,
                     "status": "error",
                     "message": str(exc),
-                    "grib_url": grib_url,
-                    "idx_url": idx_url,
+                    "probability": 0.0,
+                    "raw_value": None,
                     "idx_line": row["line"],
-                    "probability_percent": 0.0,
-                    "risk_evaluation": evaluate_lightning_probability(0.0),
+                    "risk_evaluation": classify_lightning_probability(0.0),
                 }
             )
 
     return results
 
 
-def best_lightning_result(hours: list[dict[str, Any]]) -> dict[str, Any]:
-    if not hours:
-        return evaluate_lightning_probability(0.0) | {"fxx": 1, "valid_utc": None}
+def best_lightning_result(ok_hours: list[dict[str, Any]]) -> dict[str, Any]:
+    if not ok_hours:
+        return classify_lightning_probability(0.0)
 
     best_hour = max(
-        hours,
+        ok_hours,
         key=lambda h: (
-            int(h.get("risk_evaluation", {}).get("risk", 0)),
-            float(h.get("probability_percent", 0.0)),
+            h["risk_evaluation"]["risk"],
+            h["risk_evaluation"]["probability"],
+            h["risk_evaluation"]["impact_level"],
         ),
     )
 
-    result = dict(best_hour["risk_evaluation"])
-    result["fxx"] = best_hour["fxx"]
-    result["valid_utc"] = best_hour["valid_utc"]
-    result["source_status"] = best_hour.get("status")
-    result["source_idx_line"] = best_hour.get("idx_line")
-    return result
+    return {
+        **best_hour["risk_evaluation"],
+        "fxx": best_hour["fxx"],
+        "valid_utc": best_hour["valid_utc"],
+        "raw_value": best_hour.get("raw_value"),
+        "idx_line": best_hour.get("idx_line"),
+        "variable": best_hour.get("variable"),
+    }
 
 
 def block_lightning_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
     if not block_hours:
-        return evaluate_lightning_probability(0.0)
+        evaluation = classify_lightning_probability(0.0)
+        return {
+            "prob": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "level": 1,
+            "metric": "Lightning chance: 0%",
+            "ops_label": "No lightning signal",
+            "driver": "0.0% chance of lightning",
+        }
 
-    max_prob = max(float(h.get("probability_percent", 0.0)) for h in block_hours)
-    evaluated = evaluate_lightning_probability(max_prob)
+    best_hour = max(
+        block_hours,
+        key=lambda h: (
+            h["risk_evaluation"]["risk"],
+            h["risk_evaluation"]["probability"],
+            h["risk_evaluation"]["impact_level"],
+        ),
+    )
 
-    source_hour = max(block_hours, key=lambda h: float(h.get("probability_percent", 0.0)))
-    evaluated["source_fxx"] = source_hour.get("fxx")
-    evaluated["source_valid_utc"] = source_hour.get("valid_utc")
+    evaluation = best_hour["risk_evaluation"]
 
-    return evaluated
+    return {
+        "prob": round(float(evaluation["probability"]), 1),
+        "risk": int(evaluation["risk"]),
+        "risk_label": evaluation["risk_label"],
+        "level": int(evaluation["impact_level"]),
+        "metric": evaluation["metric"],
+        "ops_label": evaluation["ops_label"],
+        "source_fxx": best_hour["fxx"],
+        "driver": f"{evaluation['probability']:.1f}% chance of lightning",
+    }
 
 
 def main() -> None:
@@ -593,14 +658,23 @@ def main() -> None:
     print(f"Building Core lightning outputs for cycle {cycle:%Y-%m-%d %HZ}")
 
     hours = extract_lightning_hours(cycle)
-    ok_or_missing_hours = [h for h in hours if h.get("status") in {"ok", "missing", "error"}]
+    ok_hours = [h for h in hours if h.get("status") == "ok"]
 
-    if not ok_or_missing_hours:
-        raise RuntimeError("No Core lightning hours processed successfully.")
+    if not ok_hours:
+        print("Warning: No Core lightning hours extracted successfully. Writing zero lightning risk.")
+        ok_hours = [
+            {
+                "fxx": 1,
+                "valid_utc": (cycle + timedelta(hours=1)).isoformat().replace("+00:00", "Z"),
+                "status": "fallback_zero",
+                "probability": 0.0,
+                "risk_evaluation": classify_lightning_probability(0.0),
+            }
+        ]
 
-    best = best_lightning_result(ok_or_missing_hours)
+    best = best_lightning_result(ok_hours)
 
-    peak_fxx = int(best.get("fxx") or 1)
+    peak_fxx = int(best.get("fxx", 1))
     peak_start_fxx = max(1, peak_fxx - 1)
     peak_end_fxx = min(48, peak_fxx + 1)
 
@@ -622,26 +696,27 @@ def main() -> None:
     threats_payload.setdefault("threats", {})
 
     lightning_payload = {
-        "prob": round(float(best["prob"]), 1),
+        "prob": round(float(best["probability"]), 1),
         "risk": int(best["risk"]),
         "risk_label": best["risk_label"],
-        "level": int(best["level"]),
+        "level": int(best["impact_level"]),
         "metric": best["metric"],
         "display_label": "Lightning chance",
-        "display_value": best["metric"],
+        "display_value": f"{best['probability']:.0f}%",
         "window": "1 hr",
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
         "ops_label": best["ops_label"],
-        "driver": best["driver"],
+        "driver": f"{best['probability']:.1f}% chance of lightning",
         "source_fxx": peak_fxx,
-        "source_valid_utc": best.get("valid_utc"),
-        "threshold_bins": LIGHTNING_BINS,
+        "source_variable": best.get("variable"),
+        "source_idx_line": best.get("idx_line"),
         "methodology": (
-            "Lightning risk uses official NBM Core lightning/thunder probability fields at KRNO. "
-            "Operational categories are <5%, 5-25%, 25-50%, 50-75%, and >75% chance, "
-            "corresponding to impact/risk levels 1 through 5 for ramp/safety closure decisions. "
-            "If probability is zero, selected risk is None."
+            "Lightning risk uses the NBM Core one-hour thunder/lightning probability field. "
+            "The extracted probability is classified directly into impact thresholds: "
+            "<5%, 5-25%, 25-50%, 50-75%, and >75%. The probability and impact level are then "
+            "passed through the KRNO weather risk matrix. Probability-threshold fields such as "
+            "'prob >' are excluded so they do not create false 100% lightning risk."
         ),
     }
 
@@ -650,30 +725,46 @@ def main() -> None:
     hazards = threats_payload.setdefault("hazards", [])
     found = False
 
-    hazard_update = {
-        "id": "LIGHTNING",
-        "name": "Lightning",
-        "risk_level": int(best["risk"]),
-        "risk_label": best["risk_label"],
-        "impact_level": int(best["level"]),
-        "probability": round(float(best["prob"]), 1),
-        "peak_start_fxx": peak_start_fxx,
-        "peak_end_fxx": peak_end_fxx,
-        "metric": best["metric"],
-        "display_label": "Lightning chance",
-        "display_value": best["metric"],
-        "ops_label": best["ops_label"],
-        "driver": best["driver"],
-    }
-
     for hazard in hazards:
         if hazard.get("id") == "LIGHTNING":
-            hazard.update(hazard_update)
+            hazard.update(
+                {
+                    "id": "LIGHTNING",
+                    "name": "Lightning",
+                    "risk_level": int(best["risk"]),
+                    "risk_label": best["risk_label"],
+                    "impact_level": int(best["impact_level"]),
+                    "probability": round(float(best["probability"]), 1),
+                    "peak_start_fxx": peak_start_fxx,
+                    "peak_end_fxx": peak_end_fxx,
+                    "metric": best["metric"],
+                    "display_label": "Lightning chance",
+                    "display_value": f"{best['probability']:.0f}%",
+                    "ops_label": best["ops_label"],
+                    "driver": f"{best['probability']:.1f}% chance of lightning",
+                }
+            )
             found = True
             break
 
     if not found:
-        hazards.append(hazard_update)
+        hazards.append(
+            {
+                "id": "LIGHTNING",
+                "name": "Lightning",
+                "risk_level": int(best["risk"]),
+                "risk_label": best["risk_label"],
+                "impact_level": int(best["impact_level"]),
+                "probability": round(float(best["probability"]), 1),
+                "peak_start_fxx": peak_start_fxx,
+                "peak_end_fxx": peak_end_fxx,
+                "metric": best["metric"],
+                "display_label": "Lightning chance",
+                "display_value": f"{best['probability']:.0f}%",
+                "ops_label": best["ops_label"],
+                "driver": f"{best['probability']:.1f}% chance of lightning",
+            }
+        )
 
     # Update timeline.json.
     # Frontend expects 16 blocks x 3 hours = 48 hours.
@@ -711,14 +802,14 @@ def main() -> None:
             else {}
         )
 
-        block_hours = [h for h in ok_or_missing_hours if start_fxx <= int(h["fxx"]) <= end_fxx]
+        block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
         block_eval = block_lightning_risk(block_hours)
 
         new_block = dict(old_block)
         new_block["start_fxx"] = start_fxx
         new_block["end_fxx"] = end_fxx
-        new_block["LIGHTNING"] = round(float(block_eval["prob"]), 1)
-        new_block["lightning_prob"] = round(float(block_eval["prob"]), 1)
+        new_block["LIGHTNING"] = block_eval["prob"]
+        new_block["ltng_prob"] = block_eval["prob"]
 
         new_hazard_block = dict(old_hazards)
         new_hazard_block["LIGHTNING"] = block_eval
@@ -739,11 +830,11 @@ def main() -> None:
         "generated_utc": generated,
         "hazard": "LIGHTNING",
         "selected_risk": best,
-        "threshold_bins": LIGHTNING_BINS,
+        "thresholds": LIGHTNING_IMPACT_THRESHOLDS,
         "hours": hours,
         "methodology": (
-            "Core lightning/thunder probabilities are used directly for KRNO ramp/safety closure risk. "
-            "Categories are <5%, 5-25%, 25-50%, 50-75%, and >75% chance."
+            "Uses actual NBM Core one-hour thunder/lightning probability when available. "
+            "Excludes probability-threshold lines containing 'prob >', 'prob fcst', or percentile levels."
         ),
     }
 
