@@ -1,11 +1,791 @@
 {
   "summary": {
-    "total_findings": 161,
-    "text_findings": 136,
-    "timeline_json_findings": 22,
-    "threats_json_findings": 3
+    "total_findings": 352,
+    "text_findings": 352,
+    "timeline_json_findings": 0,
+    "threats_json_findings": 0
   },
   "timeline_writers": [
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 13,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 19,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlockHazards = null;   // timeline.json block_hazards\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 25,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 31,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 37,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// NBM blocks from timeline.json (assigned to module-scope vars)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 43,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"path = Path(\\\"docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 49,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"\\\"message\\\": \\\"docs/timeline.json does not exist\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 55,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"(OUT / \\\"timeline.json\\\").write_text(json.dumps(timeline, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 61,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 67,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 73,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 79,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json FZRA\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 85,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 91,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 97,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 103,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json SNOW\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 109,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 115,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 121,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 127,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 133,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 139,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 145,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 151,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 157,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 163,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 169,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 175,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json VISIBILITY fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 181,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 187,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 193,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 199,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json WIND fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 205,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 211,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 217,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 223,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 249,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 255,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlockHazards = null;   // timeline.json block_hazards\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 261,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 267,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 273,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// NBM blocks from timeline.json (assigned to module-scope vars)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 285,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 330,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 336,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 342,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 348,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 354,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 360,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 366,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 372,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 378,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 384,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 390,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 396,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 402,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 408,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 414,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 420,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 426,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 432,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 438,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 444,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 450,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 456,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 462,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 468,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 474,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 480,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 486,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 492,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 498,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 504,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 510,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 516,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 549,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"path = Path(\\\"docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 555,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"\\\"message\\\": \\\"docs/timeline.json does not exist\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 579,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"(OUT / \\\"timeline.json\\\").write_text(json.dumps(timeline, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 585,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 597,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 603,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 609,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 615,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json FZRA\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 645,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 651,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 657,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 663,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json SNOW\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 699,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 705,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 711,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 717,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 789,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 795,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 801,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 807,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 843,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 849,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 855,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 861,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 915,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json VISIBILITY fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 921,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 927,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 933,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 981,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json WIND fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 987,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 993,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 999,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1029,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1035,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1044,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1054,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1064,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1074,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1084,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1094,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1104,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1114,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1124,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1134,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1144,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1154,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1164,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1174,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1184,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1194,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1204,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1214,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1224,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1234,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1244,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1254,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
     {
       "file": "docs/index.html",
       "line": 497,
@@ -104,67 +884,67 @@
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 432,
+      "line": 451,
       "pattern": "timeline_writer",
       "text": "# Update timeline.json."
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 435,
+      "line": 452,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 504,
+      "line": 507,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 537,
+      "line": 540,
       "pattern": "timeline_writer",
       "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 777,
+      "line": 793,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 842,
+      "line": 858,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 872,
+      "line": 888,
       "pattern": "timeline_writer",
-      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
+      "text": "print(\"Updated docs/timeline.json RAIN\")"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 645,
+      "line": 649,
       "pattern": "timeline_writer",
       "text": "# Update timeline.json."
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 646,
+      "line": 650,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 698,
+      "line": 705,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 734,
+      "line": 741,
       "pattern": "timeline_writer",
       "text": "print(\"Updated docs/timeline.json WIND\")"
     },
@@ -225,12 +1005,6 @@
   ],
   "findings": [
     {
-      "file": "data/nbm_qmd_rain.json",
-      "line": 6,
-      "pattern": "rain_flooding_key",
-      "text": "\"hazard\": \"RAIN_FLOODING\","
-    },
-    {
       "file": "data/nbm_qmd_wind.json",
       "line": 54,
       "pattern": "little_to_none_literal",
@@ -241,6 +1015,1536 @@
       "line": 65,
       "pattern": "little_to_none_literal",
       "text": "\"risk_label\": \"Little to None\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 903,
+      "pattern": "range_8_blocks",
+      "text": "\"text\": \"for bi in range(8):\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 969,
+      "pattern": "range_8_blocks",
+      "text": "\"text\": \"for bi in range(8):\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 909,
+      "pattern": "while_len_blocks_8",
+      "text": "\"text\": \"while len(blocks) < 8:\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 975,
+      "pattern": "while_len_blocks_8",
+      "text": "\"text\": \"while len(blocks) < 8:\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 145,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 231,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"hazard\\\": \\\"RAIN_FLOODING\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 309,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 333,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 339,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 345,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 351,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 357,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 363,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 369,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 375,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 381,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 387,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 393,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 399,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 405,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 411,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 417,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 423,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": 0.0\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 429,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 435,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 441,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 447,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 453,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 459,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 465,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 471,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 477,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 483,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 489,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 495,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 501,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 507,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 513,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 519,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"RAIN_FLOODING\\\": {\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 525,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"rain_flooding_key\\\": re.compile(r\\\"RAIN_FLOODING\\\"),\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 531,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"if \\\"RAIN_FLOODING\\\" in threats:\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 537,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"key\\\": \\\"RAIN_FLOODING\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 543,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"message\\\": \\\"Use RAIN only unless frontend explicitly needs RAIN_FLOODING.\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 759,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"threats_payload[\\\"threats\\\"][\\\"RAIN_FLOODING\\\"] = rain_payload\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 765,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"new_block[\\\"RAIN_FLOODING\\\"] = matching_window.get(\\\"display_apcp_in\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 771,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"new_hazard_block[\\\"RAIN_FLOODING\\\"] = rain_block\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 777,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"\\\"hazard\\\": \\\"RAIN_FLOODING\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 783,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 789,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 807,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 825,
+      "pattern": "rain_flooding_key",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1266,
+      "pattern": "rain_flooding_key",
+      "text": "\"key\": \"RAIN_FLOODING\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1267,
+      "pattern": "rain_flooding_key",
+      "text": "\"message\": \"Use RAIN only unless frontend explicitly needs RAIN_FLOODING.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 52,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 58,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 576,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 582,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 588,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 594,
+      "pattern": "mock_builder_reference",
+      "text": "\"file\": \"scripts/build_mock_outputs.py\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 13,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 19,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlockHazards = null;   // timeline.json block_hazards\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 25,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 31,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 37,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// NBM blocks from timeline.json (assigned to module-scope vars)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 43,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"path = Path(\\\"docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 49,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"\\\"message\\\": \\\"docs/timeline.json does not exist\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 55,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"(OUT / \\\"timeline.json\\\").write_text(json.dumps(timeline, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 61,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 67,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 73,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 79,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json FZRA\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 85,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 91,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 97,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 103,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json SNOW\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 109,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 115,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 121,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 127,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 133,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 139,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 145,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 151,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 157,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 163,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 169,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 175,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json VISIBILITY fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 181,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 187,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 193,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 199,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json WIND fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 205,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 211,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 217,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 223,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 249,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 255,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"let nbmBlockHazards = null;   // timeline.json block_hazards\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 261,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 267,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 273,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// NBM blocks from timeline.json (assigned to module-scope vars)\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 285,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 330,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 336,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 342,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 348,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 354,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 360,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 366,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 372,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 378,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 384,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 390,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 396,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 402,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 408,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 414,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 420,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 426,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 432,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 438,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 444,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 450,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 456,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 462,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 468,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 474,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 480,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 486,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 492,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 498,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 504,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 510,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 516,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 549,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"path = Path(\\\"docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 555,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"\\\"message\\\": \\\"docs/timeline.json does not exist\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 579,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"(OUT / \\\"timeline.json\\\").write_text(json.dumps(timeline, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 585,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 597,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 603,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 609,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 615,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json FZRA\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 645,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 651,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 657,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 663,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json SNOW\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 699,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 705,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 711,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 717,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 789,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 795,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 801,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 807,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 843,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 849,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 855,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 861,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 915,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json VISIBILITY fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 921,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 927,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 933,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 981,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"# Update timeline.json WIND fields while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 987,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path = DOCS / \\\"timeline.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 993,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"timeline_path.write_text(json.dumps(timeline_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 999,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/timeline.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1029,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1035,
+      "pattern": "timeline_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1044,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1054,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1064,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1074,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1084,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1094,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1104,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1114,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1124,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1134,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1144,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1154,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1164,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1174,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1184,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1194,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1204,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1214,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1224,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1234,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1244,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1254,
+      "pattern": "timeline_writer",
+      "text": "\"file\": \"docs/timeline.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 31,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 61,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 223,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 267,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 279,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"const _threatsFile  = _testMode ? `threats_${_testMode}.json`  : 'threats.json';\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 285,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"// GitHub Actions writes threats.json and timeline.json every hour\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 291,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"// peak_start_fxx values in threats.json are offsets from this time\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 306,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 312,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 318,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 324,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 561,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"path = Path(\\\"docs/threats.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 567,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"\\\"message\\\": \\\"docs/threats.json does not exist\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 585,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 591,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"(OUT / \\\"threats.json\\\").write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 597,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Wrote docs/threats.json and docs/timeline.json\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 621,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update docs/threats.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 627,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 633,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json FZRA\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 669,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update threats.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 675,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 681,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 687,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json SNOW\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 723,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update threats.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 729,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 735,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 741,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 783,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 813,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 819,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 825,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json RAIN / RAIN_FLOODING\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 867,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update threats.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 873,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 879,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 885,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 939,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update threats.json while preserving other hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 945,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 951,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 957,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json VISIBILITY\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1005,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"# Update threats.json while preserving non-wind mock hazards.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1011,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path = DOCS / \\\"threats.json\\\"\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1017,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"threats_path.write_text(json.dumps(threats_payload, indent=2))\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1023,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"print(\\\"Updated docs/threats.json WIND\\\")\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1029,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1035,
+      "pattern": "threats_writer",
+      "text": "\"text\": \"- Write docs/threats.json and docs/timeline.json.\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1264,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1270,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1279,
+      "pattern": "threats_writer",
+      "text": "\"file\": \"docs/threats.json\","
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 237,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"risk_label\\\": \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 243,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"risk_label\\\": \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 297,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"<div class=\\\"flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold\\\"><div class=\\\"w-3 h-3\\\" style=\\\"background-color: #3f3f46;\\\"></div>Little to None</div>\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 303,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: { name: \\\"Little to None\\\", color: '#3f3f46', textColor: '#71717a' },\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 315,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"risk_label\\\": \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 321,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"risk_label\\\": \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 327,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"risk_label\\\": \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 573,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"\\\"little_to_none_literal\\\": re.compile(r\\\"Little to None\\\"),\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 639,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 693,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 747,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1 = Little to None\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 753,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 831,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 837,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"not Little to None. This matches the rule we are applying across hazards:\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 891,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1 = Little to None\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 897,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 963,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"- Impact 1 = Little to None\""
+    },
+    {
+      "file": "data/repo_audit_report.json",
+      "line": 1041,
+      "pattern": "little_to_none_literal",
+      "text": "\"text\": \"1: \\\"Little to None\\\",\""
     },
     {
       "file": "docs/index.html",
@@ -304,12 +2608,6 @@
     },
     {
       "file": "docs/threats.json",
-      "line": 3554,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/threats.json",
       "line": 11,
       "pattern": "little_to_none_literal",
       "text": "\"risk_label\": \"Little to None\","
@@ -322,201 +2620,21 @@
     },
     {
       "file": "docs/threats.json",
-      "line": 4371,
+      "line": 3566,
       "pattern": "little_to_none_literal",
       "text": "\"risk_label\": \"Little to None\","
     },
     {
       "file": "docs/timeline.json",
-      "line": 23,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
+      "line": 495,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
     },
     {
       "file": "docs/timeline.json",
-      "line": 40,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 57,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 74,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 91,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 108,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 125,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 142,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 159,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 176,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 193,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 210,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 227,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 244,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 261,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 278,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": 0.0"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 351,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 433,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 515,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 597,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 679,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 761,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 843,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 925,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1005,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1085,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1165,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1245,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1325,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1405,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1485,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
-    },
-    {
-      "file": "docs/timeline.json",
-      "line": 1565,
-      "pattern": "rain_flooding_key",
-      "text": "\"RAIN_FLOODING\": {"
+      "line": 570,
+      "pattern": "little_to_none_literal",
+      "text": "\"risk_label\": \"Little to None\","
     },
     {
       "file": "scripts/audit_repo_outputs.py",
@@ -694,205 +2812,163 @@
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 432,
+      "line": 451,
       "pattern": "timeline_writer",
       "text": "# Update timeline.json."
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 435,
+      "line": 452,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 504,
+      "line": 507,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 537,
+      "line": 540,
       "pattern": "timeline_writer",
       "text": "print(\"Updated docs/timeline.json VISIBILITY\")"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 341,
+      "line": 366,
       "pattern": "threats_writer",
       "text": "# Update threats.json."
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 342,
+      "line": 367,
       "pattern": "threats_writer",
       "text": "threats_path = DOCS / \"threats.json\""
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 430,
+      "line": 449,
       "pattern": "threats_writer",
       "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 536,
+      "line": 539,
       "pattern": "threats_writer",
       "text": "print(\"Updated docs/threats.json VISIBILITY\")"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 112,
+      "line": 103,
       "pattern": "little_to_none_literal",
       "text": "1 = Little to None"
     },
     {
       "file": "scripts/build_real_core_visibility_outputs.py",
-      "line": 139,
+      "line": 130,
       "pattern": "little_to_none_literal",
       "text": "1: \"Little to None\","
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 727,
-      "pattern": "rain_flooding_key",
-      "text": "threats_payload[\"threats\"][\"RAIN_FLOODING\"] = rain_payload"
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 829,
-      "pattern": "rain_flooding_key",
-      "text": "new_block[\"RAIN_FLOODING\"] = matching_window.get(\"display_apcp_in\")"
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 833,
-      "pattern": "rain_flooding_key",
-      "text": "new_hazard_block[\"RAIN_FLOODING\"] = rain_block"
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 849,
-      "pattern": "rain_flooding_key",
-      "text": "\"hazard\": \"RAIN_FLOODING\","
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 871,
-      "pattern": "rain_flooding_key",
-      "text": "print(\"Updated docs/threats.json RAIN / RAIN_FLOODING\")"
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 872,
-      "pattern": "rain_flooding_key",
-      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
-    },
-    {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 777,
+      "line": 793,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 842,
+      "line": 858,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 872,
+      "line": 888,
       "pattern": "timeline_writer",
-      "text": "print(\"Updated docs/timeline.json RAIN / RAIN_FLOODING\")"
+      "text": "print(\"Updated docs/timeline.json RAIN\")"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 681,
+      "line": 696,
       "pattern": "threats_writer",
       "text": "threats_path = DOCS / \"threats.json\""
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 841,
+      "line": 857,
       "pattern": "threats_writer",
       "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 871,
+      "line": 887,
       "pattern": "threats_writer",
-      "text": "print(\"Updated docs/threats.json RAIN / RAIN_FLOODING\")"
+      "text": "print(\"Updated docs/threats.json RAIN\")"
     },
     {
       "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 400,
+      "line": 395,
       "pattern": "little_to_none_literal",
       "text": "1: \"Little to None\","
     },
     {
-      "file": "scripts/build_real_qmd_rain_outputs.py",
-      "line": 414,
-      "pattern": "little_to_none_literal",
-      "text": "not Little to None. This matches the rule we are applying across hazards:"
-    },
-    {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 645,
+      "line": 649,
       "pattern": "timeline_writer",
       "text": "# Update timeline.json."
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 646,
+      "line": 650,
       "pattern": "timeline_writer",
       "text": "timeline_path = DOCS / \"timeline.json\""
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 698,
+      "line": 705,
       "pattern": "timeline_writer",
       "text": "timeline_path.write_text(json.dumps(timeline_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 734,
+      "line": 741,
       "pattern": "timeline_writer",
       "text": "print(\"Updated docs/timeline.json WIND\")"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 551,
+      "line": 545,
       "pattern": "threats_writer",
       "text": "# Update threats.json."
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 552,
+      "line": 546,
       "pattern": "threats_writer",
       "text": "threats_path = DOCS / \"threats.json\""
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 643,
+      "line": 647,
       "pattern": "threats_writer",
       "text": "threats_path.write_text(json.dumps(threats_payload, indent=2))"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 733,
+      "line": 740,
       "pattern": "threats_writer",
       "text": "print(\"Updated docs/threats.json WIND\")"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 336,
+      "line": 317,
       "pattern": "little_to_none_literal",
       "text": "1 = Little to None"
     },
     {
       "file": "scripts/build_real_qmd_wind_outputs.py",
-      "line": 365,
+      "line": 346,
       "pattern": "little_to_none_literal",
       "text": "1: \"Little to None\","
     },
@@ -1039,250 +3115,6 @@
       "line": 25,
       "pattern": "little_to_none_literal",
       "text": "1: \"Little to None\","
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 0,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 0,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 1,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 1,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 2,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 2,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 3,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 3,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 4,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 4,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 5,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 6,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 7,
-      "hazard": "WIND",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 5
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 7,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 8,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 9,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 10,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 11,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 12,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 13,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 14,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/timeline.json",
-      "type": "zero_probability_not_none_in_timeline",
-      "block_index": 15,
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": null,
-      "level": 4
-    },
-    {
-      "file": "docs/threats.json",
-      "type": "deprecated_key_present",
-      "key": "RAIN_FLOODING",
-      "message": "Use RAIN only unless frontend explicitly needs RAIN_FLOODING."
-    },
-    {
-      "file": "docs/threats.json",
-      "type": "zero_probability_not_none_in_threats",
-      "hazard": "VISIBILITY",
-      "prob": 0.0,
-      "risk": 0,
-      "risk_label": "None",
-      "level": 4
-    },
-    {
-      "file": "docs/threats.json",
-      "type": "zero_probability_not_none_in_hazards_array",
-      "hazard": "VISIBILITY",
-      "probability": 0.0,
-      "risk_level": 0,
-      "risk_label": "None",
-      "impact_level": 4
     }
   ]
 }
