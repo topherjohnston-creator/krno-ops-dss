@@ -103,8 +103,8 @@ def latest_cycle_utc() -> datetime:
     """
     Use a likely-complete NBM cycle.
 
-    QMD/Core files on NOMADS can lag. Use 12-hour lag to reduce
-    partial-cycle 404 failures.
+    NOMADS can lag or briefly return partial files. Use a 12-hour lag to reduce
+    partial-cycle failures.
     """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
@@ -128,7 +128,14 @@ def core_idx_url(cycle: datetime, fxx: int) -> str:
 def fetch_text(url: str, timeout: int = 60) -> str:
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()
-    return response.text
+
+    text = response.text
+    lowered = text[:500].lower()
+
+    if "<html" in lowered or "<!doctype html" in lowered:
+        raise RuntimeError(f"Non-IDX HTML response from {url}")
+
+    return text
 
 
 def parse_idx(idx_text: str) -> list[dict[str, Any]]:
@@ -423,10 +430,10 @@ def no_fzra_best(period: dict[str, Any]) -> dict[str, Any]:
         "threshold_key": "zero_fzra",
         "threshold_mm": 0.0,
         "threshold_in": 0.0,
-        "impact_level": 1,
+        "impact_level": 0,
         "probability": 0.0,
-        "risk": 1,
-        "risk_label": "Little to None",
+        "risk": 0,
+        "risk_label": "None",
         "label": '0" / 6 hr',
         "ops_label": "No freezing rain signal",
         "fxx": period["fxx"],
@@ -531,7 +538,7 @@ def extract_fzra_periods(cycle: datetime) -> list[dict[str, Any]]:
                     **threshold,
                     "probability_percent": round(float(probability), 1),
                     "status": "ok",
-                    "variable": var_name if var_name != "unknown" else "FICEAC",
+                    "variable": var_name,
                     "idx_line": row["line"],
                 }
 
@@ -569,7 +576,7 @@ def extract_fzra_periods(cycle: datetime) -> list[dict[str, Any]]:
                     **threshold,
                     "probability_percent": round(float(probability), 1),
                     "status": "ok",
-                    "variable": var_name if var_name != "unknown" else "FICEAC",
+                    "variable": var_name,
                     "idx_line": row["line"],
                 }
 
@@ -648,19 +655,27 @@ def block_fzra_risk(ok_periods: list[dict[str, Any]], start_fxx: int, end_fxx: i
     if period is None:
         return {
             "prob": 0.0,
-            "risk": 1,
-            "level": 1,
+            "risk": 0,
+            "risk_label": "None",
+            "level": 0,
             "metric": '0" / 6 hr',
-            "driver": "No freezing rain period found",
+            "ops_label": "No freezing rain signal",
+            "fzra_6hr_in": None,
+            "source_fxx": None,
+            "source_window": None,
+            "driver": "No freezing rain signal",
         }
 
     best = period["risk_evaluation"]["best"]
+    prob = round(float(best["probability"]), 1)
+    risk = int(best["risk"])
+    level = int(best["impact_level"])
 
     return {
-        "prob": round(float(best["probability"]), 1),
-        "risk": int(best["risk"]),
-        "risk_label": risk_label(int(best["risk"])),
-        "level": int(best["impact_level"]),
+        "prob": prob,
+        "risk": risk,
+        "risk_label": risk_label(risk),
+        "level": level,
         "threshold_in": best["threshold_in"],
         "threshold_mm": best["threshold_mm"],
         "metric": best["label"],
@@ -668,7 +683,7 @@ def block_fzra_risk(ok_periods: list[dict[str, Any]], start_fxx: int, end_fxx: i
         "fzra_6hr_in": period.get("display_fzra_in"),
         "source_fxx": best["fxx"],
         "source_window": f"f{period['start_fxx']:03d}-f{period['end_fxx']:03d}",
-        "driver": f"{best['probability']:.1f}% chance {best['label']}",
+        "driver": "No freezing rain signal" if prob <= 0 else f"{prob:.1f}% chance {best['label']}",
     }
 
 
@@ -708,16 +723,21 @@ def main() -> None:
     peak_start_fxx = int(best["start_fxx"])
     peak_end_fxx = int(best["end_fxx"])
 
+    selected_prob = round(float(best["probability"]), 1)
+    selected_risk = int(best["risk"])
+    selected_level = int(best["impact_level"])
+    selected_driver = "No freezing rain signal" if selected_prob <= 0 else f"{selected_prob:.1f}% chance {best['label']}"
+
     fzra_payload = {
         "site": SITE,
         "source": "NBM Core direct byte-range download",
         "cycle_utc": cycle.isoformat().replace("+00:00", "Z"),
         "generated_utc": generated,
         "hazard": "FZRA",
-        "prob": round(float(best["probability"]), 1),
-        "risk": int(best["risk"]),
-        "risk_label": risk_label(int(best["risk"])),
-        "level": int(best["impact_level"]),
+        "prob": selected_prob,
+        "risk": selected_risk,
+        "risk_label": risk_label(selected_risk),
+        "level": selected_level,
         "metric": best["label"],
         "display_label": "6-hr freezing rain",
         "display_value": display_value,
@@ -728,14 +748,13 @@ def main() -> None:
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
         "ops_label": best["ops_label"],
-        "driver": f"{best['probability']:.1f}% chance {best['label']}",
+        "driver": selected_driver,
         "diagnostic_probabilities": best_period.get("diagnostic_probabilities", {}),
         "methodology": (
             "Freezing rain risk uses official NBM Core 6-hour FICEAC exceedance probabilities. "
             "Thresholds are >0.01, >0.10, >0.25, and >0.50 inches in 6 hours, mapped to "
             "impact levels 2 through 5. Each threshold probability is passed through the "
-            "probability x impact risk matrix. The >1.00 inch threshold is retained as a "
-            "diagnostic field but is not used as the primary risk driver."
+            "probability x impact risk matrix. If all probabilities are zero, selected risk is None."
         ),
     }
 
@@ -789,48 +808,31 @@ def main() -> None:
     hazards = threats_payload.setdefault("hazards", [])
     found = False
 
+    hazard_update = {
+        "id": "FZRA",
+        "name": "Freezing Rain",
+        "risk_level": selected_risk,
+        "risk_label": risk_label(selected_risk),
+        "impact_level": selected_level,
+        "probability": selected_prob,
+        "peak_start_fxx": peak_start_fxx,
+        "peak_end_fxx": peak_end_fxx,
+        "metric": best["label"],
+        "display_label": "6-hr freezing rain",
+        "display_value": display_value,
+        "fzra_6hr_in": round(float(display_fzra_in), 3) if display_fzra_in is not None else None,
+        "ops_label": best["ops_label"],
+        "driver": selected_driver,
+    }
+
     for hazard in hazards:
         if hazard.get("id") == "FZRA":
-            hazard.update(
-                {
-                    "id": "FZRA",
-                    "name": "Freezing Rain",
-                    "risk_level": int(best["risk"]),
-                    "risk_label": risk_label(int(best["risk"])),
-                    "impact_level": int(best["impact_level"]),
-                    "probability": round(float(best["probability"]), 1),
-                    "peak_start_fxx": peak_start_fxx,
-                    "peak_end_fxx": peak_end_fxx,
-                    "metric": best["label"],
-                    "display_label": "6-hr freezing rain",
-                    "display_value": display_value,
-                    "fzra_6hr_in": round(float(display_fzra_in), 3) if display_fzra_in is not None else None,
-                    "ops_label": best["ops_label"],
-                    "driver": f"{best['probability']:.1f}% chance {best['label']}",
-                }
-            )
+            hazard.update(hazard_update)
             found = True
             break
 
     if not found:
-        hazards.append(
-            {
-                "id": "FZRA",
-                "name": "Freezing Rain",
-                "risk_level": int(best["risk"]),
-                "risk_label": risk_label(int(best["risk"])),
-                "impact_level": int(best["impact_level"]),
-                "probability": round(float(best["probability"]), 1),
-                "peak_start_fxx": peak_start_fxx,
-                "peak_end_fxx": peak_end_fxx,
-                "metric": best["label"],
-                "display_label": "6-hr freezing rain",
-                "display_value": display_value,
-                "fzra_6hr_in": round(float(display_fzra_in), 3) if display_fzra_in is not None else None,
-                "ops_label": best["ops_label"],
-                "driver": f"{best['probability']:.1f}% chance {best['label']}",
-            }
-        )
+        hazards.append(hazard_update)
 
     write_json(threats_path, threats_payload)
 
