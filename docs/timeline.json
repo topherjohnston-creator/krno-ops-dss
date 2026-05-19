@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-19T22:43:20Z",
+  "generated_utc": "2026-05-19T22:52:17Z",
   "cycle_utc_iso": "2026-05-19T06:00:00Z",
   "cycle": "NBM Core 06Z",
   "block_hours": 3,
@@ -21,7 +21,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 4,
@@ -39,7 +40,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 7,
@@ -57,7 +59,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 10,
@@ -75,7 +78,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 13,
@@ -93,7 +97,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 16,
@@ -111,7 +116,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 19,
@@ -129,7 +135,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 22,
@@ -147,7 +154,8 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 25,
@@ -165,7 +173,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 28,
@@ -183,7 +192,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 31,
@@ -201,7 +211,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 34,
@@ -219,7 +230,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 37,
@@ -237,7 +249,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 40,
@@ -254,8 +267,9 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "RAIN": 0.0,
-      "LIGHTNING": 100.0,
-      "lightning_prob": 100.0
+      "LIGHTNING": 0.0,
+      "lightning_prob": 100.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 43,
@@ -272,8 +286,9 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "RAIN": 0.0,
-      "LIGHTNING": 2.0,
-      "lightning_prob": 2.0
+      "LIGHTNING": 0.0,
+      "lightning_prob": 2.0,
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 46,
@@ -291,7 +306,8 @@
       "FZRA": 0.0,
       "RAIN": 0.0,
       "LIGHTNING": 0.0,
-      "lightning_prob": 0.0
+      "lightning_prob": 0.0,
+      "ltng_prob": 0.0
     }
   ],
   "block_hazards": [
@@ -345,12 +361,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 1,
-        "source_valid_utc": "2026-05-19T07:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -427,12 +441,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 4,
-        "source_valid_utc": "2026-05-19T10:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -509,12 +521,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 7,
-        "source_valid_utc": "2026-05-19T13:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -591,12 +601,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 10,
-        "source_valid_utc": "2026-05-19T16:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -673,12 +681,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 13,
-        "source_valid_utc": "2026-05-19T19:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -755,12 +761,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 16,
-        "source_valid_utc": "2026-05-19T22:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -837,12 +841,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 19,
-        "source_valid_utc": "2026-05-20T01:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -919,12 +921,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 22,
-        "source_valid_utc": "2026-05-20T04:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1001,12 +1001,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 25,
-        "source_valid_utc": "2026-05-20T07:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1083,12 +1081,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 28,
-        "source_valid_utc": "2026-05-20T10:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1165,12 +1161,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 31,
-        "source_valid_utc": "2026-05-20T13:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1247,12 +1241,10 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
         "source_fxx": 34,
-        "source_valid_utc": "2026-05-20T16:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1329,12 +1321,9 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
-        "source_fxx": 37,
-        "source_valid_utc": "2026-05-20T19:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1407,16 +1396,13 @@
         "driver": "No rain/flooding signal"
       },
       "LIGHTNING": {
-        "prob": 100.0,
-        "risk": 5,
-        "risk_label": "Extreme",
-        "level": 5,
-        "metric": ">75%",
-        "ops_label": "Ramp/safety closure very likely",
-        "driver": "100.0% chance of lightning",
-        "threshold_key": "gt_75_percent",
-        "source_fxx": 42,
-        "source_valid_utc": "2026-05-21T00:00:00Z"
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 1,
+        "metric": "Lightning chance: 0%",
+        "ops_label": "No lightning signal",
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1489,16 +1475,13 @@
         "driver": "No rain/flooding signal"
       },
       "LIGHTNING": {
-        "prob": 2.0,
-        "risk": 1,
-        "risk_label": "Little to None",
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
-        "ops_label": "Ramp/safety closure unlikely",
-        "driver": "2.0% chance of lightning",
-        "threshold_key": "lt_5_percent",
-        "source_fxx": 45,
-        "source_valid_utc": "2026-05-21T03:00:00Z"
+        "metric": "Lightning chance: 0%",
+        "ops_label": "No lightning signal",
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1575,12 +1558,9 @@
         "risk": 0,
         "risk_label": "None",
         "level": 1,
-        "metric": "<5%",
+        "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "driver": "0.0% chance of lightning",
-        "threshold_key": "zero_lightning",
-        "source_fxx": 46,
-        "source_valid_utc": "2026-05-21T04:00:00Z"
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,

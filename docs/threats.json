@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-19T22:43:20Z",
+  "generated_utc": "2026-05-19T22:52:17Z",
   "cycle_utc_iso": "2026-05-19T06:00:00Z",
   "cycle": "NBM Core 06Z",
   "valid_period": "next_48_hours",
@@ -3489,68 +3489,22 @@
       "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is No rain/flooding signal."
     },
     "LIGHTNING": {
-      "prob": 100.0,
-      "risk": 5,
-      "risk_label": "Extreme",
-      "level": 5,
-      "metric": ">75%",
+      "prob": 0.0,
+      "risk": 0,
+      "risk_label": "None",
+      "level": 1,
+      "metric": "Lightning chance: 0%",
       "display_label": "Lightning chance",
-      "display_value": ">75%",
+      "display_value": "0%",
       "window": "1 hr",
-      "peak_start_fxx": 41,
-      "peak_end_fxx": 43,
-      "ops_label": "Ramp/safety closure very likely",
-      "driver": "100.0% chance of lightning",
-      "source_fxx": 42,
-      "source_valid_utc": "2026-05-21T00:00:00Z",
-      "threshold_bins": [
-        {
-          "key": "lt_5_percent",
-          "min_prob": 0.0,
-          "max_prob": 5.0,
-          "impact_level": 1,
-          "risk": 1,
-          "metric": "<5%",
-          "ops_label": "Ramp/safety closure unlikely"
-        },
-        {
-          "key": "5_to_25_percent",
-          "min_prob": 5.0,
-          "max_prob": 25.0,
-          "impact_level": 2,
-          "risk": 2,
-          "metric": "5-25%",
-          "ops_label": "Ramp/safety closure possible"
-        },
-        {
-          "key": "25_to_50_percent",
-          "min_prob": 25.0,
-          "max_prob": 50.0,
-          "impact_level": 3,
-          "risk": 3,
-          "metric": "25-50%",
-          "ops_label": "Ramp/safety closure increasingly likely"
-        },
-        {
-          "key": "50_to_75_percent",
-          "min_prob": 50.0,
-          "max_prob": 75.0,
-          "impact_level": 4,
-          "risk": 4,
-          "metric": "50-75%",
-          "ops_label": "Ramp/safety closure likely"
-        },
-        {
-          "key": "gt_75_percent",
-          "min_prob": 75.0,
-          "max_prob": 101.0,
-          "impact_level": 5,
-          "risk": 5,
-          "metric": ">75%",
-          "ops_label": "Ramp/safety closure very likely"
-        }
-      ],
-      "methodology": "Lightning risk uses official NBM Core lightning/thunder probability fields at KRNO. Operational categories are <5%, 5-25%, 25-50%, 50-75%, and >75% chance, corresponding to impact/risk levels 1 through 5 for ramp/safety closure decisions. If probability is zero, selected risk is None."
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 2,
+      "ops_label": "No lightning signal",
+      "driver": "0.0% chance of lightning",
+      "source_fxx": 1,
+      "source_variable": "tstm",
+      "source_idx_line": "57:63932269:d=2026051906:TSTM:surface:0-1 hour acc fcst:probability forecast",
+      "methodology": "Lightning risk uses the NBM Core one-hour thunder/lightning probability field. The extracted probability is classified directly into impact thresholds: <5%, 5-25%, 25-50%, 50-75%, and >75%. The probability and impact level are then passed through the KRNO weather risk matrix. Probability-threshold fields such as 'prob >' are excluded so they do not create false 100% lightning risk."
     },
     "FLASH_FREEZE": {
       "prob": 20,
@@ -3574,7 +3528,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-19T06:00:00Z",
-      "generated_utc": "2026-05-19T22:43:07Z",
+      "generated_utc": "2026-05-19T22:52:04Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 0,
@@ -3672,17 +3626,17 @@
     {
       "id": "LIGHTNING",
       "name": "Lightning",
-      "risk_level": 5,
-      "impact_level": 5,
-      "probability": 100.0,
-      "peak_start_fxx": 41,
-      "peak_end_fxx": 43,
-      "metric": ">75%",
-      "driver": "100.0% chance of lightning",
-      "risk_label": "Extreme",
+      "risk_level": 0,
+      "impact_level": 1,
+      "probability": 0.0,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 2,
+      "metric": "Lightning chance: 0%",
+      "driver": "0.0% chance of lightning",
+      "risk_label": "None",
       "display_label": "Lightning chance",
-      "display_value": ">75%",
-      "ops_label": "Ramp/safety closure very likely"
+      "display_value": "0%",
+      "ops_label": "No lightning signal"
     },
     {
       "id": "FLASH_FREEZE",
