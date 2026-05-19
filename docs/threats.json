@@ -1,6 +1,6 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-19T14:47:22Z",
+  "generated_utc": "2026-05-19T15:38:28Z",
   "cycle_utc_iso": "2026-05-19T06:00:00Z",
   "cycle": "NBM Core 06Z",
   "valid_period": "next_48_hours",
@@ -2685,19 +2685,19 @@
     },
     "RAIN": {
       "prob": 0.0,
-      "risk": 1,
-      "risk_label": "Little to None",
-      "level": 1,
-      "metric": "<0.10 in / 6 hr",
+      "risk": 0,
+      "risk_label": "None",
+      "level": 0,
+      "metric": "0.00 in / 6 hr",
       "display_label": "6-hr rainfall",
       "display_value": "0.00\"",
       "rainfall_6hr_in": 0.0,
-      "threshold_in": 0.1,
-      "threshold_mm": 2.54,
+      "threshold_in": 0.0,
+      "threshold_mm": 0.0,
       "window": "6 hr",
       "peak_start_fxx": 0,
       "peak_end_fxx": 6,
-      "driver": "0.0% chance <0.10 in / 6 hr",
+      "driver": "No rain/flooding signal",
       "threshold_probabilities": {
         "f006_0_6hr": {
           "gt_0p10_in_6hr": {
@@ -3486,7 +3486,7 @@
           "valid_utc": "2026-05-21T00:00:00Z"
         }
       ],
-      "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is <0.10 inches in 6 hours with Little to None risk."
+      "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected risk is None and the driver is no rain/flooding signal."
     },
     "LIGHTNING": {
       "prob": 35,
@@ -3519,7 +3519,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-19T00:00:00Z",
-      "generated_utc": "2026-05-19T14:47:08Z",
+      "generated_utc": "2026-05-19T15:38:15Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 1,
@@ -3553,19 +3553,19 @@
     },
     "RAIN_FLOODING": {
       "prob": 0.0,
-      "risk": 1,
-      "risk_label": "Little to None",
-      "level": 1,
-      "metric": "<0.10 in / 6 hr",
+      "risk": 0,
+      "risk_label": "None",
+      "level": 0,
+      "metric": "0.00 in / 6 hr",
       "display_label": "6-hr rainfall",
       "display_value": "0.00\"",
       "rainfall_6hr_in": 0.0,
-      "threshold_in": 0.1,
-      "threshold_mm": 2.54,
+      "threshold_in": 0.0,
+      "threshold_mm": 0.0,
       "window": "6 hr",
       "peak_start_fxx": 0,
       "peak_end_fxx": 6,
-      "driver": "0.0% chance <0.10 in / 6 hr",
+      "driver": "No rain/flooding signal",
       "threshold_probabilities": {
         "f006_0_6hr": {
           "gt_0p10_in_6hr": {
@@ -4354,7 +4354,7 @@
           "valid_utc": "2026-05-21T00:00:00Z"
         }
       ],
-      "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is <0.10 inches in 6 hours with Little to None risk."
+      "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected risk is None and the driver is no rain/flooding signal."
     }
   },
   "hazards": [
@@ -4407,14 +4407,14 @@
     {
       "id": "RAIN",
       "name": "Rain/Flooding",
-      "risk_level": 1,
-      "impact_level": 1,
+      "risk_level": 0,
+      "impact_level": 0,
       "probability": 0.0,
       "peak_start_fxx": 0,
       "peak_end_fxx": 6,
-      "metric": "<0.10 in / 6 hr",
-      "driver": "0.0% chance <0.10 in / 6 hr",
-      "risk_label": "Little to None",
+      "metric": "0.00 in / 6 hr",
+      "driver": "No rain/flooding signal",
+      "risk_label": "None",
       "display_label": "6-hr rainfall",
       "display_value": "0.00\"",
       "rainfall_6hr_in": 0.0
