@@ -50,19 +50,10 @@ def utc_now() -> str:
 
 
 def latest_cycle_utc() -> datetime:
-    """
-    Use an older likely-complete NBM cycle.
-
-    QMD files can lag behind the current NBM cycle on NOMADS.
-    Using the immediately previous 6-hour cycle can fail with 404s,
-    especially for f001. Lag by 12 hours to avoid partially available
-    QMD cycles.
-    """
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
     cycle = now.replace(hour=cycle_hour)
-
-    return cycle - timedelta(hours=12)
+    return cycle - timedelta(hours=6)
 
 
 def extract_core_point_value(cycle: datetime, fxx: int, search: str) -> float:
@@ -157,7 +148,7 @@ def visibility_metric_from_threshold(threshold_sm: float) -> str:
 def extract_hourly_visibility(cycle: datetime) -> list[dict[str, Any]]:
     hourly_results = []
 
-    for fxx in range(1, 49):
+    for fxx in range(1, 25):
         print(f"Processing Core visibility f{fxx:03d}")
 
         valid_utc = (cycle + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z")
@@ -235,6 +226,19 @@ def summarize_threshold_probabilities(ok_hours: list[dict[str, Any]]) -> dict[st
     return max_probs
 
 
+def no_visibility_best(source_hour: dict[str, Any] | None = None) -> dict[str, Any]:
+    return {
+        "threshold_key": "no_visibility_signal",
+        "threshold_sm": 0.0,
+        "impact_level": 0,
+        "probability": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "source_fxx": source_hour.get("fxx") if source_hour else None,
+        "source_valid_utc": source_hour.get("valid_utc") if source_hour else None,
+    }
+
+
 def evaluate_visibility_risk(threshold_probs: dict[str, dict[str, Any]]) -> dict[str, Any]:
     candidates = []
 
@@ -257,8 +261,11 @@ def evaluate_visibility_risk(threshold_probs: dict[str, dict[str, Any]]) -> dict
             }
         )
 
-    # Highest risk wins. Tie-breaker: higher impact, then higher probability.
-    best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
+    if not candidates or all(float(c["probability"]) <= 0 for c in candidates):
+        best = no_visibility_best()
+    else:
+        # Highest risk wins. Tie-breaker: higher impact, then higher probability.
+        best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
 
     return {
         "best": best,
@@ -287,17 +294,27 @@ def block_visibility_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
                 }
             )
 
-    if not candidates:
-        return {"prob": 0, "risk": 0, "level": 0}
+    if not candidates or all(float(c["probability"]) <= 0 for c in candidates):
+        return {
+            "prob": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "level": 0,
+            "threshold_sm": 0.0,
+            "source_fxx": None,
+            "driver": "No visibility restriction signal",
+        }
 
     best = max(candidates, key=lambda c: (c["risk"], c["impact_level"], c["probability"]))
 
     return {
         "prob": round(best["probability"], 1),
         "risk": int(best["risk"]),
+        "risk_label": risk_label(int(best["risk"])),
         "level": int(best["impact_level"]),
         "threshold_sm": best["threshold_sm"],
         "source_fxx": best["fxx"],
+        "driver": f"{best['probability']:.1f}% chance visibility <{best['threshold_sm']:.0f} SM",
     }
 
 
@@ -333,10 +350,18 @@ def main() -> None:
 
     peak_fxx = int(best.get("source_fxx") or min_vis_hour["fxx"])
     peak_start_fxx = max(1, peak_fxx - 1)
-    peak_end_fxx = min(48, peak_fxx + 1)
+    peak_end_fxx = min(24, peak_fxx + 1)
 
     display_value = f"{min_vis_sm:.1f} SM" if min_vis_sm is not None else "N/A"
-    metric = visibility_metric_from_threshold(float(best["threshold_sm"]))
+    selected_prob = round(float(best["probability"]), 1)
+    selected_risk = int(best["risk"])
+    selected_level = int(best["impact_level"])
+    metric = "No visibility restriction signal" if selected_prob <= 0 else visibility_metric_from_threshold(float(best["threshold_sm"]))
+    selected_driver = (
+        "No visibility restriction signal"
+        if selected_prob <= 0
+        else f"{best['probability']:.1f}% chance visibility <{best['threshold_sm']:.0f} SM"
+    )
 
     # Update threats.json.
     threats_path = DOCS / "threats.json"
@@ -355,10 +380,10 @@ def main() -> None:
     threats_payload.setdefault("threats", {})
 
     threats_payload["threats"]["VISIBILITY"] = {
-        "prob": round(float(best["probability"]), 1),
-        "risk": int(best["risk"]),
-        "risk_label": best["risk_label"],
-        "level": int(best["impact_level"]),
+        "prob": selected_prob,
+        "risk": selected_risk,
+        "risk_label": risk_label(selected_risk),
+        "level": selected_level,
         "metric": metric,
         "display_label": "Lowest visibility",
         "display_value": display_value,
@@ -367,12 +392,10 @@ def main() -> None:
         "risk_candidates": risk_eval["candidates"],
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
-        "driver": (
-            f"{best['probability']:.1f}% chance visibility <{best['threshold_sm']:.0f} SM"
-        ),
+        "driver": selected_driver,
         "methodology": (
             "Visibility risk uses NBM Core hourly probability fields for visibility below "
-            "5, 3, and 1 SM. The maximum hourly probability from f001-f048 is used for each "
+            "5, 3, and 1 SM. The maximum hourly probability from f001-f024 is used for each "
             "threshold, then probability x impact determines risk. NBM Core did not provide "
             "a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
         ),
@@ -388,19 +411,17 @@ def main() -> None:
                     {
                         "id": "VISIBILITY",
                         "name": "Visibility",
-                        "risk_level": int(best["risk"]),
-                        "risk_label": best["risk_label"],
-                        "impact_level": int(best["impact_level"]),
-                        "probability": round(float(best["probability"]), 1),
+                        "risk_level": selected_risk,
+                        "risk_label": risk_label(selected_risk),
+                        "impact_level": selected_level,
+                        "probability": selected_prob,
                         "peak_start_fxx": peak_start_fxx,
                         "peak_end_fxx": peak_end_fxx,
                         "metric": metric,
                         "display_label": "Lowest visibility",
                         "display_value": display_value,
                         "min_visibility_sm": round(min_vis_sm, 2) if min_vis_sm is not None else None,
-                        "driver": (
-                            f"{best['probability']:.1f}% chance visibility <{best['threshold_sm']:.0f} SM"
-                        ),
+                        "driver": selected_driver,
                     }
                 )
                 found = True
@@ -411,27 +432,23 @@ def main() -> None:
                 {
                     "id": "VISIBILITY",
                     "name": "Visibility",
-                    "risk_level": int(best["risk"]),
-                    "risk_label": best["risk_label"],
-                    "impact_level": int(best["impact_level"]),
-                    "probability": round(float(best["probability"]), 1),
+                    "risk_level": selected_risk,
+                    "risk_label": risk_label(selected_risk),
+                    "impact_level": selected_level,
+                    "probability": selected_prob,
                     "peak_start_fxx": peak_start_fxx,
                     "peak_end_fxx": peak_end_fxx,
                     "metric": metric,
                     "display_label": "Lowest visibility",
                     "display_value": display_value,
                     "min_visibility_sm": round(min_vis_sm, 2) if min_vis_sm is not None else None,
-                    "driver": (
-                        f"{best['probability']:.1f}% chance visibility <{best['threshold_sm']:.0f} SM"
-                    ),
+                    "driver": selected_driver,
                 }
             )
 
     threats_path.write_text(json.dumps(threats_payload, indent=2))
 
     # Update timeline.json.
-    # Frontend expects 16 blocks x 3 hours = 48 hours.
-    # Normalize the timeline to prevent stale 8-block or mock structures from persisting.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
@@ -443,7 +460,6 @@ def main() -> None:
         },
     )
 
-    timeline_payload["site"] = "KRNO"
     timeline_payload["generated_utc"] = generated
     timeline_payload["cycle_utc_iso"] = cycle.isoformat().replace("+00:00", "Z")
     timeline_payload["cycle"] = f"NBM Core {cycle.strftime('%HZ')}"
@@ -451,55 +467,42 @@ def main() -> None:
 
     old_blocks = timeline_payload.get("blocks", [])
     old_block_hazards = timeline_payload.get("block_hazards", [])
-
-    new_blocks = []
-    new_block_hazards = []
+    blocks = []
+    block_hazards = []
 
     for bi in range(16):
         start_fxx = bi * 3 + 1
         end_fxx = min((bi + 1) * 3, 48)
 
         old_block = old_blocks[bi] if bi < len(old_blocks) and isinstance(old_blocks[bi], dict) else {}
-        old_hazards = (
+        old_hazard_block = (
             old_block_hazards[bi]
             if bi < len(old_block_hazards) and isinstance(old_block_hazards[bi], dict)
             else {}
         )
 
         block_hours = [h for h in ok_hours if start_fxx <= h["fxx"] <= end_fxx]
-
         new_block = dict(old_block)
+        new_hazard_block = dict(old_hazard_block)
+
         new_block["start_fxx"] = start_fxx
         new_block["end_fxx"] = end_fxx
 
-        new_hazard_block = dict(old_hazards)
-
-        if block_hours:
-            valid_block_vis = [h for h in block_hours if h.get("visibility_sm") is not None]
-            if valid_block_vis:
-                block_min_vis = min(valid_block_vis, key=lambda h: h["visibility_sm"])
-                new_block["VIS"] = round(float(block_min_vis["visibility_sm"]), 2)
-            else:
-                new_block["VIS"] = None
-
-            new_hazard_block["VISIBILITY"] = block_visibility_risk(block_hours)
-        else:
+        valid_block_vis = [h for h in block_hours if h.get("visibility_sm") is not None]
+        if valid_block_vis:
+            block_min_vis = min(valid_block_vis, key=lambda h: h["visibility_sm"])
+            new_block["VIS"] = round(float(block_min_vis["visibility_sm"]), 2)
+        elif not block_hours:
             new_block["VIS"] = None
-            new_hazard_block["VISIBILITY"] = {
-                "prob": 0.0,
-                "risk": 0,
-                "level": 0,
-                "threshold_sm": None,
-                "source_fxx": None,
-                "metric": "N/A",
-                "driver": "No visibility data available for this block",
-            }
 
-        new_blocks.append(new_block)
-        new_block_hazards.append(new_hazard_block)
+        block_eval = block_visibility_risk(block_hours)
 
-    timeline_payload["blocks"] = new_blocks
-    timeline_payload["block_hazards"] = new_block_hazards
+        new_hazard_block["VISIBILITY"] = block_eval
+        blocks.append(new_block)
+        block_hazards.append(new_hazard_block)
+
+    timeline_payload["blocks"] = blocks
+    timeline_payload["block_hazards"] = block_hazards
 
     timeline_path.write_text(json.dumps(timeline_payload, indent=2))
 
@@ -510,7 +513,7 @@ def main() -> None:
         "generated_utc": generated,
         "display_value": {
             "label": "Lowest visibility",
-            "method": "minimum hourly NBM Core deterministic VIS from f001-f048",
+            "method": "minimum hourly NBM Core deterministic VIS from f001-f024",
             "source_fxx": min_vis_hour["fxx"],
             "valid_utc": min_vis_hour["valid_utc"],
             "visibility_sm": round(min_vis_sm, 2) if min_vis_sm is not None else None,
@@ -518,7 +521,7 @@ def main() -> None:
         "airport_threshold_probabilities": {
             "method": (
                 "For each visibility threshold, probability is the maximum hourly probability "
-                "from f001-f048. Probabilities use direct NBM Core probability fields."
+                "from f001-f024. Probabilities use direct NBM Core probability fields."
             ),
             "thresholds": threshold_probs,
         },
