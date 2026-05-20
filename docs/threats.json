@@ -1,26 +1,26 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-20T04:40:42Z",
-  "cycle_utc_iso": "2026-05-19T12:00:00Z",
-  "cycle": "NBM Core 12Z",
+  "generated_utc": "2026-05-20T10:02:02Z",
+  "cycle_utc_iso": "2026-05-19T18:00:00Z",
+  "cycle": "NBM Core 18Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 5.0,
+      "prob": 3.8,
       "risk": 1,
       "risk_label": "Little to None",
       "level": 2,
       "metric": ">30 mph threshold",
       "display_label": "24-hr max gust",
-      "display_value": "11 mph",
-      "g24_p50_mph": 10.7,
-      "g24_p50_kt": 9.3,
+      "display_value": "12 mph",
+      "g24_p50_mph": 12.3,
+      "g24_p50_kt": 10.7,
       "threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 5.0,
-          "max_probability_fxx": 9,
+          "exceedance_probability_percent": 3.8,
+          "max_probability_fxx": 3,
           "max_probability_valid_utc": "2026-05-20T03:00:00Z"
         },
         "gt_45_mph": {
@@ -28,21 +28,21 @@
           "threshold_mps": 20.117,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         },
         "gt_58_mph": {
           "threshold_mph": 58.0,
           "threshold_mps": 25.928,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         },
         "gt_65_mph": {
           "threshold_mph": 65.0,
           "threshold_mps": 29.058,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         }
       },
       "risk_candidates": [
@@ -50,10 +50,10 @@
           "threshold_key": "gt_30_mph",
           "threshold_mph": 30.0,
           "impact_level": 2,
-          "probability": 5.0,
+          "probability": 3.8,
           "risk": 1,
           "risk_label": "Little to None",
-          "source_fxx": 9,
+          "source_fxx": 3,
           "source_valid_utc": "2026-05-20T03:00:00Z"
         },
         {
@@ -64,7 +64,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         },
         {
           "threshold_key": "gt_58_mph",
@@ -74,7 +74,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         },
         {
           "threshold_key": "gt_65_mph",
@@ -84,12 +84,12 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         }
       ],
-      "peak_start_fxx": 8,
-      "peak_end_fxx": 10,
-      "driver": "QMD max hourly P50 gust 10.7 mph; 5.0% chance >30 mph",
+      "peak_start_fxx": 2,
+      "peak_end_fxx": 4,
+      "driver": "QMD max hourly P50 gust 12.3 mph; 3.8% chance >30 mph",
       "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
@@ -109,7 +109,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <5 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         },
         "lt_3_sm": {
           "threshold_sm": 3.0,
@@ -118,7 +118,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <3 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         },
         "lt_1_sm": {
           "threshold_sm": 1.0,
@@ -127,7 +127,7 @@
           "probability_percent": 0.0,
           "label": "Visibility <1 SM",
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-19T19:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T01:00:00Z"
         }
       },
       "risk_candidates": [
@@ -139,7 +139,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         },
         {
           "threshold_key": "lt_3_sm",
@@ -149,7 +149,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         },
         {
           "threshold_key": "lt_1_sm",
@@ -159,11 +159,11 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-19T19:00:00Z"
+          "source_valid_utc": "2026-05-20T01:00:00Z"
         }
       ],
-      "peak_start_fxx": 10,
-      "peak_end_fxx": 12,
+      "peak_start_fxx": 4,
+      "peak_end_fxx": 6,
       "driver": "No visibility restriction signal",
       "methodology": "Visibility risk uses NBM Core hourly probability fields for visibility below 5, 3, and 1 SM. The maximum hourly probability from f001-f024 is used for each threshold, then probability x impact determines risk. NBM Core did not provide a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
     },
@@ -195,7 +195,7 @@
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
           "fxx": 1,
-          "valid_utc": "2026-05-19T13:00:00Z"
+          "valid_utc": "2026-05-19T19:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_hr",
@@ -208,7 +208,7 @@
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
           "fxx": 1,
-          "valid_utc": "2026-05-19T13:00:00Z"
+          "valid_utc": "2026-05-19T19:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_hr",
@@ -221,7 +221,7 @@
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
           "fxx": 1,
-          "valid_utc": "2026-05-19T13:00:00Z"
+          "valid_utc": "2026-05-19T19:00:00Z"
         },
         {
           "threshold_key": "gt_2p00_in_hr",
@@ -234,318 +234,6 @@
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
           "fxx": 1,
-          "valid_utc": "2026-05-19T13:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 2,
-          "valid_utc": "2026-05-19T14:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 2,
-          "valid_utc": "2026-05-19T14:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 2,
-          "valid_utc": "2026-05-19T14:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 2,
-          "valid_utc": "2026-05-19T14:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 3,
-          "valid_utc": "2026-05-19T15:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 3,
-          "valid_utc": "2026-05-19T15:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 3,
-          "valid_utc": "2026-05-19T15:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 3,
-          "valid_utc": "2026-05-19T15:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 4,
-          "valid_utc": "2026-05-19T16:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 4,
-          "valid_utc": "2026-05-19T16:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 4,
-          "valid_utc": "2026-05-19T16:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 4,
-          "valid_utc": "2026-05-19T16:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 5,
-          "valid_utc": "2026-05-19T17:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 5,
-          "valid_utc": "2026-05-19T17:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 5,
-          "valid_utc": "2026-05-19T17:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 5,
-          "valid_utc": "2026-05-19T17:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 6,
-          "valid_utc": "2026-05-19T18:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 6,
-          "valid_utc": "2026-05-19T18:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 6,
-          "valid_utc": "2026-05-19T18:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 6,
-          "valid_utc": "2026-05-19T18:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_hr",
-          "threshold_in": 0.1,
-          "threshold_m": 0.00254,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / hr",
-          "ops_label": "Plow/treatment operations possible",
-          "fxx": 7,
-          "valid_utc": "2026-05-19T19:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_hr",
-          "threshold_in": 0.5,
-          "threshold_m": 0.0127,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / hr",
-          "ops_label": "Active plow operations",
-          "fxx": 7,
-          "valid_utc": "2026-05-19T19:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_hr",
-          "threshold_in": 1.0,
-          "threshold_m": 0.0254,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / hr",
-          "ops_label": "Significant plow operations",
-          "fxx": 7,
-          "valid_utc": "2026-05-19T19:00:00Z"
-        },
-        {
-          "threshold_key": "gt_2p00_in_hr",
-          "threshold_in": 2.0,
-          "threshold_m": 0.0508,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">2.00 in / hr",
-          "ops_label": "High-impact plow operations",
-          "fxx": 7,
           "valid_utc": "2026-05-19T19:00:00Z"
         },
         {
@@ -558,7 +246,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 8,
+          "fxx": 2,
           "valid_utc": "2026-05-19T20:00:00Z"
         },
         {
@@ -571,7 +259,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 8,
+          "fxx": 2,
           "valid_utc": "2026-05-19T20:00:00Z"
         },
         {
@@ -584,7 +272,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 8,
+          "fxx": 2,
           "valid_utc": "2026-05-19T20:00:00Z"
         },
         {
@@ -597,7 +285,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 8,
+          "fxx": 2,
           "valid_utc": "2026-05-19T20:00:00Z"
         },
         {
@@ -610,7 +298,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 9,
+          "fxx": 3,
           "valid_utc": "2026-05-19T21:00:00Z"
         },
         {
@@ -623,7 +311,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 9,
+          "fxx": 3,
           "valid_utc": "2026-05-19T21:00:00Z"
         },
         {
@@ -636,7 +324,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 9,
+          "fxx": 3,
           "valid_utc": "2026-05-19T21:00:00Z"
         },
         {
@@ -649,7 +337,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 9,
+          "fxx": 3,
           "valid_utc": "2026-05-19T21:00:00Z"
         },
         {
@@ -662,7 +350,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 10,
+          "fxx": 4,
           "valid_utc": "2026-05-19T22:00:00Z"
         },
         {
@@ -675,7 +363,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 10,
+          "fxx": 4,
           "valid_utc": "2026-05-19T22:00:00Z"
         },
         {
@@ -688,7 +376,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 10,
+          "fxx": 4,
           "valid_utc": "2026-05-19T22:00:00Z"
         },
         {
@@ -701,7 +389,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 10,
+          "fxx": 4,
           "valid_utc": "2026-05-19T22:00:00Z"
         },
         {
@@ -714,7 +402,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 11,
+          "fxx": 5,
           "valid_utc": "2026-05-19T23:00:00Z"
         },
         {
@@ -727,7 +415,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 11,
+          "fxx": 5,
           "valid_utc": "2026-05-19T23:00:00Z"
         },
         {
@@ -740,7 +428,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 11,
+          "fxx": 5,
           "valid_utc": "2026-05-19T23:00:00Z"
         },
         {
@@ -753,7 +441,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 11,
+          "fxx": 5,
           "valid_utc": "2026-05-19T23:00:00Z"
         },
         {
@@ -766,7 +454,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 12,
+          "fxx": 6,
           "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
@@ -779,7 +467,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 12,
+          "fxx": 6,
           "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
@@ -792,7 +480,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 12,
+          "fxx": 6,
           "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
@@ -805,7 +493,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 12,
+          "fxx": 6,
           "valid_utc": "2026-05-20T00:00:00Z"
         },
         {
@@ -818,7 +506,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 13,
+          "fxx": 7,
           "valid_utc": "2026-05-20T01:00:00Z"
         },
         {
@@ -831,7 +519,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 13,
+          "fxx": 7,
           "valid_utc": "2026-05-20T01:00:00Z"
         },
         {
@@ -844,7 +532,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 13,
+          "fxx": 7,
           "valid_utc": "2026-05-20T01:00:00Z"
         },
         {
@@ -857,7 +545,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 13,
+          "fxx": 7,
           "valid_utc": "2026-05-20T01:00:00Z"
         },
         {
@@ -870,7 +558,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 14,
+          "fxx": 8,
           "valid_utc": "2026-05-20T02:00:00Z"
         },
         {
@@ -883,7 +571,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 14,
+          "fxx": 8,
           "valid_utc": "2026-05-20T02:00:00Z"
         },
         {
@@ -896,7 +584,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 14,
+          "fxx": 8,
           "valid_utc": "2026-05-20T02:00:00Z"
         },
         {
@@ -909,7 +597,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 14,
+          "fxx": 8,
           "valid_utc": "2026-05-20T02:00:00Z"
         },
         {
@@ -922,7 +610,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 15,
+          "fxx": 9,
           "valid_utc": "2026-05-20T03:00:00Z"
         },
         {
@@ -935,7 +623,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 15,
+          "fxx": 9,
           "valid_utc": "2026-05-20T03:00:00Z"
         },
         {
@@ -948,7 +636,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 15,
+          "fxx": 9,
           "valid_utc": "2026-05-20T03:00:00Z"
         },
         {
@@ -961,7 +649,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 15,
+          "fxx": 9,
           "valid_utc": "2026-05-20T03:00:00Z"
         },
         {
@@ -974,7 +662,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 16,
+          "fxx": 10,
           "valid_utc": "2026-05-20T04:00:00Z"
         },
         {
@@ -987,7 +675,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 16,
+          "fxx": 10,
           "valid_utc": "2026-05-20T04:00:00Z"
         },
         {
@@ -1000,7 +688,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 16,
+          "fxx": 10,
           "valid_utc": "2026-05-20T04:00:00Z"
         },
         {
@@ -1013,7 +701,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 16,
+          "fxx": 10,
           "valid_utc": "2026-05-20T04:00:00Z"
         },
         {
@@ -1026,7 +714,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 17,
+          "fxx": 11,
           "valid_utc": "2026-05-20T05:00:00Z"
         },
         {
@@ -1039,7 +727,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 17,
+          "fxx": 11,
           "valid_utc": "2026-05-20T05:00:00Z"
         },
         {
@@ -1052,7 +740,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 17,
+          "fxx": 11,
           "valid_utc": "2026-05-20T05:00:00Z"
         },
         {
@@ -1065,7 +753,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 17,
+          "fxx": 11,
           "valid_utc": "2026-05-20T05:00:00Z"
         },
         {
@@ -1078,7 +766,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 18,
+          "fxx": 12,
           "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
@@ -1091,7 +779,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 18,
+          "fxx": 12,
           "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
@@ -1104,7 +792,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 18,
+          "fxx": 12,
           "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
@@ -1117,7 +805,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 18,
+          "fxx": 12,
           "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
@@ -1130,7 +818,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 19,
+          "fxx": 13,
           "valid_utc": "2026-05-20T07:00:00Z"
         },
         {
@@ -1143,7 +831,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 19,
+          "fxx": 13,
           "valid_utc": "2026-05-20T07:00:00Z"
         },
         {
@@ -1156,7 +844,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 19,
+          "fxx": 13,
           "valid_utc": "2026-05-20T07:00:00Z"
         },
         {
@@ -1169,7 +857,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 19,
+          "fxx": 13,
           "valid_utc": "2026-05-20T07:00:00Z"
         },
         {
@@ -1182,7 +870,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 20,
+          "fxx": 14,
           "valid_utc": "2026-05-20T08:00:00Z"
         },
         {
@@ -1195,7 +883,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 20,
+          "fxx": 14,
           "valid_utc": "2026-05-20T08:00:00Z"
         },
         {
@@ -1208,7 +896,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 20,
+          "fxx": 14,
           "valid_utc": "2026-05-20T08:00:00Z"
         },
         {
@@ -1221,7 +909,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 20,
+          "fxx": 14,
           "valid_utc": "2026-05-20T08:00:00Z"
         },
         {
@@ -1234,7 +922,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 21,
+          "fxx": 15,
           "valid_utc": "2026-05-20T09:00:00Z"
         },
         {
@@ -1247,7 +935,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 21,
+          "fxx": 15,
           "valid_utc": "2026-05-20T09:00:00Z"
         },
         {
@@ -1260,7 +948,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 21,
+          "fxx": 15,
           "valid_utc": "2026-05-20T09:00:00Z"
         },
         {
@@ -1273,7 +961,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 21,
+          "fxx": 15,
           "valid_utc": "2026-05-20T09:00:00Z"
         },
         {
@@ -1286,7 +974,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 22,
+          "fxx": 16,
           "valid_utc": "2026-05-20T10:00:00Z"
         },
         {
@@ -1299,7 +987,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 22,
+          "fxx": 16,
           "valid_utc": "2026-05-20T10:00:00Z"
         },
         {
@@ -1312,7 +1000,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 22,
+          "fxx": 16,
           "valid_utc": "2026-05-20T10:00:00Z"
         },
         {
@@ -1325,7 +1013,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 22,
+          "fxx": 16,
           "valid_utc": "2026-05-20T10:00:00Z"
         },
         {
@@ -1338,7 +1026,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 23,
+          "fxx": 17,
           "valid_utc": "2026-05-20T11:00:00Z"
         },
         {
@@ -1351,7 +1039,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 23,
+          "fxx": 17,
           "valid_utc": "2026-05-20T11:00:00Z"
         },
         {
@@ -1364,7 +1052,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 23,
+          "fxx": 17,
           "valid_utc": "2026-05-20T11:00:00Z"
         },
         {
@@ -1377,7 +1065,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 23,
+          "fxx": 17,
           "valid_utc": "2026-05-20T11:00:00Z"
         },
         {
@@ -1390,7 +1078,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 24,
+          "fxx": 18,
           "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
@@ -1403,7 +1091,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 24,
+          "fxx": 18,
           "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
@@ -1416,7 +1104,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 24,
+          "fxx": 18,
           "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
@@ -1429,7 +1117,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 24,
+          "fxx": 18,
           "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
@@ -1442,7 +1130,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 25,
+          "fxx": 19,
           "valid_utc": "2026-05-20T13:00:00Z"
         },
         {
@@ -1455,7 +1143,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 25,
+          "fxx": 19,
           "valid_utc": "2026-05-20T13:00:00Z"
         },
         {
@@ -1468,7 +1156,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 25,
+          "fxx": 19,
           "valid_utc": "2026-05-20T13:00:00Z"
         },
         {
@@ -1481,7 +1169,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 25,
+          "fxx": 19,
           "valid_utc": "2026-05-20T13:00:00Z"
         },
         {
@@ -1494,7 +1182,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 26,
+          "fxx": 20,
           "valid_utc": "2026-05-20T14:00:00Z"
         },
         {
@@ -1507,7 +1195,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 26,
+          "fxx": 20,
           "valid_utc": "2026-05-20T14:00:00Z"
         },
         {
@@ -1520,7 +1208,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 26,
+          "fxx": 20,
           "valid_utc": "2026-05-20T14:00:00Z"
         },
         {
@@ -1533,7 +1221,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 26,
+          "fxx": 20,
           "valid_utc": "2026-05-20T14:00:00Z"
         },
         {
@@ -1546,7 +1234,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 27,
+          "fxx": 21,
           "valid_utc": "2026-05-20T15:00:00Z"
         },
         {
@@ -1559,7 +1247,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 27,
+          "fxx": 21,
           "valid_utc": "2026-05-20T15:00:00Z"
         },
         {
@@ -1572,7 +1260,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 27,
+          "fxx": 21,
           "valid_utc": "2026-05-20T15:00:00Z"
         },
         {
@@ -1585,7 +1273,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 27,
+          "fxx": 21,
           "valid_utc": "2026-05-20T15:00:00Z"
         },
         {
@@ -1598,7 +1286,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 28,
+          "fxx": 22,
           "valid_utc": "2026-05-20T16:00:00Z"
         },
         {
@@ -1611,7 +1299,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 28,
+          "fxx": 22,
           "valid_utc": "2026-05-20T16:00:00Z"
         },
         {
@@ -1624,7 +1312,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 28,
+          "fxx": 22,
           "valid_utc": "2026-05-20T16:00:00Z"
         },
         {
@@ -1637,7 +1325,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 28,
+          "fxx": 22,
           "valid_utc": "2026-05-20T16:00:00Z"
         },
         {
@@ -1650,7 +1338,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 29,
+          "fxx": 23,
           "valid_utc": "2026-05-20T17:00:00Z"
         },
         {
@@ -1663,7 +1351,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 29,
+          "fxx": 23,
           "valid_utc": "2026-05-20T17:00:00Z"
         },
         {
@@ -1676,7 +1364,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 29,
+          "fxx": 23,
           "valid_utc": "2026-05-20T17:00:00Z"
         },
         {
@@ -1689,7 +1377,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 29,
+          "fxx": 23,
           "valid_utc": "2026-05-20T17:00:00Z"
         },
         {
@@ -1702,7 +1390,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 30,
+          "fxx": 24,
           "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
@@ -1715,7 +1403,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 30,
+          "fxx": 24,
           "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
@@ -1728,7 +1416,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 30,
+          "fxx": 24,
           "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
@@ -1741,7 +1429,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 30,
+          "fxx": 24,
           "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
@@ -1754,7 +1442,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 31,
+          "fxx": 25,
           "valid_utc": "2026-05-20T19:00:00Z"
         },
         {
@@ -1767,7 +1455,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 31,
+          "fxx": 25,
           "valid_utc": "2026-05-20T19:00:00Z"
         },
         {
@@ -1780,7 +1468,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 31,
+          "fxx": 25,
           "valid_utc": "2026-05-20T19:00:00Z"
         },
         {
@@ -1793,7 +1481,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 31,
+          "fxx": 25,
           "valid_utc": "2026-05-20T19:00:00Z"
         },
         {
@@ -1806,7 +1494,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 32,
+          "fxx": 26,
           "valid_utc": "2026-05-20T20:00:00Z"
         },
         {
@@ -1819,7 +1507,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 32,
+          "fxx": 26,
           "valid_utc": "2026-05-20T20:00:00Z"
         },
         {
@@ -1832,7 +1520,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 32,
+          "fxx": 26,
           "valid_utc": "2026-05-20T20:00:00Z"
         },
         {
@@ -1845,7 +1533,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 32,
+          "fxx": 26,
           "valid_utc": "2026-05-20T20:00:00Z"
         },
         {
@@ -1858,7 +1546,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 33,
+          "fxx": 27,
           "valid_utc": "2026-05-20T21:00:00Z"
         },
         {
@@ -1871,7 +1559,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 33,
+          "fxx": 27,
           "valid_utc": "2026-05-20T21:00:00Z"
         },
         {
@@ -1884,7 +1572,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 33,
+          "fxx": 27,
           "valid_utc": "2026-05-20T21:00:00Z"
         },
         {
@@ -1897,7 +1585,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 33,
+          "fxx": 27,
           "valid_utc": "2026-05-20T21:00:00Z"
         },
         {
@@ -1910,7 +1598,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 34,
+          "fxx": 28,
           "valid_utc": "2026-05-20T22:00:00Z"
         },
         {
@@ -1923,7 +1611,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 34,
+          "fxx": 28,
           "valid_utc": "2026-05-20T22:00:00Z"
         },
         {
@@ -1936,7 +1624,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 34,
+          "fxx": 28,
           "valid_utc": "2026-05-20T22:00:00Z"
         },
         {
@@ -1949,7 +1637,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 34,
+          "fxx": 28,
           "valid_utc": "2026-05-20T22:00:00Z"
         },
         {
@@ -1962,7 +1650,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 35,
+          "fxx": 29,
           "valid_utc": "2026-05-20T23:00:00Z"
         },
         {
@@ -1975,7 +1663,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 35,
+          "fxx": 29,
           "valid_utc": "2026-05-20T23:00:00Z"
         },
         {
@@ -1988,7 +1676,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 35,
+          "fxx": 29,
           "valid_utc": "2026-05-20T23:00:00Z"
         },
         {
@@ -2001,7 +1689,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 35,
+          "fxx": 29,
           "valid_utc": "2026-05-20T23:00:00Z"
         },
         {
@@ -2014,7 +1702,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 36,
+          "fxx": 30,
           "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
@@ -2027,7 +1715,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 36,
+          "fxx": 30,
           "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
@@ -2040,7 +1728,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 36,
+          "fxx": 30,
           "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
@@ -2053,7 +1741,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 36,
+          "fxx": 30,
           "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
@@ -2066,7 +1754,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 37,
+          "fxx": 31,
           "valid_utc": "2026-05-21T01:00:00Z"
         },
         {
@@ -2079,7 +1767,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 37,
+          "fxx": 31,
           "valid_utc": "2026-05-21T01:00:00Z"
         },
         {
@@ -2092,7 +1780,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 37,
+          "fxx": 31,
           "valid_utc": "2026-05-21T01:00:00Z"
         },
         {
@@ -2105,7 +1793,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 37,
+          "fxx": 31,
           "valid_utc": "2026-05-21T01:00:00Z"
         },
         {
@@ -2118,7 +1806,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 38,
+          "fxx": 32,
           "valid_utc": "2026-05-21T02:00:00Z"
         },
         {
@@ -2131,7 +1819,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 38,
+          "fxx": 32,
           "valid_utc": "2026-05-21T02:00:00Z"
         },
         {
@@ -2144,7 +1832,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 38,
+          "fxx": 32,
           "valid_utc": "2026-05-21T02:00:00Z"
         },
         {
@@ -2157,7 +1845,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 38,
+          "fxx": 32,
           "valid_utc": "2026-05-21T02:00:00Z"
         },
         {
@@ -2170,7 +1858,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 39,
+          "fxx": 33,
           "valid_utc": "2026-05-21T03:00:00Z"
         },
         {
@@ -2183,7 +1871,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 39,
+          "fxx": 33,
           "valid_utc": "2026-05-21T03:00:00Z"
         },
         {
@@ -2196,7 +1884,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 39,
+          "fxx": 33,
           "valid_utc": "2026-05-21T03:00:00Z"
         },
         {
@@ -2209,7 +1897,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 39,
+          "fxx": 33,
           "valid_utc": "2026-05-21T03:00:00Z"
         },
         {
@@ -2222,7 +1910,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 40,
+          "fxx": 34,
           "valid_utc": "2026-05-21T04:00:00Z"
         },
         {
@@ -2235,7 +1923,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 40,
+          "fxx": 34,
           "valid_utc": "2026-05-21T04:00:00Z"
         },
         {
@@ -2248,7 +1936,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 40,
+          "fxx": 34,
           "valid_utc": "2026-05-21T04:00:00Z"
         },
         {
@@ -2261,7 +1949,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 40,
+          "fxx": 34,
           "valid_utc": "2026-05-21T04:00:00Z"
         },
         {
@@ -2274,7 +1962,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 41,
+          "fxx": 35,
           "valid_utc": "2026-05-21T05:00:00Z"
         },
         {
@@ -2287,7 +1975,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 41,
+          "fxx": 35,
           "valid_utc": "2026-05-21T05:00:00Z"
         },
         {
@@ -2300,7 +1988,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 41,
+          "fxx": 35,
           "valid_utc": "2026-05-21T05:00:00Z"
         },
         {
@@ -2313,7 +2001,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 41,
+          "fxx": 35,
           "valid_utc": "2026-05-21T05:00:00Z"
         },
         {
@@ -2326,7 +2014,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 42,
+          "fxx": 36,
           "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
@@ -2339,7 +2027,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 42,
+          "fxx": 36,
           "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
@@ -2352,7 +2040,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 42,
+          "fxx": 36,
           "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
@@ -2365,7 +2053,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 42,
+          "fxx": 36,
           "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
@@ -2378,7 +2066,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 43,
+          "fxx": 37,
           "valid_utc": "2026-05-21T07:00:00Z"
         },
         {
@@ -2391,7 +2079,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 43,
+          "fxx": 37,
           "valid_utc": "2026-05-21T07:00:00Z"
         },
         {
@@ -2404,7 +2092,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 43,
+          "fxx": 37,
           "valid_utc": "2026-05-21T07:00:00Z"
         },
         {
@@ -2417,7 +2105,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 43,
+          "fxx": 37,
           "valid_utc": "2026-05-21T07:00:00Z"
         },
         {
@@ -2430,7 +2118,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 44,
+          "fxx": 38,
           "valid_utc": "2026-05-21T08:00:00Z"
         },
         {
@@ -2443,7 +2131,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 44,
+          "fxx": 38,
           "valid_utc": "2026-05-21T08:00:00Z"
         },
         {
@@ -2456,7 +2144,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 44,
+          "fxx": 38,
           "valid_utc": "2026-05-21T08:00:00Z"
         },
         {
@@ -2469,7 +2157,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 44,
+          "fxx": 38,
           "valid_utc": "2026-05-21T08:00:00Z"
         },
         {
@@ -2482,7 +2170,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 45,
+          "fxx": 39,
           "valid_utc": "2026-05-21T09:00:00Z"
         },
         {
@@ -2495,7 +2183,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 45,
+          "fxx": 39,
           "valid_utc": "2026-05-21T09:00:00Z"
         },
         {
@@ -2508,7 +2196,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 45,
+          "fxx": 39,
           "valid_utc": "2026-05-21T09:00:00Z"
         },
         {
@@ -2521,7 +2209,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 45,
+          "fxx": 39,
           "valid_utc": "2026-05-21T09:00:00Z"
         },
         {
@@ -2534,7 +2222,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 46,
+          "fxx": 40,
           "valid_utc": "2026-05-21T10:00:00Z"
         },
         {
@@ -2547,7 +2235,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 46,
+          "fxx": 40,
           "valid_utc": "2026-05-21T10:00:00Z"
         },
         {
@@ -2560,7 +2248,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 46,
+          "fxx": 40,
           "valid_utc": "2026-05-21T10:00:00Z"
         },
         {
@@ -2573,7 +2261,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 46,
+          "fxx": 40,
           "valid_utc": "2026-05-21T10:00:00Z"
         },
         {
@@ -2586,7 +2274,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 47,
+          "fxx": 41,
           "valid_utc": "2026-05-21T11:00:00Z"
         },
         {
@@ -2599,7 +2287,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 47,
+          "fxx": 41,
           "valid_utc": "2026-05-21T11:00:00Z"
         },
         {
@@ -2612,7 +2300,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 47,
+          "fxx": 41,
           "valid_utc": "2026-05-21T11:00:00Z"
         },
         {
@@ -2625,7 +2313,7 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 47,
+          "fxx": 41,
           "valid_utc": "2026-05-21T11:00:00Z"
         },
         {
@@ -2638,7 +2326,7 @@
           "risk_label": "None",
           "label": ">0.10 in / hr",
           "ops_label": "Plow/treatment operations possible",
-          "fxx": 48,
+          "fxx": 42,
           "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
@@ -2651,7 +2339,7 @@
           "risk_label": "None",
           "label": ">0.50 in / hr",
           "ops_label": "Active plow operations",
-          "fxx": 48,
+          "fxx": 42,
           "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
@@ -2664,7 +2352,7 @@
           "risk_label": "None",
           "label": ">1.00 in / hr",
           "ops_label": "Significant plow operations",
-          "fxx": 48,
+          "fxx": 42,
           "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
@@ -2677,8 +2365,320 @@
           "risk_label": "None",
           "label": ">2.00 in / hr",
           "ops_label": "High-impact plow operations",
-          "fxx": 48,
+          "fxx": 42,
           "valid_utc": "2026-05-21T12:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 43,
+          "valid_utc": "2026-05-21T13:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 43,
+          "valid_utc": "2026-05-21T13:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 43,
+          "valid_utc": "2026-05-21T13:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 43,
+          "valid_utc": "2026-05-21T13:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 44,
+          "valid_utc": "2026-05-21T14:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 44,
+          "valid_utc": "2026-05-21T14:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 44,
+          "valid_utc": "2026-05-21T14:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 44,
+          "valid_utc": "2026-05-21T14:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 45,
+          "valid_utc": "2026-05-21T15:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 45,
+          "valid_utc": "2026-05-21T15:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 45,
+          "valid_utc": "2026-05-21T15:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 45,
+          "valid_utc": "2026-05-21T15:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 46,
+          "valid_utc": "2026-05-21T16:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 46,
+          "valid_utc": "2026-05-21T16:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 46,
+          "valid_utc": "2026-05-21T16:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 46,
+          "valid_utc": "2026-05-21T16:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 47,
+          "valid_utc": "2026-05-21T17:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 47,
+          "valid_utc": "2026-05-21T17:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 47,
+          "valid_utc": "2026-05-21T17:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 47,
+          "valid_utc": "2026-05-21T17:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_hr",
+          "threshold_in": 0.1,
+          "threshold_m": 0.00254,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / hr",
+          "ops_label": "Plow/treatment operations possible",
+          "fxx": 48,
+          "valid_utc": "2026-05-21T18:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_hr",
+          "threshold_in": 0.5,
+          "threshold_m": 0.0127,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / hr",
+          "ops_label": "Active plow operations",
+          "fxx": 48,
+          "valid_utc": "2026-05-21T18:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_hr",
+          "threshold_in": 1.0,
+          "threshold_m": 0.0254,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / hr",
+          "ops_label": "Significant plow operations",
+          "fxx": 48,
+          "valid_utc": "2026-05-21T18:00:00Z"
+        },
+        {
+          "threshold_key": "gt_2p00_in_hr",
+          "threshold_in": 2.0,
+          "threshold_m": 0.0508,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">2.00 in / hr",
+          "ops_label": "High-impact plow operations",
+          "fxx": 48,
+          "valid_utc": "2026-05-21T18:00:00Z"
         }
       ],
       "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is None."
@@ -2708,7 +2708,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192851908:d=2026051918:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:182418366:d=2026052000:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2718,7 +2718,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195478711:d=2026051918:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:184813237:d=2026052000:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2728,7 +2728,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197576180:d=2026051918:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:186733325:d=2026052000:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2738,7 +2738,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199239288:d=2026051918:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188280217:d=2026052000:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f012_6_12hr": {
@@ -2750,7 +2750,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184312626:d=2026051918:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:181674510:d=2026052000:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2760,7 +2760,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186741745:d=2026051918:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:184028063:d=2026052000:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2770,7 +2770,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188679297:d=2026051918:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:185921513:d=2026052000:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2780,7 +2780,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:190243135:d=2026051918:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:187461330:d=2026052000:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f018_12_18hr": {
@@ -2792,7 +2792,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:181847448:d=2026051918:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:195862235:d=2026052000:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2802,7 +2802,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184224228:d=2026051918:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:198385356:d=2026052000:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2812,7 +2812,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186131640:d=2026051918:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:200390885:d=2026052000:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2822,7 +2822,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:187665558:d=2026051918:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:202013386:d=2026052000:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f024_18_24hr": {
@@ -2834,7 +2834,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:196056252:d=2026051918:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:192456056:d=2026052000:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2844,7 +2844,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198570982:d=2026051918:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:195213010:d=2026052000:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2854,7 +2854,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:200588679:d=2026051918:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:197501537:d=2026052000:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2864,7 +2864,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:202196022:d=2026051918:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:199285759:d=2026052000:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f030_24_30hr": {
@@ -2876,7 +2876,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192502159:d=2026051918:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:183706171:d=2026052000:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2886,7 +2886,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195292839:d=2026051918:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:186315610:d=2026052000:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2896,7 +2896,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197628264:d=2026051918:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:188430852:d=2026052000:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2906,7 +2906,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199452630:d=2026051918:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:190093344:d=2026052000:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f036_30_36hr": {
@@ -2918,7 +2918,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:183690201:d=2026051918:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:181392382:d=2026052000:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2928,7 +2928,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186336382:d=2026051918:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:183925802:d=2026052000:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2938,7 +2938,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188477329:d=2026051918:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:186027136:d=2026052000:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2948,7 +2948,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:190182869:d=2026051918:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:187732951:d=2026052000:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f042_36_42hr": {
@@ -2960,7 +2960,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:181468393:d=2026051918:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:195788304:d=2026052000:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2970,7 +2970,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:183989880:d=2026051918:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:198372620:d=2026052000:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2980,7 +2980,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186090326:d=2026051918:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:200508737:d=2026052000:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2990,7 +2990,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:187810912:d=2026051918:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:202257649:d=2026052000:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f048_42_48hr": {
@@ -3002,7 +3002,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195873757:d=2026051918:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:192589316:d=2026052000:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -3012,7 +3012,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198467597:d=2026051918:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:195353731:d=2026052000:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -3022,7 +3022,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:200601372:d=2026051918:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:197703144:d=2026052000:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -3032,7 +3032,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:202335448:d=2026051918:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:199610995:d=2026052000:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         }
       },
@@ -3049,7 +3049,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T00:00:00Z"
+          "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3063,7 +3063,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T00:00:00Z"
+          "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3077,7 +3077,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T00:00:00Z"
+          "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3091,7 +3091,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T00:00:00Z"
+          "valid_utc": "2026-05-20T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3105,7 +3105,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-20T06:00:00Z"
+          "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3119,7 +3119,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-20T06:00:00Z"
+          "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3133,7 +3133,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-20T06:00:00Z"
+          "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3147,7 +3147,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-20T06:00:00Z"
+          "valid_utc": "2026-05-20T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3161,7 +3161,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-20T12:00:00Z"
+          "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3175,7 +3175,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-20T12:00:00Z"
+          "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3189,7 +3189,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-20T12:00:00Z"
+          "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3203,7 +3203,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-20T12:00:00Z"
+          "valid_utc": "2026-05-20T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3217,7 +3217,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3231,7 +3231,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3245,7 +3245,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3259,7 +3259,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3273,7 +3273,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3287,7 +3287,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3301,7 +3301,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3315,7 +3315,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3329,7 +3329,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3343,7 +3343,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3357,7 +3357,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3371,7 +3371,7 @@
           "fxx": 36,
           "start_hour": 30,
           "end_hour": 36,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3385,7 +3385,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3399,7 +3399,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3413,7 +3413,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3427,7 +3427,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3441,7 +3441,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3455,7 +3455,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3469,7 +3469,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3483,7 +3483,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         }
       ],
       "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is No rain/flooding signal."
@@ -3497,13 +3497,13 @@
       "display_label": "Lightning chance",
       "display_value": "100%",
       "window": "1 hr",
-      "peak_start_fxx": 35,
-      "peak_end_fxx": 37,
+      "peak_start_fxx": 29,
+      "peak_end_fxx": 31,
       "ops_label": "Ramp/safety closure very likely",
       "driver": "100.0% chance of lightning",
-      "source_fxx": 36,
+      "source_fxx": 30,
       "source_variable": "tstm",
-      "source_idx_line": "86:89696465:d=2026051912:TSTM:surface:35-36 hour acc fcst:probability forecast",
+      "source_idx_line": "86:89180617:d=2026051918:TSTM:surface:29-30 hour acc fcst:probability forecast",
       "methodology": "Lightning risk uses the NBM Core one-hour thunder/lightning probability field. The extracted probability is classified directly into impact thresholds: <5%, 5-25%, 25-50%, 50-75%, and >75%. The probability and impact level are then passed through the KRNO weather risk matrix. Probability-threshold fields such as 'prob >' are excluded so they do not create false 100% lightning risk."
     },
     "FLASH_FREEZE": {
@@ -3527,8 +3527,8 @@
     "FZRA": {
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
-      "cycle_utc": "2026-05-19T12:00:00Z",
-      "generated_utc": "2026-05-20T04:40:33Z",
+      "cycle_utc": "2026-05-19T18:00:00Z",
+      "generated_utc": "2026-05-20T10:01:45Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 0,
@@ -3555,7 +3555,7 @@
           "probability_percent": 0.0,
           "status": "ok",
           "variable": "unknown",
-          "idx_line": "63:61741531:d=2026051912:FICEAC:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+          "idx_line": "63:62219262:d=2026051918:FICEAC:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
         }
       },
       "methodology": "Freezing rain risk uses official NBM Core 6-hour FICEAC exceedance probabilities. Thresholds are >0.01, >0.10, >0.25, and >0.50 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is None."
@@ -3567,15 +3567,15 @@
       "name": "Wind",
       "risk_level": 1,
       "impact_level": 2,
-      "probability": 5.0,
-      "peak_start_fxx": 8,
-      "peak_end_fxx": 10,
+      "probability": 3.8,
+      "peak_start_fxx": 2,
+      "peak_end_fxx": 4,
       "metric": ">30 mph threshold",
-      "driver": "QMD max hourly P50 gust 10.7 mph; 5.0% chance >30 mph",
+      "driver": "QMD max hourly P50 gust 12.3 mph; 3.8% chance >30 mph",
       "risk_label": "Little to None",
       "display_label": "24-hr max gust",
-      "display_value": "11 mph",
-      "g24_p50_mph": 10.7
+      "display_value": "12 mph",
+      "g24_p50_mph": 12.3
     },
     {
       "id": "VISIBILITY",
@@ -3583,8 +3583,8 @@
       "risk_level": 0,
       "impact_level": 0,
       "probability": 0.0,
-      "peak_start_fxx": 10,
-      "peak_end_fxx": 12,
+      "peak_start_fxx": 4,
+      "peak_end_fxx": 6,
       "metric": "No visibility restriction signal",
       "driver": "No visibility restriction signal",
       "risk_label": "None",
@@ -3629,8 +3629,8 @@
       "risk_level": 5,
       "impact_level": 5,
       "probability": 100.0,
-      "peak_start_fxx": 35,
-      "peak_end_fxx": 37,
+      "peak_start_fxx": 29,
+      "peak_end_fxx": 31,
       "metric": "Lightning chance: >75%",
       "driver": "100.0% chance of lightning",
       "risk_label": "Extreme",

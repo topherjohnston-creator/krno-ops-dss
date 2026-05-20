@@ -1,14 +1,14 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-20T04:40:42Z",
-  "cycle_utc_iso": "2026-05-19T12:00:00Z",
-  "cycle": "NBM Core 12Z",
+  "generated_utc": "2026-05-20T10:02:02Z",
+  "cycle_utc_iso": "2026-05-19T18:00:00Z",
+  "cycle": "NBM Core 18Z",
   "block_hours": 3,
   "blocks": [
     {
       "start_fxx": 1,
       "end_fxx": 3,
-      "GST": 10.3,
+      "GST": 12.3,
       "WSP": 10,
       "WDR": 33,
       "TMP": 59,
@@ -27,12 +27,12 @@
     {
       "start_fxx": 4,
       "end_fxx": 6,
-      "GST": 9.2,
+      "GST": 5.1,
       "WSP": 10,
       "WDR": 33,
       "TMP": 59,
       "DPT": 16,
-      "VIS": 10.11,
+      "VIS": 10.07,
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
@@ -46,12 +46,12 @@
     {
       "start_fxx": 7,
       "end_fxx": 9,
-      "GST": 10.7,
+      "GST": 4.2,
       "WSP": 26,
       "WDR": 33,
       "TMP": 59,
       "DPT": 16,
-      "VIS": 10.11,
+      "VIS": 10.07,
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
@@ -65,7 +65,7 @@
     {
       "start_fxx": 10,
       "end_fxx": 12,
-      "GST": 5.1,
+      "GST": 4.0,
       "WSP": 26,
       "WDR": 33,
       "TMP": 59,
@@ -84,7 +84,7 @@
     {
       "start_fxx": 13,
       "end_fxx": 15,
-      "GST": 4.0,
+      "GST": 2.9,
       "WSP": 33,
       "WDR": 33,
       "TMP": 59,
@@ -103,7 +103,7 @@
     {
       "start_fxx": 16,
       "end_fxx": 18,
-      "GST": 3.8,
+      "GST": 7.6,
       "WSP": 33,
       "WDR": 33,
       "TMP": 59,
@@ -122,12 +122,12 @@
     {
       "start_fxx": 19,
       "end_fxx": 21,
-      "GST": 2.9,
+      "GST": 8.9,
       "WSP": 22,
       "WDR": 33,
       "TMP": 59,
       "DPT": 16,
-      "VIS": 10.07,
+      "VIS": 10.11,
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
@@ -141,12 +141,12 @@
     {
       "start_fxx": 22,
       "end_fxx": 24,
-      "GST": 7.4,
+      "GST": 11.0,
       "WSP": 22,
       "WDR": 33,
       "TMP": 59,
       "DPT": 16,
-      "VIS": 10.07,
+      "VIS": 10.11,
       "Q01": 0,
       "I01": 0,
       "s3hr_in": 0.0,
@@ -191,9 +191,9 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "RAIN": 0.0,
-      "LIGHTNING": 0.0,
+      "LIGHTNING": 100.0,
       "lightning_prob": 0.0,
-      "ltng_prob": 0.0
+      "ltng_prob": 100.0
     },
     {
       "start_fxx": 31,
@@ -229,9 +229,9 @@
       "SNOW": 0.0,
       "FZRA": 0.0,
       "RAIN": 0.0,
-      "LIGHTNING": 100.0,
+      "LIGHTNING": 0.0,
       "lightning_prob": 0.0,
-      "ltng_prob": 100.0
+      "ltng_prob": 0.0
     },
     {
       "start_fxx": 37,
@@ -313,6 +313,86 @@
   "block_hazards": [
     {
       "WIND": {
+        "prob": 3.8,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "threshold_mph": 30.0,
+        "source_fxx": 3,
+        "driver": "3.8% chance >30 mph"
+      },
+      "VISIBILITY": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "threshold_sm": 0.0,
+        "source_fxx": null,
+        "driver": "No visibility restriction signal"
+      },
+      "SNOW": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "threshold_in": 0.0,
+        "threshold_m": 0.0,
+        "metric": "0\" / hr",
+        "ops_label": "No plow/treatment operations",
+        "snow_1hr_in": 0.0,
+        "source_fxx": 1,
+        "driver": "No snow signal"
+      },
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "window": "6 hr",
+        "rainfall_6hr_in": 0.0,
+        "source_fxx": 6,
+        "driver": "No rain/flooding signal"
+      },
+      "LIGHTNING": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 1,
+        "metric": "Lightning chance: 0%",
+        "ops_label": "No lightning signal",
+        "source_fxx": 1,
+        "driver": "0.0% chance of lightning"
+      },
+      "FLASH_FREEZE": {
+        "prob": 0,
+        "risk": 0,
+        "level": 0
+      },
+      "TEMPERATURE": {
+        "prob": 5,
+        "risk": 1,
+        "level": 1
+      },
+      "FZRA": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "threshold_in": 0.0,
+        "threshold_mm": 0.0,
+        "metric": "0\" / 6 hr",
+        "ops_label": "No freezing rain signal",
+        "fzra_6hr_in": 0.0,
+        "source_fxx": 6,
+        "source_window": "f001-f006",
+        "driver": "No freezing rain signal"
+      }
+    },
+    {
+      "WIND": {
         "prob": 0.0,
         "risk": 0,
         "risk_label": "None",
@@ -340,7 +420,7 @@
         "metric": "0\" / hr",
         "ops_label": "No plow/treatment operations",
         "snow_1hr_in": 0.0,
-        "source_fxx": 1,
+        "source_fxx": 4,
         "driver": "No snow signal"
       },
       "RAIN": {
@@ -363,7 +443,7 @@
         "level": 1,
         "metric": "Lightning chance: 0%",
         "ops_label": "No lightning signal",
-        "source_fxx": 1,
+        "source_fxx": 4,
         "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
@@ -393,93 +473,13 @@
     },
     {
       "WIND": {
-        "prob": 1.7,
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 2,
-        "threshold_mph": 30.0,
-        "source_fxx": 6,
-        "driver": "1.7% chance >30 mph"
-      },
-      "VISIBILITY": {
         "prob": 0.0,
         "risk": 0,
         "risk_label": "None",
         "level": 0,
-        "threshold_sm": 0.0,
+        "threshold_mph": 0.0,
         "source_fxx": null,
-        "driver": "No visibility restriction signal"
-      },
-      "SNOW": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "threshold_in": 0.0,
-        "threshold_m": 0.0,
-        "metric": "0\" / hr",
-        "ops_label": "No plow/treatment operations",
-        "snow_1hr_in": 0.0,
-        "source_fxx": 4,
-        "driver": "No snow signal"
-      },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "threshold_in": 0.0,
-        "threshold_mm": 0.0,
-        "metric": "0\" / 6 hr",
-        "window": "6 hr",
-        "rainfall_6hr_in": 0.0,
-        "source_fxx": 6,
-        "driver": "No rain/flooding signal"
-      },
-      "LIGHTNING": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 1,
-        "metric": "Lightning chance: 0%",
-        "ops_label": "No lightning signal",
-        "source_fxx": 4,
-        "driver": "0.0% chance of lightning"
-      },
-      "FLASH_FREEZE": {
-        "prob": 0,
-        "risk": 0,
-        "level": 0
-      },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
-      },
-      "FZRA": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "threshold_in": 0.0,
-        "threshold_mm": 0.0,
-        "metric": "0\" / 6 hr",
-        "ops_label": "No freezing rain signal",
-        "fzra_6hr_in": 0.0,
-        "source_fxx": 6,
-        "source_window": "f001-f006",
-        "driver": "No freezing rain signal"
-      }
-    },
-    {
-      "WIND": {
-        "prob": 5.0,
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 2,
-        "threshold_mph": 30.0,
-        "source_fxx": 9,
-        "driver": "5.0% chance >30 mph"
+        "driver": "No wind signal"
       },
       "VISIBILITY": {
         "prob": 0.0,
@@ -1077,14 +1077,14 @@
         "driver": "No rain/flooding signal"
       },
       "LIGHTNING": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 1,
-        "metric": "Lightning chance: 0%",
-        "ops_label": "No lightning signal",
-        "source_fxx": 28,
-        "driver": "0.0% chance of lightning"
+        "prob": 100.0,
+        "risk": 5,
+        "risk_label": "Extreme",
+        "level": 5,
+        "metric": "Lightning chance: >75%",
+        "ops_label": "Ramp/safety closure very likely",
+        "source_fxx": 30,
+        "driver": "100.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
@@ -1237,14 +1237,14 @@
         "driver": "No rain/flooding signal"
       },
       "LIGHTNING": {
-        "prob": 100.0,
-        "risk": 5,
-        "risk_label": "Extreme",
-        "level": 5,
-        "metric": "Lightning chance: >75%",
-        "ops_label": "Ramp/safety closure very likely",
-        "source_fxx": 36,
-        "driver": "100.0% chance of lightning"
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 1,
+        "metric": "Lightning chance: 0%",
+        "ops_label": "No lightning signal",
+        "source_fxx": 34,
+        "driver": "0.0% chance of lightning"
       },
       "FLASH_FREEZE": {
         "prob": 0,
