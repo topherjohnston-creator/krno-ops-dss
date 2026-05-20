@@ -59,6 +59,10 @@ jobs:
         run: |
           python scripts/build_real_core_lightning_outputs.py
 
+      - name: Finalize timeline outputs
+        run: |
+          python scripts/finalize_timeline_outputs.py
+
       - name: Audit timeline hazard timing
         run: |
           python scripts/audit_timeline_hazard_timing.py || true
