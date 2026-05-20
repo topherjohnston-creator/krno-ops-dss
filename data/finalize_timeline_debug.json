@@ -1,413 +1,31 @@
 {
-  "site": "KRNO",
   "generated_utc": "2026-05-20T23:45:56Z",
   "cycle_utc_iso": "2026-05-20T18:00:00Z",
   "cycle": "NBM Core 18Z",
-  "block_hours": 3,
+  "source_counts": {
+    "wind_hours": 48,
+    "snow_hours": 48,
+    "lightning_hours": 48,
+    "visibility_hours": 0,
+    "fzra_hours": 0,
+    "rain_payload_keys": [
+      "site",
+      "source",
+      "cycle_utc",
+      "generated_utc",
+      "hazard",
+      "selected_risk",
+      "selected_window",
+      "thresholds",
+      "windows",
+      "methodology"
+    ]
+  },
   "blocks": [
     {
+      "block_index": 0,
       "start_fxx": 1,
       "end_fxx": 3,
-      "GST": 4.5,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 4.5,
-      "gust_kt": 3.9,
-      "block_index": 0,
-      "valid_start_utc": "2026-05-20T19:00:00Z",
-      "valid_end_utc": "2026-05-20T21:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 4,
-      "end_fxx": 6,
-      "GST": 3.6,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 3.6,
-      "gust_kt": 3.1,
-      "block_index": 1,
-      "valid_start_utc": "2026-05-20T22:00:00Z",
-      "valid_end_utc": "2026-05-21T00:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 7,
-      "end_fxx": 9,
-      "GST": 2.5,
-      "WSP": 26,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 2.5,
-      "gust_kt": 2.1,
-      "block_index": 2,
-      "valid_start_utc": "2026-05-21T01:00:00Z",
-      "valid_end_utc": "2026-05-21T03:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 10,
-      "end_fxx": 12,
-      "GST": 6.5,
-      "WSP": 26,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 6.5,
-      "gust_kt": 5.6,
-      "block_index": 3,
-      "valid_start_utc": "2026-05-21T04:00:00Z",
-      "valid_end_utc": "2026-05-21T06:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 13,
-      "end_fxx": 15,
-      "GST": 9.2,
-      "WSP": 33,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 18,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 9.2,
-      "gust_kt": 8.0,
-      "block_index": 4,
-      "valid_start_utc": "2026-05-21T07:00:00Z",
-      "valid_end_utc": "2026-05-21T09:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 16,
-      "end_fxx": 18,
-      "GST": 11.0,
-      "WSP": 33,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 18,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 11.0,
-      "gust_kt": 9.5,
-      "block_index": 5,
-      "valid_start_utc": "2026-05-21T10:00:00Z",
-      "valid_end_utc": "2026-05-21T12:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 19,
-      "end_fxx": 21,
-      "GST": 13.0,
-      "WSP": 22,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 13.0,
-      "gust_kt": 11.3,
-      "block_index": 6,
-      "valid_start_utc": "2026-05-21T13:00:00Z",
-      "valid_end_utc": "2026-05-21T15:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 22,
-      "end_fxx": 24,
-      "GST": 14.5,
-      "WSP": 22,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "RAIN": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "LIGHTNING": 0.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 0.0,
-      "gust_mph": 14.5,
-      "gust_kt": 12.6,
-      "block_index": 7,
-      "valid_start_utc": "2026-05-21T16:00:00Z",
-      "valid_end_utc": "2026-05-21T18:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 25,
-      "end_fxx": 27,
-      "GST": 7.6,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 7.6,
-      "gust_kt": 6.6,
-      "block_index": 8,
-      "valid_start_utc": "2026-05-21T19:00:00Z",
-      "valid_end_utc": "2026-05-21T21:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 28,
-      "end_fxx": 30,
-      "GST": 3.8,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 3.8,
-      "gust_kt": 3.3,
-      "block_index": 9,
-      "valid_start_utc": "2026-05-21T22:00:00Z",
-      "valid_end_utc": "2026-05-22T00:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 31,
-      "end_fxx": 33,
-      "GST": 2.5,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 2.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 2.0,
-      "gust_mph": 2.5,
-      "gust_kt": 2.1,
-      "block_index": 10,
-      "valid_start_utc": "2026-05-22T01:00:00Z",
-      "valid_end_utc": "2026-05-22T03:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 34,
-      "end_fxx": 36,
-      "GST": 8.1,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 8.1,
-      "gust_kt": 7.0,
-      "block_index": 11,
-      "valid_start_utc": "2026-05-22T04:00:00Z",
-      "valid_end_utc": "2026-05-22T06:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 37,
-      "end_fxx": 39,
-      "GST": 13.0,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 2.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 2.0,
-      "gust_mph": 13.0,
-      "gust_kt": 11.3,
-      "block_index": 12,
-      "valid_start_utc": "2026-05-22T07:00:00Z",
-      "valid_end_utc": "2026-05-22T09:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 40,
-      "end_fxx": 42,
-      "GST": 14.5,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.1,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 100.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 14.5,
-      "gust_kt": 12.6,
-      "block_index": 13,
-      "valid_start_utc": "2026-05-22T10:00:00Z",
-      "valid_end_utc": "2026-05-22T12:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 43,
-      "end_fxx": 45,
-      "GST": 18.3,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 2.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 18.3,
-      "gust_kt": 15.9,
-      "block_index": 14,
-      "valid_start_utc": "2026-05-22T13:00:00Z",
-      "valid_end_utc": "2026-05-22T15:00:00Z",
-      "visibility_sm": null
-    },
-    {
-      "start_fxx": 46,
-      "end_fxx": 48,
-      "GST": 13.9,
-      "WSP": 10,
-      "WDR": 33,
-      "TMP": 59,
-      "DPT": 16,
-      "VIS": null,
-      "Q01": 0,
-      "I01": 0,
-      "s3hr_in": 0.0,
-      "SNOW": 0.0,
-      "FZRA": 0.0,
-      "RAIN": 0.0,
-      "LIGHTNING": 1.0,
-      "lightning_prob": 0.0,
-      "ltng_prob": 1.0,
-      "gust_mph": 13.9,
-      "gust_kt": 12.1,
-      "block_index": 15,
-      "valid_start_utc": "2026-05-22T16:00:00Z",
-      "valid_end_utc": "2026-05-22T18:00:00Z",
-      "visibility_sm": null
-    }
-  ],
-  "block_hazards": [
-    {
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -424,20 +42,6 @@
         "timing_value": 4.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-20T19:00:00Z",
-        "valid_end_utc": "2026-05-20T21:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -453,19 +57,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-20T19:00:00Z",
-        "valid_end_utc": "2026-05-20T21:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -479,15 +70,32 @@
         "valid_end_utc": "2026-05-20T21:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-20T19:00:00Z",
+        "valid_end_utc": "2026-05-20T21:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-20T19:00:00Z",
+        "valid_end_utc": "2026-05-20T21:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -504,6 +112,9 @@
       }
     },
     {
+      "block_index": 1,
+      "start_fxx": 4,
+      "end_fxx": 6,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -520,20 +131,6 @@
         "timing_value": 3.6,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-20T22:00:00Z",
-        "valid_end_utc": "2026-05-21T00:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -549,20 +146,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 6,
-        "peak_valid_utc": "2026-05-20T18:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-20T22:00:00Z",
-        "valid_end_utc": "2026-05-21T00:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -576,15 +159,33 @@
         "valid_end_utc": "2026-05-21T00:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-20T22:00:00Z",
+        "valid_end_utc": "2026-05-21T00:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 6,
+        "peak_valid_utc": "2026-05-20T18:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-20T22:00:00Z",
+        "valid_end_utc": "2026-05-21T00:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -601,6 +202,9 @@
       }
     },
     {
+      "block_index": 2,
+      "start_fxx": 7,
+      "end_fxx": 9,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -617,20 +221,6 @@
         "timing_value": 2.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T01:00:00Z",
-        "valid_end_utc": "2026-05-21T03:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -646,19 +236,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T01:00:00Z",
-        "valid_end_utc": "2026-05-21T03:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -672,15 +249,32 @@
         "valid_end_utc": "2026-05-21T03:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T01:00:00Z",
+        "valid_end_utc": "2026-05-21T03:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T01:00:00Z",
+        "valid_end_utc": "2026-05-21T03:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -697,6 +291,9 @@
       }
     },
     {
+      "block_index": 3,
+      "start_fxx": 10,
+      "end_fxx": 12,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -713,20 +310,6 @@
         "timing_value": 6.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T04:00:00Z",
-        "valid_end_utc": "2026-05-21T06:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -742,20 +325,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 12,
-        "peak_valid_utc": "2026-05-21T00:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-21T04:00:00Z",
-        "valid_end_utc": "2026-05-21T06:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -769,15 +338,33 @@
         "valid_end_utc": "2026-05-21T06:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T04:00:00Z",
+        "valid_end_utc": "2026-05-21T06:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 12,
+        "peak_valid_utc": "2026-05-21T00:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-21T04:00:00Z",
+        "valid_end_utc": "2026-05-21T06:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -794,6 +381,9 @@
       }
     },
     {
+      "block_index": 4,
+      "start_fxx": 13,
+      "end_fxx": 15,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -810,20 +400,6 @@
         "timing_value": 9.2,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T07:00:00Z",
-        "valid_end_utc": "2026-05-21T09:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -839,19 +415,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T07:00:00Z",
-        "valid_end_utc": "2026-05-21T09:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -865,15 +428,32 @@
         "valid_end_utc": "2026-05-21T09:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T07:00:00Z",
+        "valid_end_utc": "2026-05-21T09:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T07:00:00Z",
+        "valid_end_utc": "2026-05-21T09:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -890,6 +470,9 @@
       }
     },
     {
+      "block_index": 5,
+      "start_fxx": 16,
+      "end_fxx": 18,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -906,20 +489,6 @@
         "timing_value": 11.0,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T10:00:00Z",
-        "valid_end_utc": "2026-05-21T12:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -935,20 +504,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 18,
-        "peak_valid_utc": "2026-05-21T06:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-21T10:00:00Z",
-        "valid_end_utc": "2026-05-21T12:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -962,15 +517,33 @@
         "valid_end_utc": "2026-05-21T12:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T10:00:00Z",
+        "valid_end_utc": "2026-05-21T12:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 18,
+        "peak_valid_utc": "2026-05-21T06:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-21T10:00:00Z",
+        "valid_end_utc": "2026-05-21T12:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -987,6 +560,9 @@
       }
     },
     {
+      "block_index": 6,
+      "start_fxx": 19,
+      "end_fxx": 21,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1003,20 +579,6 @@
         "timing_value": 13.0,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T13:00:00Z",
-        "valid_end_utc": "2026-05-21T15:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1032,19 +594,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T13:00:00Z",
-        "valid_end_utc": "2026-05-21T15:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -1058,15 +607,32 @@
         "valid_end_utc": "2026-05-21T15:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T13:00:00Z",
+        "valid_end_utc": "2026-05-21T15:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T13:00:00Z",
+        "valid_end_utc": "2026-05-21T15:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -1083,6 +649,9 @@
       }
     },
     {
+      "block_index": 7,
+      "start_fxx": 22,
+      "end_fxx": 24,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1099,20 +668,6 @@
         "timing_value": 14.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T16:00:00Z",
-        "valid_end_utc": "2026-05-21T18:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1128,20 +683,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 24,
-        "peak_valid_utc": "2026-05-21T12:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-21T16:00:00Z",
-        "valid_end_utc": "2026-05-21T18:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 0.0,
         "risk": 0,
@@ -1155,15 +696,33 @@
         "valid_end_utc": "2026-05-21T18:00:00Z",
         "timing_value": 0.0
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T16:00:00Z",
+        "valid_end_utc": "2026-05-21T18:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 24,
+        "peak_valid_utc": "2026-05-21T12:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-21T16:00:00Z",
+        "valid_end_utc": "2026-05-21T18:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -1180,6 +739,9 @@
       }
     },
     {
+      "block_index": 8,
+      "start_fxx": 25,
+      "end_fxx": 27,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1196,20 +758,6 @@
         "timing_value": 7.6,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T19:00:00Z",
-        "valid_end_utc": "2026-05-21T21:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1225,19 +773,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T19:00:00Z",
-        "valid_end_utc": "2026-05-21T21:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1252,15 +787,32 @@
         "valid_end_utc": "2026-05-21T21:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T19:00:00Z",
+        "valid_end_utc": "2026-05-21T21:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T19:00:00Z",
+        "valid_end_utc": "2026-05-21T21:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -1277,6 +829,9 @@
       }
     },
     {
+      "block_index": 9,
+      "start_fxx": 28,
+      "end_fxx": 30,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1293,20 +848,6 @@
         "timing_value": 3.8,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-21T22:00:00Z",
-        "valid_end_utc": "2026-05-22T00:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1322,20 +863,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 30,
-        "peak_valid_utc": "2026-05-21T18:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-21T22:00:00Z",
-        "valid_end_utc": "2026-05-22T00:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1350,15 +877,33 @@
         "valid_end_utc": "2026-05-22T00:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-21T22:00:00Z",
+        "valid_end_utc": "2026-05-22T00:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 30,
+        "peak_valid_utc": "2026-05-21T18:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-21T22:00:00Z",
+        "valid_end_utc": "2026-05-22T00:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -1375,6 +920,9 @@
       }
     },
     {
+      "block_index": 10,
+      "start_fxx": 31,
+      "end_fxx": 33,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1391,20 +939,6 @@
         "timing_value": 2.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T01:00:00Z",
-        "valid_end_utc": "2026-05-22T03:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1420,19 +954,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T01:00:00Z",
-        "valid_end_utc": "2026-05-22T03:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 2.0,
         "risk": 1,
@@ -1447,15 +968,32 @@
         "valid_end_utc": "2026-05-22T03:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T01:00:00Z",
+        "valid_end_utc": "2026-05-22T03:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T01:00:00Z",
+        "valid_end_utc": "2026-05-22T03:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -1472,6 +1010,9 @@
       }
     },
     {
+      "block_index": 11,
+      "start_fxx": 34,
+      "end_fxx": 36,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1488,20 +1029,6 @@
         "timing_value": 8.1,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T04:00:00Z",
-        "valid_end_utc": "2026-05-22T06:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1517,20 +1044,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 36,
-        "peak_valid_utc": "2026-05-22T00:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-22T04:00:00Z",
-        "valid_end_utc": "2026-05-22T06:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1545,15 +1058,33 @@
         "valid_end_utc": "2026-05-22T06:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T04:00:00Z",
+        "valid_end_utc": "2026-05-22T06:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 36,
+        "peak_valid_utc": "2026-05-22T00:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-22T04:00:00Z",
+        "valid_end_utc": "2026-05-22T06:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -1570,6 +1101,9 @@
       }
     },
     {
+      "block_index": 12,
+      "start_fxx": 37,
+      "end_fxx": 39,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1586,20 +1120,6 @@
         "timing_value": 13.0,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T07:00:00Z",
-        "valid_end_utc": "2026-05-22T09:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1615,19 +1135,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T07:00:00Z",
-        "valid_end_utc": "2026-05-22T09:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 2.0,
         "risk": 1,
@@ -1642,15 +1149,32 @@
         "valid_end_utc": "2026-05-22T09:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T07:00:00Z",
+        "valid_end_utc": "2026-05-22T09:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T07:00:00Z",
+        "valid_end_utc": "2026-05-22T09:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -1667,6 +1191,9 @@
       }
     },
     {
+      "block_index": 13,
+      "start_fxx": 40,
+      "end_fxx": 42,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1683,20 +1210,6 @@
         "timing_value": 14.5,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T10:00:00Z",
-        "valid_end_utc": "2026-05-22T12:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1712,20 +1225,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.1,
-        "risk": 1,
-        "level": 2,
-        "metric": ">0.10 in / 6 hr",
-        "driver": "0.1% chance >0.10 in / 6 hr",
-        "source_fxx": 42,
-        "peak_valid_utc": "2026-05-22T06:00:00Z",
-        "timing_value": 0.1,
-        "risk_label": "Little to None",
-        "valid_start_utc": "2026-05-22T10:00:00Z",
-        "valid_end_utc": "2026-05-22T12:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1740,15 +1239,33 @@
         "valid_end_utc": "2026-05-22T12:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T10:00:00Z",
+        "valid_end_utc": "2026-05-22T12:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
+      "RAIN": {
+        "prob": 0.1,
         "risk": 1,
-        "level": 1
+        "level": 2,
+        "metric": ">0.10 in / 6 hr",
+        "driver": "0.1% chance >0.10 in / 6 hr",
+        "source_fxx": 42,
+        "peak_valid_utc": "2026-05-22T06:00:00Z",
+        "timing_value": 0.1,
+        "risk_label": "Little to None",
+        "valid_start_utc": "2026-05-22T10:00:00Z",
+        "valid_end_utc": "2026-05-22T12:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
@@ -1765,6 +1282,9 @@
       }
     },
     {
+      "block_index": 14,
+      "start_fxx": 43,
+      "end_fxx": 45,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1781,20 +1301,6 @@
         "timing_value": 18.3,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T13:00:00Z",
-        "valid_end_utc": "2026-05-22T15:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1810,19 +1316,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No rain/flooding signal",
-        "driver": "No rain/flooding signal",
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T13:00:00Z",
-        "valid_end_utc": "2026-05-22T15:00:00Z",
-        "timing_value": 0.0
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1837,15 +1330,32 @@
         "valid_end_utc": "2026-05-22T15:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T13:00:00Z",
+        "valid_end_utc": "2026-05-22T15:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No rain/flooding signal",
+        "driver": "No rain/flooding signal",
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T13:00:00Z",
+        "valid_end_utc": "2026-05-22T15:00:00Z",
+        "timing_value": 0.0
       },
       "FZRA": {
         "prob": 0.0,
@@ -1862,6 +1372,9 @@
       }
     },
     {
+      "block_index": 15,
+      "start_fxx": 46,
+      "end_fxx": 48,
       "WIND": {
         "prob": null,
         "risk": 0,
@@ -1878,20 +1391,6 @@
         "timing_value": 13.9,
         "timing_method": "Timeline timing uses highest QMD hourly mean gust within this 3-hour block"
       },
-      "VISIBILITY": {
-        "prob": 0.0,
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "metric": "No data",
-        "visibility_sm": null,
-        "source_fxx": null,
-        "peak_valid_utc": null,
-        "valid_start_utc": "2026-05-22T16:00:00Z",
-        "valid_end_utc": "2026-05-22T18:00:00Z",
-        "driver": "No visibility data available",
-        "timing_value": null
-      },
       "SNOW": {
         "prob": 0.0,
         "risk": 0,
@@ -1907,20 +1406,6 @@
         "timing_value": 0.0,
         "timing_method": "Finalized from data/krno_snow_hourly.json"
       },
-      "RAIN": {
-        "prob": 0.0,
-        "risk": 0,
-        "level": 0,
-        "metric": "<0.10 in / 6 hr",
-        "driver": "No rain/flooding signal",
-        "source_fxx": 48,
-        "peak_valid_utc": "2026-05-22T12:00:00Z",
-        "timing_value": 0.0,
-        "risk_label": "None",
-        "valid_start_utc": "2026-05-22T16:00:00Z",
-        "valid_end_utc": "2026-05-22T18:00:00Z",
-        "timing_method": "Finalized from data/nbm_qmd_rain.json"
-      },
       "LIGHTNING": {
         "prob": 1.0,
         "risk": 1,
@@ -1935,15 +1420,33 @@
         "valid_end_utc": "2026-05-22T18:00:00Z",
         "timing_method": "Finalized from data/krno_lightning_hourly.json"
       },
-      "FLASH_FREEZE": {
-        "prob": 0,
+      "VISIBILITY": {
+        "prob": 0.0,
         "risk": 0,
-        "level": 0
+        "risk_label": "None",
+        "level": 0,
+        "metric": "No data",
+        "visibility_sm": null,
+        "source_fxx": null,
+        "peak_valid_utc": null,
+        "valid_start_utc": "2026-05-22T16:00:00Z",
+        "valid_end_utc": "2026-05-22T18:00:00Z",
+        "driver": "No visibility data available",
+        "timing_value": null
       },
-      "TEMPERATURE": {
-        "prob": 5,
-        "risk": 1,
-        "level": 1
+      "RAIN": {
+        "prob": 0.0,
+        "risk": 0,
+        "level": 0,
+        "metric": "<0.10 in / 6 hr",
+        "driver": "No rain/flooding signal",
+        "source_fxx": 48,
+        "peak_valid_utc": "2026-05-22T12:00:00Z",
+        "timing_value": 0.0,
+        "risk_label": "None",
+        "valid_start_utc": "2026-05-22T16:00:00Z",
+        "valid_end_utc": "2026-05-22T18:00:00Z",
+        "timing_method": "Finalized from data/nbm_qmd_rain.json"
       },
       "FZRA": {
         "prob": 0.0,
