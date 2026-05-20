@@ -59,6 +59,10 @@ jobs:
         run: |
           python scripts/build_real_core_lightning_outputs.py
 
+      - name: Audit timeline hazard timing
+        run: |
+          python scripts/audit_timeline_hazard_timing.py || true
+
       - name: Commit updated files
         run: |
           git config user.name "github-actions[bot]"
