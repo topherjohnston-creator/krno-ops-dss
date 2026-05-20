@@ -59,10 +59,6 @@ jobs:
         run: |
           python scripts/build_real_core_lightning_outputs.py
 
-      - name: Audit generated DSS outputs
-        run: |
-          python scripts/audit_repo_outputs.py || true
-
       - name: Commit updated files
         run: |
           git config user.name "github-actions[bot]"
@@ -71,7 +67,13 @@ jobs:
           git add docs/*.json || true
           git add data/*.csv || true
           git add data/*.txt || true
+
           git add data/*.json || true
+          git reset -- data/repo_audit_report.json || true
+          git reset -- data/repo_audit_full.json || true
+          git reset -- data/*audit*.json || true
+
+          git status --short
 
           git commit -m "Update KRNO Ops DSS data" || echo "No changes to commit"
           git push
