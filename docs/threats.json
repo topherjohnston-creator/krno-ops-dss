@@ -1,96 +1,101 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-20T15:03:01Z",
+  "generated_utc": "2026-05-20T16:22:17Z",
   "cycle_utc_iso": "2026-05-20T12:00:00Z",
   "cycle": "NBM Core 12Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 12.7,
+      "prob": 12.4,
       "risk": 1,
       "risk_label": "Little to None",
       "level": 2,
-      "metric": ">30 mph threshold",
+      "metric": "24-hr max gust: 22 mph",
       "display_label": "24-hr max gust",
-      "display_value": "18 mph",
-      "g24_p50_mph": 17.7,
-      "g24_p50_kt": 15.4,
-      "threshold_probabilities": {
+      "display_value": "22 mph",
+      "g24_mps": 9.9,
+      "g24_mph": 22.1,
+      "g24_kt": 19.2,
+      "window": "24 hr",
+      "peak_start_fxx": 44,
+      "peak_end_fxx": 46,
+      "ops_label": "Elevated ground operations wind impact",
+      "driver": "QMD 24-hr max 10m gust mean 22.1 mph; 12.4% chance >30 mph",
+      "source_fxx": 24,
+      "source_idx_line": "325:635135314:d=2026052006:GUST:10 m above ground:0-1 day max fcst:",
+      "airport_threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 12.7,
-          "max_probability_fxx": 45,
-          "max_probability_valid_utc": "2026-05-22T03:00:00Z"
+          "exceedance_probability_percent": 12.4,
+          "method": "linear interpolation across QMD 24-hour max gust percentile levels"
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
           "threshold_mps": 20.117,
           "exceedance_probability_percent": 0.0,
-          "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T07:00:00Z"
+          "method": "linear interpolation across QMD 24-hour max gust percentile levels"
         },
         "gt_58_mph": {
           "threshold_mph": 58.0,
           "threshold_mps": 25.928,
           "exceedance_probability_percent": 0.0,
-          "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T07:00:00Z"
+          "method": "linear interpolation across QMD 24-hour max gust percentile levels"
         },
         "gt_65_mph": {
           "threshold_mph": 65.0,
           "threshold_mps": 29.058,
           "exceedance_probability_percent": 0.0,
-          "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T07:00:00Z"
+          "method": "linear interpolation across QMD 24-hour max gust percentile levels"
         }
       },
       "risk_candidates": [
         {
           "threshold_key": "gt_30_mph",
           "threshold_mph": 30.0,
+          "threshold_mps": 13.411200000000015,
+          "probability": 12.4,
           "impact_level": 2,
-          "probability": 12.7,
           "risk": 1,
           "risk_label": "Little to None",
-          "source_fxx": 45,
-          "source_valid_utc": "2026-05-22T03:00:00Z"
+          "label": ">30 mph",
+          "ops_label": "Elevated ground operations wind impact"
         },
         {
           "threshold_key": "gt_45_mph",
           "threshold_mph": 45.0,
-          "impact_level": 3,
+          "threshold_mps": 20.116800000000023,
           "probability": 0.0,
+          "impact_level": 3,
           "risk": 0,
           "risk_label": "None",
-          "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T07:00:00Z"
+          "label": ">45 mph",
+          "ops_label": "Operational wind restrictions possible"
         },
         {
           "threshold_key": "gt_58_mph",
           "threshold_mph": 58.0,
-          "impact_level": 4,
+          "threshold_mps": 25.928320000000028,
           "probability": 0.0,
+          "impact_level": 4,
           "risk": 0,
           "risk_label": "None",
-          "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T07:00:00Z"
+          "label": ">58 mph",
+          "ops_label": "High-impact ground operations wind risk"
         },
         {
           "threshold_key": "gt_65_mph",
           "threshold_mph": 65.0,
-          "impact_level": 5,
+          "threshold_mps": 29.057600000000033,
           "probability": 0.0,
+          "impact_level": 5,
           "risk": 0,
           "risk_label": "None",
-          "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T07:00:00Z"
+          "label": ">65 mph",
+          "ops_label": "Extreme wind risk for ground operations"
         }
       ],
-      "peak_start_fxx": 44,
-      "peak_end_fxx": 46,
-      "driver": "QMD max hourly P50 gust 17.7 mph; 12.7% chance >30 mph",
-      "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f048. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
+      "methodology": "Wind card magnitude uses the mean value from the QMD 24-hour maximum 10-meter wind gust grid, labeled in the IDX as 'GUST:10 m above ground:0-1 day max fcst:'. Wind risk probabilities are calculated from the QMD 24-hour max gust percentile curve using linear interpolation for >30, >45, >58, and >65 mph. Wind timeline timing uses QMD hourly mean 10-meter gusts."
     },
     "VISIBILITY": {
       "prob": 0.0,
@@ -3528,7 +3533,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-20T00:00:00Z",
-      "generated_utc": "2026-05-20T15:02:47Z",
+      "generated_utc": "2026-05-20T16:22:04Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 0,
@@ -3567,15 +3572,18 @@
       "name": "Wind",
       "risk_level": 1,
       "impact_level": 2,
-      "probability": 12.7,
+      "probability": 12.4,
       "peak_start_fxx": 44,
       "peak_end_fxx": 46,
-      "metric": ">30 mph threshold",
-      "driver": "QMD max hourly P50 gust 17.7 mph; 12.7% chance >30 mph",
+      "metric": "24-hr max gust: 22 mph",
+      "driver": "QMD 24-hr max 10m gust mean 22.1 mph; 12.4% chance >30 mph",
       "risk_label": "Little to None",
       "display_label": "24-hr max gust",
-      "display_value": "18 mph",
-      "g24_p50_mph": 17.7
+      "display_value": "22 mph",
+      "g24_p50_mph": 17.7,
+      "g24_mph": 22.1,
+      "g24_kt": 19.2,
+      "ops_label": "Elevated ground operations wind impact"
     },
     {
       "id": "VISIBILITY",

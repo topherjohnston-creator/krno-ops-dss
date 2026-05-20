@@ -1,0 +1,92 @@
+{
+  "prob": 12.4,
+  "risk": 1,
+  "risk_label": "Little to None",
+  "level": 2,
+  "metric": "24-hr max gust: 22 mph",
+  "display_label": "24-hr max gust",
+  "display_value": "22 mph",
+  "g24_mps": 9.9,
+  "g24_mph": 22.1,
+  "g24_kt": 19.2,
+  "window": "24 hr",
+  "peak_start_fxx": 44,
+  "peak_end_fxx": 46,
+  "ops_label": "Elevated ground operations wind impact",
+  "driver": "QMD 24-hr max 10m gust mean 22.1 mph; 12.4% chance >30 mph",
+  "source_fxx": 24,
+  "source_idx_line": "325:635135314:d=2026052006:GUST:10 m above ground:0-1 day max fcst:",
+  "airport_threshold_probabilities": {
+    "gt_30_mph": {
+      "threshold_mph": 30.0,
+      "threshold_mps": 13.411,
+      "exceedance_probability_percent": 12.4,
+      "method": "linear interpolation across QMD 24-hour max gust percentile levels"
+    },
+    "gt_45_mph": {
+      "threshold_mph": 45.0,
+      "threshold_mps": 20.117,
+      "exceedance_probability_percent": 0.0,
+      "method": "linear interpolation across QMD 24-hour max gust percentile levels"
+    },
+    "gt_58_mph": {
+      "threshold_mph": 58.0,
+      "threshold_mps": 25.928,
+      "exceedance_probability_percent": 0.0,
+      "method": "linear interpolation across QMD 24-hour max gust percentile levels"
+    },
+    "gt_65_mph": {
+      "threshold_mph": 65.0,
+      "threshold_mps": 29.058,
+      "exceedance_probability_percent": 0.0,
+      "method": "linear interpolation across QMD 24-hour max gust percentile levels"
+    }
+  },
+  "risk_candidates": [
+    {
+      "threshold_key": "gt_30_mph",
+      "threshold_mph": 30.0,
+      "threshold_mps": 13.411200000000015,
+      "probability": 12.4,
+      "impact_level": 2,
+      "risk": 1,
+      "risk_label": "Little to None",
+      "label": ">30 mph",
+      "ops_label": "Elevated ground operations wind impact"
+    },
+    {
+      "threshold_key": "gt_45_mph",
+      "threshold_mph": 45.0,
+      "threshold_mps": 20.116800000000023,
+      "probability": 0.0,
+      "impact_level": 3,
+      "risk": 0,
+      "risk_label": "None",
+      "label": ">45 mph",
+      "ops_label": "Operational wind restrictions possible"
+    },
+    {
+      "threshold_key": "gt_58_mph",
+      "threshold_mph": 58.0,
+      "threshold_mps": 25.928320000000028,
+      "probability": 0.0,
+      "impact_level": 4,
+      "risk": 0,
+      "risk_label": "None",
+      "label": ">58 mph",
+      "ops_label": "High-impact ground operations wind risk"
+    },
+    {
+      "threshold_key": "gt_65_mph",
+      "threshold_mph": 65.0,
+      "threshold_mps": 29.057600000000033,
+      "probability": 0.0,
+      "impact_level": 5,
+      "risk": 0,
+      "risk_label": "None",
+      "label": ">65 mph",
+      "ops_label": "Extreme wind risk for ground operations"
+    }
+  ],
+  "methodology": "Wind card magnitude uses the mean value from the QMD 24-hour maximum 10-meter wind gust grid, labeled in the IDX as 'GUST:10 m above ground:0-1 day max fcst:'. Wind risk probabilities are calculated from the QMD 24-hour max gust percentile curve using linear interpolation for >30, >45, >58, and >65 mph. Wind timeline timing uses QMD hourly mean 10-meter gusts."
+}
