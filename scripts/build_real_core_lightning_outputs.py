@@ -76,17 +76,10 @@ def parse_cycle_arg(cycle_arg: str | None) -> datetime | None:
     return datetime.strptime(cleaned, "%Y%m%d%H").replace(tzinfo=timezone.utc)
 
 
-def latest_cycle_utc() -> datetime:
-    """
-    Use an older likely-complete NBM cycle.
-
-    NOMADS can lag behind the current NBM cycle, especially for early forecast hours.
-    Lag by 12 hours to avoid partially available cycles.
-    """
+def floor_to_6hr_cycle() -> datetime:
     now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
     cycle_hour = (now.hour // 6) * 6
-    cycle = now.replace(hour=cycle_hour)
-    return cycle - timedelta(hours=12)
+    return now.replace(hour=cycle_hour)
 
 
 def core_grib_url(cycle: datetime, fxx: int) -> str:
@@ -100,6 +93,53 @@ def core_grib_url(cycle: datetime, fxx: int) -> str:
 
 def core_idx_url(cycle: datetime, fxx: int) -> str:
     return core_grib_url(cycle, fxx) + ".idx"
+
+
+def url_exists(url: str, timeout: int = 15) -> bool:
+    try:
+        response = requests.get(url, timeout=timeout, stream=True)
+        response.close()
+        return response.status_code == 200
+    except Exception:
+        return False
+
+
+def cycle_has_required_core_files(cycle: datetime, required_fxx: list[int]) -> bool:
+    missing = []
+
+    for fxx in required_fxx:
+        url = core_idx_url(cycle, fxx)
+        if not url_exists(url):
+            missing.append(fxx)
+
+    if missing:
+        print(f"NBM Core {cycle:%Y-%m-%d %HZ} incomplete. Missing fxx: {missing}")
+        return False
+
+    return True
+
+
+def latest_available_core_cycle_48hr() -> datetime:
+    """
+    Use the newest available NBM Core cycle that has f001-f048 IDX files.
+
+    This replaces the old fixed 12-hour lag. It tries the latest synoptic
+    cycle first, then steps backward only if needed.
+    """
+    latest = floor_to_6hr_cycle()
+    required_fxx = list(range(1, 49))
+
+    for lag_hours in [0, 6, 12, 18, 24, 30, 36, 42, 48]:
+        candidate = latest - timedelta(hours=lag_hours)
+        print(f"Checking NBM Core cycle {candidate:%Y-%m-%d %HZ}")
+
+        if cycle_has_required_core_files(candidate, required_fxx):
+            print(f"Using NBM Core cycle {candidate:%Y-%m-%d %HZ}")
+            return candidate
+
+    fallback = latest - timedelta(hours=12)
+    print(f"Warning: no complete Core cycle found. Falling back to {fallback:%Y-%m-%d %HZ}")
+    return fallback
 
 
 def fetch_text(url: str, timeout: int = 60) -> str:
@@ -148,21 +188,39 @@ def parse_idx(idx_text: str) -> list[dict[str, Any]]:
 
 def forecast_period_matches(line: str, fxx: int) -> bool:
     """
-    Match exact one-hour forecast periods:
+    Match forecast periods:
     f001 = 0-1 hour fcst
     f002 = 1-2 hour fcst
     etc.
+
+    Also allow 3-hour thunder periods, such as:
+    f003 = 0-3 hour acc fcst
+    f006 = 3-6 hour acc fcst
     """
     lower = line.lower()
     start = fxx - 1
     end = fxx
 
-    possible_periods = [
+    one_hour_periods = [
         f"{start}-{end} hour fcst",
         f"{start}-{end} hour acc fcst",
     ]
 
-    return any(period in lower for period in possible_periods)
+    if any(period in lower for period in one_hour_periods):
+        return True
+
+    # NBM thunder fields often appear as 3-hour probability forecast periods.
+    if fxx % 3 == 0:
+        three_hour_start = fxx - 3
+        three_hour_end = fxx
+        three_hour_periods = [
+            f"{three_hour_start}-{three_hour_end} hour fcst",
+            f"{three_hour_start}-{three_hour_end} hour acc fcst",
+        ]
+        if any(period in lower for period in three_hour_periods):
+            return True
+
+    return False
 
 
 def is_probability_threshold_line(line: str) -> bool:
@@ -176,7 +234,6 @@ def is_probability_threshold_line(line: str) -> bool:
         "prob <",
         "prob <=",
         "% level",
-        "prob fcst",
     ]
 
     return any(pattern in lower for pattern in bad_patterns)
@@ -186,12 +243,9 @@ def is_lightning_candidate_line(line: str, fxx: int) -> bool:
     """
     Prefer actual thunder/lightning probability fields, not threshold-probability lines.
 
-    This intentionally excludes lines containing:
-    - prob >
-    - prob fcst
-    - percentile levels
-
-    because those can produce false 100% outputs.
+    The line may contain "probability forecast"; that is okay for TSTM because
+    the value itself is the probability. We only reject threshold exceedance
+    strings like "prob >".
     """
     upper = line.upper()
 
@@ -216,50 +270,18 @@ def is_lightning_candidate_line(line: str, fxx: int) -> bool:
     return True
 
 
-def is_lightning_fallback_line(line: str, fxx: int) -> bool:
-    """
-    Last-resort fallback only.
-
-    Some NBM Core inventories may store thunder probability as a probability-style field.
-    If no clean deterministic/probability field is present, this fallback allows a thunder
-    probability line, but still rejects percentiles and unrelated fields.
-    """
-    upper = line.upper()
-    lower = line.lower()
-
-    lightning_terms = [
-        ":TSTM:",
-        ":LTNG:",
-        ":LTG:",
-        ":LTP:",
-        ":TSTORM:",
-        ":THUNDER:",
-    ]
-
-    if not any(term in upper for term in lightning_terms):
-        return False
-
-    if not forecast_period_matches(line, fxx):
-        return False
-
-    if "% level" in lower:
-        return False
-
-    return True
-
-
 def find_lightning_row(idx_rows: list[dict[str, Any]], fxx: int) -> dict[str, Any] | None:
-    clean_candidates = [row for row in idx_rows if is_lightning_candidate_line(row["line"], fxx)]
+    candidates = [row for row in idx_rows if is_lightning_candidate_line(row["line"], fxx)]
 
-    if clean_candidates:
-        return clean_candidates[0]
+    if not candidates:
+        return None
 
-    fallback_candidates = [row for row in idx_rows if is_lightning_fallback_line(row["line"], fxx)]
+    # Prefer TSTM because that is the standard thunder/lightning proxy.
+    tstm_candidates = [row for row in candidates if ":TSTM:" in row["line"].upper()]
+    if tstm_candidates:
+        return tstm_candidates[0]
 
-    if fallback_candidates:
-        return fallback_candidates[0]
-
-    return None
+    return candidates[0]
 
 
 def download_grib_message(grib_url: str, row: dict[str, Any], path: Path) -> None:
@@ -397,18 +419,15 @@ def extract_core_value(grib_url: str, row: dict[str, Any], label: str) -> tuple[
 
 def normalize_probability(raw_value: float) -> float:
     """
-    Convert lightning field value to percent.
+    NBM Core TSTM/lightning probability is already in percent.
 
-    Supports:
-    - 0 to 100 percent
-    - 0 to 1 fraction
-
-    Rejects impossible values by clipping after conversion.
+    Do NOT multiply values <= 1 by 100. In this field, 1.0 means 1%,
+    not 100%. Multiplying caused the false EXTREME lightning risk.
     """
     value = float(raw_value)
 
-    if value <= 1.0:
-        value *= 100.0
+    if math.isnan(value):
+        return 0.0
 
     return round(max(0.0, min(100.0, value)), 1)
 
@@ -458,7 +477,7 @@ def classify_lightning_probability(probability: float) -> dict[str, Any]:
     if probability <= 0:
         return {
             "probability": 0.0,
-            "impact_level": 1,
+            "impact_level": 0,
             "risk": 0,
             "risk_label": "None",
             "metric": "Lightning chance: 0%",
@@ -540,7 +559,10 @@ def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
                     "candidate_lines": [
                         r["line"]
                         for r in idx_rows
-                        if any(term in r["line"].upper() for term in [":TSTM:", ":LTNG:", ":LTG:", ":LTP:", ":TSTORM:", ":THUNDER:"])
+                        if any(
+                            term in r["line"].upper()
+                            for term in [":TSTM:", ":LTNG:", ":LTG:", ":LTP:", ":TSTORM:", ":THUNDER:"]
+                        )
                     ],
                 }
             )
@@ -590,7 +612,14 @@ def extract_lightning_hours(cycle: datetime) -> list[dict[str, Any]]:
 
 def best_lightning_result(ok_hours: list[dict[str, Any]]) -> dict[str, Any]:
     if not ok_hours:
-        return classify_lightning_probability(0.0)
+        return {
+            **classify_lightning_probability(0.0),
+            "fxx": 1,
+            "valid_utc": None,
+            "raw_value": None,
+            "idx_line": None,
+            "variable": None,
+        }
 
     best_hour = max(
         ok_hours,
@@ -613,12 +642,11 @@ def best_lightning_result(ok_hours: list[dict[str, Any]]) -> dict[str, Any]:
 
 def block_lightning_risk(block_hours: list[dict[str, Any]]) -> dict[str, Any]:
     if not block_hours:
-        evaluation = classify_lightning_probability(0.0)
         return {
             "prob": 0.0,
             "risk": 0,
             "risk_label": "None",
-            "level": 1,
+            "level": 0,
             "metric": "Lightning chance: 0%",
             "ops_label": "No lightning signal",
             "driver": "0.0% chance of lightning",
@@ -652,7 +680,7 @@ def main() -> None:
     parser.add_argument("--cycle", default="", help="Optional NBM cycle in YYYYMMDDHH format")
     args = parser.parse_args()
 
-    cycle = parse_cycle_arg(args.cycle) or latest_cycle_utc()
+    cycle = parse_cycle_arg(args.cycle) or latest_available_core_cycle_48hr()
     generated = utc_now()
 
     print(f"Building Core lightning outputs for cycle {cycle:%Y-%m-%d %HZ}")
@@ -678,7 +706,6 @@ def main() -> None:
     peak_start_fxx = max(1, peak_fxx - 1)
     peak_end_fxx = min(48, peak_fxx + 1)
 
-    # Update threats.json.
     threats_path = DOCS / "threats.json"
     threats_payload = load_json(
         threats_path,
@@ -703,7 +730,7 @@ def main() -> None:
         "metric": best["metric"],
         "display_label": "Lightning chance",
         "display_value": f"{best['probability']:.0f}%",
-        "window": "1 hr",
+        "window": "1-3 hr",
         "peak_start_fxx": peak_start_fxx,
         "peak_end_fxx": peak_end_fxx,
         "ops_label": best["ops_label"],
@@ -712,11 +739,10 @@ def main() -> None:
         "source_variable": best.get("variable"),
         "source_idx_line": best.get("idx_line"),
         "methodology": (
-            "Lightning risk uses the NBM Core one-hour thunder/lightning probability field. "
-            "The extracted probability is classified directly into impact thresholds: "
-            "<5%, 5-25%, 25-50%, 50-75%, and >75%. The probability and impact level are then "
-            "passed through the KRNO weather risk matrix. Probability-threshold fields such as "
-            "'prob >' are excluded so they do not create false 100% lightning risk."
+            "Lightning risk uses the NBM Core thunderstorm/lightning probability field directly. "
+            "The extracted value is already percent, so 1.0 is treated as 1%, not 100%. "
+            "The probability is classified into lightning thresholds: 0%, <5%, 5-25%, "
+            "25-50%, 50-75%, and >75%. Probability-threshold lines such as 'prob >' are excluded."
         ),
     }
 
@@ -766,8 +792,6 @@ def main() -> None:
             }
         )
 
-    # Update timeline.json.
-    # Frontend expects 16 blocks x 3 hours = 48 hours.
     timeline_path = DOCS / "timeline.json"
     timeline_payload = load_json(
         timeline_path,
@@ -833,8 +857,9 @@ def main() -> None:
         "thresholds": LIGHTNING_IMPACT_THRESHOLDS,
         "hours": hours,
         "methodology": (
-            "Uses actual NBM Core one-hour thunder/lightning probability when available. "
-            "Excludes probability-threshold lines containing 'prob >', 'prob fcst', or percentile levels."
+            "Uses NBM Core thunderstorm/lightning probability directly. The value is already percent. "
+            "A raw value of 1.0 is 1%, not 100%. The script excludes probability-threshold lines "
+            "containing 'prob >', 'prob >=', 'prob <', 'prob <=', or percentile levels."
         ),
     }
 
