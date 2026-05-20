@@ -1,27 +1,27 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-20T14:17:49Z",
+  "generated_utc": "2026-05-20T15:03:01Z",
   "cycle_utc_iso": "2026-05-20T12:00:00Z",
   "cycle": "NBM Core 12Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 6.8,
+      "prob": 12.7,
       "risk": 1,
       "risk_label": "Little to None",
       "level": 2,
       "metric": ">30 mph threshold",
       "display_label": "24-hr max gust",
-      "display_value": "13 mph",
-      "g24_p50_mph": 13.4,
-      "g24_p50_kt": 11.7,
+      "display_value": "18 mph",
+      "g24_p50_mph": 17.7,
+      "g24_p50_kt": 15.4,
       "threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 6.8,
-          "max_probability_fxx": 22,
-          "max_probability_valid_utc": "2026-05-21T04:00:00Z"
+          "exceedance_probability_percent": 12.7,
+          "max_probability_fxx": 45,
+          "max_probability_valid_utc": "2026-05-22T03:00:00Z"
         },
         "gt_45_mph": {
           "threshold_mph": 45.0,
@@ -50,11 +50,11 @@
           "threshold_key": "gt_30_mph",
           "threshold_mph": 30.0,
           "impact_level": 2,
-          "probability": 6.8,
+          "probability": 12.7,
           "risk": 1,
           "risk_label": "Little to None",
-          "source_fxx": 22,
-          "source_valid_utc": "2026-05-21T04:00:00Z"
+          "source_fxx": 45,
+          "source_valid_utc": "2026-05-22T03:00:00Z"
         },
         {
           "threshold_key": "gt_45_mph",
@@ -87,20 +87,20 @@
           "source_valid_utc": "2026-05-20T07:00:00Z"
         }
       ],
-      "peak_start_fxx": 21,
-      "peak_end_fxx": 23,
-      "driver": "QMD max hourly P50 gust 13.4 mph; 6.8% chance >30 mph",
-      "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
+      "peak_start_fxx": 44,
+      "peak_end_fxx": 46,
+      "driver": "QMD max hourly P50 gust 17.7 mph; 12.7% chance >30 mph",
+      "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f048. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
       "prob": 0.0,
       "risk": 0,
       "risk_label": "None",
-      "level": 0,
-      "metric": "No visibility restriction signal",
+      "level": 4,
+      "metric": "<1 SM",
       "display_label": "Lowest visibility",
       "display_value": "10.1 SM",
-      "min_visibility_sm": 10.07,
+      "min_visibility_sm": 10.06,
       "threshold_probabilities": {
         "lt_5_sm": {
           "threshold_sm": 5.0,
@@ -164,8 +164,8 @@
       ],
       "peak_start_fxx": 1,
       "peak_end_fxx": 2,
-      "driver": "No visibility restriction signal",
-      "methodology": "Visibility risk uses NBM Core hourly probability fields for visibility below 5, 3, and 1 SM. The maximum hourly probability from f001-f024 is used for each threshold, then probability x impact determines risk. NBM Core did not provide a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
+      "driver": "0.0% chance visibility <1 SM",
+      "methodology": "Visibility risk uses NBM Core hourly probability fields for visibility below 5, 3, and 1 SM. The maximum hourly probability from f001-f048 is used for each threshold, then probability x impact determines risk. NBM Core did not provide a <0.5 SM probability field in the inventory scan, so <0.5 SM is not derived."
     },
     "SNOW": {
       "prob": 0.0,
@@ -3528,7 +3528,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-20T00:00:00Z",
-      "generated_utc": "2026-05-20T14:17:35Z",
+      "generated_utc": "2026-05-20T15:02:47Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 0,
@@ -3567,30 +3567,30 @@
       "name": "Wind",
       "risk_level": 1,
       "impact_level": 2,
-      "probability": 6.8,
-      "peak_start_fxx": 21,
-      "peak_end_fxx": 23,
+      "probability": 12.7,
+      "peak_start_fxx": 44,
+      "peak_end_fxx": 46,
       "metric": ">30 mph threshold",
-      "driver": "QMD max hourly P50 gust 13.4 mph; 6.8% chance >30 mph",
+      "driver": "QMD max hourly P50 gust 17.7 mph; 12.7% chance >30 mph",
       "risk_label": "Little to None",
       "display_label": "24-hr max gust",
-      "display_value": "13 mph",
-      "g24_p50_mph": 13.4
+      "display_value": "18 mph",
+      "g24_p50_mph": 17.7
     },
     {
       "id": "VISIBILITY",
       "name": "Visibility",
       "risk_level": 0,
-      "impact_level": 0,
+      "impact_level": 4,
       "probability": 0.0,
       "peak_start_fxx": 1,
       "peak_end_fxx": 2,
-      "metric": "No visibility restriction signal",
-      "driver": "No visibility restriction signal",
+      "metric": "<1 SM",
+      "driver": "0.0% chance visibility <1 SM",
       "risk_label": "None",
       "display_label": "Lowest visibility",
       "display_value": "10.1 SM",
-      "min_visibility_sm": 10.07
+      "min_visibility_sm": 10.06
     },
     {
       "id": "SNOW",

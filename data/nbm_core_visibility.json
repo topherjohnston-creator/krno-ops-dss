@@ -2,16 +2,16 @@
   "site": "KRNO",
   "source": "NBM Core via Herbie",
   "cycle_utc": "2026-05-20T06:00:00Z",
-  "generated_utc": "2026-05-20T14:15:20Z",
+  "generated_utc": "2026-05-20T14:59:45Z",
   "display_value": {
     "label": "Lowest visibility",
-    "method": "minimum hourly NBM Core deterministic VIS from f001-f024",
-    "source_fxx": 1,
-    "valid_utc": "2026-05-20T07:00:00Z",
-    "visibility_sm": 10.07
+    "method": "minimum hourly NBM Core deterministic VIS from f001-f048",
+    "source_fxx": 45,
+    "valid_utc": "2026-05-22T03:00:00Z",
+    "visibility_sm": 10.06
   },
   "airport_threshold_probabilities": {
-    "method": "For each visibility threshold, probability is the maximum hourly probability from f001-f024. Probabilities use direct NBM Core probability fields.",
+    "method": "For each visibility threshold, probability is the maximum hourly probability from f001-f048. Probabilities use direct NBM Core probability fields.",
     "thresholds": {
       "lt_5_sm": {
         "threshold_sm": 5.0,
@@ -44,14 +44,14 @@
   },
   "risk": {
     "best": {
-      "threshold_key": "no_visibility_signal",
-      "threshold_sm": 0.0,
-      "impact_level": 0,
+      "threshold_key": "lt_1_sm",
+      "threshold_sm": 1.0,
+      "impact_level": 4,
       "probability": 0.0,
       "risk": 0,
       "risk_label": "None",
-      "source_fxx": null,
-      "source_valid_utc": null
+      "source_fxx": 1,
+      "source_valid_utc": "2026-05-20T07:00:00Z"
     },
     "candidates": [
       {
@@ -783,6 +783,726 @@
       "status": "ok",
       "visibility_sm": 10.07,
       "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 25,
+      "valid_utc": "2026-05-21T07:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 26,
+      "valid_utc": "2026-05-21T08:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 27,
+      "valid_utc": "2026-05-21T09:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 28,
+      "valid_utc": "2026-05-21T10:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 29,
+      "valid_utc": "2026-05-21T11:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 30,
+      "valid_utc": "2026-05-21T12:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 31,
+      "valid_utc": "2026-05-21T13:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 32,
+      "valid_utc": "2026-05-21T14:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 33,
+      "valid_utc": "2026-05-21T15:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.07,
+      "visibility_m": 16209.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 34,
+      "valid_utc": "2026-05-21T16:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.11,
+      "visibility_m": 16274.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 35,
+      "valid_utc": "2026-05-21T17:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.11,
+      "visibility_m": 16274.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 36,
+      "valid_utc": "2026-05-21T18:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.11,
+      "visibility_m": 16274.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 37,
+      "valid_utc": "2026-05-21T19:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 38,
+      "valid_utc": "2026-05-21T20:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 39,
+      "valid_utc": "2026-05-21T21:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.11,
+      "visibility_m": 16277.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 40,
+      "valid_utc": "2026-05-21T22:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 41,
+      "valid_utc": "2026-05-21T23:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 42,
+      "valid_utc": "2026-05-22T00:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.13,
+      "visibility_m": 16307.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 43,
+      "valid_utc": "2026-05-22T01:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 44,
+      "valid_utc": "2026-05-22T02:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 45,
+      "valid_utc": "2026-05-22T03:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.06,
+      "visibility_m": 16192.0,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 46,
+      "valid_utc": "2026-05-22T04:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 47,
+      "valid_utc": "2026-05-22T05:00:00Z",
+      "status": "ok",
+      "visibility_sm": null,
+      "visibility_m": null,
+      "threshold_probabilities": {
+        "lt_5_sm": {
+          "threshold_sm": 5.0,
+          "threshold_m": 8046.73,
+          "impact_level": 2,
+          "probability_percent": 0.0,
+          "label": "Visibility <5 SM"
+        },
+        "lt_3_sm": {
+          "threshold_sm": 3.0,
+          "threshold_m": 4828.03,
+          "impact_level": 3,
+          "probability_percent": 0.0,
+          "label": "Visibility <3 SM"
+        },
+        "lt_1_sm": {
+          "threshold_sm": 1.0,
+          "threshold_m": 1609.34,
+          "impact_level": 4,
+          "probability_percent": 0.0,
+          "label": "Visibility <1 SM"
+        }
+      }
+    },
+    {
+      "fxx": 48,
+      "valid_utc": "2026-05-22T06:00:00Z",
+      "status": "ok",
+      "visibility_sm": 10.1,
+      "visibility_m": 16256.0,
       "threshold_probabilities": {
         "lt_5_sm": {
           "threshold_sm": 5.0,
