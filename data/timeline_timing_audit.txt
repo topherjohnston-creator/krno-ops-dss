@@ -1,0 +1,50 @@
+KRNO Timeline Timing Audit
+Generated: 2026-05-20T17:31:12Z
+
+Timeline structure:
+  blocks_count: 16
+  block_hazards_count: 16
+  block_hours: 3
+  structure_pass: True
+
+Hazard timing checks:
+  FAIL - WIND: timing_mismatch
+    source_peak: {'fxx': 45, 'valid_utc': '2026-05-22T03:00:00Z', 'value': 18.3}
+    expected_block_index: 14
+    timeline_peak_block_index: 0
+    timeline_peak: {'block_index': 0, 'risk': 1.0, 'level': 1.0, 'prob': None, 'source_fxx': 1.0, 'metric': '<30 mph', 'driver': 'QMD hourly mean gust 4.5 mph', 'peak_valid_utc': None, 'valid_start_utc': None, 'valid_end_utc': None}
+    source_path: data/krno_wind_hourly.json
+
+  PASS - SNOW: ok
+    source_peak: {'fxx': 1, 'valid_utc': '2026-05-20T01:00:00Z', 'value': 0.0}
+    expected_block_index: 0
+    timeline_peak_block_index: 0
+    timeline_peak: {'block_index': 0, 'risk': 0.0, 'level': 0.0, 'prob': 0.0, 'source_fxx': 1.0, 'metric': '0" / hr', 'driver': 'No snow signal', 'peak_valid_utc': None, 'valid_start_utc': None, 'valid_end_utc': None}
+    source_path: data/krno_snow_hourly.json
+
+  PASS - LIGHTNING: ok
+    source_peak: {'fxx': 39, 'valid_utc': '2026-05-22T03:00:00Z', 'value': 5.0}
+    expected_block_index: 12
+    timeline_peak_block_index: 12
+    timeline_peak: {'block_index': 12, 'risk': 1.0, 'level': 2.0, 'prob': 5.0, 'source_fxx': 39.0, 'metric': 'Lightning chance: 5-25%', 'driver': '5.0% chance of lightning', 'peak_valid_utc': None, 'valid_start_utc': None, 'valid_end_utc': None}
+    source_path: data/krno_lightning_hourly.json
+
+  FAIL - FZRA: missing_source_file
+    timeline_peak_block_index: None
+    source_path: data/krno_fzra_hourly.json
+
+  FAIL - VISIBILITY: timing_mismatch
+    source_peak: {'fxx': 45, 'valid_utc': '2026-05-22T03:00:00Z', 'value': 10.06}
+    expected_block_index: 14
+    timeline_peak_block_index: 0
+    timeline_peak: {'block_index': 0, 'risk': 0.0, 'level': 4.0, 'prob': 0.0, 'source_fxx': 1.0, 'metric': None, 'driver': None, 'peak_valid_utc': None, 'valid_start_utc': None, 'valid_end_utc': None}
+    source_path: data/nbm_core_visibility.json
+
+  PASS - RAIN: ok
+    source_peak: {'fxx': 48, 'start_fxx': 43, 'end_fxx': 48, 'valid_utc': '2026-05-22T06:00:00Z', 'value': 0.1}
+    expected_block_indices: [14, 15]
+    timeline_peak_block_index: 14
+    timeline_peak: {'block_index': 14, 'risk': 1.0, 'level': 2.0, 'prob': 0.1, 'source_fxx': 48.0, 'metric': '>0.10 in / 6 hr', 'driver': '0.1% chance >0.10 in / 6 hr', 'peak_valid_utc': None, 'valid_start_utc': None, 'valid_end_utc': None}
+    source_path: data/nbm_qmd_rain.json
+
+overall_pass: False
