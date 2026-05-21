@@ -1,0 +1,15 @@
+# Oversized audit/debug files
+data/repo_audit_report.json
+data/repo_audit_full.json
+data/*audit*.json
+
+# Huge REFS debug/output files that should not be committed unless intentionally needed
+data/refs_dss_debug.json
+data/refs_hourly.json
+
+# Python/cache junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
