@@ -1,26 +1,26 @@
 {
   "site": "KRNO",
-  "generated_utc": "2026-05-21T00:47:44Z",
-  "cycle_utc_iso": "2026-05-20T18:00:00Z",
-  "cycle": "NBM Core 18Z",
+  "generated_utc": "2026-05-21T04:51:47Z",
+  "cycle_utc_iso": "2026-05-21T00:00:00Z",
+  "cycle": "NBM Core 00Z",
   "valid_period": "next_48_hours",
   "threats": {
     "WIND": {
-      "prob": 6.8,
+      "prob": 2.0,
       "risk": 1,
       "risk_label": "Little to None",
       "level": 2,
       "metric": ">30 mph threshold",
       "display_label": "24-hr max gust",
-      "display_value": "12 mph",
-      "g24_p50_mph": 11.9,
-      "g24_p50_kt": 10.3,
+      "display_value": "11 mph",
+      "g24_p50_mph": 10.7,
+      "g24_p50_kt": 9.3,
       "threshold_probabilities": {
         "gt_30_mph": {
           "threshold_mph": 30.0,
           "threshold_mps": 13.411,
-          "exceedance_probability_percent": 6.8,
-          "max_probability_fxx": 16,
+          "exceedance_probability_percent": 2.0,
+          "max_probability_fxx": 10,
           "max_probability_valid_utc": "2026-05-21T04:00:00Z"
         },
         "gt_45_mph": {
@@ -28,21 +28,21 @@
           "threshold_mps": 20.117,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T13:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T19:00:00Z"
         },
         "gt_58_mph": {
           "threshold_mph": 58.0,
           "threshold_mps": 25.928,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T13:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T19:00:00Z"
         },
         "gt_65_mph": {
           "threshold_mph": 65.0,
           "threshold_mps": 29.058,
           "exceedance_probability_percent": 0.0,
           "max_probability_fxx": 1,
-          "max_probability_valid_utc": "2026-05-20T13:00:00Z"
+          "max_probability_valid_utc": "2026-05-20T19:00:00Z"
         }
       },
       "risk_candidates": [
@@ -50,10 +50,10 @@
           "threshold_key": "gt_30_mph",
           "threshold_mph": 30.0,
           "impact_level": 2,
-          "probability": 6.8,
+          "probability": 2.0,
           "risk": 1,
           "risk_label": "Little to None",
-          "source_fxx": 16,
+          "source_fxx": 10,
           "source_valid_utc": "2026-05-21T04:00:00Z"
         },
         {
@@ -64,7 +64,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T13:00:00Z"
+          "source_valid_utc": "2026-05-20T19:00:00Z"
         },
         {
           "threshold_key": "gt_58_mph",
@@ -74,7 +74,7 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T13:00:00Z"
+          "source_valid_utc": "2026-05-20T19:00:00Z"
         },
         {
           "threshold_key": "gt_65_mph",
@@ -84,12 +84,12 @@
           "risk": 0,
           "risk_label": "None",
           "source_fxx": 1,
-          "source_valid_utc": "2026-05-20T13:00:00Z"
+          "source_valid_utc": "2026-05-20T19:00:00Z"
         }
       ],
-      "peak_start_fxx": 15,
-      "peak_end_fxx": 17,
-      "driver": "QMD max hourly P50 gust 11.9 mph; 6.8% chance >30 mph",
+      "peak_start_fxx": 9,
+      "peak_end_fxx": 11,
+      "driver": "QMD max hourly P50 gust 10.7 mph; 2.0% chance >30 mph",
       "methodology": "Wind display uses maximum hourly QMD P50 gust from f001-f024. Wind risk uses exact threshold probabilities for 30, 45, 58, and 65 mph derived from QMD hourly percentile curves, then applies probability x impact matrix."
     },
     "VISIBILITY": {
@@ -2684,7 +2684,7 @@
       "methodology": "Snow risk uses official NBM Core 1-hour ASNOW exceedance probabilities. KRNO plow/treatment operations begin at trace/light snow. Thresholds are >0.10, >0.50, >1.00, and >2.00 inches in 1 hour, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, selected risk is None."
     },
     "RAIN": {
-      "prob": 0.1,
+      "prob": 0.2,
       "risk": 1,
       "risk_label": "Little to None",
       "level": 2,
@@ -2695,9 +2695,9 @@
       "threshold_in": 0.1,
       "threshold_mm": 2.54,
       "window": "6 hr",
-      "peak_start_fxx": 36,
-      "peak_end_fxx": 42,
-      "driver": "0.1% chance >0.10 in / 6 hr",
+      "peak_start_fxx": 30,
+      "peak_end_fxx": 36,
+      "driver": "0.2% chance >0.10 in / 6 hr",
       "threshold_probabilities": {
         "f006_0_6hr": {
           "gt_0p10_in_6hr": {
@@ -2708,7 +2708,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:194052791:d=2026052012:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:191912389:d=2026052018:APCP:surface:0-6 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2718,7 +2718,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:196513964:d=2026052012:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:194529551:d=2026052018:APCP:surface:0-6 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2728,7 +2728,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198481880:d=2026052012:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:196701857:d=2026052018:APCP:surface:0-6 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2738,7 +2738,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:200038396:d=2026052012:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:198421920:d=2026052018:APCP:surface:0-6 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f012_6_12hr": {
@@ -2750,7 +2750,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192408465:d=2026052012:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:183505846:d=2026052018:APCP:surface:6-12 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2760,7 +2760,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195106024:d=2026052012:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:186006894:d=2026052018:APCP:surface:6-12 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2770,7 +2770,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197337561:d=2026052012:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:188039360:d=2026052018:APCP:surface:6-12 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2780,7 +2780,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199085574:d=2026052012:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:189638977:d=2026052018:APCP:surface:6-12 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f018_12_18hr": {
@@ -2792,7 +2792,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:183668057:d=2026052012:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:181141951:d=2026052018:APCP:surface:12-18 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2802,7 +2802,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186251492:d=2026052012:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:183608362:d=2026052018:APCP:surface:12-18 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2812,7 +2812,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188321367:d=2026052012:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:185624853:d=2026052018:APCP:surface:12-18 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2822,7 +2822,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:189932294:d=2026052012:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:187291702:d=2026052018:APCP:surface:12-18 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f024_18_24hr": {
@@ -2834,7 +2834,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:181305302:d=2026052012:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:195535912:d=2026052018:APCP:surface:18-24 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2844,7 +2844,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:183822862:d=2026052012:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:198022208:d=2026052018:APCP:surface:18-24 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2854,7 +2854,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:185884918:d=2026052012:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:200076823:d=2026052018:APCP:surface:18-24 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2864,7 +2864,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:187580295:d=2026052012:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:201798644:d=2026052018:APCP:surface:18-24 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f030_24_30hr": {
@@ -2876,7 +2876,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195821291:d=2026052012:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:192438023:d=2026052018:APCP:surface:24-30 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2886,7 +2886,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:198373098:d=2026052012:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:195144175:d=2026052018:APCP:surface:24-30 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2896,7 +2896,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:200478344:d=2026052012:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:197460333:d=2026052018:APCP:surface:24-30 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2906,7 +2906,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:202229389:d=2026052012:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:199333059:d=2026052018:APCP:surface:24-30 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f036_30_36hr": {
@@ -2915,10 +2915,10 @@
             "threshold_mm": 2.54,
             "impact_level": 2,
             "label": ">0.10 in / 6 hr",
-            "probability_percent": 0.0,
+            "probability_percent": 0.2,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:192759939:d=2026052012:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:184029110:d=2026052018:APCP:surface:30-36 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2928,7 +2928,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:195544666:d=2026052012:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:186597784:d=2026052018:APCP:surface:30-36 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2938,7 +2938,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:197913640:d=2026052012:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:188739610:d=2026052018:APCP:surface:30-36 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2948,7 +2948,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:199825717:d=2026052012:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:190532517:d=2026052018:APCP:surface:30-36 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f042_36_42hr": {
@@ -2957,10 +2957,10 @@
             "threshold_mm": 2.54,
             "impact_level": 2,
             "label": ">0.10 in / 6 hr",
-            "probability_percent": 0.1,
+            "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184377258:d=2026052012:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "84:181675311:d=2026052018:APCP:surface:36-42 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -2970,7 +2970,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186989025:d=2026052012:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "85:184212887:d=2026052018:APCP:surface:36-42 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -2980,7 +2980,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:189177112:d=2026052012:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "86:186355446:d=2026052018:APCP:surface:36-42 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -2990,7 +2990,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "88:191018986:d=2026052012:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "87:188223206:d=2026052018:APCP:surface:36-42 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         },
         "f048_42_48hr": {
@@ -3002,7 +3002,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "84:182069739:d=2026052012:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
+            "idx_line": "85:196139468:d=2026052018:APCP:surface:42-48 hour acc fcst:prob >2.54:prob fcst 255/255"
           },
           "gt_0p25_in_6hr": {
             "threshold_in": 0.25,
@@ -3012,7 +3012,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "85:184626355:d=2026052012:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
+            "idx_line": "86:198666274:d=2026052018:APCP:surface:42-48 hour acc fcst:prob >6.35:prob fcst 255/255"
           },
           "gt_0p50_in_6hr": {
             "threshold_in": 0.5,
@@ -3022,7 +3022,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "86:186813028:d=2026052012:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
+            "idx_line": "87:200840030:d=2026052018:APCP:surface:42-48 hour acc fcst:prob >12.7:prob fcst 255/255"
           },
           "gt_1p00_in_6hr": {
             "threshold_in": 1.0,
@@ -3032,7 +3032,7 @@
             "probability_percent": 0.0,
             "status": "ok",
             "variable": "tp",
-            "idx_line": "87:188693913:d=2026052012:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
+            "idx_line": "88:202672983:d=2026052018:APCP:surface:42-48 hour acc fcst:prob >25.4:prob fcst 255/255"
           }
         }
       },
@@ -3049,7 +3049,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3063,7 +3063,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3077,7 +3077,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3091,7 +3091,7 @@
           "fxx": 6,
           "start_hour": 0,
           "end_hour": 6,
-          "valid_utc": "2026-05-20T18:00:00Z"
+          "valid_utc": "2026-05-21T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3105,7 +3105,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3119,7 +3119,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3133,7 +3133,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3147,7 +3147,7 @@
           "fxx": 12,
           "start_hour": 6,
           "end_hour": 12,
-          "valid_utc": "2026-05-21T00:00:00Z"
+          "valid_utc": "2026-05-21T06:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3161,7 +3161,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3175,7 +3175,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3189,7 +3189,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3203,7 +3203,7 @@
           "fxx": 18,
           "start_hour": 12,
           "end_hour": 18,
-          "valid_utc": "2026-05-21T06:00:00Z"
+          "valid_utc": "2026-05-21T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3217,7 +3217,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3231,7 +3231,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3245,7 +3245,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3259,7 +3259,7 @@
           "fxx": 24,
           "start_hour": 18,
           "end_hour": 24,
-          "valid_utc": "2026-05-21T12:00:00Z"
+          "valid_utc": "2026-05-21T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3273,7 +3273,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3287,7 +3287,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3301,7 +3301,7 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T18:00:00Z"
+          "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3315,62 +3315,6 @@
           "fxx": 30,
           "start_hour": 24,
           "end_hour": 30,
-          "valid_utc": "2026-05-21T18:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p10_in_6hr",
-          "threshold_in": 0.1,
-          "threshold_mm": 2.54,
-          "impact_level": 2,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.10 in / 6 hr",
-          "fxx": 36,
-          "start_hour": 30,
-          "end_hour": 36,
-          "valid_utc": "2026-05-22T00:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p25_in_6hr",
-          "threshold_in": 0.25,
-          "threshold_mm": 6.35,
-          "impact_level": 3,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.25 in / 6 hr",
-          "fxx": 36,
-          "start_hour": 30,
-          "end_hour": 36,
-          "valid_utc": "2026-05-22T00:00:00Z"
-        },
-        {
-          "threshold_key": "gt_0p50_in_6hr",
-          "threshold_in": 0.5,
-          "threshold_mm": 12.7,
-          "impact_level": 4,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">0.50 in / 6 hr",
-          "fxx": 36,
-          "start_hour": 30,
-          "end_hour": 36,
-          "valid_utc": "2026-05-22T00:00:00Z"
-        },
-        {
-          "threshold_key": "gt_1p00_in_6hr",
-          "threshold_in": 1.0,
-          "threshold_mm": 25.4,
-          "impact_level": 5,
-          "probability": 0.0,
-          "risk": 0,
-          "risk_label": "None",
-          "label": ">1.00 in / 6 hr",
-          "fxx": 36,
-          "start_hour": 30,
-          "end_hour": 36,
           "valid_utc": "2026-05-22T00:00:00Z"
         },
         {
@@ -3378,14 +3322,70 @@
           "threshold_in": 0.1,
           "threshold_mm": 2.54,
           "impact_level": 2,
-          "probability": 0.1,
+          "probability": 0.2,
           "risk": 1,
           "risk_label": "Little to None",
           "label": ">0.10 in / 6 hr",
+          "fxx": 36,
+          "start_hour": 30,
+          "end_hour": 36,
+          "valid_utc": "2026-05-22T06:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p25_in_6hr",
+          "threshold_in": 0.25,
+          "threshold_mm": 6.35,
+          "impact_level": 3,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.25 in / 6 hr",
+          "fxx": 36,
+          "start_hour": 30,
+          "end_hour": 36,
+          "valid_utc": "2026-05-22T06:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p50_in_6hr",
+          "threshold_in": 0.5,
+          "threshold_mm": 12.7,
+          "impact_level": 4,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.50 in / 6 hr",
+          "fxx": 36,
+          "start_hour": 30,
+          "end_hour": 36,
+          "valid_utc": "2026-05-22T06:00:00Z"
+        },
+        {
+          "threshold_key": "gt_1p00_in_6hr",
+          "threshold_in": 1.0,
+          "threshold_mm": 25.4,
+          "impact_level": 5,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">1.00 in / 6 hr",
+          "fxx": 36,
+          "start_hour": 30,
+          "end_hour": 36,
+          "valid_utc": "2026-05-22T06:00:00Z"
+        },
+        {
+          "threshold_key": "gt_0p10_in_6hr",
+          "threshold_in": 0.1,
+          "threshold_mm": 2.54,
+          "impact_level": 2,
+          "probability": 0.0,
+          "risk": 0,
+          "risk_label": "None",
+          "label": ">0.10 in / 6 hr",
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-22T06:00:00Z"
+          "valid_utc": "2026-05-22T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3399,7 +3399,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-22T06:00:00Z"
+          "valid_utc": "2026-05-22T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3413,7 +3413,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-22T06:00:00Z"
+          "valid_utc": "2026-05-22T12:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3427,7 +3427,7 @@
           "fxx": 42,
           "start_hour": 36,
           "end_hour": 42,
-          "valid_utc": "2026-05-22T06:00:00Z"
+          "valid_utc": "2026-05-22T12:00:00Z"
         },
         {
           "threshold_key": "gt_0p10_in_6hr",
@@ -3441,7 +3441,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-22T12:00:00Z"
+          "valid_utc": "2026-05-22T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p25_in_6hr",
@@ -3455,7 +3455,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-22T12:00:00Z"
+          "valid_utc": "2026-05-22T18:00:00Z"
         },
         {
           "threshold_key": "gt_0p50_in_6hr",
@@ -3469,7 +3469,7 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-22T12:00:00Z"
+          "valid_utc": "2026-05-22T18:00:00Z"
         },
         {
           "threshold_key": "gt_1p00_in_6hr",
@@ -3483,27 +3483,27 @@
           "fxx": 48,
           "start_hour": 42,
           "end_hour": 48,
-          "valid_utc": "2026-05-22T12:00:00Z"
+          "valid_utc": "2026-05-22T18:00:00Z"
         }
       ],
       "methodology": "Rain/flooding risk uses official NBM QMD 6-hour APCP exceedance probabilities. KRNO/Reno drainage thresholds are >0.10, >0.25, >0.50, and >1.00 inches in 6 hours, mapped to impact levels 2 through 5. Each threshold probability is passed through the probability x impact risk matrix. If all probabilities are zero, the selected driver is No rain/flooding signal."
     },
     "LIGHTNING": {
-      "prob": 2.0,
+      "prob": 8.0,
       "risk": 1,
       "risk_label": "Little to None",
-      "level": 1,
-      "metric": "Lightning chance: <5%",
+      "level": 2,
+      "metric": "Lightning chance: 5-25%",
       "display_label": "Lightning chance",
-      "display_value": "2%",
+      "display_value": "8%",
       "window": "1-3 hr",
-      "peak_start_fxx": 30,
-      "peak_end_fxx": 32,
-      "ops_label": "No meaningful lightning operational impact",
-      "driver": "2.0% chance of lightning",
-      "source_fxx": 31,
+      "peak_start_fxx": 47,
+      "peak_end_fxx": 48,
+      "ops_label": "Ramp/safety closure unlikely but possible",
+      "driver": "8.0% chance of lightning",
+      "source_fxx": 48,
       "source_variable": "tstm",
-      "source_idx_line": "57:68050905:d=2026052018:TSTM:surface:30-31 hour acc fcst:probability forecast",
+      "source_idx_line": "70:70400954:d=2026052100:TSTM:surface:45-48 hour acc fcst:probability forecast",
       "methodology": "Lightning risk uses the NBM Core thunderstorm/lightning probability field directly. The extracted value is already percent, so 1.0 is treated as 1%, not 100%. The probability is classified into lightning thresholds: 0%, <5%, 5-25%, 25-50%, 50-75%, and >75%. Probability-threshold lines such as 'prob >' are excluded."
     },
     "FLASH_FREEZE": {
@@ -3528,7 +3528,7 @@
       "site": "KRNO",
       "source": "NBM Core direct byte-range download",
       "cycle_utc": "2026-05-20T12:00:00Z",
-      "generated_utc": "2026-05-21T00:47:18Z",
+      "generated_utc": "2026-05-21T04:51:31Z",
       "hazard": "FZRA",
       "prob": 0.0,
       "risk": 0,
@@ -3567,15 +3567,15 @@
       "name": "Wind",
       "risk_level": 1,
       "impact_level": 2,
-      "probability": 6.8,
-      "peak_start_fxx": 15,
-      "peak_end_fxx": 17,
+      "probability": 2.0,
+      "peak_start_fxx": 9,
+      "peak_end_fxx": 11,
       "metric": ">30 mph threshold",
-      "driver": "QMD max hourly P50 gust 11.9 mph; 6.8% chance >30 mph",
+      "driver": "QMD max hourly P50 gust 10.7 mph; 2.0% chance >30 mph",
       "risk_label": "Little to None",
       "display_label": "24-hr max gust",
-      "display_value": "12 mph",
-      "g24_p50_mph": 11.9,
+      "display_value": "11 mph",
+      "g24_p50_mph": 10.7,
       "g24_mph": 22.1,
       "g24_kt": 19.2,
       "ops_label": "Elevated ground operations wind impact"
@@ -3616,11 +3616,11 @@
       "name": "Rain/Flooding",
       "risk_level": 1,
       "impact_level": 2,
-      "probability": 0.1,
-      "peak_start_fxx": 36,
-      "peak_end_fxx": 42,
+      "probability": 0.2,
+      "peak_start_fxx": 30,
+      "peak_end_fxx": 36,
       "metric": ">0.10 in / 6 hr",
-      "driver": "0.1% chance >0.10 in / 6 hr",
+      "driver": "0.2% chance >0.10 in / 6 hr",
       "risk_label": "Little to None",
       "display_label": "6-hr rainfall",
       "display_value": "0.00\"",
@@ -3630,16 +3630,16 @@
       "id": "LIGHTNING",
       "name": "Lightning",
       "risk_level": 1,
-      "impact_level": 1,
-      "probability": 2.0,
-      "peak_start_fxx": 30,
-      "peak_end_fxx": 32,
-      "metric": "Lightning chance: <5%",
-      "driver": "2.0% chance of lightning",
+      "impact_level": 2,
+      "probability": 8.0,
+      "peak_start_fxx": 47,
+      "peak_end_fxx": 48,
+      "metric": "Lightning chance: 5-25%",
+      "driver": "8.0% chance of lightning",
       "risk_label": "Little to None",
       "display_label": "Lightning chance",
-      "display_value": "2%",
-      "ops_label": "No meaningful lightning operational impact"
+      "display_value": "8%",
+      "ops_label": "Ramp/safety closure unlikely but possible"
     },
     {
       "id": "FLASH_FREEZE",
