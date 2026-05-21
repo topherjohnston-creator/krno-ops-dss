@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install boto3 botocore s3fs requests xarray cfgrib eccodes
+          pip install boto3 botocore s3fs requests xarray cfgrib numpy pandas
 
       - name: Scan RRFS/REFS inventory
         run: |
@@ -42,13 +42,14 @@ jobs:
 
       - name: Build RRFS/REFS DSS outputs
         run: |
-          python scripts/build_refs_dss_outputs.py
+          python scripts/build_rrfs_dss_outputs.py
 
-      - name: Remove oversized non-operational files
+      - name: Remove large diagnostic files before staging
         run: |
           rm -f data/repo_audit_report.json
           rm -f data/repo_audit_full.json
           rm -f data/*audit*.json
+          rm -f data/rrfs_refs_inventory.json
           rm -f data/refs_hourly.json
           rm -f data/refs_dss_debug.json
           rm -f data/*debug*.json
@@ -58,22 +59,21 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Add only dashboard/runtime files.
+          # Stage only frontend-required products and small inventory summaries.
           git add docs/threats.json || true
           git add docs/timeline.json || true
           git add docs/observations.json || true
 
-          # Add small REFS inventory/metadata files only.
           git add data/rrfs_refs_inventory.txt || true
-          git add data/rrfs_refs_inventory.json || true
           git add data/rrfs_refs_selected_cycle.json || true
 
-          # Do not commit huge diagnostic/hourly/audit files.
+          # Make absolutely sure huge files are not staged.
+          git reset -- data/rrfs_refs_inventory.json || true
+          git reset -- data/refs_hourly.json || true
+          git reset -- data/refs_dss_debug.json || true
           git reset -- data/repo_audit_report.json || true
           git reset -- data/repo_audit_full.json || true
           git reset -- data/*audit*.json || true
-          git reset -- data/refs_hourly.json || true
-          git reset -- data/refs_dss_debug.json || true
           git reset -- data/*debug*.json || true
 
           git status --short
