@@ -40,6 +40,47 @@ jobs:
         run: |
           python scripts/scan_rrfs_refs_inventory.py
 
+      - name: Print compact REFS diagnostics
+        run: |
+          echo "---- data files ----"
+          ls -lh data || true
+
+          echo "---- selected cycle summary ----"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("data/rrfs_refs_selected_cycle.json")
+          if not p.exists():
+              print("MISSING data/rrfs_refs_selected_cycle.json")
+              raise SystemExit(0)
+
+          data = json.loads(p.read_text())
+
+          keys = data.get("keys", [])
+          files = data.get("files", [])
+          items = keys or files
+
+          print("top-level keys:", list(data.keys()))
+          print("cycle_utc:", data.get("cycle_utc") or data.get("cycle"))
+          print("prefix:", data.get("prefix"))
+          print("usable:", data.get("usable"))
+          print("item_count:", len(items))
+
+          for i, item in enumerate(items[:80]):
+              if isinstance(item, dict):
+                  print(i, item.get("key") or item.get("name") or item)
+              else:
+                  print(i, item)
+          PY
+
+          echo "---- inventory txt ----"
+          if [ -f data/rrfs_refs_inventory.txt ]; then
+            head -200 data/rrfs_refs_inventory.txt
+          else
+            echo "MISSING data/rrfs_refs_inventory.txt"
+          fi
+
       - name: Build RRFS/REFS DSS outputs
         run: |
           python scripts/build_refs_dss_outputs.py
