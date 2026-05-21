@@ -37,35 +37,41 @@ jobs:
 
       - name: Build QMD probability-based wind outputs
         run: |
-          python scripts/build_real_qmd_wind_outputs.py || echo "Wind builder failed; preserving previous wind outputs"
+          python scripts/build_real_qmd_wind_outputs.py || echo "::warning::Wind builder failed; continuing with remaining builders."
 
       - name: Build Core probability-based visibility outputs
         run: |
-          python scripts/build_real_core_visibility_outputs.py || echo "Visibility builder failed; preserving previous visibility outputs"
+          python scripts/build_real_core_visibility_outputs.py || echo "::warning::Visibility builder failed; continuing with remaining builders."
 
       - name: Build QMD rain flooding outputs
         run: |
-          python scripts/build_real_qmd_rain_outputs.py || echo "Rain builder failed; preserving previous rain outputs"
+          python scripts/build_real_qmd_rain_outputs.py || echo "::warning::Rain builder failed; continuing with remaining builders."
 
       - name: Build Core snow probability outputs
         run: |
-          python scripts/build_real_core_snow_outputs.py || echo "Snow builder failed; preserving previous snow outputs"
+          python scripts/build_real_core_snow_outputs.py || echo "::warning::Snow builder failed; continuing with remaining builders."
 
       - name: Build Core freezing rain outputs
         run: |
-          python scripts/build_real_core_fzra_outputs.py || echo "Freezing rain builder failed; preserving previous FZRA outputs"
+          python scripts/build_real_core_fzra_outputs.py || echo "::warning::Freezing rain builder failed; continuing with remaining builders."
 
       - name: Build Core lightning probability outputs
         run: |
-          python scripts/build_real_core_lightning_outputs.py || echo "Lightning builder failed; preserving previous lightning outputs"
+          python scripts/build_real_core_lightning_outputs.py || echo "::warning::Lightning builder failed; continuing with remaining builders."
 
       - name: Finalize timeline outputs
         run: |
-          python scripts/finalize_timeline_outputs.py || echo "Timeline finalizer failed; preserving previous timeline"
+          python scripts/finalize_timeline_outputs.py || echo "::warning::Timeline finalizer failed; continuing to audit/commit."
 
-      - name: Audit timeline hazard timing
+      - name: Audit generated DSS outputs
         run: |
-          python scripts/audit_timeline_hazard_timing.py || true
+          python scripts/audit_repo_outputs.py || echo "::warning::Audit failed; continuing to commit usable outputs."
+
+      - name: Remove oversized audit files before commit
+        run: |
+          rm -f data/repo_audit_report.json
+          rm -f data/repo_audit_full.json
+          rm -f data/*audit*.json
 
       - name: Commit updated files
         run: |
