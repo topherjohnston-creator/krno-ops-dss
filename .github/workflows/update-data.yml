@@ -37,31 +37,31 @@ jobs:
 
       - name: Build QMD probability-based wind outputs
         run: |
-          python scripts/build_real_qmd_wind_outputs.py
+          python scripts/build_real_qmd_wind_outputs.py || echo "Wind builder failed; preserving previous wind outputs"
 
       - name: Build Core probability-based visibility outputs
         run: |
-          python scripts/build_real_core_visibility_outputs.py
+          python scripts/build_real_core_visibility_outputs.py || echo "Visibility builder failed; preserving previous visibility outputs"
 
       - name: Build QMD rain flooding outputs
         run: |
-          python scripts/build_real_qmd_rain_outputs.py
+          python scripts/build_real_qmd_rain_outputs.py || echo "Rain builder failed; preserving previous rain outputs"
 
       - name: Build Core snow probability outputs
         run: |
-          python scripts/build_real_core_snow_outputs.py
+          python scripts/build_real_core_snow_outputs.py || echo "Snow builder failed; preserving previous snow outputs"
 
       - name: Build Core freezing rain outputs
         run: |
-          python scripts/build_real_core_fzra_outputs.py
+          python scripts/build_real_core_fzra_outputs.py || echo "Freezing rain builder failed; preserving previous FZRA outputs"
 
       - name: Build Core lightning probability outputs
         run: |
-          python scripts/build_real_core_lightning_outputs.py
+          python scripts/build_real_core_lightning_outputs.py || echo "Lightning builder failed; preserving previous lightning outputs"
 
       - name: Finalize timeline outputs
         run: |
-          python scripts/finalize_timeline_outputs.py
+          python scripts/finalize_timeline_outputs.py || echo "Timeline finalizer failed; preserving previous timeline"
 
       - name: Audit timeline hazard timing
         run: |
@@ -75,13 +75,11 @@ jobs:
           git add docs/*.json || true
           git add data/*.csv || true
           git add data/*.txt || true
-
           git add data/*.json || true
+
           git reset -- data/repo_audit_report.json || true
           git reset -- data/repo_audit_full.json || true
           git reset -- data/*audit*.json || true
-
-          git status --short
 
           git commit -m "Update KRNO Ops DSS data" || echo "No changes to commit"
           git push
