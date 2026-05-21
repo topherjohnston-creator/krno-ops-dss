@@ -34,24 +34,26 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install boto3 botocore s3fs
+          pip install boto3 botocore s3fs requests xarray cfgrib eccodes
 
       - name: Scan RRFS/REFS inventory
         run: |
           python scripts/scan_rrfs_refs_inventory.py
 
-      - name: Build RRFS/REFS DSS outputs
+      - name: Build REFS DSS outputs
         run: |
-          python scripts/build_rrfs_dss_outputs.py
+          python scripts/build_refs_dss_outputs.py
+
+      - name: Remove oversized/debug audit files before commit
+        run: |
+          rm -f data/repo_audit_report.json
+          rm -f data/repo_audit_full.json
+          rm -f data/*audit*.json
 
       - name: Commit updated DSS files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          rm -f data/repo_audit_report.json
-          rm -f data/repo_audit_full.json
-          rm -f data/*audit*.json
 
           git add docs/*.json || true
           git add data/*.json || true
@@ -62,5 +64,5 @@ jobs:
           git reset -- data/repo_audit_full.json || true
           git reset -- data/*audit*.json || true
 
-          git commit -m "Update KRNO Ops DSS RRFS data" || echo "No changes to commit"
+          git commit -m "Update KRNO Ops DSS REFS data" || echo "No changes to commit"
           git push
