@@ -1,0 +1,1899 @@
+{
+  "generated_utc": "2026-05-21T16:55:18Z",
+  "purpose": "Scan likely AWS REFS/HREF bucket structures and IDX files so the DSS builder can be rewritten against the actual available hourly fields.",
+  "buckets_checked": [
+    {
+      "bucket": "noaa-href-pds",
+      "model": "HREF",
+      "base_url": "https://noaa-href-pds.s3.amazonaws.com",
+      "prefix_checks": [
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YNQ3YS15A5CT8AJ2</RequestId><HostId>EK6y9uryFZorNgrnPIvnIc/MFNIubtZ3rbws8vqGMhwAs7Zt5Q1uSsv4l/GX23WErzivx7dhPsiQfpndoWdwu8SiTaZcjxUp</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YNQ3SP6WSNGAT1ZR</RequestId><HostId>dgYyYvaNF2T8MM2SWh4bBuVFhP3R8o1KKOQC/fQiaAuV4Jx09XzgJdph3H4fkPAfdsPxf+uHuZE=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FXP9DXSWF0F3EFP6</RequestId><HostId>F+DKnklh2pE18rRKMNTeeGGNqfXEUQz05c6BIs8z/cTy9czCLouNt0pzpP1nFOm8JTREAwzqaHI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FXP666G24YCWJSTW</RequestId><HostId>F41phR4lvqsFjCrzpZojE49kB+z2lyOaIgdXS5M7s3UAJmyqi3fn3d7lDl8Yq6ThH+w4HkG5DrzBMx32JmScQxMfNX41yBM/</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FXP0E92HR4M3AZ49</RequestId><HostId>MzIxTlU/nfa5P7zIlMoYrrENFSFA81/F2px0dYNz73fJLiOYbk9fXN37+8AdZ33C71BAerrQllZ1t+OvDcUk2yS0F/B+hrRA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FXP7VEDR273Q313C</RequestId><HostId>qE8UB4JRrNhB+ES8z2Q/zKnqywpyg+2s/9X3mhhw307xXfYOGQUCOSOd3ev3blZ/XdeJGR3FNgA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>RW2XXDMPH27K6FJ2</RequestId><HostId>PgHy8xgEcdxpOWslxnoABUP5I1Y4txfssLwrhsukgrymNH9vbL12Ekni3dFjlyeuhfmgJXG1X5YnC0ohgdyIAi8t40v5LJtk</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>RW2QBF22V7314VYP</RequestId><HostId>IeF6EjTE4J5976vZqfTwn7/l8fFVMGJIBql1tqp8EThFQLZFnqPzA5ocQ647hzHZ01ysUg1AD8rsFKXaLp0CQ2l/BZ3Ik/yg</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "href.20260521/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>RW2HQZS2TTR3RM61</RequestId><HostId>prM3pcRsgUlo721S6JiycsJHEAIvc7hJx/zW7tcNI+tQIbYP1sazaAuNlQqgbsUWPke1r4tqRfo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>RW2G5P7HXTH23QM3</RequestId><HostId>/62MZeUxCKPtjkXGYtKtnlv2pk+fLgkSEwCK0BjVXKn5/wZ8PzFv71y/DBxKqWGsvdJ5cmMrPHPRmzl43vAnN0POTdQGESja</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>RW2VXWFV9E91Q9T5</RequestId><HostId>e3BG3AoXIJmtNmwk/qswBjLi/k2QZyAhAgEkVx22pkiZPBBIhdrdNl70l+dhNMlzQ0ArNBpfVhLXoqqLs4HOtflHN+YX+k8W</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>6B3Q6D0Y4XPD99S5</RequestId><HostId>pcTWPvm8BrI8iijXOq4NBuFIbiFbs+hGq93/gmo2Xl/iy48PNF0M2FM8YNLIZktcsVcjdXiRuSA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>6B3M2H8XBPDC8H3Y</RequestId><HostId>nG6mpvjZBJR4YbJv2kNMf4KqFaQfuPiaDndzmuP2zCuUYuLjZwNGB3E7grH7mgFpcun/DMmxpj4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>6B3PVB14QDBC3NDS</RequestId><HostId>jK+BU4cutVy9LSgJ1PlVeER9szfJdJNtPDObfseXbN+DRUXbS+t74dLneFPWKK6bockK1JOgcGjBMeQVrB61PcjcFBkOgQC/</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>6B3RG96S9KJR0FFV</RequestId><HostId>JVSFxDmouHg7k8pDxNCV0G9ESdMLqo6Dgn70pe0z8H9/jNdjJHn9GocQRRbStUeSGg6I4kjiclw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>GZGMCNE3QQQ63BEA</RequestId><HostId>WcMUJUzesqDnq9Zo91c9VX37U828kcQL59cgpjkJCI0VvoSIThqzAnJGmyNC0r0D1F1tGKD04gE=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>GZGHH6MVB8YADEPC</RequestId><HostId>g99cGjgvUxIqK/HFOHZ+/v+ym+4r4NeOik1ebG0nSqjc+7NV6Hdr72WrPgJ86W4gORm78nZhXBQ=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "href.20260521/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>GZGNGVTXXQ0T2Z6H</RequestId><HostId>7pv6zEemrVrBNjgEQCYzssd9K60AOYPO1WAzPAoMzG0+qroqlbyAs95q81RsbzONcR+9Fqc1fog=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>GZGGTZTF3349MKZ1</RequestId><HostId>7K+PrU2Wv1g6hq/sF9SuzLMMgrZ57MrgefhL9o2Csmdo0Ci73hviBNmvkjcepkD6ZUhHhR27OCgqWQMhcXX2o6iI6aGkqkB4</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>KH5JTW38R5CPT66D</RequestId><HostId>eX/MsIj3U0bm6AHFQXmV2fklqye5yqCoczAz7tB7fA+ZyYG4S9D23UjGT9G8E2FUVOvlrG6szfE=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>KH5SAB5K8HATVN5R</RequestId><HostId>8vPwjxdDywUCptHwkIzlc3V11AxwhQ8LLbKcFMuNNAoV6OISAMDqzilzOlvKN5C2mKKj65OXjNkgK5XObb25lyBvUV/taFUT</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>KH5HVCK4BRJ31GR0</RequestId><HostId>0vaTXV+GwCkKMbqJW2ybqQMbwCNqGpy6hJGcusiSYSSR0zbsUqD3A0hZxtrVCakKYk29+WR2N9daI5V69s8KcdIjuEUeNSdF</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>KH5WJVRDEETXKGRH</RequestId><HostId>MO66lYjZ1GWsjGZ4eSGcgZUSoEh4sZc3Ih3+YpV3A8vBvZds+LiD5BuhYBc6WnNPp/0XjK3v9080Xuj4cPskXJmpgREw/78o</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YN3WH2V9YJWATY17</RequestId><HostId>z/XSyzZ8aaDcBUqoE7VANZLJhV/Ow08cfKsfcZ/FZC/bScfV4LlOXdwNvCuWDhyT5ENJv/ipDwo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YN3TFSWQT7KYV59N</RequestId><HostId>evHBF4LV5MYEernkIItQE0yhm9bLjtop7UL2FstaNK8pQD8ZYoE2d2i4RcocDktWXCrENC/o6yjfMB9D/5U1STJR9y8eyijQ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YN3KTFGW0371ZF99</RequestId><HostId>royhFrYvaWz0iF6jhKRQEK0Y/R9+8aCe7XJMSwA2xrVikyA5JClt/LBpXPsAL+3d95YNrH76g9UhYrQ6R4t+XBPK9RSrwj+A</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "href.20260521/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>YN3TRT5BGXPSC68C</RequestId><HostId>7wMqt1jse+8q0EiD/SKLy2zPe82eNtIRIBeCrazd4kFZuqgnMztjdt8lUkTYvftNzsRASBgmljhWNxNFJzxI1TYuT+dyQUdA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>7V3J41Y3FGQ0VMSS</RequestId><HostId>dm05XzkhHi/uYhVkfv854tdUF9wWJo+5rDJc1jr6mSPR+SlEjR1lZXh7j6R15mc3rv0FNOK9bTg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>7V3QXE6AX24W4EZF</RequestId><HostId>vgPY+1/wufUX+JarA2Pq2MozCbI3gsmzmaXQstL3yW5LDnUf2jCzIwnax5POG8PbV6lwBi92XAk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>7V3Z83T9358GFS75</RequestId><HostId>Y6224Wa9lJG16rhydDrCg+WQCnrvmx9i5grqkgtFq4jmSBe93mxlzn7f+yy77k6us7vu/gHYwZoUGgbnYdfJa4slVhT9VJ20</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>7V3HRJQVB0QAFFG9</RequestId><HostId>J7Sdz7NXl8o4Nud6sbhn/BKGZUlGjmx8KGHH0nWI4KG8zY8QfnmZMbt9gO8oXOG1uEQaAiCAaa8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R1TWJB3W3KTDSWWV</RequestId><HostId>qPUdpLtru+psVIv5eUUMfnK24G+yi8Vi51tUW6sONOvMtKbc9UQhVGb7rOWwNA4bJGM6n6CcP94=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R1THA1G85A3QZ3SR</RequestId><HostId>GRv36w346+0AK/edhU0vP5Wbcu9O1izYzG2fFlF4kZ/WsPM9+IV51SPqtWFDfbz80/3z+GC2RQyGh3Kv9NzVe075Xb9Atrbi</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R1TZNBX33ZCSVSYC</RequestId><HostId>Vbpn3n3VGPCUWkpPvkTW6PKSqrDaoUXy/JXgAfI579b1N+xUXQ9OkWAIxYstAU0IMVo8jF4eChfse31/hxStYEiH19fXvTTl</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R1TY66XFPJYCRPH2</RequestId><HostId>YViHgmdPCG792Abbhef+MVlG1dORnsh4X4kE910OaovXur0poAG/Od4Dx0TA1Rs4c16Fg/9SceFO3g1kTitFGp7CPL1+zkoe</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "href.20260520/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>VMNENXKKF54DEAT5</RequestId><HostId>ld5e0lczJIvKrWXhPmg5Zl8htwXeruYUH6UaNaS58FH9sg32pgiy7XPQbGlbEyUygLUEWFAZG/g=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>VMN7TZ6DVZK8VBSB</RequestId><HostId>SwBsSRjpRavQkCTjQ8os0kLHuTGcY7sSdrpdcGm+5vPBaadnoJOOU89rB36Py50yWT+rfgmLw3nCrlV6pPpTY5N7NCPPB2pm</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>VMNEESGGE6FBSXV1</RequestId><HostId>/oHwUCpW2tn6NP+h2RTLKz35+8tvTeGN+3BEP0j6ULVOXykAy2IHlcIL0PSnHGdB5ErDQZ7DGxSmUSoWRu/NxweqTpWl9Wtm</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>VMN2VZCGXWSFJVC7</RequestId><HostId>WKIyJfTBscrLq+C8mnWODh1RgysFTL1QBEZxRn9zcJdUhYiSGvngE/HBhUn4fG9qDLSpAxCMr4wzkSiyDfmcX0qLQRydU+ZA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>2KD55BCBY0HDFY7N</RequestId><HostId>WTHOfxuy0NokTWxrSZ+tPr3AaBZuBjEJVKMm2ZFCnXnTxrajCe0U18TdEpoWgVAxnGg4Xls6Xqg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>2KDDX7CZ9CE30JJ1</RequestId><HostId>EWOGgOqkHxa1zcrfc5EewyYyqIYyJsVhmLThfTyCXmFTEQbKuzlxv7Qt6Rjs4xlbL1YKHm1Oa3k=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>2KD4NC24ZPJNRGCK</RequestId><HostId>GEWEBSzDBJ8lImExBwwB1NzQ7Kgw85VXVJoEEYDaqzAYlOrCjZ4wrYRBIWG6BJ9uudHHobbhyeYbxnpXgwrAfCvfc0XUVXZV</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>2KD29KTZVEHN7RYE</RequestId><HostId>h0QAxBjl3PM0TYsRhQv74NsAWlVmdOye6RelSC780PKJMEim0XYMLE2QYCUyVE8YYHWkeaGFMsolESAk+QmkSTTl4zdwsE4k</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>XQSDG9PCDN8A7N4M</RequestId><HostId>3GljekbDoduCOykKfcmeTnI2qwqyVEMYqg2L5me5+0K0gAww8aLpx8rmvuy7zhupKbKemJ/BM420mCco9/Azi0XvGpOrhqo0</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "href.20260520/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>XQSFE3N2ZQQA3KA2</RequestId><HostId>K/L+BbDm2rAEHOwKPi2mC/Ek9UMZG58rX0li8sOXFOJ4pWqtgP6axh6wJjgzLAWrGhhRwMGfM5TP3NNMt6hKtJo7lziPX7/K</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>XQS9NRVGC6QF0MFV</RequestId><HostId>KMrNj5ODvKDUJkESwuYs6dO0GSUvOyk0eBuPJHCgZz8bpV7hMDguz1k22KJ20eleMay/zeAVhuc=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>XQS135D1T8R4Z5YR</RequestId><HostId>krF6pdcJUQGpKi7qXICS/27wpwP3P+7W7s9LZY7rTH4ppmCQR2PXS2pjT1Kk2OlYZE3IoWJzltM=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>XQS608CT0ASFPGH1</RequestId><HostId>9CHyIWQDEKK1VxZCk9rC5+GY98iNwLXg2R/JiCdMpLiNC3EognXOWcFxNI8ZUF9fsNFgM+o5g7SADqnLZyQ7uguST62pgA4B</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>BMXVK7CBK9M5HEYB</RequestId><HostId>rsHaA97tBHuixk//PRwAudl9AsVLxJgwYterANmPKxzAuVMdKFNzjYVh6NQ92f1DN40o1opgWfTLRaQMn7CU6RPNRP088PZ+</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>BMXXAH34H955NC73</RequestId><HostId>CVT1adbbnj0ZvQzEEHQI3pcYWaGT/F9nbBlOLUdqxKaKP0/kv/lVCaG+pJYxYzkvho93fD7B3X4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>BMXJF9E1N53AW78D</RequestId><HostId>w6zPjHpuB7TFVM/S0eacWZLpu1VWxLOwo6d7V3qvFolDf4ZvfJRLgUI0m/V63vlnw3kMZEEbm5U=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>BMXVGYV5G4JKHR6M</RequestId><HostId>eI25IJu8oB6NLhErWKreZBa857IWBqCqiPM8aWlwIoEqxtUh6v+1H9pA22juDsS9IsjWVwerczNBBFjTao/ypMPB0nFP1oRW</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>V4GHME0DTRTJZBDY</RequestId><HostId>SLLWoa0AoQsH2sN+HtP1PjA5Z7+nrG41WFOqLAZhI5DuVKWxnH2/m5hP/hCvOGLVyQgGYA7ysEo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "href.20260520/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>V4GMM89E9Q6M7HW8</RequestId><HostId>hSyvOSH4b6ijqhiIvT7XbQGV+kx9KwVbBEHQ0hBFua3HiHTeb9SOicR3Fiyvz0T3pTHO2E2qd60=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>V4GY5Q38QN47T6FC</RequestId><HostId>CxOvtpiRWzX/3nixm5v9RQvxSHOMNEilpL76mPDkLvv/q+ig+aatr3VxdCf9lgfSbQxbRiiJdTs=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>V4GZ767QR835Z2FD</RequestId><HostId>T5gfRZjqFTg9aEMJ7znJ7wqshVzIxf9CnUoAO6ML1gYWtoyfU2FH9PrXT3G5KtmcCT1BvvYJ+2ZB7dfpypPHKWAn+69jWQyt</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>MNTC8JEM8YQREHCZ</RequestId><HostId>d+JnRRBK9V0lqJG+8ybN+pTde6tYyONMOjcEmpcDkgwODL3jLvJJ3Eb9iMF2xkNsFJQmTLLogiw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>MNT4D83X3M8HX734</RequestId><HostId>YVLa3nKC9Un0r99JesYBgIYpwvLRq3oAk4PiGknPPfHx1Lx2ZybURxp39VP6i/3acWcyhyvf+UsRNIQdjV6OsGA5NngwM6po</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>MNTESSMR2BWNY06P</RequestId><HostId>7rERDcMDkhYZNapd0N94xrSi/Pdm5N2S/trYonHex1G5FBmrYdfZT/rwMwxWIzikzbyUV2kYPc0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>MNT1WKKMAV72M1TN</RequestId><HostId>LxiBt+/8xT5aq1NbETj992GpvsP+h1T0nBY2TqfxYK2NUQA5vtcY0vACHQe6hJ8Qacmrlao77kg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>04QXNS9GWZZ1VYBS</RequestId><HostId>XnhjXHk611tBXHev9gGKUutlmEHPOydyPS/H16tr5KwwMXqLk548wJ5s9qV+OAvOy5iPMBIG2tw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>04QM543FJA5SKBZE</RequestId><HostId>nBUA9/MpWe7AaeQ7RFP1lKDU5pnjo+1chQZTrY6NHlThGnvN1DgfI9yzZp38JWmtud7YHKfHqm3+aTQTdG8Dfw2+trnFU3O8</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "href.20260520/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>04QV0R298HHC7BJ1</RequestId><HostId>sOcMW7VY6LsJT97dPT1RblLQ6on5MXCZWxSfTAI66Ca7KEhKa5qAmDZz1SkBvQO3Tw6+7440eEU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>04QXGRZ3YBNRT1X0</RequestId><HostId>JrSYpnfDTeQaxItO5SekvyTh7ttxRBXrEdiQ91FwUE6zR2kZGnqVafoV8YB06hkEbdusqL+Vj/U=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>3K6C9KZMFR7REQKZ</RequestId><HostId>8cl6z7wfJTSmBXgDxI13QJ/1jqTKoIMxakjomufoK/zlwkVf3bByxlDlMpxT5G3TsTP42HProhI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>3K631R8N049FV29E</RequestId><HostId>HDp9yI/wEGMEo6OsHJ2G0FuP1Tlfz+rBtQQB2ns5h3K3PzTEC3mi5xmu4JFWwQAqAvRYr+aY53Zmkhf8v7oDYtNaKto2BlLa</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>3K6CW0Z35H8188ZF</RequestId><HostId>VzEzBWHnYY1BQkqTj3YHL5MjQrkSKJloWy5seOAlTB0L3WOCyP4KkZeoFpZaEJ+XXdUJT/gEEXh0GbziYf492BqjTL6MOykj</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>3K64TW25CZBTBCW3</RequestId><HostId>bcavOR1iVRoBiY95s+8uYbarqRuvoPxXXo0IYPacB7OyfSgRguoHKeH0KW6Vf+6VYnaWapIydko=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FAHPTHB0QBW3GEVG</RequestId><HostId>cLaAVUHDcYZbgIX0jmsO8nD2ht6N2iN/EXXPUp5oM1ZxSgMssdBcbNS01xeS2K0HrdXRCPe6kBo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FAHP24HXAJ644N4W</RequestId><HostId>x5JvdvSfIVUOCk5pCi8Zj9DE0TwoiFS+RrMmSRryz05HQ9GbD9q+7+vgV6/UEVTHie//iJWgDT4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FAHXYETWZ848PFBP</RequestId><HostId>FmbnOcD6E/7oEUdU/WcsxZZo2pV3q54WQGZiE2X3Tz16AImK7c331gc4JsLOtKjp1rUW1U1qXgk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "href.20260519/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>FAHT5XDG68HKC31T</RequestId><HostId>ciixVNCMDiueF0m1d4pqS98b5TvlOqeSHkGt1j+DyujAS13iVruEwbB7nbkymo1UIgmDN521YV0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>SY2X83HWAFWD361X</RequestId><HostId>gwH0xMeJAouCg1uBIr0HYI9Pd7NBYvqYmwADzrhE7xNnAQwaU/a7elJ8txbx0p3EDj8toZMgjklLsbJ1vFqeDCUdgnIWk37a</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>SY2M66FDYDH54W58</RequestId><HostId>nXpLvz5cnQMknrOO5k9w5N9eL9zK0MSel7hVqhL3/HRkZKwAyUin4l6qkERM7NzOmxu/EQb2rLQ=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>SY2RH02S4V0TABM6</RequestId><HostId>GZ8v8jsxIcJEKeFIgmJULuon7W/HPWSjdJv5jI72xud2o3WwfyCuL/c4I4t5Qv/Tq0VocTiOZVGVIcSCz2IyjSm+hUkztoPU</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>SY2Y19PS9G9K1VGK</RequestId><HostId>vNZWpPChXXfoWULxzg63a1sgbdHkDnag//keysKUHb0pyDvUqSF7HvpMs1MVo+uZJWF7au62C5iub2dqZ1eJtrbXUyrqimhr</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>J2VSP65TQ9XXARQ6</RequestId><HostId>ZMcqf7+h46Vlmq2W6WPnuSA0CecPJ+8oqEdQEl3MerX9lU2JnQ2qXucBYFlE583klm6fmxZMz1lrNAwEZtqAFfQScZGCtfoC</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>J2VVPZ09WTP036R8</RequestId><HostId>zjZrd0emeyLvFAgm+i1Llv4eTjSvUQAtOc/8ym32iTUAu4Cx/VyPJjnd7h7Uoj0ObwdRrH6eukA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>J2VZ9WJ5SZQ9ZZMQ</RequestId><HostId>W+bokNw+GfWuwlkVDYDmE0DqvKbjjnt2zyEcsIKWqXuk7B3HjNl8/GUJIeuzsA6Ot47w+arPjp4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>J2VMBXD3S599B728</RequestId><HostId>5mGcvG2LVf0gyRFWorew2msCv9BPBom7NCapSTeFVs3wCnQ5AYVYkUeFHb1ZGxGhjvD9PiS0zA4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "href.20260519/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>J2VGWD086YPA6EF2</RequestId><HostId>t7cIaZ8WnBux6KkJkOXi8/WrZnmPXfeNMAHXw7gdJ3Mb3GIdfqKw96ekZOr7tcfWOYNLB+7vHjA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R2Y2ZKJ1HTR8K699</RequestId><HostId>s4c2vb9SteqBeP86xZF06RE0z7bz5PDfuZQgKo4I0o5WNEKZVoQR0+aJ4v0xsrQOTB5poq4whkE=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R2Y6YAEQ81S4JYE6</RequestId><HostId>5udMElW7pmnea+MHRLkJcvOC/ZxOHfozI5LzweiO6VtZtr0LCkuvkVHYCM5+jGM7MgtpSv5m5F0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R2YCYZDGEJRN0TYW</RequestId><HostId>PHF6bPX2oMqk+8TsQoKIsFCh0lQAMBkYCjmWA5HT79KbrS0NODS/u1MpEpjZTSnRTUkIH4jRrL8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>R2YAH1QDGC9VC7X8</RequestId><HostId>LUDfMR4E2ziDG77OxvLPwSC1h9Z7E4wpjnAsB6tOgszy/78YpY+TgjuHd8ZkEkLTdKHqm+6eaiQ=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>PANH540039QBHH5Q</RequestId><HostId>VT0sZz0gN3Rk6uv02qG0VNJ++xXtGu2+D+ObhxaK6UbVBROf/iy0ArAl5MtyvqJpD8uU24RMdhQ=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>PANQHK2XVR63QMYY</RequestId><HostId>feX/+gBYDLnFvwIa9yyM6dE1MDglVRi+pLBgJD3hRHT2H0Ajbs86+oL8+sfhmoff9cNlKRc5MZU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>PANWH6873H70Q5JS</RequestId><HostId>3xXQP1zV0EmAzXzO7KC7E5EPMoieJCX8qoIa/RdwTtk9iKjlSp8cP8lzRJ0XcYN2Czt3rmMYmeI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>PANQP1TV76MHM3AJ</RequestId><HostId>bG/3gJXokSpUNzPceDbLlw1trhtKT5bo2wGvU8jI7X4NlSpZff0NftWDiNRqkykRE156Qx5/q70=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "href.20260519/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>1PZHGN8NQAXB764J</RequestId><HostId>Y0m1c7St8yZ2jjYSd3tKgsS/tDpfryEdPJOtU3S2OZXdI9n0UaaaHEaRP2Xea7rTSQBIRZPOqQ8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>1PZVMZ34DG8G3F97</RequestId><HostId>a1qMa1Rm0kgjs7UjO4lgvnwtxiQ4uB/PbkulMiuvxLGV5VcCc0ak8D9KlhGhDR/YmLhKYogDaY0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>1PZVHVRHT6ZY2F9Q</RequestId><HostId>GBbmqFi28tb/fNQ5opYBD5TJGeHj32ZmI7k6ciBN5fshLM0A51+KctuK86b8zQP03jqpl6/EHPY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>1PZNMK029FMNFHRR</RequestId><HostId>E8OzvjUtQfgsK/KFjjd6wmPZNbObfmbamgP9NA0Wjv1wdRPXMstdKNhJtwe0SFNz6kiOIDYUTcY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Q2XYSMGXPFQAX3W4</RequestId><HostId>i1Lk9A342pfmS8uShYP3+qWxDMern7MtN9FXk3eWAGq2nnczSVORcqq+yY3hHXVYRtA61g6pqaQ=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Q2XSMDB129JE462B</RequestId><HostId>g7J1azewDDt2zQnILkC90cUFEwCdtVKwwh07K4dwF5u+wxFlIbayQJhJe+O3Tdr7vfe7FDipo8s=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Q2XWB0XYFTR73VPR</RequestId><HostId>Nn5w/4cIlaXLzuar9w0aeprFjERIAmFaWhtOptLdg4kzPYw4pb4e1HNg7vQxizmmQ530waSUTeU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Q2XJBFSQSWZDCAJZ</RequestId><HostId>QUILRv4y7z4uUMIZSt/HjpFATp9bwlotwJk0XzNNnQ+HeYRQr+/YSh35eqd4sxQO4Qhu1eRaEVg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Q2XRWENM5043X2G9</RequestId><HostId>iKvTJiaoZNYu9xuOkyKimmjEbVFziHwWkZ2z5CT3eodoxKuhaXttQEgG7CDHcaqgfqs2VzDfO08=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "href.20260519/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>780N7VXAB0A6120J</RequestId><HostId>O75EgcCj2wiPVArEH1XxOXfeRQfFXkPwTXD28D2fKoHidPwosunr1C5iDQamccP/jIuy4IEeqz+G1KC2AGvkJT35N818zXSJ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>780P167Q2306BCP8</RequestId><HostId>xRTWy9TDN+QLs4xwvVqnfi+6j6hgWS/bALcoQNypoxuE4AzeYp0ozYQEOPxb7sg21pg8FZCSpY0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>780R8MKER61X16DE</RequestId><HostId>Xyfo3bIM7uKSh4GDBkh55/kKzgYzpSmQEBYhEOvx3qKyykUFWiAUElPMhScoaKvFrcOmr/laJZY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>780Y9VYSC8TRH7FC</RequestId><HostId>6nkT9f+oCpWsOW6Cj8PAaBV+LQ0n+BlfRkDS2xjZTZFEgKCBD2kdNaSpHLM0aDe+oSuEfKzcDQs=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Z67DV4TSR7AEZ2QW</RequestId><HostId>Q6O4+Fw7o40/Oo8+2wRTGGZ70x/zkMvOTS3r5H7HmnUJ/lLbiRenni1c+kIMIQUm2Ii1QfupjO0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Z67AF1N0AT09C3CN</RequestId><HostId>QZRE5oBuBP21WBAp+PTXJZ+RIqdPVrUjbs9GIihPw1a9dkzujQE3kz/77YcxAERehiHJAb2CKg5yjdU6ZcUEE5LdaYzooX6y</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Z67FW74C1PT0YWRY</RequestId><HostId>6u6npKoVNopQoZMnUigPvt24PSXf6a4PfrHo7cPGP0la9YCJ86pIfLrEZ+p2w+djCCZkaoqlofs=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>Z67DBRTRJAZ7AC3R</RequestId><HostId>DlofAXdzQdrJLGj/wD8jNN8C9qVTK+xJlTmSGe0oPGffUho8P2Fz1QKFQG9YmvhQ41ZFwTYIDo8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>TBFDDMSAFANHWZS3</RequestId><HostId>34Iij8ypHXUSY1TQ5MCx3B4ZzfJEwEE3gGeuljyQnKwZ8wdAINZ0sW3b5PnRgPtz37AeUjcUFdw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "href.20260518/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>TBF8VK88KXTJKXMN</RequestId><HostId>HlDoE2z6sfvgk7wTDD0l/rlSc6sKM9ybJG+8DEVy6+JXDxPRyDZIUHkSg7FyritMnh8PSicYYyw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>TBFFCYRK87Q6K2T9</RequestId><HostId>3Lhleuc2/8fK53ZUx4tqdT8gv3KF/kq7Loy3kpDcwRX2pj9Vsgdhkmc2VGDr6U3wG0ZsUleyywY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>TBF7RYK6724JCC3W</RequestId><HostId>/BSw1Im8NOJg5gor4CFokCjGSH7aye+dhR+1zeO5H+sPOL/UlKnMdsr1JNKmxTe0pZSo3/Q1FE0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>JEHZSR2C767BJ8RP</RequestId><HostId>wyVDPvkSrPeBpX8MiQ6pcEXHvhvKVwsOxq5fIxkrFd5rpGQXxUHK/nG7Nzuw6pPv9R9CyatFrbiG3M/5ADDAyuO1bpZ30nsJ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>JEHM3EJZ5RKW6VW6</RequestId><HostId>d2XHViq8aDK6rAfh0yHVnht1GJ+3FpIwElNfQi6HBtsRyL9KV9ITUfgBPrjnhimumi3XdL6L9bY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>JEHPPVRM9YQ81PVX</RequestId><HostId>/PFoNWQauiFoKpjI9vAf/e8Z23BrzC2Q/aqumBCHQgIqMKA277cKmU8bT5MOdDcRFjiF8DBBE6lQ2Hc6KginCbo5jSfb8heN</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>JEHTTDH44AV8MYV0</RequestId><HostId>dNakkY+BKzWeCPNrIKD1zFoJIysJVhgExRxsaEp8lDQAqCKzFxe0WlciiFqSbk7el31qnTjkDCg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>NPAA9WDM7GGCVECW</RequestId><HostId>oKiOWMG1E6eD1dgLF4OCuhk11CmfhLVuGli8iNO+p2sWXBtFf7SR2YNm4bkHZfDLGDpxpoGOzgHIgFNfKuoehdS1EfVCrahL</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>NPA5CB0QS8VJY1CK</RequestId><HostId>WpbdXvjs/Yi9sHS/DMEeM3rbq/Bagk3eSbMbZ/5cKqzvBzHxFbJKE2eeAZPFPY6HGR+qxlYZXHI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "href.20260518/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-href-pds</BucketName><RequestId>NPA60ZJFHEMAYRVP</RequestId><HostId>u4I6SvITyFG6t4l8PI2wmnnU8IF2hoaOIZy7h6hzybLPcUTIbezLpcRE/bE0a5esMCNv8DBHmTk=</HostId></Error>"
+        }
+      ],
+      "idx_checks": []
+    },
+    {
+      "bucket": "noaa-refs-pds",
+      "model": "REFS",
+      "base_url": "https://noaa-refs-pds.s3.amazonaws.com",
+      "prefix_checks": [
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>NPA8CZK5X3HJD6MT</RequestId><HostId>C6z34maiKwBcN1fPT8j5FpObOST3/e1U6EcN7U+xc/NxKlOJv8RIULP+WVE6N8QN6PeezjMobYU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>ZAQGSS5JDJG5CFYP</RequestId><HostId>q6r/OSDNNsuikRC7ZsfB7mvan1BIYKLoR51dwUJjClQFg8R+9ort84TYwk9IL2piNr0y5F4GRm0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>ZAQK2SVD5SREBDMQ</RequestId><HostId>rsnxXLpmM14hTYuEIU4uIVMOLu2fed0+wGV2de4tXj/dn3XaqxJPru9aKPUI+8rm7MQqNO8jDxo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>ZAQTVQHFF9N1QBEV</RequestId><HostId>fgsolboCbgXaD6s1jX68wBO4iPLVb3XJC+AEDYaHmyhPSOfAfibptb7LCkKAxIVy3I0mYv0Afv3FFWkF/EPDmpnp1tZkfL10</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>ZAQJR0KRT4PT95Y3</RequestId><HostId>2GV+3RM1sEKZuUEYv/k9XmRwsFGtirp/EylFLQfIkLjehtMoONELah1kXdtfY7g1pnjsy6djhy6YX48x3YyUrJXqc+B2gjpH</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>ZAQKNAZF5EH0N6Q1</RequestId><HostId>Lc8I2cZq8fbfwweCZr68G9Ig0yDmU4KGykJ7DhPxgKF0vRBE5TFort3hpS8+WgYsEO7UvyZgJ9nlUmxnn54Nrvx98WCE3rEx</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "20260521/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KW5V3EFB97ZXB154</RequestId><HostId>RPlKQAp8CnWqM9yKAZzXWrIASo/73deYzwHaMUQwGfTrWm10ij58xGk0GEwM6umQmtRFHFv0N51cWqt6mdZ6na2BOh8atVTf</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KW5T5APAW3V4XZXY</RequestId><HostId>dUBNFikdsVxW2LxI01pI/11PZiYAp+lawElSDce0o8rrXPTcQkOBoJ9MCRXZ9pwjFed+C6pnnV8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T12:00:00Z",
+          "prefix": "refs.20260521/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KW5WCN20EBR5MZ7A</RequestId><HostId>AQo5OJTs46KEmXCPizn/tIO4YVGMgQsWPOBliK4Cx9btrjnV2ITzPYxTYCDHs2rcXiVHbsCWPD0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KW5N29FTQGXXR0F1</RequestId><HostId>udV8j+kcRZjfLpz+VeYpgYbN5naybfGJYOVwqL0G9uO3migm8N83Czwwfhxh2/Ze4w9pfUsBiQY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WR3VJ7KCJY0B5T1Z</RequestId><HostId>u+wVl6qpc8XV+bbZw5zFvstts8Bs++RH4/JU3hQqBmxeJDqHaQj4bP7HnzrVCO9u2U8oAoPad0I=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WR3SZMVW62C124M6</RequestId><HostId>YBUBOzTh0O5tcKoxPpPvqXFWT6oCn8k4+2VnvqmKDFMCfdb9kvqEDrzrOdVcC+mCs/M8m+xpUfGdoozkTmgGlEqkVE7NbvR9</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WR3JGFS44CY5Z5MM</RequestId><HostId>AjOz2kGkt/MXmbqiq8THcQKfL3JdkECkmuG4DAYBIVZd5zUZqFSVMw7Nrlw7Ak6JrLtqP1ANWOWX5oPr1XBkBGI9v3Ewb3MJ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WR3QGF5RV8EN4SHT</RequestId><HostId>lobCcACGfcJ+1xuHiyWD7xaMLGxgS5OOGtlhCalFBkSnDKkJLrMbrA8XWIrc1Pt1PiYryll/wUJvauuQ/iXfsn7GrRpsjT18</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>63HHN4K5PCMB4NJ5</RequestId><HostId>vvoe/EMQpKVsMBX7jOi1hYoL2b3vN0ocPJylZgV/wM8V1TMr86Az5gcYSlox6Sff6DMkKsG76Ug=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "20260521/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>63HH2MD6WF6WMJX9</RequestId><HostId>RavWLFghYWHbMpSqkGI01ynp7OlLt5YNy2QfTCmEMzc2InzYK4MkdXfki8rwtGSRvBlDiXrspsU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>63HQ40K4NK8CYXT3</RequestId><HostId>Bul9yYYxqS57P59MP/FOhuSD8dbIPVnXAOY2t38VRMZMUMdjemX3UBAdcPwNThkvxvBr7YqcWpT0LYeQSn/dXqXPVrStqff8</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T06:00:00Z",
+          "prefix": "refs.20260521/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>63HN7VPSYNB2E4RX</RequestId><HostId>wUKXAsGo7eDtsI7W1drKIPlw+BKcByp94HsGABKiQ7HDizjoDWeEEsak88Qmop32FVawHwa7md4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>VWC0YF12W3Z5CQQR</RequestId><HostId>ED8uHeZAM0Yfp/mxXkiOklC3ORMpJtnoccpeAaCUUN2Ensd11296uB1dRVZ39kI/PF0k8gvBTxIXKQF6QGM5BG5kzOJtNQ8B</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>VWCF9HEZV2W35WV3</RequestId><HostId>pjsptbKsUojQtOWBlE/ayOcEXxRYQRSmN4qrWAB2J9CniPd5boy2BUao6ITEf31hq/3j9ZcApk4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>VWC277APSEMT71N0</RequestId><HostId>f2sekf0ocFyg012yk7Lw1cupC22zo0sMNrovPtghA8Dc7EmjebUYfLfwbZJelkYDGO+UCb/r1oZt5sbN2OvtWBGuqjUh12yc</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>VWC964YZ8W4F0RE7</RequestId><HostId>m54j4BvdibsvW1K4nX+iBVUzZ+aKA89uL2rEfcgAToC2tj6rViw33wIvZP66M83iLwjRk3W1+0huvi7CKp5hTbRJRlJ4TyeA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>4793WKFVPXQAFXKH</RequestId><HostId>3i96R09USxyuTnrdBzygYIQdqCinw/PX/BUfzaN8Fo0oQ9zCR375uPMNTtW4lntBpCQPR7+q+cc=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>4795ZQ8G0N1KTD5S</RequestId><HostId>k3M9R4lNsLTGtZQKvadd26ViRoAtjZ8Lk65hf0gHOO3Q6y32CQlTivge5qQxxyEouoFwp2V2cYU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "20260521/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>479EH3ZPMXVE8TGA</RequestId><HostId>YdoWRJpu+dAaz5BSwcWf/4pHLbo7wp9dIzO0wRom0fA1W9Qwo/FGQYMEGjxryYamUW4WLmT1xwo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>479F6FWQ0W2WNQ8K</RequestId><HostId>pOjMNBMddZaqRRmPzJm1zQH4U0vt63cuD4RNY0PQhpJZo6GNnoiid+sxqTcAH0UdPP0lTewP5QDzV4Hs9e8gQA5CDz9xOBOF</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-21T00:00:00Z",
+          "prefix": "refs.20260521/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KHFTHQC4S6Y1QWFN</RequestId><HostId>TFsT8+AaHM58RRansEyzLy7TLDQjHBF1xus4lTakn8oLulERFe/lTWTQ2nXTMFh/QJOrk5uIIeSTPUXrSO73DbriyukB9grS</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KHFTHY9H2QWFN24W</RequestId><HostId>dKZ3AHVO1CJ9Lbt/nyM8aUKtOV+z22g4VSI0svVkRP3Abrnpzp31Uc3tEt89fQiSwtvWzQ6rdZ3V/U5QGsScRNXeR8zlFgx+</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KHFSEX15JRV5CHTC</RequestId><HostId>/Z3L7Bi4xlRYVIBdsyV2QAWS+xkNPb6fpmf4qdCgC9ayAgh5XS7sbcn6aI+xmj1nOhJprSUxkPD8U2alF7loNcXZ3RMsNrVX</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>KHFH0EBNCYHD3THA</RequestId><HostId>ciTXD+JhEVnE5Zpx82+W1XRdiiy40ZS7VEAPPhbg7zwrdTR02zu1hv3GyPUqt3BD289p1cuSZjJtMxVoXFuy/ICEbvVnRZrq</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>TG3AV35QMCAB3RXA</RequestId><HostId>hhuuDvnBLMipceohDULFa4E4736ACjtj5I4SSIBU9wp/YN4EON6eftGX2VDePpIIc651LAzCatw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>TG30201Q6JJA9V30</RequestId><HostId>PftGG61s4k/IuAR/jYoU3P1E+YesF4BaAEMk+YEJdeYocTgZEb5Z2eHSALUzj47IfynvOV/ic3ObrDn2EgghbQpkkFXJxD2D</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>TG35ZKSMENHP4P1R</RequestId><HostId>LqZIs7Sw+HqLpZahocn/NiHsx2sy/lJIpYtPlMW1iulQ59hn8ShH1fXRAW0KPLaHts6rt7ubsKw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "20260520/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>TG3EPSWKRE3MGGNZ</RequestId><HostId>ExvpGLud1KYJnrvqWPgPnpVfmIHsXHlj5GAHQ3i826kZsyNSOWSxq5KcEJOrCg5ozo77OApw0Ao8oSU39L7b2eSGJT4/6fgR</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>YT13G7JQZPT4V5TA</RequestId><HostId>WuHdFW6+tYo7Ur1K/MpMB7HsJ3dzUtgVvMKo4kyblwzTxUx+x+JFTxbF2vOHbHfSMemihDxhJXY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T18:00:00Z",
+          "prefix": "refs.20260520/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>YT13ABXECWCBEGH7</RequestId><HostId>1oj6TI/2EWyt8jG1yKsDIqGchw/DoI0FuMPQNGOI7bXTPtD/Bjqu9iSEiZxyrxl/jtdQwYo3XfwwleNHr1o0ZStQT/S6GMYK</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>YT18ZRN7MJ6E5F3M</RequestId><HostId>IprsSFLwLPao11u5EtrYwptRqHYNMk3yEKc9RaiV815ENdIb6xqsxsrh+d4U7EeBzr/zco9weuO6ipL47sxyWHVDfmiB3iHA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>YT16DP6GF3GM6G22</RequestId><HostId>dr7IbAwtYGGz2mEONq8B16Fhq1wu3XZKJIipFOAIoV+klrzkTtVZV7WFEnyV4aDbPaLZCStuxgA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>B9NBRFE5Z3V8V3BC</RequestId><HostId>aoJbGmKkNhKB0kdX6It3FC72DjjH+R3l1eCfroNkvvm1OH7WjMvGXbE7QeLzNWb+bcDpTYWsVB4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>B9N82XPD7GGDNVYT</RequestId><HostId>Z3LyCBoRhJjOkKEWN8YsU6YFQB9f8nIKg04h7JajkfSh5aI9Txje2DwjpNzNraqhhhYEURwI5USBFP4osBne20X1vJ8/B5kY</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>B9N463PE6CWSVVBT</RequestId><HostId>B5Q8voC+ph8Y1ePkrtf90JYts+2FIjEBD225ES0zvTQYoGdc2I4KVKgm+XDV/w5lGLR2dQ3hHlM=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>B9NBGH6V1HBN2K1B</RequestId><HostId>7iDXQ+XupbB3OToojSQlVoJa1gx+V2bN7MG14PDXgJElroQ/BETWm1US/4YH4xr1H+oS8+lJVH4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "20260520/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>2H0VM5CN17X488ZK</RequestId><HostId>P32ZYrYDSHFirlSTvDPp8JghZXNGM+1U4O9+m25rc5PWxhyrtqLF+3mn4viW6l4wEDay5nEiH12vEHMZTjDhRJ5tHG9stkp0</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>2H0W54QQWV9V9HTY</RequestId><HostId>iu7chJb2FLkknhmawVM1eFNuoYihYzS3LyKvD+LJPRr4D0cA99MoQwd3d1VkeS727RztDT078/DdUoNDbiYlt9SYcmlQ84m+</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T12:00:00Z",
+          "prefix": "refs.20260520/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>2H0RXX78KR3ERDZQ</RequestId><HostId>zBHqrcpM7rHm03syOg7B6rgRLl30VZPUlyqRSfa5Uko9DwdO56+FWlkQwb0YUYrMZT+xEOhxAfo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>2H0G98BX8FZJAWQG</RequestId><HostId>NbDpuv1+mvFkhGguZASmRy5A+L+3BDTYqOt1rpPzUF7GQ0ZsgMW7NEynLs3Nq79RPMVnQfmGo7I=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>2H0HB1SS4GKE5HFD</RequestId><HostId>bW49d7d45xelaeD0eoJEl+ctfkWHDS0ny0EB/39BFYCNRSNphJ4ayk+l1tRXUbR1nRI/220TZnvYxFaUI5voKyrWlWX0NAbh</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>X1HWSCQFNBWRSF49</RequestId><HostId>Qj/vnICP0NQvWXjDopgL9BLEKbduIupcyDVscc4wsYVHNqjlKapM/IdaxQ4PR6KUscsU8Kdxcuc=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>X1HJK2FGECM4DQFN</RequestId><HostId>iLlwL5N7kOE/b+tW8eY5fUhSCKwg+B5ddwvgjChUXXPV8x+CCU863p3hywbZB7ZEkeuSne5IIg4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>X1HH9YW6WPXYTM2B</RequestId><HostId>FyCMGrJ6hdwzASR1pBn3E4q5e94wYU9v4wM3cPa3hY6pMnP6ydLGJNISj4dkLLaxGFwSjj0yBwo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>X1HP01VPQS3CFX1D</RequestId><HostId>tzx1XhHr4nCiyWvhOMVnPtrA6gT61ofGhIWMX8OYwWqLWAvadlnOsqmcV9rQA+9wyhhnFY5tV3rQA3Ev10KUAzdhfowAbc9x</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "20260520/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>1XBG8T04T3W9F251</RequestId><HostId>NqjDeBuBBZdlQ3Lrb2+UATy7oabakb5XNQVHujlsFgr/DhPs9s0NC+9a7DL45GtL3W9kQuqLAnU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>1XBMSC415A93QZT1</RequestId><HostId>s2dSs7CBC3pJ8QVJbGmYFfpY5sLRf7WDEz+js0+28xzIQd4qGnFBBbxQz8BX1mpaBNbXXaMlHLU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T06:00:00Z",
+          "prefix": "refs.20260520/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>1XBWSYVGFDRQ3ACC</RequestId><HostId>ygQsA8Bmelz3VHikWLuCxMXdHZ69dWQ4TCKHJdwZZXPinblK0vVkVBjaQ64h/8Egjfs0Dx+ohv0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>1XBWE92JX7ND3GNW</RequestId><HostId>RHor5soNV3+IOJ4j1YTCE0akaPfp3Wms80dM3tDw/2niuGLlGmxyPxYZj/HHPnDRbvRQBiYnzO4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>V4H8MQR6CRD2S7NP</RequestId><HostId>obaeJ5YrRVm/szkq4qqcTDlGmQRmHfDtZcq9Q8UhBlLSUnAr6C7lzFKB05oh/Ht8XhjSFCXXM+k=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>V4HD54201E9GD6SX</RequestId><HostId>JN9AgsMRAFNyeGul74Ga+ezmoNXA+tKeJTsmXV4CTW962iLwWJfJ69v681D41pryAFxdylpB3BI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>V4HCRY5YPRD0BDJ7</RequestId><HostId>J6E6OHxSy40iAPpaaHgJZvGckAFpMoTITUWigPkHq4uPafM3U0JAftbibeGMQlw4dQ9d4od6n8c=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>V4HAXV17KX8MX9MB</RequestId><HostId>+Ud2YW5tv6t3WC/N1qqrBIv0cTfY6xr27lcGdmkwVmVUx3zRdkrHVvVvJC67TOWaQH4AJbziusM=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>BPPVGACHNSFDRTPE</RequestId><HostId>EFZcWbbTqESrSDwDZdP3rDbqM8ouUJn3XLIwLgDttv2uVSDuI1uZPhjGecPw3v18a9YOqHaaKtA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "20260520/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>BPPVNMV40HFN7A4P</RequestId><HostId>hJAdPEtrEoPSbzlIu32raRUNd8FrChefN3rJDoFapKfLpo7rHD/tEDU9vLJpDQaPNMZan9JoIa4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>BPPVS3763648T1CT</RequestId><HostId>XIUk/d8pRPWkRX5JgUOWAAjkJEYHOASsJQiUqo+zNp3Twq2CcSBD9oOvhqybAvF3dl9Aveml+h0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-20T00:00:00Z",
+          "prefix": "refs.20260520/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>BPPQ9H9D74PBJR3Q</RequestId><HostId>hUYEzjQM3cUU+Nr/eVK62IPdfZhTcBW+lrxydekj5lgfG+VOYjN2Pmy2QtYGi6g0e344lhl6f36tJN57NiPIsvEImH99yi6t</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FQCRQDVCB1C06QS8</RequestId><HostId>cVJEPE4dPNaCMSyzp7/fNvCmLiNljr9kPbCn9fq4JOYSebLkppxrWuHQoPsZiiU/1aIckIOqqTT2NQ/qVPZjdTJw8Pp2ESWO</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FQCSPA3SZ4HB7744</RequestId><HostId>Nx0RdPVNhud3yHbMNHr96Sfb0qc76fJ4CiRaeJ+7fRbb8gE87NIMq10/IP4wWH9uAf1n4eiYBOo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FQCV47AP6Q3X581G</RequestId><HostId>OZLPEPkMuoB8KygQbPS3x8rvEPwLWwtGKxRyYHzlYUsexV9eLIYOSz5R/Ayz/Oy48M0i5gOQpHI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FQCRXRZK9V991KGR</RequestId><HostId>8X7FL2pi1v7Vd85Urdq1u2wZUar1wYV23iazVw+WAnhIvlbCR3nTwweoeiVWD+A2jlYd71tuc4M=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FQCQGVJEQM29YWP5</RequestId><HostId>Rzb1VZ0q+6eSLK3uIff7wZMPtai7az2vKnYWku5v0dKDADUscuPJzGkodf5UszHBaYQSidTtHKY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>6GV1K6QT7WK6P3GR</RequestId><HostId>I1UTOKIy4p1LqPY9c7WJGwG45DLvW3JTTp5q59UxdZ2soUwA/tcBVTIiyZSpdt2su8q7qcXesVE=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "20260519/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>6GV42Y0PRTVEM18K</RequestId><HostId>KerQKB1oRsJgbi0/hYioD6BC4M/Gp662RliEiPhPDr1yjrpgU/YWmNB+fW0GYEL4q+F0jDDB1AU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>6GVD2RSFM97H4NC8</RequestId><HostId>ig2E87XrckQK3hq7dQxoFKlzhviNrdklP1Wj6gJuvl4Pq12129gy1FCHfHZHBtpO3LSqe+cNnNoy1VDpIdqSDEeVPEJ3FDsi</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T18:00:00Z",
+          "prefix": "refs.20260519/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>6GV55RJ5VBQYF31Q</RequestId><HostId>v/baACxmHVGuyL4OzSJfZJBFPDruPvPfx4YijUA8GBLLskiotUgfUgCcnomh3lnoW8TktFNEAL4=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>Z6T776SQ6VDEWFGP</RequestId><HostId>q3Zil9o/TGWN2w3VlaDBfxOxKPjK38lbYtFxZZ/A7xKnZFfHUbTsDP1Mhu5NZeCmqvKbOgnnNTLM8fHzY2D3wh0TmmFHV013G9+cy6MgOUM=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>Z6T75NNY92A6Y1YC</RequestId><HostId>Ph8H2iA3UaCdayQgYHShaHDEa1Yu0DtD/QAfm6gZfpIrVvWgnNWuBG2juxamWubDK3VyjGpdxU0=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>Z6T7EZFJMQAT6DWK</RequestId><HostId>wgCv7QvXEkavC0xVGNAY3Nc39jmL7aMT2jiqYIS7uAT84fpMlSqC3XoQnFCaW0SOYOOD90/NxfPhTv9jcB/bwAUYLE6A1cc2</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>Z6T4ZC5E6NR8NWPX</RequestId><HostId>ZbHCxJvBqaH17D2vBCQ/zkFqcZIfmyyVJ7+eTTXYgEjXGX3y3SbSg630pfLdu9ZxzP0G07l+E3JRDIs2M6Y0EkXpHDTuqOD6B3GVZny0XNk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7DQZK60TP6W987BD</RequestId><HostId>6q+UZ84DqHh1nW1zykg1EmhpAJxm6e6rKR1Wo0cZhBkCPxz6KpOCnESwx0WpmhNYap94cgRTUHA=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7DQVGQZ9VGRDSD8V</RequestId><HostId>QJrTPUb/p7vCnx0D2oqOtMBPIxiD0seMrkm7lRckPb2AYKqdKIwV89l6oBc7rplMaFH6RUMNTF8s6Wls4EBhmZDWV0JAbu36</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "20260519/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7DQQSKQ7FENQ7808</RequestId><HostId>6mbEMWFcmdrtFvjex7vBD/NIwPgsXVgtVPYYYOdBhwRbVMp2PZU0ELke75FdlkjZZt3zeYUPCkg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7DQW6HRWPA1QPK0X</RequestId><HostId>yjvw20E2Gzl6nNlijfEk0UfcsuYdt93rMs11G4WST6xhqBxb1QWsvj05iO4XlSRPFLmHOTurgGs=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T12:00:00Z",
+          "prefix": "refs.20260519/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7MNPCY51PYYJKRA7</RequestId><HostId>RLb6HPr4c6Yn5LsX6pwIoipi2eo9IFqxv4EoAD+58cn1jp7idlCkt3TFQon8jjBviQv5EENk+FlGIAITeS6USwEwlwsxUDik/6tMf3pa/NU=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7MNNG8YY59WZZVCN</RequestId><HostId>vDKtGiT4rF85nehRkHSUKqKFWxhszeAZUx/AWmbKxsio09B0xR/WwImvNwuNNEzShNYSDDOuOHk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7MNRW0F8CHSX8D5T</RequestId><HostId>h6a+wmuHkd9OMUsNuKNnqAGHP3ZSFnSlf0YuUobUEKSSJDPrRdnBYYgtcbrt/0FLu8QYT0iy1og=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7MNQZRM9K2HCDTVZ</RequestId><HostId>hcapNWC7ROutujseV+jb9zeKDUvWfNlTqgDZ5WEVMVa0dt2OtBB2OtpQnHnPDARxoVPlvx1+p9A=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/06/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>7MNQPRH25RQKEFN5</RequestId><HostId>t1PWDW5VTx/VZlRErhhlX1+qvMJ52IAlopzkc+kjeoeESp/Oxl7TmDRkTBZrGv+Uu+SQcfJTWzY=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>C0P6RYNDYAHCQ0ED</RequestId><HostId>FSx+0MHBX+sz0j/3rvCC0CH1FZ5wSu197mvrzpk3rap5RQhnvW9S/XNPygGH6F3RKF2ZYWAVJ4E=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>C0PA1BMKF4ATJW0S</RequestId><HostId>z6CYhCI3891m4KvPUTrLHvEHGUE2+bBDvbCtFUUHBz7+lA5C09mVRCbGlCCgPK3uF35ldZaTLgo=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "20260519/06/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>C0P1MYP12J0E5XJV</RequestId><HostId>OX3hAIwdoUqotVTiMKm7IOje9XqNNwL+0darkD3m4sNYdBKgTmTYv/flibLsLvked6j4rWbIHDIr8PLLZSetX93Vo567GSzL</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>C0P9ATK6WQMBTT6Q</RequestId><HostId>Z8N8I8vKJFrW3YIk0LaDoYIPF94mMpCpYODb7Ehjy42j2ukQWZ14uZg6PdQjQ1256K0ZbuMgGKg=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T06:00:00Z",
+          "prefix": "refs.20260519/06/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>J2RZAT9DDS9ZYDZQ</RequestId><HostId>667F08KcKG4gCG4JGEbaQ8qO/RCrXk8nXASZ3TmuHH/mVGTlFCSX1poJYP8Y6xyOk9Y+xY+Me7w=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>J2RQTD25R5R4C3WR</RequestId><HostId>TCcKOByu2Rr85S/YXvdYJMzVTqkKj4FlBYTaiL55GH4OZV2IZuBOL0jlaLn6GEopzJdwQXlssds=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>J2RNYV0GZ2HF20AE</RequestId><HostId>YjJ409QZ54/S9Igx9q7qs1ZiU5Qk18WSjCqyZR2t3s1pqaH3vUp0sb8na9XhhvHuUFV4PdIvdwI=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>J2RJFZYQJXQ9VT67</RequestId><HostId>1IMtDudumcKXWNVImXZ0t6zu2qBDfIjWKw4rA1jeBXAbC5aFfNf9fhShUY4pzG3cBvTInYD/25Q=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/00/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>205NNNX9ZF1G6YD4</RequestId><HostId>dLAeDAhxypylF9rsTQIx//6QNyKO9HOJU2PqzTws+Jjo5kLqFp0e5zIWPMFIRoCR6LQ9Yr7SPsvUtosx+M6KedvL8BaDaDmU</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>205VYEJ58Z18AP3Q</RequestId><HostId>rsYwyyeWRMh5FrX9RmGJCqXdDAXZiiaeQLj5czdyClmg7aDgUk5zae+E30Mayp7jvpqEvvL6NqcM06TyqtNb0tnBpmXw44w4</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>205ZSXBMD0RGJG4Q</RequestId><HostId>1VB//Ph0iVHYRJ39SSszy5gG+9q6RtRyPUdZYBleg99X8lGAtptivz6gSN47z96NvJM3yXsFDGkegl9JwulOnrngPvApm2tA</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "20260519/00/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>205KM34GRZJJ029D</RequestId><HostId>AStZG4RRXtJrxDK4tDdNVwcMq05FVfAYNXsLkuLaN7g2GYbafvs9oLC6PFFR/oyLA9/vGNiVFRw=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WK75ADPEQ7RYD681</RequestId><HostId>HsA2aKDW/lo4m1swm2sF/02X09WPwFcWn9gf3aIfJ8qM4GLjqy6x9E0CVI35/26SxJcVQ69s2s329Fm651TETKx43btkHjdK</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-19T00:00:00Z",
+          "prefix": "refs.20260519/00/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WK7DHGRYYXC4K0AB</RequestId><HostId>c3r7hfQrKQJlYuC4BWj3pJpV8xlqaMlgHfywygSBJpke1CacP9KbxeYVugHaiJjPOkCFATDSTY2fZgkyw1DYs9UDuKUpwhnI</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WK79VCK2WQKCX0DG</RequestId><HostId>VTXSiLMz9p55Y9lDJ83I78n5TkeYNMmrbDKwnpi1bXIXk2qbbTWCcUtJ7bUg1auTDR1J6BIv1pH/Wz8X9Kpy6N1vb6CcIYDL</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>WK71WMZ7S8BTWK72</RequestId><HostId>X+kWbibxQBMPusT3iWrmkZB7Rl/LvEJNRTxkC/Dz0oT9RcUIkQpa8iJjp7kSuTcFwL5NZ3nhyoE79JGkL1jBoGLLO/jvBzl0</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FCBFVCYZANY8FGNV</RequestId><HostId>TP6geHQfPKUfUwBADMpxR1chjZlBgVnJXHQyuUmr5+BteeG0ua6xfgcIJJiMhFfx57HokcHltSGEGJTRX7zXiiQplJ5RggLq</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/18/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FCBAHGESZM9A6QQ6</RequestId><HostId>9hmijlQTBi84B98BH8mMHQLrMWf5RuY6Dme+55P7AhdqPs6/RiJ0rRVfGlJHXWwLNGxIWmmcQmk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FCB50J3MPP55G3CM</RequestId><HostId>D98VfjqxLek84rATQnvIj5BGSE28uJ3XA4nS92hro/h3/CbVuRoul4xJDZ4ZKHLFWXCbzfRdYHc=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FCBDJDDBTHT58VYY</RequestId><HostId>RviHqjuF7oMF9fg1En5HqgOuHpYxXsp8WAMh9awnJQ2WEnJ4tg1jTx/JNn4IdOkN6fYbYZL0bfOV0j3etNkU7sH+C9BjEOb2</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "20260518/18/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>W70Z6JBHNW423JFC</RequestId><HostId>P9QtmsDMu8m/ADlPLKHp4fhW7Dj+sXmn28HO7U924s9OJdjj11KJsZTTITwAf6qpuHZ0RU56VXc=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>W70HEQAGFGCMASXS</RequestId><HostId>vBjitJBicy3wLIrFBT8alB4pgE+l5kOe3nh+RkyGtFKLCOttWGsZ/wzmFerNgIF7Oru05Xsce35dIv4dH7KFImvB7e0M/pF6</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T18:00:00Z",
+          "prefix": "refs.20260518/18/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>W70M0E2SPEJRTDH0</RequestId><HostId>OAFRNjTDktO1nFjHTx6khl4qAQX/1FXDQENMBl/hG76HOk2klRmzn9d6lAvPvTJjD37vo/lbH6L2Kvmyk4XPHxd++UpaUYm6</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>W70WX8D95CX2VXH9</RequestId><HostId>mnKWtXfz6Prh07/vC5r7nRIf1GFxk6udIyJRBvIa4Y4UkD9vUfMXx0Rn4CIi0UVA1jelmVYdMAhWrA2Qgj4ZNzmMLdcJrADl</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>69V64MFGT0RGWYMQ</RequestId><HostId>wq73h68C4D2+twW95M7O2KyHvsPcTPPApH3bdg7RBVumgCCYkS+a3Fsb++iwPAv3bfKoGM3re1P2AkKq8h/dSp0BNx8CiLsZ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>69V9E4NBGZ3QQ3W2</RequestId><HostId>QiQf9Fsi/gZvcRgUIcmQLPFJJy3R41D1mXLZHDI7rSIaa8pt1M/bUZZFfSgCd9GJt63B0nhYl3KCEGc8gpqDrzFh2MyW2Rir</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/12/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>69V4FGEMNYTFFW9D</RequestId><HostId>vqpFYXFgf0sTfQS8bcBBh358UqmBRfwTHPyzm30E/aYOLDugMvhD2PEMFZFXmr8gcU9D4L2wMRyIBl47IYFQhjo1PIS9pSNJ</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>69VDKAKW28CM7DSQ</RequestId><HostId>LwH//Cv/GY07Xu57XaGiEYrJ3XxS3UjBbd2XaXZ8271qWXVPuMOcMmasIDcNSWyIJR/ROAQY/C8=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FVTHK5QQHMG52945</RequestId><HostId>txqgmnIvXcMxMGPKihF50GbKG+WgVRD0Y0+oilMrmkKo7exFUOj9DzaMm1Gvhk0ABHrjxWflc8o=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "20260518/12/ensprod/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FVTWV23NWH2PQ237</RequestId><HostId>M2XTYQaMSyHvrLiy9fdzFnsBvIriEcoLkwKp/y7saGddixJc28ZonSLrh9xkbOVLfafxoZgsCtM=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FVTJEPVGET1H09VS</RequestId><HostId>EKiQKgM9ATNR5TUOukvxt0qAAfjCxzG5CwxZnS0UCLTAq+3b59/QQrHhp+jT5bKjHQa8Jm5zbAk=</HostId></Error>"
+        },
+        {
+          "cycle": "2026-05-18T12:00:00Z",
+          "prefix": "refs.20260518/12/wgrbbul/",
+          "status": 404,
+          "key_count": 0,
+          "sample_keys": [],
+          "error": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>noaa-refs-pds</BucketName><RequestId>FVTHMCQ6NBXAV8DV</RequestId><HostId>EZjPzOM2eDNcHpxWT9wLpvoEdK4AExbSZP2Re8Gq38HRkpZoOqJqRp3d7lN3lhFZ2YhGjmzagVE=</HostId></Error>"
+        }
+      ],
+      "idx_checks": []
+    }
+  ],
+  "candidate_idx_files": [],
+  "best_candidates": [],
+  "notes": [
+    "No IDX files found from the tested AWS patterns. This likely means the bucket name/path is different, the model is not publicly exposed under these keys, or the product is not available through this AWS endpoint."
+  ]
+}
