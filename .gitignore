@@ -1,20 +1,20 @@
-# Oversized audit/debug files
+# Large generated diagnostics
+data/rrfs_refs_inventory.json
+data/refs_hourly.json
+data/refs_dss_debug.json
 data/repo_audit_report.json
 data/repo_audit_full.json
 data/*audit*.json
+data/*debug*.json
 
-# Huge REFS debug/output files that should not be committed unless intentionally needed
-data/refs_dss_debug.json
-data/refs_hourly.json
-
-# Python/cache junk
+# Python/cache
 __pycache__/
 *.pyc
-*.idx
-*.grib2
-.gbx9
-*.nc
-.DS_Store
 *.pyo
 *.pyd
-.ipynb_checkpoints/
+.pytest_cache/
+
+# Local/temp files
+.DS_Store
+*.tmp
+*.log
