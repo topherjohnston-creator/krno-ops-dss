@@ -3,7 +3,9 @@ name: Update KRNO Ops DSS Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 */3 * * *"
+    # REFS/NBM-style model update cycle.
+    # Runs every 6 hours, offset by 45 minutes to allow data availability.
+    - cron: "45 */6 * * *"
 
 permissions:
   contents: write
@@ -35,33 +37,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build QMD probability-based wind outputs
+      - name: Build REFS probability-based DSS outputs
         run: |
-          python scripts/build_real_qmd_wind_outputs.py || echo "::warning::Wind builder failed; continuing with remaining builders."
+          python scripts/build_refs_dss_outputs.py
 
-      - name: Build Core probability-based visibility outputs
+      - name: Finalize 60-hour timeline outputs
         run: |
-          python scripts/build_real_core_visibility_outputs.py || echo "::warning::Visibility builder failed; continuing with remaining builders."
-
-      - name: Build QMD rain flooding outputs
-        run: |
-          python scripts/build_real_qmd_rain_outputs.py || echo "::warning::Rain builder failed; continuing with remaining builders."
-
-      - name: Build Core snow probability outputs
-        run: |
-          python scripts/build_real_core_snow_outputs.py || echo "::warning::Snow builder failed; continuing with remaining builders."
-
-      - name: Build Core freezing rain outputs
-        run: |
-          python scripts/build_real_core_fzra_outputs.py || echo "::warning::Freezing rain builder failed; continuing with remaining builders."
-
-      - name: Build Core lightning probability outputs
-        run: |
-          python scripts/build_real_core_lightning_outputs.py || echo "::warning::Lightning builder failed; continuing with remaining builders."
-
-      - name: Finalize timeline outputs
-        run: |
-          python scripts/finalize_timeline_outputs.py || echo "::warning::Timeline finalizer failed; continuing to audit/commit."
+          python scripts/finalize_timeline_outputs.py
 
       - name: Audit generated DSS outputs
         run: |
@@ -72,20 +54,26 @@ jobs:
           rm -f data/repo_audit_report.json
           rm -f data/repo_audit_full.json
           rm -f data/*audit*.json
+          rm -f docs/repo_audit_report.json
+          rm -f docs/repo_audit_full.json
+          rm -f docs/*audit*.json
 
-      - name: Commit updated files
+      - name: Commit updated DSS files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add docs/*.json || true
+          git add data/*.json || true
           git add data/*.csv || true
           git add data/*.txt || true
-          git add data/*.json || true
 
           git reset -- data/repo_audit_report.json || true
           git reset -- data/repo_audit_full.json || true
           git reset -- data/*audit*.json || true
+          git reset -- docs/repo_audit_report.json || true
+          git reset -- docs/repo_audit_full.json || true
+          git reset -- docs/*audit*.json || true
 
-          git commit -m "Update KRNO Ops DSS data" || echo "No changes to commit"
+          git commit -m "Update REFS KRNO Ops DSS data" || echo "No changes to commit"
           git push
