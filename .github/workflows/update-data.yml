@@ -59,12 +59,17 @@ jobs:
 
           keys = data.get("keys", [])
           files = data.get("files", [])
-          items = keys or files
+          parsed_objects = data.get("parsed_objects", [])
+          items = keys or files or parsed_objects
 
           print("top-level keys:", list(data.keys()))
           print("cycle_utc:", data.get("cycle_utc") or data.get("cycle"))
+          print("cycle_label:", data.get("cycle_label"))
           print("prefix:", data.get("prefix"))
           print("usable:", data.get("usable"))
+          print("products:", data.get("products"))
+          print("idx_hours:", data.get("idx_hours"))
+          print("grib_hours:", data.get("grib_hours"))
           print("item_count:", len(items))
 
           for i, item in enumerate(items[:80]):
@@ -80,6 +85,10 @@ jobs:
           else
             echo "MISSING data/rrfs_refs_inventory.txt"
           fi
+
+      - name: Build compact REFS field map
+        run: |
+          python scripts/scan_refs_field_map.py
 
       - name: Build RRFS/REFS DSS outputs
         run: |
@@ -100,13 +109,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage only frontend-required products and small inventory summaries.
+          # Stage frontend-required products.
           git add docs/threats.json || true
           git add docs/timeline.json || true
           git add docs/observations.json || true
 
+          # Stage small REFS inventory/diagnostic summaries.
           git add data/rrfs_refs_inventory.txt || true
           git add data/rrfs_refs_selected_cycle.json || true
+          git add data/refs_field_map.txt || true
+          git add data/refs_field_map_summary.json || true
 
           # Make absolutely sure huge files are not staged.
           git reset -- data/rrfs_refs_inventory.json || true
