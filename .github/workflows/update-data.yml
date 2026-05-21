@@ -3,8 +3,8 @@ name: Update KRNO Ops DSS Data
 on:
   workflow_dispatch:
   schedule:
-    # REFS/NBM-style model update cycle.
-    # Runs every 6 hours, offset by 45 minutes to allow data availability.
+    # Temporary discovery run every 6 hours.
+    # Once REFS/HREF paths are verified, this will become the production model update.
     - cron: "45 */6 * * *"
 
 permissions:
@@ -27,53 +27,27 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Linux dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libeccodes0 libeccodes-dev
-
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install requests
 
-      - name: Build REFS probability-based DSS outputs
+      - name: Scan REFS/HREF AWS inventory
         run: |
-          python scripts/build_refs_dss_outputs.py
+          python scripts/scan_refs_aws_inventory.py
 
-      - name: Finalize 60-hour timeline outputs
+      - name: Verify inventory output exists
         run: |
-          python scripts/finalize_timeline_outputs.py
+          test -f data/refs_inventory_report.json
+          echo "Inventory report created:"
+          ls -lh data/refs_inventory_report.json
 
-      - name: Audit generated DSS outputs
-        run: |
-          python scripts/audit_repo_outputs.py || echo "::warning::Audit failed; continuing to commit usable outputs."
-
-      - name: Remove oversized audit files before commit
-        run: |
-          rm -f data/repo_audit_report.json
-          rm -f data/repo_audit_full.json
-          rm -f data/*audit*.json
-          rm -f docs/repo_audit_report.json
-          rm -f docs/repo_audit_full.json
-          rm -f docs/*audit*.json
-
-      - name: Commit updated DSS files
+      - name: Commit inventory report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add docs/*.json || true
-          git add data/*.json || true
-          git add data/*.csv || true
-          git add data/*.txt || true
+          git add data/refs_inventory_report.json || true
 
-          git reset -- data/repo_audit_report.json || true
-          git reset -- data/repo_audit_full.json || true
-          git reset -- data/*audit*.json || true
-          git reset -- docs/repo_audit_report.json || true
-          git reset -- docs/repo_audit_full.json || true
-          git reset -- docs/*audit*.json || true
-
-          git commit -m "Update REFS KRNO Ops DSS data" || echo "No changes to commit"
+          git commit -m "Scan REFS HREF AWS inventory" || echo "No changes to commit"
           git push
