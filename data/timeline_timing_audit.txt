@@ -1,5 +1,5 @@
 KRNO Timeline Timing Audit
-Generated: 2026-05-20T23:45:56Z
+Generated: 2026-05-21T00:19:49Z
 
 Timeline structure:
   blocks_count: 16
@@ -16,10 +16,10 @@ Hazard timing checks:
     source_path: data/krno_wind_hourly.json
 
   PASS - SNOW: ok
-    source_peak: {'fxx': 1, 'valid_utc': '2026-05-20T07:00:00Z', 'value': 0.0}
+    source_peak: {'fxx': 1, 'valid_utc': '2026-05-20T13:00:00Z', 'value': 0.0}
     expected_block_index: 0
     timeline_peak_block_index: 0
-    timeline_peak: {'block_index': 0, 'risk': 0.0, 'level': 0.0, 'prob': 0.0, 'source_fxx': 1.0, 'metric': '0" / hr', 'driver': 'No snow signal', 'peak_valid_utc': '2026-05-20T07:00:00Z', 'valid_start_utc': '2026-05-20T19:00:00Z', 'valid_end_utc': '2026-05-20T21:00:00Z'}
+    timeline_peak: {'block_index': 0, 'risk': 0.0, 'level': 0.0, 'prob': 0.0, 'source_fxx': 1.0, 'metric': '0" / hr', 'driver': 'No snow signal', 'peak_valid_utc': '2026-05-20T13:00:00Z', 'valid_start_utc': '2026-05-20T19:00:00Z', 'valid_end_utc': '2026-05-20T21:00:00Z'}
     source_path: data/krno_snow_hourly.json
 
   PASS - LIGHTNING: ok
@@ -33,9 +33,9 @@ Hazard timing checks:
     timeline_peak_block_index: None
     source_path: data/krno_fzra_hourly.json
 
-  FAIL - VISIBILITY: timing_mismatch
-    source_peak: {'fxx': 42, 'valid_utc': '2026-05-22T06:00:00Z', 'value': 10.06}
-    expected_block_index: 13
+  PASS - VISIBILITY: ok
+    source_peak: {'fxx': 2, 'valid_utc': '2026-05-20T20:00:00Z', 'value': 10.07}
+    expected_block_index: 0
     timeline_peak_block_index: 0
     timeline_peak: {'block_index': 0, 'risk': 0.0, 'level': 0.0, 'prob': 0.0, 'source_fxx': None, 'metric': 'No data', 'driver': 'No visibility data available', 'peak_valid_utc': None, 'valid_start_utc': '2026-05-20T19:00:00Z', 'valid_end_utc': '2026-05-20T21:00:00Z'}
     source_path: data/nbm_core_visibility.json
