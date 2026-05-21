@@ -28,17 +28,31 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Scan RRFS REFS inventory
+      - name: Run RRFS REFS inventory scan
         run: |
           python scripts/scan_rrfs_refs_inventory.py
 
-      - name: Commit inventory scan outputs
+      - name: Show scan summary
+        run: |
+          echo "---- RRFS/REFS INVENTORY SUMMARY ----"
+          if [ -f data/rrfs_refs_inventory_summary.txt ]; then
+            cat data/rrfs_refs_inventory_summary.txt
+          else
+            echo "No summary file found."
+          fi
+
+          echo "---- GENERATED FILES ----"
+          ls -lh data | grep -E "rrfs|refs|inventory" || true
+
+      - name: Commit scan outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          git add data/rrfs_refs_inventory_summary.txt || true
           git add data/rrfs_refs_inventory.json || true
-          git add data/rrfs_refs_inventory.txt || true
+          git add data/rrfs_refs_candidate_files.json || true
+          git add data/rrfs_refs_debug.txt || true
 
           git commit -m "Scan RRFS REFS inventory" || echo "No changes to commit"
           git push
