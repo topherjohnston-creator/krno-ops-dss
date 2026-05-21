@@ -1,481 +1,463 @@
 from __future__ import annotations
 
+import argparse
+import html
 import json
-import os
-import re
 import sys
-import time
-import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 import requests
+import xml.etree.ElementTree as ET
 
+
+DATA = Path("data")
+DATA.mkdir(exist_ok=True)
 
 BUCKET = "noaa-rrfs-pds"
-S3_LIST_URL = f"https://{BUCKET}.s3.amazonaws.com"
+BASE_URL = f"https://{BUCKET}.s3.amazonaws.com"
 
-DATA_DIR = Path("data")
-DATA_DIR.mkdir(exist_ok=True)
+OUT_JSON = DATA / "rrfs_refs_inventory.json"
+OUT_TXT = DATA / "rrfs_refs_inventory.txt"
+OUT_SELECTED = DATA / "rrfs_refs_selected_cycle.json"
 
-OUT_JSON = DATA_DIR / "rrfs_refs_inventory.json"
-OUT_TXT = DATA_DIR / "rrfs_refs_inventory.txt"
-
-# Keep this conservative so GitHub Actions does not get stuck.
-MAX_CYCLES_TO_CHECK = 16
-MAX_KEYS_PER_PREFIX = 5000
-REQUEST_TIMEOUT = 45
-
-# RRFS expected synoptic cycles.
-CYCLE_HOURS = [0, 6, 12, 18]
-
-# Search terms relevant to REFS / ensemble / probability products.
-IMPORTANT_TERMS = [
-    "refs",
-    "ens",
-    "mean",
-    "prob",
-    "member",
-    "mem",
-    "ctl",
-    "control",
-    "gust",
-    "wind",
-    "tmax",
-    "tmp",
-    "temp",
-    "snow",
-    "asnow",
-    "rain",
-    "apcp",
-    "qpf",
-    "fzra",
-    "frzr",
-    "vis",
-    "visibility",
-    "ltng",
-    "lightning",
-    "hail",
-    "wetbulb",
-    "twet",
-    "wb",
-]
-
-# Common GRIB/index patterns.
-GRIB_EXTENSIONS = (".grib2", ".grb2", ".idx")
+DEFAULT_LOOKBACK_CYCLES = 20
+DEFAULT_MAX_DEPTH = 6
+DEFAULT_MAX_PREFIXES_PER_CYCLE = 250
+DEFAULT_MAX_KEYS_PER_PREFIX = 200
+TIMEOUT = 45
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+@dataclass
+class S3Listing:
+    status: int
+    prefix: str
+    keys: list[str]
+    common_prefixes: list[str]
+    is_truncated: bool
+    next_token: str | None
+    error: str | None = None
 
 
-def list_s3_keys(prefix: str, max_keys_total: int = MAX_KEYS_PER_PREFIX) -> list[str]:
-    """
-    List public S3 keys under a prefix using unsigned HTTPS ListBucketV2.
-    Does not require AWS CLI or AWS credentials.
-    """
-    keys: list[str] = []
-    continuation_token: str | None = None
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc).replace(microsecond=0)
 
-    while len(keys) < max_keys_total:
-        params = {
-            "list-type": "2",
-            "prefix": prefix,
-            "max-keys": "1000",
-        }
 
-        if continuation_token:
-            params["continuation-token"] = continuation_token
+def latest_synoptic_cycle(now: datetime | None = None) -> datetime:
+    now = now or utc_now()
+    now = now.replace(minute=0, second=0, microsecond=0)
+    return now.replace(hour=(now.hour // 6) * 6)
 
-        response = requests.get(S3_LIST_URL, params=params, timeout=REQUEST_TIMEOUT)
 
-        if response.status_code in (403, 404):
-            return []
+def cycle_candidates(lookback_cycles: int) -> list[datetime]:
+    start = latest_synoptic_cycle()
+    return [start - timedelta(hours=6 * i) for i in range(lookback_cycles)]
 
-        response.raise_for_status()
+
+def s3_list(
+    prefix: str,
+    delimiter: str = "/",
+    max_keys: int = 1000,
+    continuation_token: str | None = None,
+) -> S3Listing:
+    params = {
+        "list-type": "2",
+        "prefix": prefix,
+        "delimiter": delimiter,
+        "max-keys": str(max_keys),
+    }
+
+    if continuation_token:
+        params["continuation-token"] = continuation_token
+
+    try:
+        response = requests.get(BASE_URL, params=params, timeout=TIMEOUT)
+        status = response.status_code
+
+        if status != 200:
+            return S3Listing(
+                status=status,
+                prefix=prefix,
+                keys=[],
+                common_prefixes=[],
+                is_truncated=False,
+                next_token=None,
+                error=response.text[:1200],
+            )
 
         root = ET.fromstring(response.text)
+        ns = {"s3": "http://s3.amazonaws.com/doc/2006-03-01/"}
 
-        ns = ""
-        if root.tag.startswith("{"):
-            ns = root.tag.split("}")[0].strip("{")
+        keys = []
+        for item in root.findall("s3:Contents", ns):
+            key_el = item.find("s3:Key", ns)
+            if key_el is not None and key_el.text:
+                keys.append(html.unescape(key_el.text))
 
-        def q(name: str) -> str:
-            return f"{{{ns}}}{name}" if ns else name
+        common_prefixes = []
+        for item in root.findall("s3:CommonPrefixes", ns):
+            prefix_el = item.find("s3:Prefix", ns)
+            if prefix_el is not None and prefix_el.text:
+                common_prefixes.append(html.unescape(prefix_el.text))
 
-        for contents in root.findall(q("Contents")):
-            key_node = contents.find(q("Key"))
-            if key_node is not None and key_node.text:
-                keys.append(key_node.text)
+        truncated_el = root.find("s3:IsTruncated", ns)
+        is_truncated = truncated_el is not None and truncated_el.text == "true"
 
-                if len(keys) >= max_keys_total:
-                    break
+        next_token_el = root.find("s3:NextContinuationToken", ns)
+        next_token = next_token_el.text if next_token_el is not None else None
 
-        is_truncated_node = root.find(q("IsTruncated"))
-        is_truncated = (
-            is_truncated_node is not None
-            and is_truncated_node.text is not None
-            and is_truncated_node.text.lower() == "true"
+        return S3Listing(
+            status=200,
+            prefix=prefix,
+            keys=keys,
+            common_prefixes=common_prefixes,
+            is_truncated=is_truncated,
+            next_token=next_token,
         )
 
-        if not is_truncated:
-            break
-
-        token_node = root.find(q("NextContinuationToken"))
-        if token_node is None or not token_node.text:
-            break
-
-        continuation_token = token_node.text
-
-        # Be polite to public object store.
-        time.sleep(0.2)
-
-    return keys
-
-
-def latest_cycle_candidates() -> list[datetime]:
-    """
-    Generate latest likely RRFS cycle candidates, newest first.
-    """
-    now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
-
-    candidates: list[datetime] = []
-    cursor = now
-
-    while len(candidates) < MAX_CYCLES_TO_CHECK:
-        cycle_hour = max([h for h in CYCLE_HOURS if h <= cursor.hour], default=18)
-
-        if cycle_hour == 18 and cursor.hour < 0:
-            cycle_date = cursor.date() - timedelta(days=1)
-        else:
-            cycle_date = cursor.date()
-
-        cycle = datetime(
-            cycle_date.year,
-            cycle_date.month,
-            cycle_date.day,
-            cycle_hour,
-            tzinfo=timezone.utc,
+    except Exception as exc:
+        return S3Listing(
+            status=0,
+            prefix=prefix,
+            keys=[],
+            common_prefixes=[],
+            is_truncated=False,
+            next_token=None,
+            error=repr(exc),
         )
 
-        if cycle > now:
-            cycle -= timedelta(hours=6)
 
-        if cycle not in candidates:
-            candidates.append(cycle)
+def s3_list_all_keys(prefix: str, max_total_keys: int = 2000) -> list[str]:
+    keys: list[str] = []
+    token = None
 
-        cursor = cycle - timedelta(hours=1)
+    while True:
+        listing = s3_list(
+            prefix=prefix,
+            delimiter="",
+            max_keys=min(1000, max_total_keys - len(keys)),
+            continuation_token=token,
+        )
 
-    return candidates
+        if listing.status != 200:
+            break
+
+        keys.extend(listing.keys)
+
+        if not listing.is_truncated or not listing.next_token:
+            break
+
+        if len(keys) >= max_total_keys:
+            break
+
+        token = listing.next_token
+
+    return keys[:max_total_keys]
 
 
-def possible_cycle_prefixes(cycle: datetime) -> list[str]:
-    """
-    Try several likely RRFS public bucket path conventions.
-    This is intentionally broad because RRFS/REFS paths are still easy to misremember.
-    """
+def root_prefixes_for_cycle(cycle: datetime) -> list[str]:
     ymd = cycle.strftime("%Y%m%d")
     hh = cycle.strftime("%H")
 
     return [
+        f"rrfs.{ymd}/",
         f"rrfs.{ymd}/{hh}/",
         f"rrfs.{ymd}/{hh}/ens/",
         f"rrfs.{ymd}/{hh}/refs/",
         f"rrfs.{ymd}/{hh}/prslev/",
         f"rrfs.{ymd}/{hh}/natlev/",
-        f"rrfs.{ymd}/",
-        f"refs.{ymd}/{hh}/",
         f"refs.{ymd}/",
+        f"refs.{ymd}/{hh}/",
+        f"{ymd}/",
         f"{ymd}/{hh}/",
     ]
 
 
-def classify_key(key: str) -> dict[str, Any]:
-    lower = key.lower()
-
-    matched_terms = [term for term in IMPORTANT_TERMS if term in lower]
-
-    fxx = None
-    fxx_match = re.search(r"\.f(\d{2,3})\b|f(\d{2,3})\.", lower)
-    if fxx_match:
-        fxx = int(next(g for g in fxx_match.groups() if g is not None))
-
-    member = None
-    member_match = re.search(r"(?:mem|member|m)(\d{2,3})", lower)
-    if member_match:
-        member = member_match.group(1)
-
-    product_guess = None
-    if "prob" in lower:
-        product_guess = "probability"
-    elif "mean" in lower or "avg" in lower:
-        product_guess = "mean"
-    elif "ctl" in lower or "control" in lower:
-        product_guess = "control"
-    elif member is not None:
-        product_guess = "member"
-    elif "ens" in lower or "refs" in lower:
-        product_guess = "ensemble_related"
-
-    return {
-        "key": key,
-        "matched_terms": matched_terms,
-        "fxx": fxx,
-        "member": member,
-        "product_guess": product_guess,
-        "is_grib_or_idx": lower.endswith(GRIB_EXTENSIONS),
-    }
-
-
-def score_key(info: dict[str, Any]) -> int:
-    terms = set(info["matched_terms"])
+def key_score(key: str) -> int:
+    k = key.lower()
     score = 0
 
-    if "refs" in terms:
-        score += 10
-    if "ens" in terms:
+    if "refs" in k:
+        score += 20
+    if "/ens" in k or ".ens" in k or "ensprod" in k:
+        score += 15
+    if k.endswith(".idx"):
         score += 8
-    if "prob" in terms:
+    if ".grib2" in k or ".grb2" in k:
         score += 8
-    if "mean" in terms:
-        score += 6
-    if info["member"] is not None:
-        score += 5
-    if info["fxx"] is not None and 0 <= int(info["fxx"]) <= 60:
-        score += 5
-    if info["is_grib_or_idx"]:
-        score += 3
+    if "wrfsfc" in k or "sfc" in k:
+        score += 4
+    if "natlev" in k or "prslev" in k:
+        score += 2
 
-    hazard_terms = {
+    wanted_terms = [
         "gust",
-        "wind",
         "tmax",
+        "tmin",
         "tmp",
-        "temp",
-        "snow",
-        "asnow",
-        "rain",
-        "apcp",
-        "qpf",
-        "fzra",
-        "frzr",
+        "dpt",
         "vis",
-        "visibility",
+        "asnow",
+        "apcp",
         "ltng",
-        "lightning",
-        "hail",
+        "ceil",
+        "frzr",
+        "fzra",
         "wetbulb",
         "twet",
-        "wb",
-    }
+    ]
 
-    score += len(terms.intersection(hazard_terms))
+    for term in wanted_terms:
+        if term in k:
+            score += 2
 
     return score
 
 
-def scan_cycle(cycle: datetime) -> dict[str, Any]:
-    cycle_iso = cycle.isoformat().replace("+00:00", "Z")
-    print(f"Scanning RRFS/REFS candidate cycle {cycle:%Y-%m-%d %HZ}")
-
-    prefixes = possible_cycle_prefixes(cycle)
-    prefix_results = []
-
-    all_keys: list[str] = []
-
-    for prefix in prefixes:
-        print(f"  Listing prefix: s3://{BUCKET}/{prefix}")
-
-        try:
-            keys = list_s3_keys(prefix)
-        except Exception as exc:
-            prefix_results.append(
-                {
-                    "prefix": prefix,
-                    "status": "error",
-                    "error": str(exc),
-                    "key_count": 0,
-                    "sample_keys": [],
-                }
-            )
-            continue
-
-        prefix_results.append(
-            {
-                "prefix": prefix,
-                "status": "ok",
-                "key_count": len(keys),
-                "sample_keys": keys[:25],
-            }
-        )
-
-        all_keys.extend(keys)
-
-        # If the broad date prefix has many keys, we do not need to hammer all alternates.
-        if len(all_keys) >= MAX_KEYS_PER_PREFIX:
-            break
-
-    # De-duplicate while preserving order.
-    seen = set()
-    unique_keys = []
-    for key in all_keys:
-        if key not in seen:
-            seen.add(key)
-            unique_keys.append(key)
-
-    classified = [classify_key(key) for key in unique_keys]
-    for item in classified:
-        item["score"] = score_key(item)
-
-    interesting = sorted(
-        [item for item in classified if item["score"] > 0],
-        key=lambda item: (-item["score"], item["key"]),
+def looks_like_model_key(key: str) -> bool:
+    k = key.lower()
+    return (
+        ".grib2" in k
+        or ".grb2" in k
+        or k.endswith(".idx")
+        or ".grib2.idx" in k
+        or ".grb2.idx" in k
     )
 
-    grib_or_idx = [item for item in classified if item["is_grib_or_idx"]]
 
-    fxx_values = sorted(
-        {
-            int(item["fxx"])
-            for item in classified
-            if item["fxx"] is not None and 0 <= int(item["fxx"]) <= 100
-        }
-    )
+def summarize_keys(keys: list[str]) -> dict[str, Any]:
+    model_keys = [k for k in keys if looks_like_model_key(k)]
+    idx_keys = [k for k in model_keys if k.lower().endswith(".idx")]
+    grib_keys = [k for k in model_keys if ".grib2" in k.lower() or ".grb2" in k.lower()]
+    refs_keys = [k for k in model_keys if "refs" in k.lower()]
+    ens_keys = [k for k in model_keys if "/ens" in k.lower() or ".ens" in k.lower() or "ensprod" in k.lower()]
 
-    matched_term_counts: dict[str, int] = {}
-    for item in classified:
-        for term in item["matched_terms"]:
-            matched_term_counts[term] = matched_term_counts.get(term, 0) + 1
+    scored = sorted(model_keys, key=key_score, reverse=True)
 
     return {
-        "cycle_utc": cycle_iso,
-        "prefixes_checked": prefix_results,
-        "total_unique_keys": len(unique_keys),
-        "total_grib_or_idx_keys": len(grib_or_idx),
-        "forecast_hours_detected": fxx_values,
-        "matched_term_counts": dict(sorted(matched_term_counts.items())),
-        "interesting_keys_top_250": interesting[:250],
-        "sample_all_keys_top_100": unique_keys[:100],
+        "total_keys": len(keys),
+        "model_key_count": len(model_keys),
+        "idx_key_count": len(idx_keys),
+        "grib_key_count": len(grib_keys),
+        "refs_key_count": len(refs_keys),
+        "ens_key_count": len(ens_keys),
+        "sample_model_keys": scored[:40],
+        "sample_idx_keys": idx_keys[:25],
+        "sample_grib_keys": grib_keys[:25],
     }
 
 
-def choose_best_cycle(cycle_results: list[dict[str, Any]]) -> dict[str, Any] | None:
-    if not cycle_results:
+def scan_cycle(
+    cycle: datetime,
+    max_depth: int,
+    max_prefixes_per_cycle: int,
+    max_keys_per_prefix: int,
+) -> dict[str, Any]:
+    ymd = cycle.strftime("%Y%m%d")
+    hh = cycle.strftime("%H")
+
+    print(f"Scanning RRFS/REFS candidate cycle {cycle:%Y-%m-%d %HZ}")
+
+    queue: list[tuple[str, int]] = [(p, 0) for p in root_prefixes_for_cycle(cycle)]
+    seen_prefixes: set[str] = set()
+    prefix_reports: list[dict[str, Any]] = []
+    all_keys: list[str] = []
+
+    while queue and len(seen_prefixes) < max_prefixes_per_cycle:
+        prefix, depth = queue.pop(0)
+
+        if prefix in seen_prefixes:
+            continue
+
+        seen_prefixes.add(prefix)
+
+        print(f"  Listing prefix: s3://{BUCKET}/{prefix}")
+
+        listing = s3_list(
+            prefix=prefix,
+            delimiter="/",
+            max_keys=max_keys_per_prefix,
+        )
+
+        report = {
+            "prefix": prefix,
+            "depth": depth,
+            "status": listing.status,
+            "key_count": len(listing.keys),
+            "common_prefix_count": len(listing.common_prefixes),
+            "sample_keys": listing.keys[:20],
+            "sample_common_prefixes": listing.common_prefixes[:30],
+            "is_truncated": listing.is_truncated,
+            "error": listing.error,
+        }
+
+        prefix_reports.append(report)
+
+        if listing.status != 200:
+            continue
+
+        all_keys.extend(listing.keys)
+
+        if depth < max_depth:
+            for child in listing.common_prefixes:
+                if child not in seen_prefixes:
+                    queue.append((child, depth + 1))
+
+        # If this prefix has many direct keys, pull more without delimiter.
+        if listing.keys:
+            direct_keys = s3_list_all_keys(prefix, max_total_keys=max_keys_per_prefix)
+            all_keys.extend(direct_keys)
+
+    # De-dupe while preserving order.
+    deduped_keys = list(dict.fromkeys(all_keys))
+    summary = summarize_keys(deduped_keys)
+
+    usable = summary["model_key_count"] > 0
+
+    return {
+        "cycle": cycle.isoformat().replace("+00:00", "Z"),
+        "ymd": ymd,
+        "hh": hh,
+        "bucket": BUCKET,
+        "usable": usable,
+        "prefixes_scanned": len(seen_prefixes),
+        "summary": summary,
+        "prefix_reports": prefix_reports,
+    }
+
+
+def choose_best_cycle(cycle_reports: list[dict[str, Any]]) -> dict[str, Any] | None:
+    usable = [c for c in cycle_reports if c.get("usable")]
+    if not usable:
         return None
 
-    def cycle_score(result: dict[str, Any]) -> tuple[int, int, int]:
-        term_counts = result.get("matched_term_counts", {})
-        refs_count = int(term_counts.get("refs", 0))
-        ens_count = int(term_counts.get("ens", 0))
-        prob_count = int(term_counts.get("prob", 0))
-        total = int(result.get("total_unique_keys", 0))
-        return (refs_count + ens_count + prob_count, total, len(result.get("forecast_hours_detected", [])))
+    def score(report: dict[str, Any]) -> tuple[int, int, int, str]:
+        summary = report.get("summary", {})
+        return (
+            int(summary.get("refs_key_count", 0)) + int(summary.get("ens_key_count", 0)),
+            int(summary.get("idx_key_count", 0)),
+            int(summary.get("grib_key_count", 0)),
+            str(report.get("cycle", "")),
+        )
 
-    sorted_results = sorted(cycle_results, key=cycle_score, reverse=True)
-    best = sorted_results[0]
-
-    if int(best.get("total_unique_keys", 0)) <= 0:
-        return None
-
-    return best
+    return sorted(usable, key=score, reverse=True)[0]
 
 
 def write_text_report(payload: dict[str, Any]) -> None:
     lines = []
-
     lines.append("RRFS / REFS AWS Inventory Scan")
     lines.append(f"Generated: {payload['generated_utc']}")
     lines.append(f"Bucket: s3://{BUCKET}")
     lines.append("")
 
-    best = payload.get("best_cycle")
-    if best:
-        lines.append(f"Best detected cycle: {best.get('cycle_utc')}")
-        lines.append(f"Total unique keys: {best.get('total_unique_keys')}")
-        lines.append(f"GRIB/IDX keys: {best.get('total_grib_or_idx_keys')}")
-        lines.append(f"Forecast hours detected: {best.get('forecast_hours_detected')}")
+    selected = payload.get("selected_cycle")
+    if selected:
+        lines.append(f"Selected cycle: {selected['cycle']}")
+        lines.append("Selected cycle summary:")
+        for k, v in selected.get("summary", {}).items():
+            if not isinstance(v, list):
+                lines.append(f"  {k}: {v}")
         lines.append("")
-        lines.append("Matched term counts:")
-        for term, count in best.get("matched_term_counts", {}).items():
-            lines.append(f"  {term}: {count}")
-
-        lines.append("")
-        lines.append("Top interesting keys:")
-        for item in best.get("interesting_keys_top_250", [])[:100]:
-            lines.append(
-                f"  score={item.get('score')} "
-                f"fxx={item.get('fxx')} "
-                f"member={item.get('member')} "
-                f"type={item.get('product_guess')} "
-                f"key={item.get('key')}"
-            )
+        lines.append("Sample model keys:")
+        for key in selected.get("summary", {}).get("sample_model_keys", [])[:40]:
+            lines.append(f"  s3://{BUCKET}/{key}")
     else:
-        lines.append("No usable RRFS/REFS cycle found.")
+        lines.append("Selected cycle: NONE")
+        lines.append("")
+        lines.append("No usable GRIB/IDX keys were found in scanned prefixes.")
+        lines.append("This does not necessarily mean RRFS/REFS is unavailable; it means the current guessed prefixes did not expose model keys.")
+        lines.append("")
 
     lines.append("")
-    lines.append("All cycle summaries:")
-    for result in payload.get("cycle_results", []):
-        lines.append("")
-        lines.append(f"Cycle: {result.get('cycle_utc')}")
-        lines.append(f"  total_unique_keys: {result.get('total_unique_keys')}")
-        lines.append(f"  total_grib_or_idx_keys: {result.get('total_grib_or_idx_keys')}")
-        lines.append(f"  forecast_hours_detected: {result.get('forecast_hours_detected')}")
-        lines.append(f"  matched_term_counts: {result.get('matched_term_counts')}")
+    lines.append("Cycle scan summaries:")
+    for report in payload.get("cycles", []):
+        summary = report.get("summary", {})
+        lines.append(
+            f"  {report.get('cycle')} | usable={report.get('usable')} | "
+            f"prefixes={report.get('prefixes_scanned')} | "
+            f"model_keys={summary.get('model_key_count')} | "
+            f"idx={summary.get('idx_key_count')} | "
+            f"grib={summary.get('grib_key_count')} | "
+            f"refs={summary.get('refs_key_count')} | "
+            f"ens={summary.get('ens_key_count')}"
+        )
 
     OUT_TXT.write_text("\n".join(lines))
 
 
-def main() -> None:
-    cycles = latest_cycle_candidates()
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--lookback-cycles", type=int, default=DEFAULT_LOOKBACK_CYCLES)
+    parser.add_argument("--max-depth", type=int, default=DEFAULT_MAX_DEPTH)
+    parser.add_argument("--max-prefixes-per-cycle", type=int, default=DEFAULT_MAX_PREFIXES_PER_CYCLE)
+    parser.add_argument("--max-keys-per-prefix", type=int, default=DEFAULT_MAX_KEYS_PER_PREFIX)
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit 1 if no usable RRFS/REFS cycle is found. Default is exit 0 so GitHub Actions can continue.",
+    )
+    args = parser.parse_args()
 
-    cycle_results = []
-    for cycle in cycles:
-        result = scan_cycle(cycle)
-        cycle_results.append(result)
+    generated = utc_now().isoformat().replace("+00:00", "Z")
 
-        # Stop early if we clearly found useful REFS/ensemble-related data.
-        term_counts = result.get("matched_term_counts", {})
+    cycles = []
+    for cycle in cycle_candidates(args.lookback_cycles):
+        report = scan_cycle(
+            cycle=cycle,
+            max_depth=args.max_depth,
+            max_prefixes_per_cycle=args.max_prefixes_per_cycle,
+            max_keys_per_prefix=args.max_keys_per_prefix,
+        )
+        cycles.append(report)
+
+        # Stop early if we found a very likely usable REFS/RRFS inventory.
+        summary = report.get("summary", {})
         if (
-            result.get("total_unique_keys", 0) > 0
-            and (
-                term_counts.get("refs", 0) > 0
-                or term_counts.get("ens", 0) > 0
-                or term_counts.get("prob", 0) > 0
-            )
+            report.get("usable")
+            and int(summary.get("grib_key_count", 0)) > 0
+            and int(summary.get("idx_key_count", 0)) > 0
         ):
             break
 
-    best = choose_best_cycle(cycle_results)
+    selected = choose_best_cycle(cycles)
 
     payload = {
-        "generated_utc": utc_now(),
+        "generated_utc": generated,
         "bucket": BUCKET,
-        "bucket_https": S3_LIST_URL,
-        "best_cycle": best,
-        "cycle_results": cycle_results,
-        "notes": [
-            "This scanner uses public unsigned HTTPS S3 ListBucketV2 requests.",
-            "It is designed to run entirely inside GitHub Actions.",
-            "Use data/rrfs_refs_inventory.txt first because it is easier to inspect than JSON.",
-            "The next step is to identify the exact GRIB/IDX key pattern for REFS hourly probabilities and member fields.",
-        ],
+        "base_url": BASE_URL,
+        "lookback_cycles": args.lookback_cycles,
+        "max_depth": args.max_depth,
+        "max_prefixes_per_cycle": args.max_prefixes_per_cycle,
+        "max_keys_per_prefix": args.max_keys_per_prefix,
+        "selected_cycle": selected,
+        "cycles": cycles,
     }
 
     OUT_JSON.write_text(json.dumps(payload, indent=2))
     write_text_report(payload)
 
+    if selected:
+        OUT_SELECTED.write_text(json.dumps(selected, indent=2))
+        print(f"Wrote {OUT_JSON}")
+        print(f"Wrote {OUT_TXT}")
+        print(f"Wrote {OUT_SELECTED}")
+        print(f"Selected usable cycle: {selected['cycle']}")
+        return 0
+
+    OUT_SELECTED.write_text(json.dumps({"selected_cycle": None, "generated_utc": generated}, indent=2))
     print(f"Wrote {OUT_JSON}")
     print(f"Wrote {OUT_TXT}")
+    print(f"Wrote {OUT_SELECTED}")
+    print("No usable RRFS/REFS cycle found.")
 
-    if best:
-        print(f"Best detected cycle: {best.get('cycle_utc')}")
-        print(f"Total unique keys: {best.get('total_unique_keys')}")
-        print(f"GRIB/IDX keys: {best.get('total_grib_or_idx_keys')}")
-    else:
-        print("No usable RRFS/REFS cycle found.")
-        sys.exit(1)
+    if args.strict:
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
