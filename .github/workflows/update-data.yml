@@ -3,6 +3,7 @@ name: Update KRNO Ops DSS Data
 on:
   workflow_dispatch:
   schedule:
+    # REFS/RRFS cycles run every 6 hours. Run shortly after cycle availability.
     - cron: "20 */6 * * *"
 
 permissions:
@@ -35,6 +36,47 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install boto3 botocore s3fs requests xarray cfgrib numpy pandas
+
+      - name: Clean old NBM/QMD diagnostic products
+        run: |
+          echo "Removing old tracked/untracked diagnostic and legacy NBM/QMD data files..."
+
+          rm -f data/repo_audit_report.json
+          rm -f data/repo_audit_full.json
+          rm -f data/*audit*.json
+          rm -f data/*debug*.json
+
+          rm -f data/rrfs_refs_inventory.json
+          rm -f data/refs_hourly.json
+          rm -f data/refs_dss_debug.json
+
+          rm -f data/nbm_*.json
+          rm -f data/nbm_*.txt
+          rm -f data/nbm_*.csv
+          rm -f data/qmd_*.json
+          rm -f data/qmd_*.txt
+          rm -f data/qmd_*.csv
+          rm -f data/core_*.json
+          rm -f data/core_*.txt
+          rm -f data/core_*.csv
+          rm -f data/test_*.json
+          rm -f data/test_*.txt
+          rm -f data/test_*.csv
+
+          rm -f data/krno_wind_debug.json
+          rm -f data/krno_snow_debug.json
+          rm -f data/krno_lightning_debug.json
+          rm -f data/krno_fzra_debug.json
+          rm -f data/finalize_timeline_debug.json
+
+          rm -f data/krno_wind_hourly.json
+          rm -f data/krno_snow_hourly.json
+          rm -f data/krno_lightning_hourly.json
+          rm -f data/krno_fzra_hourly.json
+          rm -f data/krno_wind_risk.json
+          rm -f data/krno_snow_risk.json
+          rm -f data/krno_lightning_risk.json
+          rm -f data/krno_fzra_risk.json
 
       - name: Scan RRFS/REFS inventory
         run: |
@@ -94,33 +136,74 @@ jobs:
         run: |
           python scripts/build_refs_dss_outputs.py
 
-      - name: Remove large diagnostic files before staging
+      - name: Remove large products before staging
         run: |
+          echo "Removing files that should never be committed..."
+
           rm -f data/repo_audit_report.json
           rm -f data/repo_audit_full.json
           rm -f data/*audit*.json
+          rm -f data/*debug*.json
+
           rm -f data/rrfs_refs_inventory.json
           rm -f data/refs_hourly.json
           rm -f data/refs_dss_debug.json
-          rm -f data/*debug*.json
+
+      - name: Stage deletions for old legacy files
+        run: |
+          echo "Staging deletion of old NBM/QMD/Core/test/debug products..."
+
+          git rm -f --ignore-unmatch data/repo_audit_report.json
+          git rm -f --ignore-unmatch data/repo_audit_full.json
+          git rm -f --ignore-unmatch data/*audit*.json
+          git rm -f --ignore-unmatch data/*debug*.json
+
+          git rm -f --ignore-unmatch data/rrfs_refs_inventory.json
+          git rm -f --ignore-unmatch data/refs_hourly.json
+          git rm -f --ignore-unmatch data/refs_dss_debug.json
+
+          git rm -f --ignore-unmatch data/nbm_*.json
+          git rm -f --ignore-unmatch data/nbm_*.txt
+          git rm -f --ignore-unmatch data/nbm_*.csv
+          git rm -f --ignore-unmatch data/qmd_*.json
+          git rm -f --ignore-unmatch data/qmd_*.txt
+          git rm -f --ignore-unmatch data/qmd_*.csv
+          git rm -f --ignore-unmatch data/core_*.json
+          git rm -f --ignore-unmatch data/core_*.txt
+          git rm -f --ignore-unmatch data/core_*.csv
+          git rm -f --ignore-unmatch data/test_*.json
+          git rm -f --ignore-unmatch data/test_*.txt
+          git rm -f --ignore-unmatch data/test_*.csv
+
+          git rm -f --ignore-unmatch data/krno_wind_hourly.json
+          git rm -f --ignore-unmatch data/krno_snow_hourly.json
+          git rm -f --ignore-unmatch data/krno_lightning_hourly.json
+          git rm -f --ignore-unmatch data/krno_fzra_hourly.json
+          git rm -f --ignore-unmatch data/krno_wind_risk.json
+          git rm -f --ignore-unmatch data/krno_snow_risk.json
+          git rm -f --ignore-unmatch data/krno_lightning_risk.json
+          git rm -f --ignore-unmatch data/krno_fzra_risk.json
 
       - name: Commit updated DSS files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stage frontend-required products.
+          # Frontend-required files.
           git add docs/threats.json || true
           git add docs/timeline.json || true
-          git add docs/observations.json || true
 
-          # Stage small REFS inventory/diagnostic summaries.
+          if [ -f docs/observations.json ]; then
+            git add docs/observations.json
+          fi
+
+          # Small REFS diagnostics only.
           git add data/rrfs_refs_inventory.txt || true
           git add data/rrfs_refs_selected_cycle.json || true
           git add data/refs_field_map.txt || true
           git add data/refs_field_map_summary.json || true
 
-          # Make absolutely sure huge files are not staged.
+          # Final safety reset: never commit huge/generated raw files.
           git reset -- data/rrfs_refs_inventory.json || true
           git reset -- data/refs_hourly.json || true
           git reset -- data/refs_dss_debug.json || true
@@ -129,6 +212,7 @@ jobs:
           git reset -- data/*audit*.json || true
           git reset -- data/*debug*.json || true
 
+          echo "---- git status before commit ----"
           git status --short
 
           git commit -m "Update KRNO Ops DSS REFS data" || echo "No changes to commit"
