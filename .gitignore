@@ -1,4 +1,4 @@
-# Large generated diagnostics
+# Large/generated diagnostics
 data/rrfs_refs_inventory.json
 data/refs_hourly.json
 data/refs_dss_debug.json
@@ -7,14 +7,17 @@ data/repo_audit_full.json
 data/*audit*.json
 data/*debug*.json
 
+# Old generated NBM/QMD products
+data/krno_*_debug.json
+data/finalize_timeline_debug.json
+
+# Binary/weather temp files
+*.grib2
+*.idx
+*.gbx9
+*.nc
+
 # Python/cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 .pytest_cache/
-
-# Local/temp files
-.DS_Store
-*.tmp
-*.log
