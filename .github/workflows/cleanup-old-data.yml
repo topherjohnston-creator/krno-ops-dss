@@ -1,0 +1,59 @@
+name: Cleanup Old KRNO Data Files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Remove old generated data files
+        run: |
+          echo "Before cleanup:"
+          ls -lh data || true
+
+          # Remove old NBM/QMD/Core generated products.
+          rm -f data/krno_wind_hourly.json
+          rm -f data/krno_wind_debug.json
+          rm -f data/krno_snow_hourly.json
+          rm -f data/krno_snow_debug.json
+          rm -f data/krno_snow_risk.json
+          rm -f data/nbm_core_snow.json
+          rm -f data/krno_lightning_hourly.json
+          rm -f data/krno_lightning_debug.json
+          rm -f data/krno_fzra_hourly.json
+          rm -f data/krno_fzra_debug.json
+          rm -f data/krno_visibility_hourly.json
+          rm -f data/nbm_core_visibility.json
+          rm -f data/nbm_qmd_rain.json
+          rm -f data/finalize_timeline_debug.json
+
+          # Remove oversized diagnostics.
+          rm -f data/repo_audit_report.json
+          rm -f data/repo_audit_full.json
+          rm -f data/*audit*.json
+          rm -f data/rrfs_refs_inventory.json
+          rm -f data/refs_hourly.json
+          rm -f data/refs_dss_debug.json
+          rm -f data/*debug*.json
+
+          echo "After cleanup:"
+          ls -lh data || true
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A data
+          git status --short
+
+          git commit -m "Clean up old generated DSS data files" || echo "No cleanup changes to commit"
+          git push
