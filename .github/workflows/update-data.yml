@@ -97,14 +97,18 @@ jobs:
               print("MISSING data/rrfs_refs_selected_cycle.json")
               raise SystemExit(0)
 
-          data = json.loads(p.read_text())
+          wrapper = json.loads(p.read_text())
+          data = wrapper.get("selected_cycle") if isinstance(wrapper, dict) else None
+          if not isinstance(data, dict):
+              data = wrapper
 
           keys = data.get("keys", [])
           files = data.get("files", [])
           parsed_objects = data.get("parsed_objects", [])
           items = keys or files or parsed_objects
 
-          print("top-level keys:", list(data.keys()))
+          print("wrapper keys:", list(wrapper.keys()) if isinstance(wrapper, dict) else type(wrapper).__name__)
+          print("selected keys:", list(data.keys()))
           print("cycle_utc:", data.get("cycle_utc") or data.get("cycle"))
           print("cycle_label:", data.get("cycle_label"))
           print("prefix:", data.get("prefix"))
@@ -132,9 +136,9 @@ jobs:
         run: |
           python scripts/scan_refs_field_map.py
 
-      - name: Skip full REFS DSS builder temporarily
+      - name: Build REFS DSS outputs
         run: |
-          echo "Skipping full REFS DSS builder until field extraction is optimized."
+          python scripts/build_refs_dss_outputs.py
 
       - name: Remove large products before staging
         run: |
@@ -148,6 +152,7 @@ jobs:
           rm -f data/rrfs_refs_inventory.json
           rm -f data/refs_hourly.json
           rm -f data/refs_dss_debug.json
+          rm -f data/refs_dss_summary.json
 
       - name: Stage deletions for old legacy files
         run: |
@@ -161,6 +166,7 @@ jobs:
           git rm -f --ignore-unmatch data/rrfs_refs_inventory.json
           git rm -f --ignore-unmatch data/refs_hourly.json
           git rm -f --ignore-unmatch data/refs_dss_debug.json
+          git rm -f --ignore-unmatch data/refs_dss_summary.json
 
           git rm -f --ignore-unmatch data/nbm_*.json
           git rm -f --ignore-unmatch data/nbm_*.txt
@@ -202,11 +208,13 @@ jobs:
           git add data/rrfs_refs_selected_cycle.json || true
           git add data/refs_field_map.txt || true
           git add data/refs_field_map_summary.json || true
+          git add data/refs_builder_summary.json || true
 
           # Final safety reset: never commit huge/generated raw files.
           git reset -- data/rrfs_refs_inventory.json || true
           git reset -- data/refs_hourly.json || true
           git reset -- data/refs_dss_debug.json || true
+          git reset -- data/refs_dss_summary.json || true
           git reset -- data/repo_audit_report.json || true
           git reset -- data/repo_audit_full.json || true
           git reset -- data/*audit*.json || true

@@ -218,6 +218,68 @@ def choose_best_cycle(cycles: list[dict[str, Any]]) -> dict[str, Any] | None:
     return max(usable, key=score)
 
 
+def compact_selected_cycle(selected: dict[str, Any] | None) -> dict[str, Any] | None:
+    """Keep selected-cycle diagnostics small enough to commit."""
+    if not selected:
+        return None
+
+    compact = {
+        "cycle_utc": selected.get("cycle_utc"),
+        "cycle_label": selected.get("cycle_label"),
+        "prefix": selected.get("prefix"),
+        "status": selected.get("status"),
+        "object_count": selected.get("object_count"),
+        "grib_count": selected.get("grib_count"),
+        "idx_count": selected.get("idx_count"),
+        "products": selected.get("products", []),
+        "all_hours": selected.get("all_hours", []),
+        "grib_hours": selected.get("grib_hours", []),
+        "idx_hours": selected.get("idx_hours", []),
+        "hours_by_product": selected.get("hours_by_product", {}),
+        "grib_hours_by_product": selected.get("grib_hours_by_product", {}),
+        "idx_hours_by_product": selected.get("idx_hours_by_product", {}),
+        "sample_keys": [],
+        "parsed_objects": [],
+    }
+
+    sample_keys = []
+    parsed_objects = []
+
+    for obj in selected.get("parsed_objects", []) or []:
+        if not isinstance(obj, dict):
+            continue
+
+        key = str(obj.get("key") or "")
+        fxx = obj.get("fxx")
+        if not key or fxx is None:
+            continue
+        if not (obj.get("is_grib2") or obj.get("is_idx")):
+            continue
+        if ".conus.grib2" not in key.lower():
+            continue
+        if not (1 <= int(fxx) <= 60):
+            continue
+
+        parsed_objects.append(
+            {
+                "key": key,
+                "size": obj.get("size"),
+                "last_modified": obj.get("last_modified"),
+                "is_grib2": bool(obj.get("is_grib2")),
+                "is_idx": bool(obj.get("is_idx")),
+                "fxx": int(fxx),
+                "product": obj.get("product"),
+            }
+        )
+
+        if len(sample_keys) < 50:
+            sample_keys.append(key)
+
+    compact["sample_keys"] = sample_keys
+    compact["parsed_objects"] = parsed_objects
+    return compact
+
+
 def write_text_report(cycles: list[dict[str, Any]], selected: dict[str, Any] | None) -> str:
     lines = []
     lines.append("RRFS / REFS AWS Inventory Scan")
@@ -329,7 +391,7 @@ def main() -> None:
     selected_payload = {
         "generated_utc": utc_now_iso(),
         "bucket": BUCKET_BASE,
-        "selected_cycle": selected,
+        "selected_cycle": compact_selected_cycle(selected),
     }
 
     txt = write_text_report(cycle_summaries, selected)
