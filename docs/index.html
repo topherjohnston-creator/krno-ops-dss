@@ -914,9 +914,13 @@
             const block = nbmBlocks?.[bi];
             const bhaz  = nbmBlockHazards?.[bi];
 
-            // Time window: displayed relative to globalNow + offset
-            const d1 = new Date(globalNow.getTime() + offset * 3600000);
-            const d2 = new Date(globalNow.getTime() + Math.min(offset + 3, TOTAL_HOURS) * 3600000);
+            // Time window: use the block valid times from timeline.json, falling back to offset.
+            const d1 = block?.valid_start_utc
+                ? new Date(block.valid_start_utc)
+                : new Date(globalNow.getTime() + offset * 3600000);
+            const d2 = block?.valid_end_utc
+                ? new Date(new Date(block.valid_end_utc).getTime() + 3600000)
+                : new Date(globalNow.getTime() + Math.min(offset + 3, TOTAL_HOURS) * 3600000);
             const fmt = d => {
                 let h = d.getHours(); const ap = h >= 12 ? 'P' : 'A';
                 h = h % 12 || 12;
@@ -924,6 +928,52 @@
                 return `${dy} ${h}${ap}`;
             };
             const zStr = `${String(d1.getUTCHours()).padStart(2,'0')}Z`;
+            const fmtHour = (iso) => {
+                if (!iso) return '';
+                const d = new Date(iso);
+                const hh = d.getHours();
+                return `${hh%12||12}${hh>=12?'P':'A'}`;
+            };
+            const renderHourlyValues = (key, hdata) => {
+                const hours = Array.isArray(hdata?.hourly_values) ? hdata.hourly_values : [];
+                if (!hours.length) return '';
+
+                const items = hours.map(hour => {
+                    let label = fmtHour(hour.valid_utc);
+                    let main = '';
+                    let sub = '';
+
+                    if (key === 'WIND') {
+                        const gust = hour.gust_max_mph ?? hour.value;
+                        const mean = hour.gust_mean_mph;
+                        const col = deciColormap('WIND', gust) || '#fbbf24';
+                        main = gust != null
+                            ? `<span style="color:${col};font-weight:800;">${Math.round(gust)} mph</span>`
+                            : `<span style="color:#71717a;font-weight:800;">--</span>`;
+                        if (mean != null) sub += ` mean ${Math.round(mean)}`;
+                        if (hour.member_count != null) sub += `${sub ? ' ·' : ''} ${hour.member_count}m`;
+                    } else {
+                        const fallbackUnits = { TEMPERATURE:'°F', VISIBILITY:'SM', RAIN:'in', SNOW:'in', FZRA:'in', LIGHTNING:'%', FLASH_FREEZE:'°F' };
+                        const value = hour.value;
+                        const unit = hour.unit || fallbackUnits[key] || '';
+                        main = value != null
+                            ? `<span style="color:#e4e4e7;font-weight:800;">${Math.round(Number(value))}${unit}</span>`
+                            : `<span style="color:#71717a;font-weight:800;">--</span>`;
+                    }
+
+                    const prob = hour.prob != null && Number(hour.prob) > 0
+                        ? `<span style="color:#71717a;">${Math.round(Number(hour.prob))}%</span>`
+                        : '';
+
+                    return `<div style="display:flex;justify-content:space-between;gap:8px;font-family:monospace;font-size:0.58rem;line-height:1.15;">
+                        <span style="color:#a1a1aa;min-width:28px;">${label}</span>
+                        <span>${main}${sub ? `<span style="color:#71717a;"> · ${sub}</span>` : ''}</span>
+                        ${prob}
+                    </div>`;
+                }).join('');
+
+                return `<div style="margin-top:4px;padding-top:4px;border-top:1px solid rgba(113,113,122,0.35);">${items}</div>`;
+            };
 
             // Pick highest risk across all hazards this block
             const allRisks = bhaz ? Object.values(bhaz).map(v => v?.risk || 0) : [0];
@@ -936,7 +986,8 @@
                 const hdata = bhaz?.[key];
                 const risk  = hdata?.risk  ?? 0;
                 const prob  = hdata?.prob  ?? 0;
-                if (prob === 0 && risk === 0) return;
+                const hourlyLine = renderHourlyValues(key, hdata);
+                if (prob === 0 && risk === 0 && !hourlyLine) return;
 
                 const cfg    = RISK_LEVELS[risk] || RISK_LEVELS[0];
                 const bgCol  = cfg.color + '1a';
@@ -944,11 +995,12 @@
 
                 let metLine = '';
                 if (key === 'WIND') {
-                    const p50gust = refsThreats?.WIND?.g24_p50_mph;
-                    const gustVal = p50gust ?? block?.GST;
+                    const gustVal = hdata?.gust_max_mph ?? block?.GST;
                     if (gustVal != null) {
                         const gCol = deciColormap('WIND', gustVal);
-                        metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">${Math.round(gustVal)} mph max gust</span>`;
+                        metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">${Math.round(gustVal)} mph block max gust</span>`;
+                        if (hdata?.gust_mean_mph != null) metLine += `<span style="color:#71717a;"> · ${Math.round(hdata.gust_mean_mph)} mph member mean</span>`;
+                        if (hdata?.member_count != null) metLine += `<span style="color:#71717a;"> · ${hdata.member_count} members</span>`;
                         if (block?.WSP != null) metLine += `<span style="color:#71717a;"> · ${Math.round(block.WSP)} mph avg</span>`;
                         if (block?.WDR != null) metLine += `<span style="color:#71717a;"> from ${block.WDR * 10}°</span>`;
                     }
@@ -983,6 +1035,7 @@
                         <span style="font-size:0.62rem;font-weight:800;color:${txtCol};">${cfg.name.toUpperCase()}</span>
                     </div>
                     ${metLine ? `<div style="font-size:0.63rem;font-family:monospace;margin-top:2px;">${metLine}</div>` : ''}
+                    ${hourlyLine}
                     ${risk > 0 && h.prep ? `<div style="font-size:0.58rem;color:#71717a;margin-top:2px;">→ ${h.prep}</div>` : ''}
                 </div>`;
             });
@@ -2014,17 +2067,23 @@
                         if (thr && thr.peak_start_fxx && probability > 0) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
-                            const d2 = new Date(baseMs + thr.peak_end_fxx   * 3600000);
+                            const d2 = new Date(baseMs + (thr.peak_end_fxx || thr.peak_start_fxx) * 3600000);
                             const nowMs = globalNow.getTime();
-                            if (d2.getTime() > nowMs) {
+                            if (d2.getTime() > nowMs || thr.peak_valid_utc) {
                                 const fmt = d => {
                                     const hh=d.getHours(); const ap=hh>=12?'P':'A';
                                     const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
                                     return `${dy} ${hh%12||12}${ap}`;
                                 };
-                                timeString = d1.getTime() < nowMs
+                                if (refKey === 'WIND' && thr.peak_valid_utc) {
+                                    timeString = `PEAK ${fmt(new Date(thr.peak_valid_utc))}`;
+                                } else if ((thr.peak_end_fxx || thr.peak_start_fxx) === thr.peak_start_fxx) {
+                                    timeString = `PEAK ${fmt(d1)}`;
+                                } else {
+                                    timeString = d1.getTime() < nowMs
                                     ? `NOW → ${fmt(d2)}`
                                     : `${fmt(d1)} - ${fmt(d2)}`;
+                                }
                             }
                         }
 
@@ -2191,7 +2250,10 @@
                             const d1 = new Date(cycleMs + sFxx*3600000);
                             const d2 = new Date(cycleMs + (eFxx+1)*3600000);
                             const tf = d => { const hh=d.getHours(); return `${hh%12||12}${hh>=12?'P':'A'}`; };
-                            const tip = `${tf(d1)}-${tf(d2)}: ${Math.round(prob)}%${bhaz?.level>0?' L'+bhaz.level:''}`;
+                            const gustTip = refKey === 'WIND' && bhaz?.gust_max_mph != null
+                                ? ` · ${Math.round(bhaz.gust_max_mph)} mph gust`
+                                : '';
+                            const tip = `${tf(d1)}-${tf(d2)}: ${Math.round(prob)}%${bhaz?.level>0?' L'+bhaz.level:''}${gustTip}`;
 
                             // No prob % on bars — color speaks for itself; details in tooltip
                             const txt = '';

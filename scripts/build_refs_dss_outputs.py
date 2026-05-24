@@ -1118,7 +1118,19 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
         risk = int(best.get("risk", 0))
         prob = round(float(best.get("probability", 0.0)), 1)
         mean_member_max = wind_result.get("mean_member_max_gust_mph")
-        peak_member = wind_result.get("peak_member") or {}
+        hourly = [
+            h for h in wind_result.get("hourly", [])
+            if h.get("status") == "ok" and h.get("best")
+        ]
+        peak_hour = max(
+            hourly,
+            key=lambda h: (
+                h.get("best", {}).get("risk", 0),
+                h.get("best", {}).get("probability", 0.0),
+                h.get("gust_mean_mph") if h.get("gust_mean_mph") is not None else -999.0,
+                h.get("gust_max_mph") if h.get("gust_max_mph") is not None else -999.0,
+            ),
+        ) if hourly else {}
 
         return {
             **fallback,
@@ -1132,10 +1144,10 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
             "metric": best.get("label", "No signal") if risk > 0 else "No signal",
             "display_label": "60-hr max gust",
             "display_value": f"{float(mean_member_max):.0f} mph" if mean_member_max is not None else "No gust value",
-            "peak_start_fxx": peak_member.get("source_fxx"),
-            "peak_end_fxx": peak_member.get("source_fxx"),
-            "source_fxx": peak_member.get("source_fxx"),
-            "peak_valid_utc": peak_member.get("peak_valid_utc"),
+            "peak_start_fxx": peak_hour.get("fxx"),
+            "peak_end_fxx": peak_hour.get("fxx"),
+            "source_fxx": peak_hour.get("fxx"),
+            "peak_valid_utc": peak_hour.get("valid_utc"),
             "driver": (
                 f"{prob:.0f}% of members exceed {best.get('label', 'gust threshold')}; "
                 f"mean member 60-hr max gust {float(mean_member_max):.1f} mph"
@@ -1155,6 +1167,9 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
             "members_found": wind_result.get("members_found", []),
             "member_max_gusts": wind_result.get("member_max_gusts", []),
             "mean_member_max_gust_mph": mean_member_max,
+            "peak_signal_gust_mean_mph": peak_hour.get("gust_mean_mph"),
+            "peak_signal_gust_max_mph": peak_hour.get("gust_max_mph"),
+            "peak_signal_member_count": peak_hour.get("member_count"),
             "threshold_probabilities_60hr": wind_result.get("threshold_probabilities_60hr", {}),
             "g24_p50_mph": mean_member_max,
         }
@@ -1249,6 +1264,27 @@ def wind_block_payload(
     gust_mean_mph = best_hour.get("gust_mean_mph")
     gust_max_mph = best_hour.get("gust_max_mph")
     uses_gust = wind_result.get("method") == "desi_refs_time_lagged_gust"
+    hourly_values = []
+    if uses_gust:
+        for hour in sorted(hourly, key=lambda item: int(item.get("fxx", 999))):
+            if hour.get("gust_max_mph") is None:
+                continue
+            hour_best = hour.get("best", {})
+            hourly_values.append(
+                {
+                    "fxx": hour.get("fxx"),
+                    "valid_utc": hour.get("valid_utc"),
+                    "label": "gust",
+                    "value": hour.get("gust_max_mph"),
+                    "unit": "mph",
+                    "gust_max_mph": hour.get("gust_max_mph"),
+                    "gust_mean_mph": hour.get("gust_mean_mph"),
+                    "member_count": hour.get("member_count"),
+                    "prob": hour_best.get("probability", 0.0),
+                    "risk": hour_best.get("risk", 0),
+                    "metric": hour_best.get("label", "No signal"),
+                }
+            )
 
     return {
         **fallback,
@@ -1278,6 +1314,7 @@ def wind_block_payload(
         "gust_max_mph": gust_max_mph,
         "member_count": best_hour.get("member_count"),
         "members": best_hour.get("members", []),
+        "hourly_values": hourly_values,
         "data_status": wind_result.get("status", "unknown"),
         "method": wind_result.get("method"),
     }
