@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wx DSS Dashboard</title>
+    <title>KRNO Ops DSS Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,14 +23,13 @@
         .hazard-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; z-index: 10; position: relative; line-height: 1.1; }
         .hazard-card-title {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(1.18rem, 1.30vw, 1.55rem);
+            font-size: clamp(0.74rem, 0.82vw, 0.92rem);
             font-weight: 900;
             letter-spacing: 0.015em;
-            line-height: 0.98;
+            line-height: 1.05;
             text-transform: uppercase;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: clip;
+            overflow: visible;
             max-width: 100%;
         }
         .hazard-criteria { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #71717a; margin-top: 2px; z-index: 10; position: relative; font-weight: 700; }
@@ -184,6 +183,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3 flex-wrap justify-end">
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #27272a;"></div>None</div>
                      <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #3f3f46;"></div>Little to None</div>
                      <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #ffeb3b;"></div>Minor</div>
                      <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #ff9800;"></div>Moderate</div>
@@ -395,7 +395,7 @@
         }
 
 
-        const TOTAL_HOURS = 48; 
+        const TOTAL_HOURS = 60; 
         let globalNow = new Date(); 
 
         // --- CUSTOM COLOR SCALES ---
@@ -520,9 +520,9 @@
         let _prevObs = null;  // previous observation for trend arrows
         let liveAlerts = [];
         let cycleStartTime = null;
-        let nbmBlocks = null;         // timeline.json blocks (module scope for tooltip)
+        let nbmBlocks = null;         // timeline.json 3-hour blocks (module scope for tooltip)
         let nbmBlockHazards = null;   // timeline.json block_hazards
-        let nbhHourly = [];           // raw NBH hourly data (1-hr resolution, fxx 1-25)
+        let nbhHourly = [];           // optional hourly meteogram data when provided
         let refsThreats = null;       // Global scope for wind tooltip
         let refsTimeline = null;      // Global scope for timeline tooltips
 
@@ -554,8 +554,8 @@
                 });
             }, 1000);
 
-            // REFS threats + timeline — every 30 minutes
-            setInterval(() => { initDashboard(); }, 15 * 60 * 1000);  // 15-min: catches new NBM data promptly
+            // REFS threats + timeline
+            setInterval(() => { initDashboard(); }, 15 * 60 * 1000);
 
             // Tick "updated X ago" display every 30 seconds
             setInterval(() => {
@@ -624,7 +624,7 @@
             wrap.style.display = 'block';
         }
 
-        // Render all permanent obs sparklines (called once nbhHourly is loaded)
+        // Render all permanent obs sparklines when hourly forecast data is loaded.
         function renderObsSparklines() {
             // Inline permanent sparklines disabled — hover tooltips used instead
         }
@@ -636,7 +636,7 @@
             return `${h}${ap}`;
         }
 
-        // Build a compact SVG bar sparkline from nbhHourly data
+        // Build a compact SVG bar sparkline from hourly forecast data.
         function makeObsSparkline(key, cmapName, maxVal, transform, unit) {
             if (!nbhHourly || nbhHourly.length === 0) return '';
             const baseMs = cycleStartTime || Date.now();
@@ -724,7 +724,7 @@
         // Generic obs sparkline tooltip
         window.showObsForecast = function(title, key, cmapName, maxVal, unit, transform, showMaxOnly) {
             if (!nbhHourly || nbhHourly.length === 0) {
-                showTooltip(`<div style="color:#71717a;font-size:0.7rem;">No NBH forecast data loaded</div>`); return;
+                showTooltip(`<div style="color:#71717a;font-size:0.7rem;">No hourly forecast data loaded</div>`); return;
             }
             const spark = makeObsSparkline(key, cmapName, maxVal, transform, unit);
             const rawVals = nbhHourly.map(h => h[key]).filter(v => v != null);
@@ -812,13 +812,13 @@
         window.showTempForecast = function() {
             if (!nbhHourly || nbhHourly.length === 0) return;
 
-            // Check if today's min/max has already occurred by looking at NBH hourly data.
-            // The NBH fxx=1 corresponds to cycleStartTime+1hr. If the hour of the min/max
+            // Check if today's min/max has already occurred by looking at hourly forecast data.
+            // fxx=1 corresponds to cycleStartTime+1hr. If the hour of the min/max
             // is before now, that extreme has passed and we should show the next day's value.
             const cycleMs = cycleStartTime || Date.now();
             const nowMs   = Date.now();
 
-            // Find the fxx of the min and max TMP in NBH
+            // Find the fxx of the min and max TMP.
             let minVal = Infinity, maxVal = -Infinity, minFxx = 1, maxFxx = 1;
             nbhHourly.forEach(h => {
                 if (h.TMP == null) return;
@@ -839,7 +839,7 @@
             const maxLabel = maxPassed ? 'MaxT (tmw)' : 'MaxT';
             const minLabel = minPassed ? 'MinT (tmw)' : 'MinT';
 
-            // Sparkline using raw NBH TMP mean values
+            // Sparkline using raw TMP mean values.
             const vals = nbhHourly.map(h => h.TMP).filter(v => v != null);
             const mn = Math.min(...vals), mx2 = Math.max(...vals);
             const mnIdx = nbhHourly.findIndex(h => h.TMP === mn);
@@ -909,13 +909,14 @@
         window.showHourTooltip = function(offset, actualBi) {
             // offset = hours from now for time display
             // actualBi = exact block index (passed from block hover, avoids cycle-offset error)
-            const bi    = (actualBi !== undefined) ? actualBi : Math.min(Math.max(Math.floor(offset / 3), 0), 15);
+            const blockCount = nbmBlocks?.length || 20;
+            const bi    = (actualBi !== undefined) ? actualBi : Math.min(Math.max(Math.floor(offset / 3), 0), blockCount - 1);
             const block = nbmBlocks?.[bi];
             const bhaz  = nbmBlockHazards?.[bi];
 
             // Time window: displayed relative to globalNow + offset
             const d1 = new Date(globalNow.getTime() + offset * 3600000);
-            const d2 = new Date(globalNow.getTime() + Math.min(offset + 3, 48) * 3600000);
+            const d2 = new Date(globalNow.getTime() + Math.min(offset + 3, TOTAL_HOURS) * 3600000);
             const fmt = d => {
                 let h = d.getHours(); const ap = h >= 12 ? 'P' : 'A';
                 h = h % 12 || 12;
@@ -1531,7 +1532,7 @@
             const hourData = refsTimeline[refKey];
             if (!hourData) return 0;
             
-            const fxx = i + 1; // loop is 0-47, backend keys are 1-48
+            const fxx = i + 1;
             if (hourData[fxx]) return hourData[fxx].risk;
             return 0; 
         }
@@ -1893,34 +1894,40 @@
                         })).filter(a => a.endHr > 0);
                     }
                     document.getElementById('refs-status')?.remove();
-                    // cycle_utc_iso is "YYYY-MM-DDTHH:00:00Z" — parse as UTC cycle start
-                    // peak_start_fxx values in threats.json are offsets from this time
+                    // cycle_utc_iso is the UTC REFS cycle start.
+                    // peak_start_fxx values in threats.json are offsets from this time.
                     const iso = threatsResp.value.cycle_utc_iso;
                     if (iso) {
                         cycleStartTime = new Date(iso).getTime();
                         // Freshness indicator
                         const ageMs  = Date.now() - cycleStartTime;
                         const ageHrs = ageMs / 3600000;
-                        const fresh  = ageHrs < 3;
+                        const fresh  = ageHrs < 9;
                         const dot   = document.getElementById('cycle-fresh-dot');
                         const label = document.getElementById('cycle-fresh-label');
                         if (dot && label) {
-                            // Show full cycle string e.g. "NBH 09Z / NBS 09Z / NBP 07Z"
                             const cycleStr = threatsResp.value.cycle || '';
+                            const generated = threatsResp.value.generated_utc
+                                ? new Date(threatsResp.value.generated_utc)
+                                : null;
+                            const genStr = generated && !Number.isNaN(generated.getTime())
+                                ? `${String(generated.getUTCHours()).padStart(2,'0')}${String(generated.getUTCMinutes()).padStart(2,'0')}Z`
+                                : '';
                             dot.style.background   = fresh ? '#22c55e' : '#ef4444';
                             dot.style.animation    = fresh ? 'live-pulse 2s ease-in-out infinite' : 'sop-flash 1.5s infinite';
-                            dot.title              = fresh ? 'Forecast is current' : 'Forecast may be stale (>3h old)';
-                            label.textContent      = cycleStr;
+                            dot.title              = fresh ? 'REFS cycle is current' : 'REFS cycle may be stale';
+                            label.textContent      = `${cycleStr} · 60 HR${genStr ? ` · UPDATED ${genStr}` : ''}`;
                             label.style.color      = fresh ? '#52525b' : '#ef4444';
                         }
                     }
                 }
 
-                // NBM blocks from timeline.json (assigned to module-scope vars)
+                // REFS blocks from timeline.json (assigned to module-scope vars)
                 if (timelineResp.status === 'fulfilled' && timelineResp.value.blocks) {
                     nbmBlocks       = timelineResp.value.blocks;
                     nbmBlockHazards = timelineResp.value.block_hazards;
                     nbhHourly       = timelineResp.value.nbh_hourly || [];
+                    refsTimeline    = timelineResp.value;
                 }
 
                 if (!liveMetar) {
@@ -1985,7 +1992,9 @@
                         };
 
                         let displayMetric = '';
-                        if (threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
+                        if (isNone) {
+                            displayMetric = 'No current signal';
+                        } else if (threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
                             displayMetric = `${threatData.display_label}: ${threatData.display_value}`;
                         } else if (refKey === 'WIND' && threatData.g24_mph !== undefined && threatData.g24_mph !== null) {
                             displayMetric = `24-hr max gust: ${Math.round(Number(threatData.g24_mph))} mph`;
@@ -2028,7 +2037,7 @@
                         } else {
                             card.style.border = '1px solid rgba(255,255,255,0.06)';
                             card.style.backgroundColor = '';
-                            card.style.opacity = '0.38';
+                            card.style.opacity = '0.58';
                         }
 
                         const titleColor = isNone ? '#71717a' : '#e2e8f0';
@@ -2061,7 +2070,7 @@
                                    <div class="font-bold text-gray-500 uppercase mb-1">Impact reasons</div>
                                    ${impactReasons.map(x => `<div>• ${x}</div>`).join('')}
                                </div>`
-                            : `<div class="mt-2 text-[10px] text-gray-500 border-t border-gray-700 pt-2">No operational impact reason displayed because the current risk is ${riskName}.</div>`;
+                            : `<div class="mt-2 text-[10px] text-gray-500 border-t border-gray-700 pt-2">No operational impact text for hazards at risk level ${riskName}.</div>`;
 
                         const probHtml = probability > 0
                             ? `<span class="font-mono text-white">${Math.round(probability)}% Prob</span>`
@@ -2109,19 +2118,21 @@
                         const _hDate2 = new Date(globalNow.getTime() + i*3600000);
                         if (_hDate2.getHours() === 0) {
                             // Snap to nearest block boundary
-                            const blockPos = Math.round(i / 3) / 16 * 100;
+                            const blockCount = nbmBlocks?.length || 20;
+                            const blockPos = Math.round(i / 3) / blockCount * 100;
                             const dayName = _hDate2.toLocaleDateString('en-US', { weekday: 'short' });
                             linesCtx.innerHTML += `<div class="midnight-line" style="left: ${blockPos}%;"><div class="midnight-label">${dayName}</div></div>`;
                         }
                     }
 
-                    // Axis: one label per 3-hour block (every 2 blocks = every 6h for clarity)
-                    for(let bi=0; bi<=16; bi+=2) {
-                        const leftPos = (bi / 16) * 100;
+                    // Axis: 12-hour labels plus the 60-hour endpoint for clarity.
+                    const axisBlockCount = nbmBlocks?.length || 20;
+                    for(let bi=0; bi<=axisBlockCount; bi+=4) {
+                        const leftPos = (bi / axisBlockCount) * 100;
                         const hoursOut = bi * 3;
                         let topLabel = bi === 0 ? 'Now' : `+${hoursOut}h`;
                         let timeLabel = getHourLabel(globalNow, hoursOut);
-                        let alignClass = bi===0 ? '' : (bi===16 ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
+                        let alignClass = bi===0 ? '' : (bi===axisBlockCount ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
                         const [localPart, zuluPart] = timeLabel.includes('/') ? timeLabel.split('/') : [timeLabel, ''];
                         axisCtx.innerHTML += `
                             <div class="absolute top-0 ${alignClass} text-center" style="left: ${leftPos}%">
@@ -2132,8 +2143,8 @@
                             </div>`;
                     }
 
-                    // ── NBM 3-hour block timeline (16 blocks × 3h = 48h) ──────────────────
-                    const N_BLOCKS = 16;
+                    // ── REFS 3-hour block timeline ──────────────────
+                    const N_BLOCKS = nbmBlocks?.length || 20;
                     const BLOCK_W  = 100 / N_BLOCKS;
                     const BLK_BG   = {0:'#27272a',1:'#3f3f46',2:'#ffeb3b',3:'#ff9800',4:'#f44336',5:'#9c27b0'};
                     const BLK_TX   = {0:'#52525b',1:'#71717a',2:'#3f3000',3:'#3f1a00',4:'#ffffff',5:'#ffffff'};
@@ -2182,7 +2193,7 @@
 
                             // Compute hours-from-now for this block so tooltip gets correct time
                             const _hrOff = Math.round((cycleMs + sFxx*3600000 - globalNow.getTime()) / 3600000);
-                            const _hrClamp = Math.max(0, Math.min(47, _hrOff));
+                            const _hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, _hrOff));
                             rowHtml += `<div class="timeline-block" title="${tip}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${_hrClamp},${bi})" onmouseleave="hideTooltip()">${txt}</div>`;
                         }
 
