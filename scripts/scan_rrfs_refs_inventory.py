@@ -57,6 +57,12 @@ def refs_prefix(cycle: datetime) -> str:
     return f"{ROOT}/refs.{ymd}/{hh}/enspost/"
 
 
+def refs_data_prefix(cycle: datetime) -> str:
+    """Prefix for REFS GRIB/IDX data files, excluding graphics products."""
+    hh = cycle.strftime("%H")
+    return f"{refs_prefix(cycle)}refs.t{hh}z."
+
+
 def s3_list(prefix: str) -> list[dict[str, Any]]:
     """
     Public S3 ListObjectsV2 via HTTPS.
@@ -336,11 +342,12 @@ def main() -> None:
     for cycle in cycle_candidates():
         label = cycle.strftime("%Y-%m-%d %HZ")
         prefix = refs_prefix(cycle)
+        data_prefix = refs_data_prefix(cycle)
 
         print(f"Checking REFS cycle {label}")
 
         try:
-            objects = s3_list(prefix)
+            objects = s3_list(data_prefix)
             summary = summarize_cycle(cycle, objects)
 
             print(
