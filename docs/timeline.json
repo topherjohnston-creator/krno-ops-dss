@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-05-24T06:02:18Z",
+  "generated_utc": "2026-05-24T06:47:26Z",
   "cycle_utc_iso": "2026-05-24T00:00:00Z",
   "cycle": "REFS 00Z",
   "valid_period": "next_60_hours",
@@ -16,7 +16,7 @@
       "end_fxx": 3,
       "valid_start_utc": "2026-05-24T01:00:00Z",
       "valid_end_utc": "2026-05-24T03:00:00Z",
-      "WIND": 0,
+      "WIND": 1,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -121,7 +121,7 @@
       "end_fxx": 24,
       "valid_start_utc": "2026-05-24T22:00:00Z",
       "valid_end_utc": "2026-05-25T00:00:00Z",
-      "WIND": 0,
+      "WIND": 1,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -136,7 +136,7 @@
       "end_fxx": 27,
       "valid_start_utc": "2026-05-25T01:00:00Z",
       "valid_end_utc": "2026-05-25T03:00:00Z",
-      "WIND": 0,
+      "WIND": 1,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -151,7 +151,7 @@
       "end_fxx": 30,
       "valid_start_utc": "2026-05-25T04:00:00Z",
       "valid_end_utc": "2026-05-25T06:00:00Z",
-      "WIND": 0,
+      "WIND": 1,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -241,7 +241,7 @@
       "end_fxx": 48,
       "valid_start_utc": "2026-05-25T22:00:00Z",
       "valid_end_utc": "2026-05-26T00:00:00Z",
-      "WIND": 0,
+      "WIND": 2,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -256,7 +256,7 @@
       "end_fxx": 51,
       "valid_start_utc": "2026-05-26T01:00:00Z",
       "valid_end_utc": "2026-05-26T03:00:00Z",
-      "WIND": 0,
+      "WIND": 2,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -271,7 +271,7 @@
       "end_fxx": 54,
       "valid_start_utc": "2026-05-26T04:00:00Z",
       "valid_end_utc": "2026-05-26T06:00:00Z",
-      "WIND": 0,
+      "WIND": 1,
       "LIGHTNING": 0,
       "SNOW": 0,
       "VISIBILITY": 0,
@@ -322,22 +322,140 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 7.1,
+        "probability": 7.1,
+        "metric": ">30 mph",
+        "driver": "7% of members exceed >30 mph; block max gust 36.0 mph",
+        "source_fxx": 3,
+        "peak_valid_utc": "2026-05-24T03:00:00Z",
         "valid_start_utc": "2026-05-24T01:00:00Z",
         "valid_end_utc": "2026-05-24T03:00:00Z",
         "start_fxx": 1,
         "end_fxx": 3,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 25.6,
+        "gust_max_mph": 36.0,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 23.1,
+            "idx_line": "9:4040674:d=2026052400:GUST:surface:3 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 26.7,
+            "idx_line": "9:4546597:d=2026052318:GUST:surface:9 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 24.8,
+            "idx_line": "10:9879019:d=2026052400:GUST:surface:3 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 28.6,
+            "idx_line": "11:14499255:d=2026052400:GUST:surface:3 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 23.7,
+            "idx_line": "11:14273727:d=2026052318:GUST:surface:9 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 24.6,
+            "idx_line": "11:14876642:d=2026052400:GUST:surface:3 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 23.9,
+            "idx_line": "11:14712422:d=2026052318:GUST:surface:9 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 17.4,
+            "idx_line": "11:14319222:d=2026052400:GUST:surface:3 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 29.8,
+            "idx_line": "11:14019172:d=2026052318:GUST:surface:9 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 27.7,
+            "idx_line": "11:13951617:d=2026052400:GUST:surface:3 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 36.0,
+            "idx_line": "11:13576920:d=2026052318:GUST:surface:9 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 3,
+            "lag_hours": 0,
+            "gust_mph": 20.1,
+            "idx_line": "11:14151119:d=2026052400:GUST:surface:3 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 25.3,
+            "idx_line": "11:14033967:d=2026052318:GUST:surface:9 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 9,
+            "lag_hours": 6,
+            "gust_mph": 27.1,
+            "idx_line": "10:10219254:d=2026052318:GUST:surface:9 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -492,20 +610,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 4,
+        "peak_valid_utc": "2026-05-24T04:00:00Z",
         "valid_start_utc": "2026-05-24T04:00:00Z",
         "valid_end_utc": "2026-05-24T06:00:00Z",
         "start_fxx": 4,
         "end_fxx": 6,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 21.8,
+        "gust_max_mph": 29.1,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 23.5,
+            "idx_line": "9:4116327:d=2026052400:GUST:surface:4 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 21.5,
+            "idx_line": "9:4550519:d=2026052318:GUST:surface:10 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 20.6,
+            "idx_line": "10:9909267:d=2026052400:GUST:surface:4 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 29.1,
+            "idx_line": "11:14456665:d=2026052400:GUST:surface:4 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 12.1,
+            "idx_line": "11:14183486:d=2026052318:GUST:surface:10 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 20.6,
+            "idx_line": "11:14681646:d=2026052400:GUST:surface:4 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 24.8,
+            "idx_line": "11:14632019:d=2026052318:GUST:surface:10 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 18.8,
+            "idx_line": "11:13925200:d=2026052400:GUST:surface:4 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 21.3,
+            "idx_line": "11:13834229:d=2026052318:GUST:surface:10 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 28.4,
+            "idx_line": "11:13714826:d=2026052400:GUST:surface:4 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 26.4,
+            "idx_line": "11:13325110:d=2026052318:GUST:surface:10 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 4,
+            "lag_hours": 0,
+            "gust_mph": 16.6,
+            "idx_line": "11:14148276:d=2026052400:GUST:surface:4 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 24.2,
+            "idx_line": "11:13787733:d=2026052318:GUST:surface:10 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 10,
+            "lag_hours": 6,
+            "gust_mph": 17.9,
+            "idx_line": "10:10245582:d=2026052318:GUST:surface:10 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -660,20 +896,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 7,
+        "peak_valid_utc": "2026-05-24T07:00:00Z",
         "valid_start_utc": "2026-05-24T07:00:00Z",
         "valid_end_utc": "2026-05-24T09:00:00Z",
         "start_fxx": 7,
         "end_fxx": 9,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 8.1,
+        "gust_max_mph": 16.8,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 3.9,
+            "idx_line": "9:4287137:d=2026052400:GUST:surface:7 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 3.9,
+            "idx_line": "9:4515771:d=2026052318:GUST:surface:13 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 8.5,
+            "idx_line": "10:10091696:d=2026052400:GUST:surface:7 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 11.4,
+            "idx_line": "11:14155877:d=2026052400:GUST:surface:7 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 12.5,
+            "idx_line": "11:13775854:d=2026052318:GUST:surface:13 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 9.2,
+            "idx_line": "11:14711247:d=2026052400:GUST:surface:7 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 6.0,
+            "idx_line": "11:14385528:d=2026052318:GUST:surface:13 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "11:13855301:d=2026052400:GUST:surface:7 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 9.6,
+            "idx_line": "11:13810423:d=2026052318:GUST:surface:13 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 12.1,
+            "idx_line": "11:13387155:d=2026052400:GUST:surface:7 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 16.8,
+            "idx_line": "11:13072362:d=2026052318:GUST:surface:13 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 7,
+            "lag_hours": 0,
+            "gust_mph": 4.3,
+            "idx_line": "11:13824730:d=2026052400:GUST:surface:7 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 6.7,
+            "idx_line": "11:13784307:d=2026052318:GUST:surface:13 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 13,
+            "lag_hours": 6,
+            "gust_mph": 6.7,
+            "idx_line": "10:10193014:d=2026052318:GUST:surface:13 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -828,20 +1182,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 10,
+        "peak_valid_utc": "2026-05-24T10:00:00Z",
         "valid_start_utc": "2026-05-24T10:00:00Z",
         "valid_end_utc": "2026-05-24T12:00:00Z",
         "start_fxx": 10,
         "end_fxx": 12,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 5.4,
+        "gust_max_mph": 13.0,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 3.3,
+            "idx_line": "9:4494838:d=2026052400:GUST:surface:10 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 3.6,
+            "idx_line": "9:4698786:d=2026052318:GUST:surface:16 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 2.0,
+            "idx_line": "10:10204112:d=2026052400:GUST:surface:10 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 13.0,
+            "idx_line": "11:13793452:d=2026052400:GUST:surface:10 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 8.9,
+            "idx_line": "11:13818782:d=2026052318:GUST:surface:16 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14511312:d=2026052400:GUST:surface:10 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 2.9,
+            "idx_line": "11:14431773:d=2026052318:GUST:surface:16 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 4.5,
+            "idx_line": "11:13842539:d=2026052400:GUST:surface:10 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 6.3,
+            "idx_line": "11:13834487:d=2026052318:GUST:surface:16 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 4.0,
+            "idx_line": "11:13388537:d=2026052400:GUST:surface:10 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 10.3,
+            "idx_line": "11:13204848:d=2026052318:GUST:surface:16 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 10,
+            "lag_hours": 0,
+            "gust_mph": 7.2,
+            "idx_line": "11:13825834:d=2026052400:GUST:surface:10 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 4.7,
+            "idx_line": "11:13638727:d=2026052318:GUST:surface:16 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 16,
+            "lag_hours": 6,
+            "gust_mph": 2.2,
+            "idx_line": "10:10158203:d=2026052318:GUST:surface:16 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -996,20 +1468,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 15,
+        "peak_valid_utc": "2026-05-24T15:00:00Z",
         "valid_start_utc": "2026-05-24T13:00:00Z",
         "valid_end_utc": "2026-05-24T15:00:00Z",
         "start_fxx": 13,
         "end_fxx": 15,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 4.0,
+        "gust_max_mph": 7.2,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 4.3,
+            "idx_line": "9:4515864:d=2026052400:GUST:surface:15 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 5.0,
+            "idx_line": "9:4652038:d=2026052318:GUST:surface:21 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "10:9999130:d=2026052400:GUST:surface:15 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 7.2,
+            "idx_line": "11:14088322:d=2026052400:GUST:surface:15 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 5.8,
+            "idx_line": "11:14247170:d=2026052318:GUST:surface:21 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14478909:d=2026052400:GUST:surface:15 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 2.2,
+            "idx_line": "11:14472019:d=2026052318:GUST:surface:21 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 3.6,
+            "idx_line": "11:13710751:d=2026052400:GUST:surface:15 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 3.1,
+            "idx_line": "11:14265112:d=2026052318:GUST:surface:21 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 3.4,
+            "idx_line": "11:13490838:d=2026052400:GUST:surface:15 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 6.0,
+            "idx_line": "11:13332206:d=2026052318:GUST:surface:21 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:13559513:d=2026052400:GUST:surface:15 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 3.1,
+            "idx_line": "11:13602209:d=2026052318:GUST:surface:21 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 21,
+            "lag_hours": 6,
+            "gust_mph": 3.1,
+            "idx_line": "10:10037438:d=2026052318:GUST:surface:21 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -1164,20 +1754,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 18,
+        "peak_valid_utc": "2026-05-24T18:00:00Z",
         "valid_start_utc": "2026-05-24T16:00:00Z",
         "valid_end_utc": "2026-05-24T18:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 5.3,
+        "gust_max_mph": 8.4,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 7.2,
+            "idx_line": "9:4638350:d=2026052400:GUST:surface:18 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 8.4,
+            "idx_line": "9:4648230:d=2026052318:GUST:surface:24 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 5.6,
+            "idx_line": "10:9980067:d=2026052400:GUST:surface:18 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14660078:d=2026052400:GUST:surface:18 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 4.3,
+            "idx_line": "11:14767962:d=2026052318:GUST:surface:24 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 5.1,
+            "idx_line": "11:14743125:d=2026052400:GUST:surface:18 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 6.3,
+            "idx_line": "11:14598266:d=2026052318:GUST:surface:24 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 2.9,
+            "idx_line": "11:13926297:d=2026052400:GUST:surface:18 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 4.9,
+            "idx_line": "11:14276255:d=2026052318:GUST:surface:24 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:13717117:d=2026052400:GUST:surface:18 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 5.6,
+            "idx_line": "11:13636821:d=2026052318:GUST:surface:24 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 18,
+            "lag_hours": 0,
+            "gust_mph": 6.3,
+            "idx_line": "11:13950007:d=2026052400:GUST:surface:18 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 6.0,
+            "idx_line": "11:13883951:d=2026052318:GUST:surface:24 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 24,
+            "lag_hours": 6,
+            "gust_mph": 6.0,
+            "idx_line": "10:10090904:d=2026052318:GUST:surface:24 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -1332,20 +2040,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 21,
+        "peak_valid_utc": "2026-05-24T21:00:00Z",
         "valid_start_utc": "2026-05-24T19:00:00Z",
         "valid_end_utc": "2026-05-24T21:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 9.6,
+        "gust_max_mph": 18.1,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 9.1,
+            "idx_line": "9:5044775:d=2026052400:GUST:surface:21 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 11.7,
+            "idx_line": "9:5134172:d=2026052318:GUST:surface:27 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 8.1,
+            "idx_line": "10:10122469:d=2026052400:GUST:surface:21 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 14.8,
+            "idx_line": "11:15240453:d=2026052400:GUST:surface:21 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 7.8,
+            "idx_line": "11:15258220:d=2026052318:GUST:surface:27 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 8.3,
+            "idx_line": "11:15301121:d=2026052400:GUST:surface:21 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 6.5,
+            "idx_line": "11:15162982:d=2026052318:GUST:surface:27 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 7.4,
+            "idx_line": "11:14472908:d=2026052400:GUST:surface:21 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 10.7,
+            "idx_line": "11:14427379:d=2026052318:GUST:surface:27 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 13.2,
+            "idx_line": "11:14338999:d=2026052400:GUST:surface:21 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 18.1,
+            "idx_line": "11:14417549:d=2026052318:GUST:surface:27 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 4.5,
+            "idx_line": "11:14623290:d=2026052400:GUST:surface:21 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 6.0,
+            "idx_line": "11:14377442:d=2026052318:GUST:surface:27 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 27,
+            "lag_hours": 6,
+            "gust_mph": 7.6,
+            "idx_line": "10:10292789:d=2026052318:GUST:surface:27 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -1498,22 +2324,140 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 7.1,
+        "probability": 7.1,
+        "metric": ">30 mph",
+        "driver": "7% of members exceed >30 mph; block max gust 37.1 mph",
+        "source_fxx": 24,
+        "peak_valid_utc": "2026-05-25T00:00:00Z",
         "valid_start_utc": "2026-05-24T22:00:00Z",
         "valid_end_utc": "2026-05-25T00:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 19.5,
+        "gust_max_mph": 37.1,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 20.9,
+            "idx_line": "9:5246641:d=2026052400:GUST:surface:24 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 18.9,
+            "idx_line": "9:5148134:d=2026052318:GUST:surface:30 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 23.3,
+            "idx_line": "10:10450885:d=2026052400:GUST:surface:24 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 27.7,
+            "idx_line": "11:15104989:d=2026052400:GUST:surface:24 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 25.7,
+            "idx_line": "11:15613190:d=2026052318:GUST:surface:30 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 15.9,
+            "idx_line": "11:15467610:d=2026052400:GUST:surface:24 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 11.2,
+            "idx_line": "11:15467821:d=2026052318:GUST:surface:30 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 19.0,
+            "idx_line": "11:14479869:d=2026052400:GUST:surface:24 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 19.0,
+            "idx_line": "11:14416420:d=2026052318:GUST:surface:30 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 28.4,
+            "idx_line": "11:14414515:d=2026052400:GUST:surface:24 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 7.2,
+            "idx_line": "11:14304229:d=2026052318:GUST:surface:30 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 24,
+            "lag_hours": 0,
+            "gust_mph": 14.1,
+            "idx_line": "11:14684126:d=2026052400:GUST:surface:24 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 4.5,
+            "idx_line": "11:14526640:d=2026052318:GUST:surface:30 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 30,
+            "lag_hours": 6,
+            "gust_mph": 37.1,
+            "idx_line": "10:10517775:d=2026052318:GUST:surface:30 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -1666,22 +2610,140 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 21.4,
+        "probability": 21.4,
+        "metric": ">30 mph",
+        "driver": "21% of members exceed >30 mph; block max gust 50.1 mph",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-25T01:00:00Z",
         "valid_start_utc": "2026-05-25T01:00:00Z",
         "valid_end_utc": "2026-05-25T03:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 23.7,
+        "gust_max_mph": 50.1,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 22.5,
+            "idx_line": "9:5196598:d=2026052400:GUST:surface:25 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 22.5,
+            "idx_line": "9:5077985:d=2026052318:GUST:surface:31 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 25.9,
+            "idx_line": "10:10311268:d=2026052400:GUST:surface:25 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 34.2,
+            "idx_line": "11:14953056:d=2026052400:GUST:surface:25 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 27.7,
+            "idx_line": "11:15381932:d=2026052318:GUST:surface:31 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 50.1,
+            "idx_line": "11:15315412:d=2026052400:GUST:surface:25 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 6.7,
+            "idx_line": "11:15389116:d=2026052318:GUST:surface:31 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 22.1,
+            "idx_line": "11:14369864:d=2026052400:GUST:surface:25 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 21.0,
+            "idx_line": "11:14443048:d=2026052318:GUST:surface:31 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 33.8,
+            "idx_line": "11:14251311:d=2026052400:GUST:surface:25 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 21.3,
+            "idx_line": "11:14398776:d=2026052318:GUST:surface:31 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 21.5,
+            "idx_line": "11:14609466:d=2026052400:GUST:surface:25 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 8.9,
+            "idx_line": "11:14524259:d=2026052318:GUST:surface:31 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 31,
+            "lag_hours": 6,
+            "gust_mph": 13.4,
+            "idx_line": "10:10565553:d=2026052318:GUST:surface:31 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -1834,22 +2896,140 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 7.1,
+        "probability": 7.1,
+        "metric": ">30 mph",
+        "driver": "7% of members exceed >30 mph; block max gust 34.0 mph",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-25T04:00:00Z",
         "valid_start_utc": "2026-05-25T04:00:00Z",
         "valid_end_utc": "2026-05-25T06:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 19.1,
+        "gust_max_mph": 34.0,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 22.1,
+            "idx_line": "9:5053323:d=2026052400:GUST:surface:28 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 21.3,
+            "idx_line": "9:4949999:d=2026052318:GUST:surface:34 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 16.8,
+            "idx_line": "10:10352698:d=2026052400:GUST:surface:28 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 34.0,
+            "idx_line": "11:14456055:d=2026052400:GUST:surface:28 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 28.0,
+            "idx_line": "11:14599398:d=2026052318:GUST:surface:34 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 6.7,
+            "idx_line": "11:14897973:d=2026052400:GUST:surface:28 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 2.9,
+            "idx_line": "11:15143821:d=2026052318:GUST:surface:34 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 23.0,
+            "idx_line": "11:14487280:d=2026052400:GUST:surface:28 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 12.3,
+            "idx_line": "11:14279764:d=2026052318:GUST:surface:34 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 29.8,
+            "idx_line": "11:13597624:d=2026052400:GUST:surface:28 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 22.4,
+            "idx_line": "11:13766703:d=2026052318:GUST:surface:34 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 28,
+            "lag_hours": 0,
+            "gust_mph": 13.9,
+            "idx_line": "11:14221456:d=2026052400:GUST:surface:28 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 19.2,
+            "idx_line": "11:14520525:d=2026052318:GUST:surface:34 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 34,
+            "lag_hours": 6,
+            "gust_mph": 14.5,
+            "idx_line": "10:10520617:d=2026052318:GUST:surface:34 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2004,20 +3184,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 32,
+        "peak_valid_utc": "2026-05-25T08:00:00Z",
         "valid_start_utc": "2026-05-25T07:00:00Z",
         "valid_end_utc": "2026-05-25T09:00:00Z",
         "start_fxx": 31,
         "end_fxx": 33,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 7.3,
+        "gust_max_mph": 26.6,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 4.8,
+            "idx_line": "9:5100951:d=2026052400:GUST:surface:32 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 11.1,
+            "idx_line": "9:4987363:d=2026052318:GUST:surface:38 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 8.5,
+            "idx_line": "10:10348095:d=2026052400:GUST:surface:32 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 26.6,
+            "idx_line": "11:14527580:d=2026052400:GUST:surface:32 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 13.0,
+            "idx_line": "11:14630764:d=2026052318:GUST:surface:38 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14812072:d=2026052400:GUST:surface:32 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 3.4,
+            "idx_line": "11:15088035:d=2026052318:GUST:surface:38 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14211035:d=2026052400:GUST:surface:32 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 5.4,
+            "idx_line": "11:14513571:d=2026052318:GUST:surface:38 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 8.1,
+            "idx_line": "11:13595320:d=2026052400:GUST:surface:32 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 6.3,
+            "idx_line": "11:13505838:d=2026052318:GUST:surface:38 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 32,
+            "lag_hours": 0,
+            "gust_mph": 2.2,
+            "idx_line": "11:14385173:d=2026052400:GUST:surface:32 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 3.6,
+            "idx_line": "11:14708145:d=2026052318:GUST:surface:38 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 38,
+            "lag_hours": 6,
+            "gust_mph": 2.5,
+            "idx_line": "10:10629751:d=2026052318:GUST:surface:38 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2172,20 +3470,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 36,
+        "peak_valid_utc": "2026-05-25T12:00:00Z",
         "valid_start_utc": "2026-05-25T10:00:00Z",
         "valid_end_utc": "2026-05-25T12:00:00Z",
         "start_fxx": 34,
         "end_fxx": 36,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 3.2,
+        "gust_max_mph": 11.0,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 1.9,
+            "idx_line": "9:5121011:d=2026052400:GUST:surface:36 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 1.2,
+            "idx_line": "9:5047216:d=2026052318:GUST:surface:42 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 3.6,
+            "idx_line": "10:10353825:d=2026052400:GUST:surface:36 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 11.0,
+            "idx_line": "11:14430314:d=2026052400:GUST:surface:36 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 5.4,
+            "idx_line": "11:14607966:d=2026052318:GUST:surface:42 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 1.3,
+            "idx_line": "11:14378513:d=2026052400:GUST:surface:36 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 2.5,
+            "idx_line": "11:15320372:d=2026052318:GUST:surface:42 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 1.6,
+            "idx_line": "11:14336888:d=2026052400:GUST:surface:36 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 3.8,
+            "idx_line": "11:14421512:d=2026052318:GUST:surface:42 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 1.6,
+            "idx_line": "11:13611644:d=2026052400:GUST:surface:36 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 5.6,
+            "idx_line": "11:13594664:d=2026052318:GUST:surface:42 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 36,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "11:14299470:d=2026052400:GUST:surface:36 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 1.1,
+            "idx_line": "11:14649969:d=2026052318:GUST:surface:42 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 42,
+            "lag_hours": 6,
+            "gust_mph": 1.6,
+            "idx_line": "10:10518598:d=2026052318:GUST:surface:42 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2340,20 +3756,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 38,
+        "peak_valid_utc": "2026-05-25T14:00:00Z",
         "valid_start_utc": "2026-05-25T13:00:00Z",
         "valid_end_utc": "2026-05-25T15:00:00Z",
         "start_fxx": 37,
         "end_fxx": 39,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 3.4,
+        "gust_max_mph": 7.8,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "9:5174638:d=2026052400:GUST:surface:38 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 1.7,
+            "idx_line": "9:5103310:d=2026052318:GUST:surface:44 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 4.9,
+            "idx_line": "10:10358114:d=2026052400:GUST:surface:38 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 7.8,
+            "idx_line": "11:14676801:d=2026052400:GUST:surface:38 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 6.3,
+            "idx_line": "11:14869130:d=2026052318:GUST:surface:44 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 1.8,
+            "idx_line": "11:15179272:d=2026052400:GUST:surface:38 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 0.9,
+            "idx_line": "11:15345361:d=2026052318:GUST:surface:44 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 2.9,
+            "idx_line": "11:14790222:d=2026052400:GUST:surface:38 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 2.0,
+            "idx_line": "11:14701232:d=2026052318:GUST:surface:44 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 3.4,
+            "idx_line": "11:13826521:d=2026052400:GUST:surface:38 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 6.7,
+            "idx_line": "11:14032043:d=2026052318:GUST:surface:44 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 38,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "11:14265184:d=2026052400:GUST:surface:38 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 1.6,
+            "idx_line": "11:14384780:d=2026052318:GUST:surface:44 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 44,
+            "lag_hours": 6,
+            "gust_mph": 2.0,
+            "idx_line": "10:10440401:d=2026052318:GUST:surface:44 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2508,20 +4042,138 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 42,
+        "peak_valid_utc": "2026-05-25T18:00:00Z",
         "valid_start_utc": "2026-05-25T16:00:00Z",
         "valid_end_utc": "2026-05-25T18:00:00Z",
         "start_fxx": 40,
         "end_fxx": 42,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 8.3,
+        "gust_max_mph": 11.6,
+        "member_count": 14,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 11.4,
+            "idx_line": "9:5297740:d=2026052400:GUST:surface:42 hour fcst:"
+          },
+          {
+            "member": "HRRR-6",
+            "model": "hrrr",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 10.1,
+            "idx_line": "9:5042026:d=2026052318:GUST:surface:48 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 8.7,
+            "idx_line": "10:10222771:d=2026052400:GUST:surface:42 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 9.4,
+            "idx_line": "11:15087876:d=2026052400:GUST:surface:42 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 6.5,
+            "idx_line": "11:15007211:d=2026052318:GUST:surface:48 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 7.8,
+            "idx_line": "11:15487941:d=2026052400:GUST:surface:42 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 11.6,
+            "idx_line": "11:15194000:d=2026052318:GUST:surface:48 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 7.8,
+            "idx_line": "11:14656481:d=2026052400:GUST:surface:42 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 9.4,
+            "idx_line": "11:14542470:d=2026052318:GUST:surface:48 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 5.1,
+            "idx_line": "11:14442522:d=2026052400:GUST:surface:42 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 6.9,
+            "idx_line": "11:14154695:d=2026052318:GUST:surface:48 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 42,
+            "lag_hours": 0,
+            "gust_mph": 3.6,
+            "idx_line": "11:14707597:d=2026052400:GUST:surface:42 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 7.4,
+            "idx_line": "11:14322261:d=2026052318:GUST:surface:48 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 48,
+            "lag_hours": 6,
+            "gust_mph": 10.1,
+            "idx_line": "10:10238098:d=2026052318:GUST:surface:48 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2676,20 +4328,130 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 45,
+        "peak_valid_utc": "2026-05-25T21:00:00Z",
         "valid_start_utc": "2026-05-25T19:00:00Z",
         "valid_end_utc": "2026-05-25T21:00:00Z",
         "start_fxx": 43,
         "end_fxx": 45,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 20.1,
+        "gust_max_mph": 27.1,
+        "member_count": 13,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 16.8,
+            "idx_line": "9:5416863:d=2026052400:GUST:surface:45 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 18.6,
+            "idx_line": "10:10398803:d=2026052400:GUST:surface:45 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 21.3,
+            "idx_line": "11:15428597:d=2026052400:GUST:surface:45 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 27.1,
+            "idx_line": "11:15430168:d=2026052318:GUST:surface:51 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 19.2,
+            "idx_line": "11:15544271:d=2026052400:GUST:surface:45 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 16.8,
+            "idx_line": "11:15566980:d=2026052318:GUST:surface:51 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 23.0,
+            "idx_line": "11:14963807:d=2026052400:GUST:surface:45 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 22.8,
+            "idx_line": "11:14688028:d=2026052318:GUST:surface:51 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 20.6,
+            "idx_line": "11:14908366:d=2026052400:GUST:surface:45 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 26.2,
+            "idx_line": "11:14803595:d=2026052318:GUST:surface:51 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 45,
+            "lag_hours": 0,
+            "gust_mph": 16.8,
+            "idx_line": "11:14789711:d=2026052400:GUST:surface:45 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 8.5,
+            "idx_line": "11:14708261:d=2026052318:GUST:surface:51 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 51,
+            "lag_hours": 6,
+            "gust_mph": 23.9,
+            "idx_line": "10:10405358:d=2026052318:GUST:surface:51 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -2842,22 +4604,132 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 61.5,
+        "probability": 61.5,
+        "metric": ">30 mph",
+        "driver": "62% of members exceed >30 mph; block max gust 37.1 mph",
+        "source_fxx": 48,
+        "peak_valid_utc": "2026-05-26T00:00:00Z",
         "valid_start_utc": "2026-05-25T22:00:00Z",
         "valid_end_utc": "2026-05-26T00:00:00Z",
         "start_fxx": 46,
         "end_fxx": 48,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 30.2,
+        "gust_max_mph": 37.1,
+        "member_count": 13,
+        "members": [
+          {
+            "member": "HRRR",
+            "model": "hrrr",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 24.8,
+            "idx_line": "9:5412452:d=2026052400:GUST:surface:48 hour fcst:"
+          },
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 26.2,
+            "idx_line": "10:10598516:d=2026052400:GUST:surface:48 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 35.1,
+            "idx_line": "11:15376836:d=2026052400:GUST:surface:48 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 33.3,
+            "idx_line": "11:15811436:d=2026052318:GUST:surface:54 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 26.4,
+            "idx_line": "11:15624802:d=2026052400:GUST:surface:48 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 21.5,
+            "idx_line": "11:15676758:d=2026052318:GUST:surface:54 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 36.7,
+            "idx_line": "11:15089617:d=2026052400:GUST:surface:48 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 30.9,
+            "idx_line": "11:14655703:d=2026052318:GUST:surface:54 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 33.1,
+            "idx_line": "11:15016192:d=2026052400:GUST:surface:48 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 37.1,
+            "idx_line": "11:14627784:d=2026052318:GUST:surface:54 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 48,
+            "lag_hours": 0,
+            "gust_mph": 30.0,
+            "idx_line": "11:14803647:d=2026052400:GUST:surface:48 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 25.7,
+            "idx_line": "11:14903673:d=2026052318:GUST:surface:54 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 54,
+            "lag_hours": 6,
+            "gust_mph": 31.8,
+            "idx_line": "10:10617062:d=2026052318:GUST:surface:54 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -3010,22 +4882,124 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 66.7,
+        "probability": 66.7,
+        "metric": ">30 mph",
+        "driver": "67% of members exceed >30 mph; block max gust 37.6 mph",
+        "source_fxx": 49,
+        "peak_valid_utc": "2026-05-26T01:00:00Z",
         "valid_start_utc": "2026-05-26T01:00:00Z",
         "valid_end_utc": "2026-05-26T03:00:00Z",
         "start_fxx": 49,
         "end_fxx": 51,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 32.6,
+        "gust_max_mph": 37.6,
+        "member_count": 12,
+        "members": [
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 33.6,
+            "idx_line": "10:10537235:d=2026052400:GUST:surface:49 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 35.8,
+            "idx_line": "11:15438464:d=2026052400:GUST:surface:49 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 34.7,
+            "idx_line": "11:15685166:d=2026052318:GUST:surface:55 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 26.8,
+            "idx_line": "11:15640308:d=2026052400:GUST:surface:49 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 25.9,
+            "idx_line": "11:15431969:d=2026052318:GUST:surface:55 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 36.7,
+            "idx_line": "11:14957516:d=2026052400:GUST:surface:49 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 32.7,
+            "idx_line": "11:14638243:d=2026052318:GUST:surface:55 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 37.6,
+            "idx_line": "11:14913524:d=2026052400:GUST:surface:49 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 35.3,
+            "idx_line": "11:14691121:d=2026052318:GUST:surface:55 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 49,
+            "lag_hours": 0,
+            "gust_mph": 29.3,
+            "idx_line": "11:15028934:d=2026052400:GUST:surface:49 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 27.5,
+            "idx_line": "11:14770178:d=2026052318:GUST:surface:55 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 55,
+            "lag_hours": 6,
+            "gust_mph": 34.7,
+            "idx_line": "10:10560439:d=2026052318:GUST:surface:55 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -3178,22 +5152,124 @@
         "id": "WIND",
         "label": "WIND",
         "name": "WIND",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 8.3,
+        "probability": 8.3,
+        "metric": ">30 mph",
+        "driver": "8% of members exceed >30 mph; block max gust 34.4 mph",
+        "source_fxx": 52,
+        "peak_valid_utc": "2026-05-26T04:00:00Z",
         "valid_start_utc": "2026-05-26T04:00:00Z",
         "valid_end_utc": "2026-05-26T06:00:00Z",
         "start_fxx": 52,
         "end_fxx": 54,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 17.6,
+        "gust_max_mph": 34.4,
+        "member_count": 12,
+        "members": [
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 14.3,
+            "idx_line": "10:10433161:d=2026052400:GUST:surface:52 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 34.4,
+            "idx_line": "11:14897419:d=2026052400:GUST:surface:52 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-1-6",
+            "model": "rrfsens",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 7.4,
+            "idx_line": "11:15144500:d=2026052318:GUST:surface:58 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 7.4,
+            "idx_line": "11:15051972:d=2026052400:GUST:surface:52 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-2-6",
+            "model": "rrfsens",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 8.1,
+            "idx_line": "11:14862071:d=2026052318:GUST:surface:58 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 14.3,
+            "idx_line": "11:14306193:d=2026052400:GUST:surface:52 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-3-6",
+            "model": "rrfsens",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 20.1,
+            "idx_line": "11:14221298:d=2026052318:GUST:surface:58 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 25.7,
+            "idx_line": "11:14248840:d=2026052400:GUST:surface:52 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-4-6",
+            "model": "rrfsens",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 14.5,
+            "idx_line": "11:14097842:d=2026052318:GUST:surface:58 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 52,
+            "lag_hours": 0,
+            "gust_mph": 27.7,
+            "idx_line": "11:14144107:d=2026052400:GUST:surface:52 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-5-6",
+            "model": "rrfsens",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 14.1,
+            "idx_line": "11:14427272:d=2026052318:GUST:surface:58 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 58,
+            "lag_hours": 6,
+            "gust_mph": 23.5,
+            "idx_line": "10:10440150:d=2026052318:GUST:surface:58 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -3348,20 +5424,82 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 56,
+        "peak_valid_utc": "2026-05-26T08:00:00Z",
         "valid_start_utc": "2026-05-26T07:00:00Z",
         "valid_end_utc": "2026-05-26T09:00:00Z",
         "start_fxx": 55,
         "end_fxx": 57,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 7.9,
+        "gust_max_mph": 19.9,
+        "member_count": 7,
+        "members": [
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 4.9,
+            "idx_line": "10:10446800:d=2026052400:GUST:surface:56 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 7.2,
+            "idx_line": "11:14733348:d=2026052400:GUST:surface:56 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 19.9,
+            "idx_line": "11:14902099:d=2026052400:GUST:surface:56 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 9.6,
+            "idx_line": "11:14215519:d=2026052400:GUST:surface:56 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 4.0,
+            "idx_line": "11:13934079:d=2026052400:GUST:surface:56 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 56,
+            "lag_hours": 0,
+            "gust_mph": 4.3,
+            "idx_line": "11:14291869:d=2026052400:GUST:surface:56 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 62,
+            "lag_hours": 6,
+            "gust_mph": 5.1,
+            "idx_line": "10:10544180:d=2026052318:GUST:surface:62 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -3516,20 +5654,82 @@
         "name": "WIND",
         "risk": 0,
         "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
+        "level": 5,
+        "impact_level": 5,
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "No REFS gust field found; mean wind is not used as a gust proxy",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No meaningful wind signal in this 3-hour block",
+        "source_fxx": 59,
+        "peak_valid_utc": "2026-05-26T11:00:00Z",
         "valid_start_utc": "2026-05-26T10:00:00Z",
         "valid_end_utc": "2026-05-26T12:00:00Z",
         "start_fxx": 58,
         "end_fxx": 60,
-        "data_status": "missing_gust_field",
-        "method": "gust_required_no_proxy"
+        "data_status": "ok",
+        "mean_wind_mph": null,
+        "gust_mean_mph": 9.0,
+        "gust_max_mph": 21.5,
+        "member_count": 7,
+        "members": [
+          {
+            "member": "RRFS",
+            "model": "rrfs",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 8.1,
+            "idx_line": "10:10455270:d=2026052400:GUST:surface:59 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 21.5,
+            "idx_line": "11:14664867:d=2026052400:GUST:surface:59 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 9.6,
+            "idx_line": "11:15247030:d=2026052400:GUST:surface:59 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 10.1,
+            "idx_line": "11:14392114:d=2026052400:GUST:surface:59 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 5.8,
+            "idx_line": "11:13749202:d=2026052400:GUST:surface:59 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 59,
+            "lag_hours": 0,
+            "gust_mph": 4.3,
+            "idx_line": "11:14501244:d=2026052400:GUST:surface:59 hour fcst:ENS=+5"
+          },
+          {
+            "member": "RRFS-6",
+            "model": "rrfs",
+            "source_fxx": 65,
+            "lag_hours": 6,
+            "gust_mph": 3.8,
+            "idx_line": "10:10514136:d=2026052318:GUST:surface:65 hour fcst:"
+          }
+        ],
+        "method": "desi_refs_time_lagged_gust"
       },
       "LIGHTNING": {
         "id": "LIGHTNING",

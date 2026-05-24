@@ -3,7 +3,7 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-05-24T06:02:18Z",
+  "generated_utc": "2026-05-24T06:47:26Z",
   "cycle_utc_iso": "2026-05-24T00:00:00Z",
   "selected_prefix": "rrfs_a/refs.20260524/00/enspost/",
   "builder_mode": "refs_wind_first_pass",
@@ -1035,8 +1035,8 @@
   },
   "hazards": {
     "WIND": {
-      "risk": 0,
-      "risk_label": "None",
+      "risk": 2,
+      "risk_label": "Minor",
       "field_map_matches": 585,
       "mapped_hours": [
         1,
@@ -1058,18 +1058,118 @@
         "18:20622161:d=2026052400:VGRD:10 m above ground:1 hour fcst:wt ens mean",
         "19:23003778:d=2026052400:UGRD:250 mb:1 hour fcst:wt ens mean"
       ],
-      "status": "missing_gust_field",
-      "method": "gust_required_no_proxy",
-      "member_method_available": false,
-      "probability_extraction_enabled": false,
+      "status": "ok",
+      "method": "desi_refs_time_lagged_gust",
+      "member_method_available": true,
+      "probability_extraction_enabled": true,
       "mean_wind_proxy_allowed": false,
       "ok_mean_hours": 0,
-      "ok_probability_hours": 0,
+      "ok_probability_hours": 60,
+      "ok_gust_values": 780,
       "mean_wind_60hr_max_mph": null,
+      "mean_member_max_gust_mph": 34.6,
+      "members_found": [
+        "HRRR",
+        "HRRR-6",
+        "RRFS",
+        "RRFS-1",
+        "RRFS-1-6",
+        "RRFS-2",
+        "RRFS-2-6",
+        "RRFS-3",
+        "RRFS-3-6",
+        "RRFS-4",
+        "RRFS-4-6",
+        "RRFS-5",
+        "RRFS-5-6",
+        "RRFS-6"
+      ],
+      "threshold_probabilities_60hr": {
+        "gt_30_mph": 78.6,
+        "gt_45_mph": 7.1,
+        "gt_58_mph": 0.0,
+        "gt_65_mph": 0.0
+      },
       "errors": [
         {
-          "stage": "field_selection",
-          "message": "No REFS GUST field found in selected cycle products."
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 49,
+          "source_fxx": 49,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 50,
+          "source_fxx": 50,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 51,
+          "source_fxx": 51,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 52,
+          "source_fxx": 52,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 53,
+          "source_fxx": 53,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 54,
+          "source_fxx": 54,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 55,
+          "source_fxx": 55,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 56,
+          "source_fxx": 56,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 57,
+          "source_fxx": 57,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
+        },
+        {
+          "member": "HRRR",
+          "model": "hrrr",
+          "fxx": 58,
+          "source_fxx": 58,
+          "stage": "gust",
+          "message": "No GUST:surface row in source IDX"
         }
       ]
     },
@@ -1240,7 +1340,7 @@
   },
   "notes": [
     "No full GRIB files are downloaded by this builder.",
-    "Wind uses IDX-selected byte ranges for REFS 10 m WIND mean/probability fields.",
+    "Wind uses IDX-selected byte ranges for DESI-style time-lagged GUST:surface fields when available.",
     "Outputs are complete and low-risk when exact REFS fields are missing or not yet enabled."
   ]
 }
