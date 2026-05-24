@@ -235,65 +235,64 @@ class RefsFile:
 
 
 def load_selected_cycle() -> dict[str, Any]:
+    """
+    Load data/rrfs_refs_selected_cycle.json and unwrap the selected_cycle object.
+
+    scan_rrfs_refs_inventory.py writes a wrapper like:
+      {
+        "generated_utc": "...",
+        "bucket": "https://noaa-rrfs-pds.s3.amazonaws.com",
+        "selected_cycle": { ... actual cycle/file inventory ... }
+      }
+
+    The builder needs the inner selected_cycle dictionary.
+    """
     if not SELECTED_CYCLE_PATH.exists():
         raise FileNotFoundError(
             "Missing data/rrfs_refs_selected_cycle.json. "
             "Run scripts/scan_rrfs_refs_inventory.py first."
         )
 
-    payload = json.loads(SELECTED_CYCLE_PATH.read_text())
+    raw = json.loads(SELECTED_CYCLE_PATH.read_text())
 
-    # scan_rrfs_refs_inventory.py writes a compact wrapper shaped like:
-    # {
-    #   "generated_utc": "...",
-    #   "bucket": "https://noaa-rrfs-pds.s3.amazonaws.com",
-    #   "selected_cycle": { ... actual cycle metadata/files ... }
-    # }
-    # Older builder versions expected the selected cycle fields at top level.
-    # Normalize here so the rest of this builder receives one consistent shape.
-    if isinstance(payload, dict) and isinstance(payload.get("selected_cycle"), dict):
-        selected = dict(payload["selected_cycle"])
-        selected["_wrapper_generated_utc"] = payload.get("generated_utc")
-        selected["_wrapper_bucket"] = payload.get("bucket")
+    if isinstance(raw, dict) and isinstance(raw.get("selected_cycle"), dict):
+        selected = dict(raw["selected_cycle"])
+        # Preserve wrapper metadata if useful for diagnostics.
+        selected.setdefault("bucket", raw.get("bucket"))
+        selected.setdefault("wrapper_generated_utc", raw.get("generated_utc"))
         return selected
 
-    return payload
+    return raw
 
 
 def infer_cycle_dt(selected: dict[str, Any]) -> datetime:
-    for field in ("cycle_utc", "cycle", "cycle_label", "date", "run", "runtime"):
+    """Infer REFS cycle time from several possible scanner output formats."""
+    for field in (
+        "cycle_utc",
+        "cycle",
+        "cycle_label",
+        "selected_cycle_utc",
+        "selected_cycle",
+    ):
         dt = parse_cycle_string(selected.get(field))
         if dt:
             return dt
 
-    # Common cycle label format from scanner: "2026-05-22 00Z".
-    label = str(selected.get("cycle_label", "") or selected.get("cycle", ""))
-    match = re.search(r"(\d{4})-(\d{2})-(\d{2})\s+(\d{2})Z", label)
-    if match:
-        return datetime(
-            int(match.group(1)),
-            int(match.group(2)),
-            int(match.group(3)),
-            int(match.group(4)),
-            tzinfo=timezone.utc,
-        )
+    for field in ("prefix", "s3_prefix"):
+        prefix = str(selected.get(field, ""))
+        match = re.search(r"refs\.(\d{8})/(\d{2})", prefix)
+        if match:
+            return datetime.strptime(
+                match.group(1) + match.group(2),
+                "%Y%m%d%H",
+            ).replace(tzinfo=timezone.utc)
 
-    # S3 prefix format: rrfs_a/refs.20260522/00/enspost/
-    prefix = str(selected.get("prefix", "") or selected.get("s3_prefix", ""))
-    match = re.search(r"refs\.(\d{8})/(\d{2})", prefix)
-    if match:
-        return datetime.strptime(
-            match.group(1) + match.group(2),
-            "%Y%m%d%H",
-        ).replace(tzinfo=timezone.utc)
-
-    # Last fallback: inspect the file keys themselves.
-    for item in flatten_selected_items(selected):
+    # Last-resort: infer from any file/key item.
+    for item in flatten_selected_items(selected)[:1000]:
         if isinstance(item, dict):
             key = str(item.get("key") or item.get("name") or item.get("path") or "")
         else:
             key = str(item)
-
         match = re.search(r"refs\.(\d{8})/(\d{2})", key)
         if match:
             return datetime.strptime(
@@ -302,13 +301,18 @@ def infer_cycle_dt(selected: dict[str, Any]) -> datetime:
             ).replace(tzinfo=timezone.utc)
 
     raise RuntimeError(
-        "Could not infer REFS cycle time from data/rrfs_refs_selected_cycle.json. "
-        f"Top-level keys after normalization: {list(selected.keys())}"
+        "Could not infer REFS cycle time from selected cycle JSON. "
+        f"Available keys: {list(selected.keys())}"
     )
 
 
 def flatten_selected_items(selected: dict[str, Any]) -> list[Any]:
-    for field in ("keys", "files", "parsed_objects", "objects"):
+    """Return the list of REFS objects from the selected-cycle JSON."""
+    # If a wrapper got through, unwrap here too.
+    if isinstance(selected.get("selected_cycle"), dict):
+        selected = selected["selected_cycle"]
+
+    for field in ("parsed_objects", "keys", "files", "objects", "sample_keys"):
         value = selected.get(field)
         if isinstance(value, list) and value:
             return value
@@ -318,16 +322,15 @@ def flatten_selected_items(selected: dict[str, Any]) -> list[Any]:
 def parse_product_from_key(key: str) -> str:
     lower = key.lower()
 
-    # Common REFS product names.
+    # Expected REFS file pattern:
+    # refs.t18z.mean.f01.conus.grib2
+    match = re.search(r"refs\.t\d{2}z\.([a-z0-9]+)\.f\d{1,3}\.", lower)
+    if match:
+        return match.group(1)
+
     for product in ("mean", "prob", "avrg", "sprd", "lpmm", "pmmn", "ffri", "eas"):
         if f".{product}." in lower or lower.endswith(f".{product}.grib2") or f"/{product}/" in lower:
             return product
-
-    # Fallback: second-to-last token before .grib2/.idx often contains product.
-    parts = lower.split(".")
-    for part in parts:
-        if part in ("mean", "prob", "avrg", "sprd", "lpmm", "pmmn", "ffri", "eas"):
-            return part
 
     return "unknown"
 
@@ -335,9 +338,9 @@ def parse_product_from_key(key: str) -> str:
 def parse_fxx_from_key(key: str) -> int | None:
     lower = key.lower()
     patterns = [
-        r"\.f(\d{3})\.",
-        r"f(\d{3})",
-        r"fcst(\d{3})",
+        r"\.f(\d{1,3})\.",
+        r"f(\d{1,3})",
+        r"fcst(\d{1,3})",
     ]
     for pattern in patterns:
         match = re.search(pattern, lower)
@@ -355,30 +358,54 @@ def parse_kind_from_key(key: str) -> str:
     return "other"
 
 
+def is_conus_key(key: str) -> bool:
+    """Keep CONUS REFS files for KRNO and other CONUS DSS sites."""
+    lower = key.lower()
+    return ".conus.grib2" in lower or ".conus.grib2.idx" in lower
+
+
 def build_file_index(selected: dict[str, Any]) -> dict[tuple[str, int, str], RefsFile]:
     items = flatten_selected_items(selected)
     file_index: dict[tuple[str, int, str], RefsFile] = {}
 
     for item in items:
+        product_from_item = None
+        fxx_from_item = None
+        kind_from_item = None
+
         if isinstance(item, str):
             key = item
         elif isinstance(item, dict):
             key = str(item.get("key") or item.get("name") or item.get("path") or "")
+            product_from_item = item.get("product")
+            fxx_from_item = item.get("fxx")
+            if item.get("is_idx") is True:
+                kind_from_item = "idx"
+            elif item.get("is_grib2") is True:
+                kind_from_item = "grib"
         else:
             continue
 
         if not key:
             continue
 
-        kind = parse_kind_from_key(key)
+        # Avoid AK/HI/PR duplicates. KRNO and current DSS use cases are CONUS.
+        if not is_conus_key(key):
+            continue
+
+        kind = kind_from_item or parse_kind_from_key(key)
         if kind not in ("idx", "grib"):
             continue
 
-        fxx = parse_fxx_from_key(key)
+        try:
+            fxx = int(fxx_from_item) if fxx_from_item is not None else parse_fxx_from_key(key)
+        except Exception:
+            fxx = parse_fxx_from_key(key)
+
         if fxx is None:
             continue
 
-        product = parse_product_from_key(key)
+        product = str(product_from_item or parse_product_from_key(key)).lower()
         file_index[(product, fxx, kind)] = RefsFile(
             key=key,
             product=product,
