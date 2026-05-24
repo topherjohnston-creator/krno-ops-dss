@@ -1991,8 +1991,13 @@
                             'TEMPERATURE': {2:'Operational threshold',3:'Moderate temp impact',4:'Major temp impact',5:'Extreme temp impact'},
                         };
 
+                        const hasRealDisplayValue = (
+                            threatData.display_value !== undefined &&
+                            threatData.display_value !== null &&
+                            !['', 'None', 'No data'].includes(String(threatData.display_value))
+                        );
                         let displayMetric = '';
-                        if (isNone) {
+                        if (isNone && !hasRealDisplayValue) {
                             displayMetric = 'No current signal';
                         } else if (threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
                             displayMetric = `${threatData.display_label}: ${threatData.display_value}`;

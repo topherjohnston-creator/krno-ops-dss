@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
+import tempfile
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 
 DOCS = Path("docs")
@@ -23,10 +26,13 @@ LON = float(os.getenv("DSS_LON", "-119.7681"))
 SELECTED_CYCLE_PATH = DATA / "rrfs_refs_selected_cycle.json"
 FIELD_MAP_SUMMARY_PATH = DATA / "refs_field_map_summary.json"
 BUILDER_SUMMARY_PATH = DATA / "refs_builder_summary.json"
+S3_HTTP_BASE = "https://noaa-rrfs-pds.s3.amazonaws.com"
 
 FORECAST_HOURS = list(range(1, 61))
 BLOCK_HOURS = 3
 BLOCK_COUNT = 20
+MPS_TO_MPH = 2.2369362920544
+EXTRACT_WIND_PROBABILITIES = os.getenv("DSS_WIND_PROBABILITIES", "0") == "1"
 
 HAZARD_ORDER = [
     "WIND",
@@ -81,6 +87,21 @@ RISK_LABELS = {
     5: "Extreme",
 }
 
+RISK_MATRIX = {
+    1: {1: 1, 2: 1, 3: 1, 4: 2, 5: 2},
+    2: {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
+    3: {1: 1, 2: 2, 3: 2, 4: 3, 5: 4},
+    4: {1: 1, 2: 2, 3: 3, 4: 4, 5: 4},
+    5: {1: 1, 2: 2, 3: 3, 4: 4, 5: 5},
+}
+
+WIND_THRESHOLDS = [
+    {"key": "gt_30_mph", "mph": 30.0, "prob_mps": 15.4, "impact": 2, "label": ">30 mph"},
+    {"key": "gt_45_mph", "mph": 45.0, "prob_mps": 20.6, "impact": 3, "label": ">45 mph"},
+    {"key": "gt_58_mph", "mph": 58.0, "prob_mps": 25.72, "impact": 4, "label": ">58 mph"},
+    {"key": "gt_65_mph", "mph": 65.0, "prob_mps": 30.9, "impact": 5, "label": ">65 mph"},
+]
+
 FXX_RE = re.compile(r"\.f(\d{1,3})\.", re.IGNORECASE)
 PRODUCT_RE = re.compile(r"refs\.t\d{2}z\.([a-zA-Z0-9_]+)\.f\d{1,3}\.", re.IGNORECASE)
 PREFIX_CYCLE_RE = re.compile(r"refs\.(\d{8})/(\d{2})")
@@ -103,8 +124,36 @@ def risk_label(risk: int) -> str:
     return RISK_LABELS.get(int(risk), "Unknown")
 
 
+def probability_to_likelihood(probability: float | None) -> int:
+    if probability is None or probability <= 0:
+        return 0
+    if probability >= 90:
+        return 5
+    if probability >= 66:
+        return 4
+    if probability >= 33:
+        return 3
+    if probability >= 10:
+        return 2
+    return 1
+
+
+def matrix_risk(probability: float | None, impact_level: int) -> int:
+    likelihood = probability_to_likelihood(probability)
+    if likelihood == 0:
+        return 0
+    impact = max(1, min(5, int(impact_level)))
+    return RISK_MATRIX[likelihood][impact]
+
+
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=False) + "\n")
+
+
+def s3_to_http(key: str) -> str:
+    if key.startswith("http://") or key.startswith("https://"):
+        return key
+    return f"{S3_HTTP_BASE}/{quote(key.lstrip('/'), safe='/')}"
 
 
 def parse_cycle_string(value: Any) -> datetime | None:
@@ -302,6 +351,304 @@ def summarize_file_index(file_index: dict[tuple[str, int, str], RefsFile]) -> di
     }
 
 
+def get_file(file_index: dict[tuple[str, int, str], RefsFile], product: str, fxx: int, kind: str) -> RefsFile | None:
+    return file_index.get((product, int(fxx), kind))
+
+
+def parse_idx_text(idx_text: str) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    lines = idx_text.splitlines()
+
+    for i, line in enumerate(lines):
+        parts = line.split(":")
+        if len(parts) < 3:
+            continue
+        try:
+            message_no = int(parts[0])
+            start_byte = int(parts[1])
+        except ValueError:
+            continue
+
+        end_byte = None
+        if i + 1 < len(lines):
+            next_parts = lines[i + 1].split(":")
+            if len(next_parts) >= 2:
+                try:
+                    end_byte = int(next_parts[1]) - 1
+                except ValueError:
+                    end_byte = None
+
+        rows.append(
+            {
+                "message_no": message_no,
+                "start_byte": start_byte,
+                "end_byte": end_byte,
+                "line": line,
+            }
+        )
+
+    return rows
+
+
+def load_idx_rows(
+    file_index: dict[tuple[str, int, str], RefsFile],
+    idx_cache: dict[tuple[str, int], list[dict[str, Any]]],
+    product: str,
+    fxx: int,
+) -> list[dict[str, Any]]:
+    cache_key = (product, int(fxx))
+    if cache_key in idx_cache:
+        return idx_cache[cache_key]
+
+    idx_file = get_file(file_index, product, fxx, "idx")
+    if not idx_file:
+        idx_cache[cache_key] = []
+        return []
+
+    import requests
+
+    response = requests.get(s3_to_http(idx_file.key), timeout=30)
+    response.raise_for_status()
+    rows = parse_idx_text(response.text)
+    idx_cache[cache_key] = rows
+    return rows
+
+
+def find_10m_wind_mean_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for row in rows:
+        line = row["line"].upper()
+        if ":WIND:10 M ABOVE GROUND:" in line and "WT ENS MEAN" in line:
+            return row
+    return None
+
+
+def find_10m_wind_prob_row(rows: list[dict[str, Any]], threshold_mps: float) -> dict[str, Any] | None:
+    target = f"PROB >{threshold_mps:g}"
+    for row in rows:
+        line = row["line"].upper()
+        if ":WIND:10 M ABOVE GROUND:" not in line:
+            continue
+        if "PROB FCST" not in line:
+            continue
+        if target in line:
+            return row
+    return None
+
+
+def nearest_grid_value(grib_url: str, row: dict[str, Any], label: str) -> float:
+    import requests
+    import xarray as xr
+
+    headers = (
+        {"Range": f"bytes={row['start_byte']}-{row['end_byte']}"}
+        if row.get("end_byte") is not None
+        else {"Range": f"bytes={row['start_byte']}-"}
+    )
+    response = requests.get(grib_url, headers=headers, timeout=90)
+    response.raise_for_status()
+    if len(response.content) < 100:
+        raise RuntimeError(f"GRIB byte range for {label} was too small: {len(response.content)} bytes")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        path = Path(tmpdir) / f"{label}.grib2"
+        path.write_bytes(response.content)
+        ds = xr.open_dataset(
+            path,
+            engine="cfgrib",
+            backend_kwargs={"indexpath": "", "errors": "ignore"},
+        )
+
+        try:
+            data_vars = list(ds.data_vars)
+            if not data_vars:
+                raise RuntimeError(f"No data variables in {label}")
+            var_name = data_vars[0]
+
+            lat_name = next((name for name in ("latitude", "lat", "gridlat_0") if name in ds.coords or name in ds.variables), None)
+            lon_name = next((name for name in ("longitude", "lon", "gridlon_0") if name in ds.coords or name in ds.variables), None)
+            if not lat_name or not lon_name:
+                raise RuntimeError(f"No lat/lon coordinates in {label}")
+
+            lat = ds[lat_name]
+            lon = ds[lon_name]
+            target_lon = LON + 360.0 if LON < 0 else LON
+
+            if lat.ndim == 1 and lon.ndim == 1:
+                lat_idx = int(abs(lat - LAT).argmin())
+                lon_target = target_lon if float(lon.max()) > 180 else LON
+                lon_idx = int(abs(lon - lon_target).argmin())
+                value = ds[var_name].isel({lat_name: lat_idx, lon_name: lon_idx}).values
+            else:
+                lon_values = lon.values
+                lat_values = lat.values
+                lon_target = target_lon if float(lon_values.max()) > 180 else LON
+                dist2 = (lat_values - LAT) ** 2 + (lon_values - lon_target) ** 2
+                flat_index = int(dist2.argmin())
+                iy, ix = [int(v) for v in divmod(flat_index, dist2.shape[1])]
+                indexers: dict[str, int] = {}
+                dims = ds[var_name].dims
+                for dim, idx in zip(lat.dims, [iy, ix]):
+                    if dim in dims:
+                        indexers[dim] = idx
+                value = ds[var_name].isel(indexers).values
+
+            value_float = float(value.squeeze())
+            if math.isnan(value_float):
+                raise RuntimeError(f"Nearest value for {label} is NaN")
+            return value_float
+        finally:
+            ds.close()
+
+
+def normalize_probability(value: float) -> float:
+    if value <= 1.0:
+        return round(max(0.0, min(100.0, value * 100.0)), 1)
+    return round(max(0.0, min(100.0, value)), 1)
+
+
+def evaluate_wind_thresholds(mean_mph: float | None, threshold_probs: dict[str, float | None]) -> dict[str, Any]:
+    candidates = []
+    for threshold in WIND_THRESHOLDS:
+        probability = threshold_probs.get(threshold["key"])
+        source = "refs_probability"
+        if probability is None:
+            probability = 100.0 if mean_mph is not None and mean_mph >= threshold["mph"] else 0.0
+            source = "deterministic_mean_fallback"
+
+        risk = matrix_risk(probability, int(threshold["impact"]))
+        candidates.append(
+            {
+                "threshold_key": threshold["key"],
+                "threshold_mph": threshold["mph"],
+                "prob_threshold_mps": threshold["prob_mps"],
+                "impact_level": threshold["impact"],
+                "probability": round(float(probability), 1),
+                "risk": risk,
+                "risk_label": risk_label(risk),
+                "label": threshold["label"],
+                "source": source,
+            }
+        )
+
+    return max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
+
+
+def extract_wind_hourly(
+    file_index: dict[tuple[str, int, str], RefsFile],
+    cycle_dt: datetime,
+) -> dict[str, Any]:
+    hourly: list[dict[str, Any]] = []
+    idx_cache: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    errors: list[dict[str, Any]] = []
+
+    try:
+        import requests  # noqa: F401
+        import xarray  # noqa: F401
+        import cfgrib  # noqa: F401
+    except Exception as exc:
+        return {
+            "status": "missing_dependencies",
+            "message": str(exc),
+            "hourly": [],
+            "errors": [{"stage": "import", "message": str(exc)}],
+        }
+
+    for fxx in FORECAST_HOURS:
+        valid_utc = (cycle_dt + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z")
+        hour: dict[str, Any] = {
+            "fxx": fxx,
+            "valid_utc": valid_utc,
+            "mean_wind_mph": None,
+            "mean_status": "missing",
+            "prob_status": "missing",
+            "probabilities": {},
+            "best": {
+                "risk": 0,
+                "risk_label": "None",
+                "probability": 0.0,
+                "impact_level": 0,
+                "label": "No signal",
+            },
+        }
+
+        try:
+            mean_rows = load_idx_rows(file_index, idx_cache, "mean", fxx)
+            mean_row = find_10m_wind_mean_row(mean_rows)
+            mean_file = get_file(file_index, "mean", fxx, "grib")
+            if mean_row and mean_file:
+                raw_mps = nearest_grid_value(s3_to_http(mean_file.key), mean_row, f"wind_mean_f{fxx:03d}")
+                hour["mean_wind_mph"] = round(raw_mps * MPS_TO_MPH, 1)
+                hour["mean_status"] = "ok"
+                hour["mean_idx_line"] = mean_row["line"]
+            else:
+                hour["mean_status"] = "missing_row_or_file"
+        except Exception as exc:
+            msg = str(exc)
+            hour["mean_status"] = "error"
+            hour["mean_error"] = msg
+            errors.append({"fxx": fxx, "stage": "mean", "message": msg})
+
+        threshold_probs: dict[str, float | None] = {}
+        try:
+            if not EXTRACT_WIND_PROBABILITIES:
+                hour["prob_status"] = "skipped"
+                hour["prob_note"] = "Set DSS_WIND_PROBABILITIES=1 to enable probability byte-range reads."
+                hour["best"] = evaluate_wind_thresholds(hour.get("mean_wind_mph"), threshold_probs)
+                hourly.append(hour)
+                continue
+
+            prob_rows = load_idx_rows(file_index, idx_cache, "prob", fxx)
+            prob_file = get_file(file_index, "prob", fxx, "grib")
+            if prob_rows and prob_file:
+                extracted_any = False
+                for threshold in WIND_THRESHOLDS:
+                    prob_row = find_10m_wind_prob_row(prob_rows, float(threshold["prob_mps"]))
+                    if not prob_row:
+                        threshold_probs[threshold["key"]] = None
+                        continue
+                    raw_prob = nearest_grid_value(s3_to_http(prob_file.key), prob_row, f"wind_prob_{threshold['key']}_f{fxx:03d}")
+                    probability = normalize_probability(raw_prob)
+                    threshold_probs[threshold["key"]] = probability
+                    hour["probabilities"][threshold["key"]] = {
+                        "probability": probability,
+                        "idx_line": prob_row["line"],
+                    }
+                    extracted_any = True
+                hour["prob_status"] = "ok" if extracted_any else "missing_rows"
+            else:
+                hour["prob_status"] = "missing_file"
+        except Exception as exc:
+            msg = str(exc)
+            hour["prob_status"] = "error"
+            hour["prob_error"] = msg
+            errors.append({"fxx": fxx, "stage": "probability", "message": msg})
+
+        hour["best"] = evaluate_wind_thresholds(hour.get("mean_wind_mph"), threshold_probs)
+        hourly.append(hour)
+
+    ok_mean_hours = sum(1 for h in hourly if h.get("mean_status") == "ok")
+    ok_prob_hours = sum(1 for h in hourly if h.get("prob_status") == "ok")
+
+    return {
+        "status": "ok" if ok_mean_hours or ok_prob_hours else "no_values",
+        "method": (
+            "refs_mean_prob_10m_wind_fallback"
+            if EXTRACT_WIND_PROBABILITIES
+            else "refs_mean_10m_wind_deterministic_fallback"
+        ),
+        "probability_extraction_enabled": EXTRACT_WIND_PROBABILITIES,
+        "member_method_available": False,
+        "member_method_note": (
+            "Selected REFS inventory exposes mean/prob/sprd products but no member-level gust fields. "
+            "Wind card uses REFS 10 m WIND mean and deterministic threshold screening until member gust files are available."
+        ),
+        "hourly": hourly,
+        "ok_mean_hours": ok_mean_hours,
+        "ok_probability_hours": ok_prob_hours,
+        "errors": errors[:20],
+    }
+
+
 def field_map_by_hazard(field_map: dict[str, Any]) -> dict[str, dict[str, Any]]:
     hazard_categories = {
         "WIND": {"wind"},
@@ -407,6 +754,119 @@ def empty_timeline_hazard(
     }
 
 
+def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -> dict[str, Any]:
+    hourly = wind_result.get("hourly") or []
+    valid_hours = [
+        h for h in hourly
+        if h.get("mean_wind_mph") is not None or h.get("best", {}).get("probability", 0) > 0
+    ]
+    if not valid_hours:
+        return fallback
+
+    best_hour = max(
+        valid_hours,
+        key=lambda h: (
+            h.get("best", {}).get("risk", 0),
+            h.get("best", {}).get("probability", 0.0),
+            h.get("mean_wind_mph") if h.get("mean_wind_mph") is not None else -999.0,
+        ),
+    )
+    best = best_hour.get("best", {})
+    risk = int(best.get("risk", 0))
+    prob = round(float(best.get("probability", 0.0)), 1)
+    mean_mph = best_hour.get("mean_wind_mph")
+    fxx = best_hour.get("fxx")
+
+    return {
+        **fallback,
+        "prob": prob,
+        "probability": prob,
+        "risk": risk,
+        "risk_level": risk,
+        "risk_label": risk_label(risk),
+        "level": int(best.get("impact_level", 0)),
+        "impact_level": int(best.get("impact_level", 0)),
+        "metric": best.get("label", "No signal") if risk > 0 else "No signal",
+        "display_label": "60-hr max wind",
+        "display_value": f"{mean_mph:.0f} mph" if mean_mph is not None else "No mean value",
+        "peak_start_fxx": fxx,
+        "peak_end_fxx": fxx,
+        "source_fxx": fxx,
+        "peak_valid_utc": best_hour.get("valid_utc"),
+        "driver": (
+            f"{prob:.0f}% {best.get('label', 'wind threshold')}; "
+            f"10 m mean wind {mean_mph:.1f} mph"
+            if risk > 0 and mean_mph is not None
+            else wind_result.get("member_method_note", "No meaningful wind signal")
+        ),
+        "methodology": (
+            "Target method is member-by-member 60-hour max wind gust, then mean of member maxima. "
+            "Member-level gust fields were not present in the selected REFS products, so this run uses "
+            "REFS 10 m WIND mean with deterministic threshold screening as the documented fallback. "
+            "Set DSS_WIND_PROBABILITIES=1 to also read REFS 10 m exceedance probability fields."
+        ),
+        "data_status": wind_result.get("status", "unknown"),
+        "method": wind_result.get("method"),
+        "member_method_available": False,
+        "member_method_note": wind_result.get("member_method_note"),
+        "mean_wind_60hr_max_mph": mean_mph,
+        "g24_p50_mph": mean_mph,
+    }
+
+
+def wind_block_payload(
+    wind_result: dict[str, Any],
+    start_fxx: int,
+    end_fxx: int,
+    valid_start: datetime,
+    valid_end: datetime,
+    fallback: dict[str, Any],
+) -> dict[str, Any]:
+    hourly = [
+        h for h in wind_result.get("hourly", [])
+        if start_fxx <= int(h.get("fxx", -999)) <= end_fxx
+    ]
+    if not hourly:
+        return fallback
+
+    best_hour = max(
+        hourly,
+        key=lambda h: (
+            h.get("best", {}).get("risk", 0),
+            h.get("best", {}).get("probability", 0.0),
+            h.get("mean_wind_mph") if h.get("mean_wind_mph") is not None else -999.0,
+        ),
+    )
+    best = best_hour.get("best", {})
+    risk = int(best.get("risk", 0))
+    prob = round(float(best.get("probability", 0.0)), 1)
+    mean_mph = best_hour.get("mean_wind_mph")
+
+    return {
+        **fallback,
+        "risk": risk,
+        "risk_label": risk_label(risk),
+        "level": int(best.get("impact_level", 0)),
+        "impact_level": int(best.get("impact_level", 0)),
+        "prob": prob,
+        "probability": prob,
+        "metric": best.get("label", "No signal") if risk > 0 else "No signal",
+        "driver": (
+            f"{prob:.0f}% {best.get('label', 'wind threshold')}; "
+            f"10 m mean wind {mean_mph:.1f} mph"
+            if risk > 0 and mean_mph is not None
+            else "No meaningful wind signal in this 3-hour block"
+        ),
+        "source_fxx": best_hour.get("fxx"),
+        "peak_valid_utc": best_hour.get("valid_utc"),
+        "valid_start_utc": valid_start.isoformat().replace("+00:00", "Z"),
+        "valid_end_utc": valid_end.isoformat().replace("+00:00", "Z"),
+        "mean_wind_mph": mean_mph,
+        "data_status": wind_result.get("status", "unknown"),
+        "method": wind_result.get("method"),
+    }
+
+
 def hazard_reason(hazard: str, field_summary: dict[str, Any]) -> str:
     matches = int(field_summary.get(hazard, {}).get("field_map_matches", 0))
     if matches:
@@ -419,6 +879,7 @@ def build_outputs(
     selected: dict[str, Any],
     file_index: dict[tuple[str, int, str], RefsFile],
     field_map: dict[str, Any],
+    wind_result: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     generated = utc_now()
     cycle_iso = cycle_dt.isoformat().replace("+00:00", "Z")
@@ -447,8 +908,8 @@ def build_outputs(
             "until exact byte-range extraction is enabled per field."
         ),
         "metadata": {
-            "builder_mode": "lean_idx_field_map",
-            "extraction": "disabled",
+            "builder_mode": "refs_wind_first_pass",
+            "extraction": "wind_enabled",
             "selected_prefix": selected.get("prefix"),
             "available_products": sorted(file_summary.keys()),
             "field_map_status": field_map.get("status", "unknown"),
@@ -457,6 +918,8 @@ def build_outputs(
 
     for hazard in HAZARD_ORDER:
         threat = empty_threat(hazard, cycle_dt, hazard_reason(hazard, field_summary))
+        if hazard == "WIND" and wind_result:
+            threat = wind_threat_payload(wind_result, threat)
         threats["threats"][hazard] = threat
         threats["hazards"].append(
             {
@@ -487,8 +950,8 @@ def build_outputs(
         "blocks": [],
         "block_hazards": [],
         "metadata": {
-            "builder_mode": "lean_idx_field_map",
-            "extraction": "disabled",
+            "builder_mode": "refs_wind_first_pass",
+            "extraction": "wind_enabled",
         },
     }
 
@@ -516,6 +979,8 @@ def build_outputs(
                 valid_end=valid_end,
                 reason=hazard_reason(hazard, field_summary),
             )
+            if hazard == "WIND" and wind_result:
+                payload = wind_block_payload(wind_result, start_fxx, end_fxx, valid_start, valid_end, payload)
             hazard_block[hazard] = payload
             block[hazard] = payload["risk"]
 
@@ -530,7 +995,7 @@ def build_outputs(
         "generated_utc": generated,
         "cycle_utc_iso": cycle_iso,
         "selected_prefix": selected.get("prefix"),
-        "builder_mode": "lean_idx_field_map",
+        "builder_mode": "refs_wind_first_pass",
         "candidate_file_count": len(file_index),
         "products": file_summary,
         "field_map": {
@@ -552,10 +1017,27 @@ def build_outputs(
         },
         "notes": [
             "No full GRIB files are downloaded by this builder.",
-            "No byte-range GRIB values are extracted in this lean pass.",
+            "Wind uses IDX-selected byte ranges for REFS 10 m WIND mean/probability fields.",
             "Outputs are complete and low-risk when exact REFS fields are missing or not yet enabled.",
         ],
     }
+
+    if wind_result:
+        wind_threat = threats["threats"]["WIND"]
+        builder_summary["hazards"]["WIND"].update(
+            {
+                "risk": wind_threat.get("risk", 0),
+                "risk_label": wind_threat.get("risk_label", "None"),
+                "status": wind_result.get("status"),
+                "method": wind_result.get("method"),
+                "member_method_available": wind_result.get("member_method_available", False),
+                "probability_extraction_enabled": wind_result.get("probability_extraction_enabled", False),
+                "ok_mean_hours": wind_result.get("ok_mean_hours", 0),
+                "ok_probability_hours": wind_result.get("ok_probability_hours", 0),
+                "mean_wind_60hr_max_mph": wind_threat.get("mean_wind_60hr_max_mph"),
+                "errors": wind_result.get("errors", [])[:10],
+            }
+        )
 
     return threats, timeline, builder_summary
 
@@ -573,7 +1055,16 @@ def main() -> None:
     print(f"Field-map status: {field_map.get('status', 'unknown')}")
     print(f"Field-map files: {len(field_map.get('files') or [])}")
 
-    threats, timeline, builder_summary = build_outputs(cycle_dt, selected, file_index, field_map)
+    print("Extracting WIND from REFS 10 m mean/probability fields")
+    wind_result = extract_wind_hourly(file_index, cycle_dt)
+    print(
+        "Wind extraction: "
+        f"status={wind_result.get('status')} "
+        f"mean_hours={wind_result.get('ok_mean_hours', 0)} "
+        f"prob_hours={wind_result.get('ok_probability_hours', 0)}"
+    )
+
+    threats, timeline, builder_summary = build_outputs(cycle_dt, selected, file_index, field_map, wind_result)
 
     write_json(DOCS / "threats.json", threats)
     write_json(DOCS / "timeline.json", timeline)
