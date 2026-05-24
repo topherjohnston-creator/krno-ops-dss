@@ -520,7 +520,6 @@ def find_surface_gust_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
 
 def nearest_grid_value(grib_url: str, row: dict[str, Any], label: str) -> float:
     import requests
-    import xarray as xr
 
     headers = (
         {"Range": f"bytes={row['start_byte']}-{row['end_byte']}"}
@@ -535,52 +534,81 @@ def nearest_grid_value(grib_url: str, row: dict[str, Any], label: str) -> float:
     with tempfile.TemporaryDirectory() as tmpdir:
         path = Path(tmpdir) / f"{label}.grib2"
         path.write_bytes(response.content)
-        ds = xr.open_dataset(
-            path,
-            engine="cfgrib",
-            backend_kwargs={"indexpath": "", "errors": "ignore"},
-        )
+        try:
+            return nearest_grid_value_eccodes(path, label)
+        except Exception:
+            return nearest_grid_value_xarray(path, label)
+
+
+def nearest_grid_value_eccodes(path: Path, label: str) -> float:
+    import eccodes
+
+    with path.open("rb") as handle:
+        gid = eccodes.codes_grib_new_from_file(handle)
+        if gid is None:
+            raise RuntimeError(f"No GRIB message in {label}")
 
         try:
-            data_vars = list(ds.data_vars)
-            if not data_vars:
-                raise RuntimeError(f"No data variables in {label}")
-            var_name = data_vars[0]
-
-            lat_name = next((name for name in ("latitude", "lat", "gridlat_0") if name in ds.coords or name in ds.variables), None)
-            lon_name = next((name for name in ("longitude", "lon", "gridlon_0") if name in ds.coords or name in ds.variables), None)
-            if not lat_name or not lon_name:
-                raise RuntimeError(f"No lat/lon coordinates in {label}")
-
-            lat = ds[lat_name]
-            lon = ds[lon_name]
-            target_lon = LON + 360.0 if LON < 0 else LON
-
-            if lat.ndim == 1 and lon.ndim == 1:
-                lat_idx = int(abs(lat - LAT).argmin())
-                lon_target = target_lon if float(lon.max()) > 180 else LON
-                lon_idx = int(abs(lon - lon_target).argmin())
-                value = ds[var_name].isel({lat_name: lat_idx, lon_name: lon_idx}).values
-            else:
-                lon_values = lon.values
-                lat_values = lat.values
-                lon_target = target_lon if float(lon_values.max()) > 180 else LON
-                dist2 = (lat_values - LAT) ** 2 + (lon_values - lon_target) ** 2
-                flat_index = int(dist2.argmin())
-                iy, ix = [int(v) for v in divmod(flat_index, dist2.shape[1])]
-                indexers: dict[str, int] = {}
-                dims = ds[var_name].dims
-                for dim, idx in zip(lat.dims, [iy, ix]):
-                    if dim in dims:
-                        indexers[dim] = idx
-                value = ds[var_name].isel(indexers).values
-
-            value_float = float(value.squeeze())
+            points = eccodes.codes_grib_find_nearest(gid, LAT, LON, False, 1)
+            if not points:
+                raise RuntimeError(f"No nearest grid point found in {label}")
+            value_float = float(points[0]["value"])
             if math.isnan(value_float):
                 raise RuntimeError(f"Nearest value for {label} is NaN")
             return value_float
         finally:
-            ds.close()
+            eccodes.codes_release(gid)
+
+
+def nearest_grid_value_xarray(path: Path, label: str) -> float:
+    import xarray as xr
+
+    ds = xr.open_dataset(
+        path,
+        engine="cfgrib",
+        backend_kwargs={"indexpath": "", "errors": "ignore"},
+    )
+
+    try:
+        data_vars = list(ds.data_vars)
+        if not data_vars:
+            raise RuntimeError(f"No data variables in {label}")
+        var_name = data_vars[0]
+
+        lat_name = next((name for name in ("latitude", "lat", "gridlat_0") if name in ds.coords or name in ds.variables), None)
+        lon_name = next((name for name in ("longitude", "lon", "gridlon_0") if name in ds.coords or name in ds.variables), None)
+        if not lat_name or not lon_name:
+            raise RuntimeError(f"No lat/lon coordinates in {label}")
+
+        lat = ds[lat_name]
+        lon = ds[lon_name]
+        target_lon = LON + 360.0 if LON < 0 else LON
+
+        if lat.ndim == 1 and lon.ndim == 1:
+            lat_idx = int(abs(lat - LAT).argmin())
+            lon_target = target_lon if float(lon.max()) > 180 else LON
+            lon_idx = int(abs(lon - lon_target).argmin())
+            value = ds[var_name].isel({lat_name: lat_idx, lon_name: lon_idx}).values
+        else:
+            lon_values = lon.values
+            lat_values = lat.values
+            lon_target = target_lon if float(lon_values.max()) > 180 else LON
+            dist2 = (lat_values - LAT) ** 2 + (lon_values - lon_target) ** 2
+            flat_index = int(dist2.argmin())
+            iy, ix = [int(v) for v in divmod(flat_index, dist2.shape[1])]
+            indexers: dict[str, int] = {}
+            dims = ds[var_name].dims
+            for dim, idx in zip(lat.dims, [iy, ix]):
+                if dim in dims:
+                    indexers[dim] = idx
+            value = ds[var_name].isel(indexers).values
+
+        value_float = float(value.squeeze())
+        if math.isnan(value_float):
+            raise RuntimeError(f"Nearest value for {label} is NaN")
+        return value_float
+    finally:
+        ds.close()
 
 
 def normalize_probability(value: float) -> float:
