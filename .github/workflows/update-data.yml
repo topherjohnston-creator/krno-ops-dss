@@ -132,9 +132,9 @@ jobs:
         run: |
           python scripts/scan_refs_field_map.py
 
-      - name: Build RRFS/REFS DSS outputs
+      - name: Skip full REFS DSS builder temporarily
         run: |
-          python scripts/build_refs_dss_outputs.py
+          echo "Skipping full REFS DSS builder until field extraction is optimized."
 
       - name: Remove large products before staging
         run: |
