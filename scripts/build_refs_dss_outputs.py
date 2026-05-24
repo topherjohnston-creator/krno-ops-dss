@@ -33,6 +33,7 @@ BLOCK_HOURS = 3
 BLOCK_COUNT = 20
 MPS_TO_MPH = 2.2369362920544
 EXTRACT_WIND_PROBABILITIES = os.getenv("DSS_WIND_PROBABILITIES", "0") == "1"
+ALLOW_MEAN_WIND_AS_GUST_PROXY = os.getenv("DSS_ALLOW_MEAN_WIND_AS_GUST_PROXY", "0") == "1"
 
 HAZARD_ORDER = [
     "WIND",
@@ -537,6 +538,23 @@ def extract_wind_hourly(
     file_index: dict[tuple[str, int, str], RefsFile],
     cycle_dt: datetime,
 ) -> dict[str, Any]:
+    if not ALLOW_MEAN_WIND_AS_GUST_PROXY:
+        return {
+            "status": "missing_gust_field",
+            "method": "gust_required_no_proxy",
+            "member_method_available": False,
+            "probability_extraction_enabled": False,
+            "member_method_note": (
+                "WIND requires wind gust, not 10 m mean WIND. The selected REFS mean/prob/sprd products "
+                "expose 10 m WIND threshold fields but no GUST/member gust fields, so the WIND hazard is "
+                "left at risk 0 until the DESI gust source path is identified."
+            ),
+            "hourly": [],
+            "ok_mean_hours": 0,
+            "ok_probability_hours": 0,
+            "errors": [{"stage": "field_selection", "message": "No REFS GUST field found in selected cycle products."}],
+        }
+
     hourly: list[dict[str, Any]] = []
     idx_cache: dict[tuple[str, int], list[dict[str, Any]]] = {}
     errors: list[dict[str, Any]] = []
@@ -918,8 +936,16 @@ def build_outputs(
 
     for hazard in HAZARD_ORDER:
         threat = empty_threat(hazard, cycle_dt, hazard_reason(hazard, field_summary))
-        if hazard == "WIND" and wind_result:
+        if hazard == "WIND" and wind_result and wind_result.get("status") == "ok":
             threat = wind_threat_payload(wind_result, threat)
+        elif hazard == "WIND" and wind_result and wind_result.get("status") == "missing_gust_field":
+            threat["driver"] = wind_result.get("member_method_note", threat["driver"])
+            threat["data_status"] = "missing_gust_field"
+            threat["method"] = "gust_required_no_proxy"
+            threat["methodology"] = (
+                "WIND is intentionally not populated from 10 m mean WIND. "
+                "Operational WIND risk requires gust/member-gust data."
+            )
         threats["threats"][hazard] = threat
         threats["hazards"].append(
             {
@@ -979,8 +1005,12 @@ def build_outputs(
                 valid_end=valid_end,
                 reason=hazard_reason(hazard, field_summary),
             )
-            if hazard == "WIND" and wind_result:
+            if hazard == "WIND" and wind_result and wind_result.get("status") == "ok":
                 payload = wind_block_payload(wind_result, start_fxx, end_fxx, valid_start, valid_end, payload)
+            elif hazard == "WIND" and wind_result and wind_result.get("status") == "missing_gust_field":
+                payload["driver"] = "No REFS gust field found; mean wind is not used as a gust proxy"
+                payload["data_status"] = "missing_gust_field"
+                payload["method"] = "gust_required_no_proxy"
             hazard_block[hazard] = payload
             block[hazard] = payload["risk"]
 
@@ -1032,6 +1062,7 @@ def build_outputs(
                 "method": wind_result.get("method"),
                 "member_method_available": wind_result.get("member_method_available", False),
                 "probability_extraction_enabled": wind_result.get("probability_extraction_enabled", False),
+                "mean_wind_proxy_allowed": ALLOW_MEAN_WIND_AS_GUST_PROXY,
                 "ok_mean_hours": wind_result.get("ok_mean_hours", 0),
                 "ok_probability_hours": wind_result.get("ok_probability_hours", 0),
                 "mean_wind_60hr_max_mph": wind_threat.get("mean_wind_60hr_max_mph"),
@@ -1055,7 +1086,7 @@ def main() -> None:
     print(f"Field-map status: {field_map.get('status', 'unknown')}")
     print(f"Field-map files: {len(field_map.get('files') or [])}")
 
-    print("Extracting WIND from REFS 10 m mean/probability fields")
+    print("Checking WIND gust source availability")
     wind_result = extract_wind_hourly(file_index, cycle_dt)
     print(
         "Wind extraction: "

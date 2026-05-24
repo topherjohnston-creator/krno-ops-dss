@@ -3,7 +3,7 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-05-24T05:55:01Z",
+  "generated_utc": "2026-05-24T06:02:18Z",
   "cycle_utc_iso": "2026-05-24T00:00:00Z",
   "selected_prefix": "rrfs_a/refs.20260524/00/enspost/",
   "builder_mode": "refs_wind_first_pass",
@@ -1058,14 +1058,20 @@
         "18:20622161:d=2026052400:VGRD:10 m above ground:1 hour fcst:wt ens mean",
         "19:23003778:d=2026052400:UGRD:250 mb:1 hour fcst:wt ens mean"
       ],
-      "status": "ok",
-      "method": "refs_mean_10m_wind_deterministic_fallback",
+      "status": "missing_gust_field",
+      "method": "gust_required_no_proxy",
       "member_method_available": false,
       "probability_extraction_enabled": false,
-      "ok_mean_hours": 60,
+      "mean_wind_proxy_allowed": false,
+      "ok_mean_hours": 0,
       "ok_probability_hours": 0,
-      "mean_wind_60hr_max_mph": 18.7,
-      "errors": []
+      "mean_wind_60hr_max_mph": null,
+      "errors": [
+        {
+          "stage": "field_selection",
+          "message": "No REFS GUST field found in selected cycle products."
+        }
+      ]
     },
     "LIGHTNING": {
       "risk": 0,
