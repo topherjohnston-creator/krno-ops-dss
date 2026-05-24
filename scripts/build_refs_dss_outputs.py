@@ -1143,6 +1143,14 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
                 h.get("gust_max_mph") if h.get("gust_max_mph") is not None else -999.0,
             ),
         ) if hourly else {}
+        peak_gust_hour = max(
+            hourly,
+            key=lambda h: (
+                h.get("gust_max_mph") if h.get("gust_max_mph") is not None else -999.0,
+                h.get("gust_mean_mph") if h.get("gust_mean_mph") is not None else -999.0,
+            ),
+        ) if hourly else {}
+        peak_gust_mph = peak_gust_hour.get("gust_max_mph")
 
         return {
             **fallback,
@@ -1155,15 +1163,16 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
             "impact_level": int(best.get("impact_level", 0)),
             "metric": best.get("label", "No signal") if risk > 0 else "No signal",
             "display_label": "60-hr max gust",
-            "display_value": f"{float(mean_member_max):.0f} mph" if mean_member_max is not None else "No gust value",
-            "peak_start_fxx": peak_hour.get("fxx"),
-            "peak_end_fxx": peak_hour.get("fxx"),
-            "source_fxx": peak_hour.get("fxx"),
-            "peak_valid_utc": peak_hour.get("valid_utc"),
+            "display_value": f"{float(peak_gust_mph):.0f} mph" if peak_gust_mph is not None else "No gust value",
+            "peak_start_fxx": peak_gust_hour.get("fxx"),
+            "peak_end_fxx": peak_gust_hour.get("fxx"),
+            "source_fxx": peak_gust_hour.get("fxx"),
+            "peak_valid_utc": peak_gust_hour.get("valid_utc"),
             "driver": (
                 f"{prob:.0f}% of members exceed {best.get('label', 'gust threshold')}; "
-                f"mean member 60-hr max gust {float(mean_member_max):.1f} mph"
-                if risk > 0 and mean_member_max is not None
+                f"mean member 60-hr max gust {float(mean_member_max):.1f} mph; "
+                f"peak member gust {float(peak_gust_mph):.1f} mph"
+                if risk > 0 and mean_member_max is not None and peak_gust_mph is not None
                 else "DESI-style time-lagged member gusts stay below DSS wind thresholds"
             ),
             "methodology": (
@@ -1182,6 +1191,9 @@ def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -
             "peak_signal_gust_mean_mph": peak_hour.get("gust_mean_mph"),
             "peak_signal_gust_max_mph": peak_hour.get("gust_max_mph"),
             "peak_signal_member_count": peak_hour.get("member_count"),
+            "peak_gust_mph": peak_gust_mph,
+            "peak_gust_member_mean_mph": peak_gust_hour.get("gust_mean_mph"),
+            "peak_gust_member_count": peak_gust_hour.get("member_count"),
             "threshold_probabilities_60hr": wind_result.get("threshold_probabilities_60hr", {}),
             "g24_p50_mph": mean_member_max,
         }
