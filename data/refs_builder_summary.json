@@ -3,10 +3,10 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-05-24T05:17:47Z",
+  "generated_utc": "2026-05-24T05:55:01Z",
   "cycle_utc_iso": "2026-05-24T00:00:00Z",
   "selected_prefix": "rrfs_a/refs.20260524/00/enspost/",
-  "builder_mode": "lean_idx_field_map",
+  "builder_mode": "refs_wind_first_pass",
   "candidate_file_count": 960,
   "products": {
     "avrg": {
@@ -1058,7 +1058,14 @@
         "18:20622161:d=2026052400:VGRD:10 m above ground:1 hour fcst:wt ens mean",
         "19:23003778:d=2026052400:UGRD:250 mb:1 hour fcst:wt ens mean"
       ],
-      "status": "not_extracted"
+      "status": "ok",
+      "method": "refs_mean_10m_wind_deterministic_fallback",
+      "member_method_available": false,
+      "probability_extraction_enabled": false,
+      "ok_mean_hours": 60,
+      "ok_probability_hours": 0,
+      "mean_wind_60hr_max_mph": 18.7,
+      "errors": []
     },
     "LIGHTNING": {
       "risk": 0,
@@ -1227,7 +1234,7 @@
   },
   "notes": [
     "No full GRIB files are downloaded by this builder.",
-    "No byte-range GRIB values are extracted in this lean pass.",
+    "Wind uses IDX-selected byte ranges for REFS 10 m WIND mean/probability fields.",
     "Outputs are complete and low-risk when exact REFS fields are missing or not yet enabled."
   ]
 }
