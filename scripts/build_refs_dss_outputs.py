@@ -6,6 +6,7 @@ import os
 import re
 import tempfile
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -34,6 +35,14 @@ BLOCK_COUNT = 20
 MPS_TO_MPH = 2.2369362920544
 EXTRACT_WIND_PROBABILITIES = os.getenv("DSS_WIND_PROBABILITIES", "0") == "1"
 ALLOW_MEAN_WIND_AS_GUST_PROXY = os.getenv("DSS_ALLOW_MEAN_WIND_AS_GUST_PROXY", "0") == "1"
+EXTRACT_DESI_REFS_GUSTS = os.getenv("DSS_EXTRACT_DESI_REFS_GUSTS", "1") == "1"
+RRFSENS_MEMBERS = [
+    member.strip()
+    for member in os.getenv("DSS_RRFSENS_MEMBERS", "m001,m002,m003,m004,m005").split(",")
+    if member.strip()
+]
+GUST_WORKERS = max(1, int(os.getenv("DSS_GUST_WORKERS", "8")))
+HRRR_HTTP_BASE = "https://noaa-hrrr-bdp-pds.s3.amazonaws.com"
 
 HAZARD_ORDER = [
     "WIND",
@@ -115,6 +124,15 @@ class RefsFile:
     fxx: int
     kind: str
     size: int | None = None
+
+
+@dataclass(frozen=True)
+class GustMemberSource:
+    name: str
+    model: str
+    init_dt: datetime
+    lag_hours: int
+    member: str | None = None
 
 
 def utc_now() -> str:
@@ -415,6 +433,62 @@ def load_idx_rows(
     return rows
 
 
+def build_desi_gust_sources(cycle_dt: datetime) -> list[GustMemberSource]:
+    lag_dt = cycle_dt - timedelta(hours=6)
+    sources = [
+        GustMemberSource("HRRR", "hrrr", cycle_dt, 0),
+        GustMemberSource("HRRR-6", "hrrr", lag_dt, 6),
+        GustMemberSource("RRFS", "rrfs", cycle_dt, 0),
+        GustMemberSource("RRFS-6", "rrfs", lag_dt, 6),
+    ]
+
+    for member in RRFSENS_MEMBERS:
+        member_label = str(int(member.lstrip("m") or "0"))
+        sources.append(GustMemberSource(f"RRFS-{member_label}", "rrfsens", cycle_dt, 0, member))
+        sources.append(GustMemberSource(f"RRFS-{member_label}-6", "rrfsens", lag_dt, 6, member))
+
+    return sources
+
+
+def gust_idx_url(source: GustMemberSource, target_fxx: int) -> tuple[str, str, int]:
+    fxx = target_fxx + source.lag_hours
+    ymd = source.init_dt.strftime("%Y%m%d")
+    hh = source.init_dt.strftime("%H")
+
+    if source.model == "hrrr":
+        key = f"hrrr.{ymd}/conus/hrrr.t{hh}z.wrfsfcf{fxx:02d}.grib2.idx"
+        return f"{HRRR_HTTP_BASE}/{quote(key, safe='/')}", f"{HRRR_HTTP_BASE}/{quote(key.removesuffix('.idx'), safe='/')}", fxx
+
+    if source.model == "rrfs":
+        key = f"rrfs_a/rrfs.{ymd}/{hh}/rrfs.t{hh}z.2dfld.3km.f{fxx:03d}.conus.grib2.idx"
+        return s3_to_http(key), s3_to_http(key.removesuffix(".idx")), fxx
+
+    if source.model == "rrfsens" and source.member:
+        key = (
+            f"rrfs_a/rrfsens.{ymd}/{hh}/{source.member}/"
+            f"rrfs.t{hh}z.{source.member}.2dfld.3km.f{fxx:03d}.conus.grib2.idx"
+        )
+        return s3_to_http(key), s3_to_http(key.removesuffix(".idx")), fxx
+
+    raise RuntimeError(f"Unsupported gust source: {source}")
+
+
+def load_idx_rows_from_url(idx_url: str, idx_cache: dict[str, list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    if idx_url in idx_cache:
+        return idx_cache[idx_url]
+
+    import requests
+
+    response = requests.get(idx_url, timeout=30)
+    if response.status_code == 404:
+        idx_cache[idx_url] = []
+        return []
+    response.raise_for_status()
+    rows = parse_idx_text(response.text)
+    idx_cache[idx_url] = rows
+    return rows
+
+
 def find_10m_wind_mean_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
     for row in rows:
         line = row["line"].upper()
@@ -436,6 +510,14 @@ def find_10m_wind_prob_row(rows: list[dict[str, Any]], threshold_mps: float) -> 
     return None
 
 
+def find_surface_gust_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for row in rows:
+        line = row["line"].upper()
+        if ":GUST:SURFACE:" in line:
+            return row
+    return None
+
+
 def nearest_grid_value(grib_url: str, row: dict[str, Any], label: str) -> float:
     import requests
     import xarray as xr
@@ -445,7 +527,7 @@ def nearest_grid_value(grib_url: str, row: dict[str, Any], label: str) -> float:
         if row.get("end_byte") is not None
         else {"Range": f"bytes={row['start_byte']}-"}
     )
-    response = requests.get(grib_url, headers=headers, timeout=90)
+    response = requests.get(grib_url, headers=headers, timeout=30)
     response.raise_for_status()
     if len(response.content) < 100:
         raise RuntimeError(f"GRIB byte range for {label} was too small: {len(response.content)} bytes")
@@ -534,10 +616,231 @@ def evaluate_wind_thresholds(mean_mph: float | None, threshold_probs: dict[str, 
     return max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
 
 
+def gust_threshold_probabilities(values_mph: list[float]) -> dict[str, float]:
+    if not values_mph:
+        return {threshold["key"]: 0.0 for threshold in WIND_THRESHOLDS}
+
+    count = len(values_mph)
+    return {
+        threshold["key"]: round(
+            100.0 * sum(1 for value in values_mph if value >= float(threshold["mph"])) / count,
+            1,
+        )
+        for threshold in WIND_THRESHOLDS
+    }
+
+
+def evaluate_gust_thresholds(values_mph: list[float]) -> dict[str, Any]:
+    probabilities = gust_threshold_probabilities(values_mph)
+    candidates = []
+
+    for threshold in WIND_THRESHOLDS:
+        probability = probabilities[threshold["key"]]
+        risk = matrix_risk(probability, int(threshold["impact"]))
+        candidates.append(
+            {
+                "threshold_key": threshold["key"],
+                "threshold_mph": threshold["mph"],
+                "impact_level": threshold["impact"],
+                "probability": probability,
+                "risk": risk,
+                "risk_label": risk_label(risk),
+                "label": threshold["label"],
+                "source": "desi_refs_time_lagged_gust",
+            }
+        )
+
+    return max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
+
+
+def extract_desi_refs_gust_hourly(cycle_dt: datetime) -> dict[str, Any]:
+    sources = build_desi_gust_sources(cycle_dt)
+
+    if not EXTRACT_DESI_REFS_GUSTS:
+        return {
+            "status": "disabled",
+            "method": "desi_refs_time_lagged_gust_disabled",
+            "member_method_available": False,
+            "probability_extraction_enabled": False,
+            "hourly": [],
+            "ok_gust_values": 0,
+            "errors": [],
+        }
+
+    try:
+        import requests  # noqa: F401
+        import xarray  # noqa: F401
+        import cfgrib  # noqa: F401
+    except Exception as exc:
+        return {
+            "status": "missing_dependencies",
+            "method": "desi_refs_time_lagged_gust",
+            "message": str(exc),
+            "hourly": [],
+            "ok_gust_values": 0,
+            "errors": [{"stage": "import", "message": str(exc)}],
+        }
+
+    hourly_by_fxx: dict[int, dict[str, Any]] = {}
+    member_maxes: dict[str, dict[str, Any]] = {}
+    errors: list[dict[str, Any]] = []
+
+    for fxx in FORECAST_HOURS:
+        valid_utc = (cycle_dt + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z")
+        hourly_by_fxx[fxx] = {
+            "fxx": fxx,
+            "valid_utc": valid_utc,
+            "gust_values_mph": [],
+            "members": [],
+            "best": {
+                "risk": 0,
+                "risk_label": "None",
+                "probability": 0.0,
+                "impact_level": 0,
+                "label": "No signal",
+            },
+        }
+
+    def read_member_hour(source: GustMemberSource, target_fxx: int) -> dict[str, Any]:
+        idx_url, grib_url, source_fxx = gust_idx_url(source, target_fxx)
+        rows = load_idx_rows_from_url(idx_url, {})
+        gust_row = find_surface_gust_row(rows)
+        if not gust_row:
+            raise RuntimeError("No GUST:surface row in source IDX")
+
+        raw_mps = nearest_grid_value(grib_url, gust_row, f"{source.name.lower().replace('-', '_')}_gust_f{target_fxx:03d}")
+        return {
+            "member": source.name,
+            "model": source.model,
+            "target_fxx": target_fxx,
+            "source_fxx": source_fxx,
+            "lag_hours": source.lag_hours,
+            "gust_mph": round(raw_mps * MPS_TO_MPH, 1),
+            "idx_line": gust_row["line"],
+        }
+
+    tasks = [(source, fxx) for source in sources for fxx in FORECAST_HOURS]
+    with ThreadPoolExecutor(max_workers=GUST_WORKERS) as executor:
+        future_map = {
+            executor.submit(read_member_hour, source, fxx): (source, fxx)
+            for source, fxx in tasks
+        }
+
+        for future in as_completed(future_map):
+            source, fxx = future_map[future]
+            try:
+                result = future.result()
+                gust_mph = float(result["gust_mph"])
+                valid_utc = hourly_by_fxx[fxx]["valid_utc"]
+                hourly_by_fxx[fxx]["gust_values_mph"].append(gust_mph)
+                hourly_by_fxx[fxx]["members"].append(
+                    {
+                        "member": source.name,
+                        "model": source.model,
+                        "source_fxx": result["source_fxx"],
+                        "lag_hours": source.lag_hours,
+                        "gust_mph": gust_mph,
+                        "idx_line": result["idx_line"],
+                    }
+                )
+
+                current = member_maxes.get(source.name)
+                if current is None or gust_mph > float(current["max_gust_mph"]):
+                    member_maxes[source.name] = {
+                        "member": source.name,
+                        "model": source.model,
+                        "lag_hours": source.lag_hours,
+                        "max_gust_mph": gust_mph,
+                        "source_fxx": fxx,
+                        "source_model_fxx": result["source_fxx"],
+                        "peak_valid_utc": valid_utc,
+                    }
+            except Exception as exc:
+                errors.append(
+                    {
+                        "member": source.name,
+                        "model": source.model,
+                        "fxx": fxx,
+                        "source_fxx": fxx + source.lag_hours,
+                        "stage": "gust",
+                        "message": str(exc),
+                    }
+                )
+
+    hourly: list[dict[str, Any]] = []
+    for fxx in FORECAST_HOURS:
+        hour = hourly_by_fxx[fxx]
+        hour["members"] = sorted(hour["members"], key=lambda item: item["member"])
+        values = [float(value) for value in hour["gust_values_mph"]]
+        if values:
+            hour["gust_mean_mph"] = round(sum(values) / len(values), 1)
+            hour["gust_max_mph"] = round(max(values), 1)
+            hour["member_count"] = len(values)
+            hour["probabilities"] = gust_threshold_probabilities(values)
+            hour["best"] = evaluate_gust_thresholds(values)
+            hour["status"] = "ok"
+        else:
+            hour["gust_mean_mph"] = None
+            hour["gust_max_mph"] = None
+            hour["member_count"] = 0
+            hour["probabilities"] = gust_threshold_probabilities([])
+            hour["status"] = "missing"
+        hourly.append(hour)
+
+    member_max_list = sorted(member_maxes.values(), key=lambda item: item["member"])
+    member_max_values = [float(item["max_gust_mph"]) for item in member_max_list]
+    ok_gust_values = sum(len(hour.get("gust_values_mph", [])) for hour in hourly)
+
+    if not member_max_values:
+        return {
+            "status": "no_values",
+            "method": "desi_refs_time_lagged_gust",
+            "member_method_available": False,
+            "probability_extraction_enabled": True,
+            "hourly": hourly,
+            "members_requested": [source.name for source in sources],
+            "members_found": [],
+            "ok_gust_values": ok_gust_values,
+            "errors": errors[:30],
+        }
+
+    mean_member_max = round(sum(member_max_values) / len(member_max_values), 1)
+    best_60hr = evaluate_gust_thresholds(member_max_values)
+    peak_member = max(member_max_list, key=lambda item: float(item["max_gust_mph"]))
+
+    return {
+        "status": "ok",
+        "method": "desi_refs_time_lagged_gust",
+        "member_method_available": True,
+        "probability_extraction_enabled": True,
+        "member_method_note": (
+            "Wind uses the DESI-style 14-member time-lagged REFS gust set: current and 6-hour-lagged "
+            "HRRR, RRFS, and RRFSENS m001-m005 GUST:surface fields. Each member's 60-hour max gust "
+            "is found first, then those member maxima are averaged."
+        ),
+        "hourly": hourly,
+        "members_requested": [source.name for source in sources],
+        "members_found": [item["member"] for item in member_max_list],
+        "member_max_gusts": member_max_list,
+        "mean_member_max_gust_mph": mean_member_max,
+        "threshold_probabilities_60hr": gust_threshold_probabilities(member_max_values),
+        "best_60hr": best_60hr,
+        "peak_member": peak_member,
+        "ok_gust_values": ok_gust_values,
+        "ok_mean_hours": 0,
+        "ok_probability_hours": sum(1 for hour in hourly if hour.get("status") == "ok"),
+        "errors": errors[:30],
+    }
+
+
 def extract_wind_hourly(
     file_index: dict[tuple[str, int, str], RefsFile],
     cycle_dt: datetime,
 ) -> dict[str, Any]:
+    gust_result = extract_desi_refs_gust_hourly(cycle_dt)
+    if gust_result.get("status") == "ok":
+        return gust_result
+
     if not ALLOW_MEAN_WIND_AS_GUST_PROXY:
         return {
             "status": "missing_gust_field",
@@ -552,7 +855,16 @@ def extract_wind_hourly(
             "hourly": [],
             "ok_mean_hours": 0,
             "ok_probability_hours": 0,
-            "errors": [{"stage": "field_selection", "message": "No REFS GUST field found in selected cycle products."}],
+            "gust_attempt": {
+                "status": gust_result.get("status"),
+                "method": gust_result.get("method"),
+                "members_requested": gust_result.get("members_requested", [source.name for source in build_desi_gust_sources(cycle_dt)]),
+                "ok_gust_values": gust_result.get("ok_gust_values", 0),
+            },
+            "errors": (
+                gust_result.get("errors", [])[:10]
+                or [{"stage": "field_selection", "message": "No DESI-style time-lagged GUST field values could be extracted."}]
+            ),
         }
 
     hourly: list[dict[str, Any]] = []
@@ -773,6 +1085,52 @@ def empty_timeline_hazard(
 
 
 def wind_threat_payload(wind_result: dict[str, Any], fallback: dict[str, Any]) -> dict[str, Any]:
+    if wind_result.get("method") == "desi_refs_time_lagged_gust":
+        best = wind_result.get("best_60hr") or {}
+        risk = int(best.get("risk", 0))
+        prob = round(float(best.get("probability", 0.0)), 1)
+        mean_member_max = wind_result.get("mean_member_max_gust_mph")
+        peak_member = wind_result.get("peak_member") or {}
+
+        return {
+            **fallback,
+            "prob": prob,
+            "probability": prob,
+            "risk": risk,
+            "risk_level": risk,
+            "risk_label": risk_label(risk),
+            "level": int(best.get("impact_level", 0)),
+            "impact_level": int(best.get("impact_level", 0)),
+            "metric": best.get("label", "No signal") if risk > 0 else "No signal",
+            "display_label": "60-hr max gust",
+            "display_value": f"{float(mean_member_max):.0f} mph" if mean_member_max is not None else "No gust value",
+            "peak_start_fxx": peak_member.get("source_fxx"),
+            "peak_end_fxx": peak_member.get("source_fxx"),
+            "source_fxx": peak_member.get("source_fxx"),
+            "peak_valid_utc": peak_member.get("peak_valid_utc"),
+            "driver": (
+                f"{prob:.0f}% of members exceed {best.get('label', 'gust threshold')}; "
+                f"mean member 60-hr max gust {float(mean_member_max):.1f} mph"
+                if risk > 0 and mean_member_max is not None
+                else "DESI-style time-lagged member gusts stay below DSS wind thresholds"
+            ),
+            "methodology": (
+                "WIND uses DESI-style time-lagged GUST:surface fields from HRRR, RRFS, and RRFSENS. "
+                "For each member, the builder finds that member's maximum gust from f001-f060, then averages those member maxima. "
+                "Threshold probabilities are the share of member maxima exceeding each gust threshold."
+            ),
+            "data_status": wind_result.get("status", "unknown"),
+            "method": wind_result.get("method"),
+            "member_method_available": True,
+            "member_method_note": wind_result.get("member_method_note"),
+            "member_count": len(wind_result.get("member_max_gusts") or []),
+            "members_found": wind_result.get("members_found", []),
+            "member_max_gusts": wind_result.get("member_max_gusts", []),
+            "mean_member_max_gust_mph": mean_member_max,
+            "threshold_probabilities_60hr": wind_result.get("threshold_probabilities_60hr", {}),
+            "g24_p50_mph": mean_member_max,
+        }
+
     hourly = wind_result.get("hourly") or []
     valid_hours = [
         h for h in hourly
@@ -852,6 +1210,7 @@ def wind_block_payload(
         key=lambda h: (
             h.get("best", {}).get("risk", 0),
             h.get("best", {}).get("probability", 0.0),
+            h.get("gust_max_mph") if h.get("gust_max_mph") is not None else -999.0,
             h.get("mean_wind_mph") if h.get("mean_wind_mph") is not None else -999.0,
         ),
     )
@@ -859,6 +1218,9 @@ def wind_block_payload(
     risk = int(best.get("risk", 0))
     prob = round(float(best.get("probability", 0.0)), 1)
     mean_mph = best_hour.get("mean_wind_mph")
+    gust_mean_mph = best_hour.get("gust_mean_mph")
+    gust_max_mph = best_hour.get("gust_max_mph")
+    uses_gust = wind_result.get("method") == "desi_refs_time_lagged_gust"
 
     return {
         **fallback,
@@ -870,6 +1232,10 @@ def wind_block_payload(
         "probability": prob,
         "metric": best.get("label", "No signal") if risk > 0 else "No signal",
         "driver": (
+            f"{prob:.0f}% of members exceed {best.get('label', 'gust threshold')}; "
+            f"block max gust {float(gust_max_mph):.1f} mph"
+            if uses_gust and risk > 0 and gust_max_mph is not None
+            else
             f"{prob:.0f}% {best.get('label', 'wind threshold')}; "
             f"10 m mean wind {mean_mph:.1f} mph"
             if risk > 0 and mean_mph is not None
@@ -880,6 +1246,10 @@ def wind_block_payload(
         "valid_start_utc": valid_start.isoformat().replace("+00:00", "Z"),
         "valid_end_utc": valid_end.isoformat().replace("+00:00", "Z"),
         "mean_wind_mph": mean_mph,
+        "gust_mean_mph": gust_mean_mph,
+        "gust_max_mph": gust_max_mph,
+        "member_count": best_hour.get("member_count"),
+        "members": best_hour.get("members", []),
         "data_status": wind_result.get("status", "unknown"),
         "method": wind_result.get("method"),
     }
@@ -1047,7 +1417,7 @@ def build_outputs(
         },
         "notes": [
             "No full GRIB files are downloaded by this builder.",
-            "Wind uses IDX-selected byte ranges for REFS 10 m WIND mean/probability fields.",
+            "Wind uses IDX-selected byte ranges for DESI-style time-lagged GUST:surface fields when available.",
             "Outputs are complete and low-risk when exact REFS fields are missing or not yet enabled.",
         ],
     }
@@ -1065,7 +1435,11 @@ def build_outputs(
                 "mean_wind_proxy_allowed": ALLOW_MEAN_WIND_AS_GUST_PROXY,
                 "ok_mean_hours": wind_result.get("ok_mean_hours", 0),
                 "ok_probability_hours": wind_result.get("ok_probability_hours", 0),
+                "ok_gust_values": wind_result.get("ok_gust_values", 0),
                 "mean_wind_60hr_max_mph": wind_threat.get("mean_wind_60hr_max_mph"),
+                "mean_member_max_gust_mph": wind_threat.get("mean_member_max_gust_mph"),
+                "members_found": wind_result.get("members_found", []),
+                "threshold_probabilities_60hr": wind_result.get("threshold_probabilities_60hr", {}),
                 "errors": wind_result.get("errors", [])[:10],
             }
         )
@@ -1091,6 +1465,7 @@ def main() -> None:
     print(
         "Wind extraction: "
         f"status={wind_result.get('status')} "
+        f"gust_values={wind_result.get('ok_gust_values', 0)} "
         f"mean_hours={wind_result.get('ok_mean_hours', 0)} "
         f"prob_hours={wind_result.get('ok_probability_hours', 0)}"
     )
