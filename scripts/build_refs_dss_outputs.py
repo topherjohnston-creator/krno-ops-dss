@@ -241,16 +241,45 @@ def load_selected_cycle() -> dict[str, Any]:
             "Run scripts/scan_rrfs_refs_inventory.py first."
         )
 
-    return json.loads(SELECTED_CYCLE_PATH.read_text())
+    payload = json.loads(SELECTED_CYCLE_PATH.read_text())
+
+    # scan_rrfs_refs_inventory.py writes a compact wrapper shaped like:
+    # {
+    #   "generated_utc": "...",
+    #   "bucket": "https://noaa-rrfs-pds.s3.amazonaws.com",
+    #   "selected_cycle": { ... actual cycle metadata/files ... }
+    # }
+    # Older builder versions expected the selected cycle fields at top level.
+    # Normalize here so the rest of this builder receives one consistent shape.
+    if isinstance(payload, dict) and isinstance(payload.get("selected_cycle"), dict):
+        selected = dict(payload["selected_cycle"])
+        selected["_wrapper_generated_utc"] = payload.get("generated_utc")
+        selected["_wrapper_bucket"] = payload.get("bucket")
+        return selected
+
+    return payload
 
 
 def infer_cycle_dt(selected: dict[str, Any]) -> datetime:
-    for field in ("cycle_utc", "cycle", "cycle_label"):
+    for field in ("cycle_utc", "cycle", "cycle_label", "date", "run", "runtime"):
         dt = parse_cycle_string(selected.get(field))
         if dt:
             return dt
 
-    prefix = selected.get("prefix", "")
+    # Common cycle label format from scanner: "2026-05-22 00Z".
+    label = str(selected.get("cycle_label", "") or selected.get("cycle", ""))
+    match = re.search(r"(\d{4})-(\d{2})-(\d{2})\s+(\d{2})Z", label)
+    if match:
+        return datetime(
+            int(match.group(1)),
+            int(match.group(2)),
+            int(match.group(3)),
+            int(match.group(4)),
+            tzinfo=timezone.utc,
+        )
+
+    # S3 prefix format: rrfs_a/refs.20260522/00/enspost/
+    prefix = str(selected.get("prefix", "") or selected.get("s3_prefix", ""))
     match = re.search(r"refs\.(\d{8})/(\d{2})", prefix)
     if match:
         return datetime.strptime(
@@ -258,7 +287,24 @@ def infer_cycle_dt(selected: dict[str, Any]) -> datetime:
             "%Y%m%d%H",
         ).replace(tzinfo=timezone.utc)
 
-    raise RuntimeError("Could not infer REFS cycle time from selected cycle JSON.")
+    # Last fallback: inspect the file keys themselves.
+    for item in flatten_selected_items(selected):
+        if isinstance(item, dict):
+            key = str(item.get("key") or item.get("name") or item.get("path") or "")
+        else:
+            key = str(item)
+
+        match = re.search(r"refs\.(\d{8})/(\d{2})", key)
+        if match:
+            return datetime.strptime(
+                match.group(1) + match.group(2),
+                "%Y%m%d%H",
+            ).replace(tzinfo=timezone.utc)
+
+    raise RuntimeError(
+        "Could not infer REFS cycle time from data/rrfs_refs_selected_cycle.json. "
+        f"Top-level keys after normalization: {list(selected.keys())}"
+    )
 
 
 def flatten_selected_items(selected: dict[str, Any]) -> list[Any]:
