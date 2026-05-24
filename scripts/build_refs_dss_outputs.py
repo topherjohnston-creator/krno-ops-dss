@@ -678,7 +678,19 @@ def evaluate_gust_thresholds(values_mph: list[float]) -> dict[str, Any]:
             }
         )
 
-    return max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
+    best = max(candidates, key=lambda c: (c["risk"], c["probability"], c["impact_level"]))
+    if best["risk"] == 0 and best["probability"] == 0:
+        return {
+            "threshold_key": None,
+            "threshold_mph": None,
+            "impact_level": 0,
+            "probability": 0.0,
+            "risk": 0,
+            "risk_label": "None",
+            "label": "No signal",
+            "source": "desi_refs_time_lagged_gust",
+        }
+    return best
 
 
 def extract_desi_refs_gust_hourly(cycle_dt: datetime) -> dict[str, Any]:
