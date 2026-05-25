@@ -4,17 +4,17 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-05-25T15:36:09Z",
-  "cycle_utc_iso": "2026-05-25T06:00:00Z",
-  "cycle": "REFS 06Z",
+  "generated_utc": "2026-05-25T20:06:46Z",
+  "cycle_utc_iso": "2026-05-25T12:00:00Z",
+  "cycle": "REFS 12Z",
   "valid_period": "next_60_hours",
   "threats": {
     "WIND": {
       "id": "WIND",
       "title": "WIND",
       "name": "WIND",
-      "prob": 92.9,
-      "probability": 92.9,
+      "prob": 100.0,
+      "probability": 100.0,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
@@ -22,13 +22,13 @@
       "impact_level": 2,
       "metric": ">30 mph",
       "display_label": "60-hr max gust",
-      "display_value": "47 mph",
+      "display_value": "48 mph",
       "window": "60 hr",
-      "peak_start_fxx": 19,
-      "peak_end_fxx": 19,
-      "source_fxx": 19,
-      "peak_valid_utc": "2026-05-26T01:00:00Z",
-      "driver": "93% of members exceed >30 mph; mean member 60-hr max gust 35.5 mph; peak member gust 46.8 mph",
+      "peak_start_fxx": 35,
+      "peak_end_fxx": 35,
+      "source_fxx": 35,
+      "peak_valid_utc": "2026-05-26T23:00:00Z",
+      "driver": "100% of members exceed >30 mph; mean member 60-hr max gust 36.3 mph; peak member gust 48.3 mph",
       "methodology": "WIND uses DESI-style time-lagged GUST:surface fields from HRRR, RRFS, and RRFSENS. For each member, the builder finds that member's maximum gust from f001-f060, then averages those member maxima. Threshold probabilities are the share of member maxima exceeding each gust threshold.",
       "data_status": "ok",
       "method": "desi_refs_time_lagged_gust",
@@ -56,143 +56,143 @@
           "member": "HRRR",
           "model": "hrrr",
           "lag_hours": 0,
-          "max_gust_mph": 30.1,
-          "source_fxx": 39,
-          "source_model_fxx": 39,
+          "max_gust_mph": 33.6,
+          "source_fxx": 33,
+          "source_model_fxx": 33,
           "peak_valid_utc": "2026-05-26T21:00:00Z"
         },
         {
           "member": "HRRR-6",
           "model": "hrrr",
           "lag_hours": 6,
-          "max_gust_mph": 28.3,
-          "source_fxx": 39,
-          "source_model_fxx": 45,
+          "max_gust_mph": 30.1,
+          "source_fxx": 33,
+          "source_model_fxx": 39,
           "peak_valid_utc": "2026-05-26T21:00:00Z"
         },
         {
           "member": "RRFS",
           "model": "rrfs",
           "lag_hours": 0,
-          "max_gust_mph": 31.5,
-          "source_fxx": 17,
-          "source_model_fxx": 17,
-          "peak_valid_utc": "2026-05-25T23:00:00Z"
+          "max_gust_mph": 30.9,
+          "source_fxx": 13,
+          "source_model_fxx": 13,
+          "peak_valid_utc": "2026-05-26T01:00:00Z"
         },
         {
           "member": "RRFS-1",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 37.4,
-          "source_fxx": 44,
-          "source_model_fxx": 44,
-          "peak_valid_utc": "2026-05-27T02:00:00Z"
+          "max_gust_mph": 38.3,
+          "source_fxx": 13,
+          "source_model_fxx": 13,
+          "peak_valid_utc": "2026-05-26T01:00:00Z"
         },
         {
           "member": "RRFS-1-6",
           "model": "rrfsens",
           "lag_hours": 6,
-          "max_gust_mph": 35.6,
-          "source_fxx": 41,
-          "source_model_fxx": 47,
-          "peak_valid_utc": "2026-05-26T23:00:00Z"
+          "max_gust_mph": 37.4,
+          "source_fxx": 38,
+          "source_model_fxx": 44,
+          "peak_valid_utc": "2026-05-27T02:00:00Z"
         },
         {
           "member": "RRFS-2",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 34.0,
-          "source_fxx": 18,
-          "source_model_fxx": 18,
-          "peak_valid_utc": "2026-05-26T00:00:00Z"
+          "max_gust_mph": 33.6,
+          "source_fxx": 24,
+          "source_model_fxx": 24,
+          "peak_valid_utc": "2026-05-26T12:00:00Z"
         },
         {
           "member": "RRFS-2-6",
           "model": "rrfsens",
           "lag_hours": 6,
-          "max_gust_mph": 35.3,
-          "source_fxx": 43,
-          "source_model_fxx": 49,
-          "peak_valid_utc": "2026-05-27T01:00:00Z"
+          "max_gust_mph": 34.0,
+          "source_fxx": 12,
+          "source_model_fxx": 18,
+          "peak_valid_utc": "2026-05-26T00:00:00Z"
         },
         {
           "member": "RRFS-3",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 33.1,
-          "source_fxx": 41,
-          "source_model_fxx": 41,
+          "max_gust_mph": 34.7,
+          "source_fxx": 35,
+          "source_model_fxx": 35,
           "peak_valid_utc": "2026-05-26T23:00:00Z"
         },
         {
           "member": "RRFS-3-6",
           "model": "rrfsens",
           "lag_hours": 6,
-          "max_gust_mph": 32.7,
-          "source_fxx": 19,
-          "source_model_fxx": 25,
-          "peak_valid_utc": "2026-05-26T01:00:00Z"
+          "max_gust_mph": 33.1,
+          "source_fxx": 35,
+          "source_model_fxx": 41,
+          "peak_valid_utc": "2026-05-26T23:00:00Z"
         },
         {
           "member": "RRFS-4",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 38.3,
-          "source_fxx": 42,
-          "source_model_fxx": 42,
-          "peak_valid_utc": "2026-05-27T00:00:00Z"
+          "max_gust_mph": 48.3,
+          "source_fxx": 35,
+          "source_model_fxx": 35,
+          "peak_valid_utc": "2026-05-26T23:00:00Z"
         },
         {
           "member": "RRFS-4-6",
           "model": "rrfsens",
           "lag_hours": 6,
-          "max_gust_mph": 40.3,
-          "source_fxx": 20,
-          "source_model_fxx": 26,
-          "peak_valid_utc": "2026-05-26T02:00:00Z"
+          "max_gust_mph": 38.3,
+          "source_fxx": 36,
+          "source_model_fxx": 42,
+          "peak_valid_utc": "2026-05-27T00:00:00Z"
         },
         {
           "member": "RRFS-5",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 43.4,
-          "source_fxx": 19,
-          "source_model_fxx": 19,
+          "max_gust_mph": 40.7,
+          "source_fxx": 13,
+          "source_model_fxx": 13,
           "peak_valid_utc": "2026-05-26T01:00:00Z"
         },
         {
           "member": "RRFS-5-6",
           "model": "rrfsens",
           "lag_hours": 6,
-          "max_gust_mph": 46.8,
-          "source_fxx": 19,
-          "source_model_fxx": 25,
+          "max_gust_mph": 43.4,
+          "source_fxx": 13,
+          "source_model_fxx": 19,
           "peak_valid_utc": "2026-05-26T01:00:00Z"
         },
         {
           "member": "RRFS-6",
           "model": "rrfs",
           "lag_hours": 6,
-          "max_gust_mph": 30.2,
-          "source_fxx": 47,
-          "source_model_fxx": 53,
-          "peak_valid_utc": "2026-05-27T05:00:00Z"
+          "max_gust_mph": 31.5,
+          "source_fxx": 11,
+          "source_model_fxx": 17,
+          "peak_valid_utc": "2026-05-25T23:00:00Z"
         }
       ],
-      "mean_member_max_gust_mph": 35.5,
-      "peak_signal_gust_mean_mph": 30.3,
-      "peak_signal_gust_max_mph": 46.8,
+      "mean_member_max_gust_mph": 36.3,
+      "peak_signal_gust_mean_mph": 29.9,
+      "peak_signal_gust_max_mph": 48.3,
       "peak_signal_member_count": 14,
-      "peak_gust_mph": 46.8,
-      "peak_gust_member_mean_mph": 30.3,
+      "peak_gust_mph": 48.3,
+      "peak_gust_member_mean_mph": 29.9,
       "peak_gust_member_count": 14,
       "threshold_probabilities_60hr": {
-        "gt_30_mph": 92.9,
+        "gt_30_mph": 100.0,
         "gt_45_mph": 7.1,
         "gt_58_mph": 0.0,
         "gt_65_mph": 0.0
       },
-      "g24_p50_mph": 35.5
+      "g24_p50_mph": 36.3
     },
     "LIGHTNING": {
       "id": "LIGHTNING",
@@ -364,13 +364,13 @@
       "risk_level": 2,
       "risk_label": "Minor",
       "impact_level": 2,
-      "probability": 92.9,
-      "peak_start_fxx": 19,
-      "peak_end_fxx": 19,
+      "probability": 100.0,
+      "peak_start_fxx": 35,
+      "peak_end_fxx": 35,
       "metric": ">30 mph",
       "display_label": "60-hr max gust",
-      "display_value": "47 mph",
-      "driver": "93% of members exceed >30 mph; mean member 60-hr max gust 35.5 mph; peak member gust 46.8 mph"
+      "display_value": "48 mph",
+      "driver": "100% of members exceed >30 mph; mean member 60-hr max gust 36.3 mph; peak member gust 48.3 mph"
     },
     {
       "id": "LIGHTNING",
@@ -482,7 +482,7 @@
   "metadata": {
     "builder_mode": "refs_wind_first_pass",
     "extraction": "wind_enabled",
-    "selected_prefix": "rrfs_a/refs.20260525/06/enspost/",
+    "selected_prefix": "rrfs_a/refs.20260525/12/enspost/",
     "available_products": [
       "avrg",
       "eas",
