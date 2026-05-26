@@ -1254,6 +1254,25 @@ def field_map_by_hazard(field_map: dict[str, Any]) -> dict[str, dict[str, Any]]:
     for hazard, item in summary.items():
         item["mapped_hours"] = sorted(set(item.get("mapped_hours", [])))
 
+    flash_inputs = ("TEMPERATURE", "RAIN", "SNOW", "FZRA")
+    summary["FLASH_FREEZE"]["field_map_matches"] = sum(
+        int(summary[input_hazard].get("field_map_matches", 0))
+        for input_hazard in flash_inputs
+    )
+    summary["FLASH_FREEZE"]["mapped_hours"] = sorted(
+        {
+            hour
+            for input_hazard in flash_inputs
+            for hour in summary[input_hazard].get("mapped_hours", [])
+        }
+    )
+    summary["FLASH_FREEZE"]["sample_lines"] = [
+        line
+        for input_hazard in flash_inputs
+        for line in summary[input_hazard].get("sample_lines", [])
+    ][:3]
+    summary["FLASH_FREEZE"]["note"] = "Derived from temperature/freezing probability plus wet-type probability."
+
     return summary
 
 
@@ -1662,6 +1681,31 @@ def probability_signal(
     }
 
 
+def lightning_signal(hour: dict[str, Any], all_hours: dict[int, dict[str, Any]] | None = None) -> dict[str, Any] | None:
+    prob = value_or_none(hour, "lightning_prob")
+    if prob is None:
+        return None
+
+    prob = round(float(prob), 1)
+    fxx = int(hour.get("fxx", -999))
+
+    # The LTNG probability field occasionally returns an isolated 100% point at KRNO
+    # while surrounding DESI/REFS hours stay near zero. Treat that as a bad point.
+    if prob >= 95.0 and all_hours:
+        prev_prob = value_or_none(all_hours.get(fxx - 1, {}), "lightning_prob") or 0.0
+        next_prob = value_or_none(all_hours.get(fxx + 1, {}), "lightning_prob") or 0.0
+        if max(prev_prob, next_prob) < 10.0:
+            prob = 0.0
+
+    risk = matrix_risk(prob, 3) if prob > 0 else 0
+    return {
+        "risk": risk,
+        "impact_level": 3 if risk > 0 else 0,
+        "probability": prob if risk > 0 else 0.0,
+        "metric": "thunder probability" if risk > 0 else "No signal",
+    }
+
+
 def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
     cold_prob = value_or_none(hour, "temp_freezing_prob")
     temp_k = value_or_none(hour, "temp_mean_k")
@@ -1692,7 +1736,7 @@ def secondary_signal_for_hazard(hazard: str, hour: dict[str, Any]) -> dict[str, 
     if hazard == "VISIBILITY":
         return visibility_signal(hour)
     if hazard == "LIGHTNING":
-        return probability_signal(hour, "lightning_prob", "LTNG >0.08", 3)
+        return lightning_signal(hour)
     if hazard == "RAIN":
         return probability_signal(hour, "rain_prob", "rain type", 1, "rain_heavy_prob", 3)
     if hazard == "SNOW":
@@ -1705,9 +1749,10 @@ def secondary_signal_for_hazard(hazard: str, hour: dict[str, Any]) -> dict[str, 
 
 
 def best_secondary_hour(hazard: str, hours: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    hours_by_fxx = {int(hour.get("fxx", -999)): hour for hour in hours}
     candidates = []
     for hour in hours:
-        signal = secondary_signal_for_hazard(hazard, hour)
+        signal = lightning_signal(hour, hours_by_fxx) if hazard == "LIGHTNING" else secondary_signal_for_hazard(hazard, hour)
         if not signal:
             continue
         candidates.append((hour, signal))
@@ -1737,8 +1782,9 @@ def best_secondary_hour(hazard: str, hours: list[dict[str, Any]]) -> tuple[dict[
 
 def secondary_hourly_values(hazard: str, hours: list[dict[str, Any]]) -> list[dict[str, Any]]:
     values = []
+    hours_by_fxx = {int(hour.get("fxx", -999)): hour for hour in hours}
     for hour in sorted(hours, key=lambda item: int(item.get("fxx", 999))):
-        signal = secondary_signal_for_hazard(hazard, hour)
+        signal = lightning_signal(hour, hours_by_fxx) if hazard == "LIGHTNING" else secondary_signal_for_hazard(hazard, hour)
         if not signal:
             continue
         item = {
@@ -1753,7 +1799,7 @@ def secondary_hourly_values(hazard: str, hours: list[dict[str, Any]]) -> list[di
         elif hazard == "VISIBILITY":
             item.update({"label": "visibility", "value": signal.get("visibility_mi"), "unit": "mi", "visibility_mi": signal.get("visibility_mi")})
         elif hazard == "FLASH_FREEZE":
-            item.update({"label": "joint prob", "value": signal.get("probability"), "unit": "%", "cold_prob": signal.get("cold_prob"), "wet_prob": signal.get("wet_prob")})
+            item.update({"label": "flash freeze", "value": signal.get("probability"), "unit": "%", "cold_prob": signal.get("cold_prob"), "wet_prob": signal.get("wet_prob")})
         else:
             item.update({"label": "prob", "value": signal.get("probability"), "unit": "%"})
         values.append(item)

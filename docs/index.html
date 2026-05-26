@@ -947,33 +947,33 @@
                 const items = hours.map(hour => {
                     let label = fmtHour(hour.valid_utc);
                     let main = '';
-                    let sub = '';
+                    const hourRisk = hour.risk ?? 0;
+                    const hourCfg = RISK_LEVELS[hourRisk] || RISK_LEVELS[0];
+                    const riskColor = hourRisk > 0 ? hourCfg.color : '#71717a';
 
                     if (key === 'WIND') {
                         const gust = hour.gust_max_mph ?? hour.value;
-                        const mean = hour.gust_mean_mph;
                         const col = deciColormap('WIND', gust) || '#fbbf24';
                         main = gust != null
                             ? `<span style="color:${col};font-weight:800;">${Math.round(gust)} mph</span>`
                             : `<span style="color:#71717a;font-weight:800;">--</span>`;
-                        if (mean != null) sub += ` mean ${Math.round(mean)}`;
-                        if (hour.member_count != null) sub += `${sub ? ' ·' : ''} ${hour.member_count}m`;
                     } else {
-                        const fallbackUnits = { TEMPERATURE:'°F', VISIBILITY:'SM', RAIN:'in', SNOW:'in', FZRA:'in', LIGHTNING:'%', FLASH_FREEZE:'°F' };
+                        const fallbackUnits = { TEMPERATURE:'°F', VISIBILITY:'mi', RAIN:'%', SNOW:'%', FZRA:'%', LIGHTNING:'%', FLASH_FREEZE:'%' };
                         const value = hour.value;
                         const unit = hour.unit || fallbackUnits[key] || '';
+                        const rounded = Number.isInteger(Number(value)) ? Math.round(Number(value)) : Number(value).toFixed(key === 'VISIBILITY' ? 1 : 0);
                         main = value != null
-                            ? `<span style="color:#e4e4e7;font-weight:800;">${Math.round(Number(value))}${unit}</span>`
+                            ? `<span style="color:${riskColor};font-weight:800;">${rounded}${unit}</span>`
                             : `<span style="color:#71717a;font-weight:800;">--</span>`;
                     }
 
                     const prob = hour.prob != null && Number(hour.prob) > 0
-                        ? `<span style="color:#71717a;">${Math.round(Number(hour.prob))}%</span>`
+                        ? `<span style="color:${riskColor};font-weight:800;">${Math.round(Number(hour.prob))}%</span>`
                         : '';
 
                     return `<div style="display:flex;justify-content:space-between;gap:8px;font-family:monospace;font-size:0.58rem;line-height:1.15;">
                         <span style="color:#a1a1aa;min-width:28px;">${label}</span>
-                        <span>${main}${sub ? `<span style="color:#71717a;"> · ${sub}</span>` : ''}</span>
+                        <span>${main}</span>
                         ${prob}
                     </div>`;
                 }).join('');
@@ -1004,35 +1004,30 @@
                     const gustVal = hdata?.gust_max_mph ?? block?.GST;
                     if (gustVal != null) {
                         const gCol = deciColormap('WIND', gustVal);
-                        metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">${Math.round(gustVal)} mph block max gust</span>`;
-                        if (hdata?.gust_mean_mph != null) metLine += `<span style="color:#71717a;"> · ${Math.round(hdata.gust_mean_mph)} mph member mean</span>`;
-                        if (hdata?.member_count != null) metLine += `<span style="color:#71717a;"> · ${hdata.member_count} members</span>`;
-                        if (block?.WSP != null) metLine += `<span style="color:#71717a;"> · ${Math.round(block.WSP)} mph avg</span>`;
+                        metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">Gust ${Math.round(gustVal)} mph</span>`;
                         if (block?.WDR != null) metLine += `<span style="color:#71717a;"> from ${block.WDR * 10}°</span>`;
                     }
                 } else if (key === 'TEMPERATURE' && block?.TMP != null) {
-                    const tCol = deciColormap('TEMPERATURE', block.TMP);
                     var tmpC = deciColormap('TEMPERATURE', Math.round(block.TMP)) || '#fff';
-                    metLine = `<span style="color:${tmpC};font-weight:800;">${Math.round(block.TMP)}°F</span>`;
-                    if (block.TSD != null) metLine += `<span style="color:#71717a;"> (P99: ${Math.round(block.TMP + 2.33 * (block.TSD || 1))}°F)</span>`;
+                    metLine = `<span style="color:${tmpC};font-weight:800;">Temp ${Math.round(block.TMP)}°F</span>`;
                     if (block.DPT != null) metLine += `<span style="color:#71717a;"> · Dew ${Math.round(block.DPT)}°F</span>`;
                 } else if (key === 'VISIBILITY' && block?.VIS != null) {
                     const sm = block.VIS / 10;
                     const vCol = deciColormap('VISIBILITY', sm);
-                    metLine = `<span style="color:${vCol||'#fff'};font-weight:800;">${sm >= 10 ? '10+ SM' : sm.toFixed(1) + ' SM'}</span>`;
+                    metLine = `<span style="color:${vCol||'#fff'};font-weight:800;">Visibility ${sm >= 10 ? '10+ mi' : sm.toFixed(1) + ' mi'}</span>`;
                 } else if (key === 'LIGHTNING') {
-                    metLine = `<span style="color:${txtCol};font-weight:800;">${Math.round(prob)}% thunder</span>`;
+                    metLine = `<span style="color:${txtCol};font-weight:800;">Thunder ${Math.round(prob)}%</span>`;
                 } else if (key === 'SNOW' && block?.s3hr_in > 0) {
                     const acc = block.s3hr_in.toFixed(2);
-                    metLine = `<span style="color:${deciColormap('SNOW', parseFloat(acc))||'#fff'};font-weight:800;">${acc}" / 3hr</span>`;
+                    metLine = `<span style="color:${deciColormap('SNOW', parseFloat(acc))||'#fff'};font-weight:800;">Snow ${acc}" / 3hr</span>`;
                 } else if (key === 'RAIN' && block?.Q01 > 0) {
                     const rate = (block.Q01 / 100).toFixed(2);
-                    metLine = `<span style="color:${deciColormap('RAIN', parseFloat(rate))||'#fff'};font-weight:800;">${rate} in/hr</span>`;
+                    metLine = `<span style="color:${deciColormap('RAIN', parseFloat(rate))||'#fff'};font-weight:800;">Rain ${rate} in/hr</span>`;
                 } else if (key === 'FZRA' && block?.I01 > 0) {
-                    metLine = `<span style="color:#60a5fa;font-weight:800;">${(block.I01/100).toFixed(3)}" FZRA / hr</span>`;
+                    metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${(block.I01/100).toFixed(3)}" / hr</span>`;
                 } else if (key === 'FLASH_FREEZE' && block?.TMP != null && block?.DPT != null) {
                     const tw = block.TMP - (block.TMP - block.DPT) / 3;
-                    metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Tw ${Math.round(tw)}°F</span>`;
+                    metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet-bulb ${Math.round(tw)}°F</span>`;
                 }
 
                 rows += `<div style="margin-bottom:4px;padding:4px 6px;border-radius:3px;background:${bgCol};border-left:3px solid ${cfg.color};">
@@ -1042,7 +1037,6 @@
                     </div>
                     ${metLine ? `<div style="font-size:0.63rem;font-family:monospace;margin-top:2px;">${metLine}</div>` : ''}
                     ${hourlyLine}
-                    ${risk > 0 && h.prep ? `<div style="font-size:0.58rem;color:#71717a;margin-top:2px;">→ ${h.prep}</div>` : ''}
                 </div>`;
             });
 
@@ -1976,21 +1970,16 @@
                     const clampE = Math.min(TOTAL_HOURS, eHr);
                     const leftPct = (clampS / TOTAL_HOURS * 100).toFixed(2);
                     const widthPct = ((clampE - clampS) / TOTAL_HOURS * 100).toFixed(2);
-                    const prob = bhaz?.prob ?? 0;
                     const risk = bhaz?.risk ?? 0;
                     const bg = blockBg[risk] || blockBg[0];
                     const tx = blockTx[risk] || blockTx[0];
                     const d1 = new Date(cycleMs + sFxx * 3600000);
                     const d2 = new Date(cycleMs + (eFxx + 1) * 3600000);
                     const tf = d => { const hh = d.getHours(); return `${hh % 12 || 12}${hh >= 12 ? 'P' : 'A'}`; };
-                    const gustTip = refKey === 'WIND' && bhaz?.gust_max_mph != null
-                        ? ` · ${Math.round(bhaz.gust_max_mph)} mph gust`
-                        : '';
-                    const tip = `${tf(d1)}-${tf(d2)}: ${Math.round(prob)}%${bhaz?.level > 0 ? ' L' + bhaz.level : ''}${gustTip}`;
                     const hrOff = Math.round((cycleMs + sFxx * 3600000 - now.getTime()) / 3600000);
                     const hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, hrOff));
 
-                    rowHtml += `<div class="timeline-block" title="${tip}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()"></div>`;
+                    rowHtml += `<div class="timeline-block" aria-label="${tf(d1)}-${tf(d2)} ${h.name}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()"></div>`;
                 }
 
                 rowHtml += `</div></div>`;
@@ -2227,21 +2216,20 @@
 
                         const impactReasons = [
                             threatData.ops_label,
-                            threatData.driver,
                             threatData.impact_reason,
                             threatData.impact_reasons,
                         ].flat().filter(Boolean);
 
                         const reasonHtml = (r >= 2 && impactReasons.length)
                             ? `<div class="mt-2 text-[10px] text-gray-300 border-t border-gray-700 pt-2">
-                                   <div class="font-bold text-gray-500 uppercase mb-1">Impact reasons</div>
+                                   <div class="font-bold text-gray-500 uppercase mb-1">Forecast notes</div>
                                    ${impactReasons.map(x => `<div>• ${x}</div>`).join('')}
                                </div>`
-                            : `<div class="mt-2 text-[10px] text-gray-500 border-t border-gray-700 pt-2">No operational impact text for hazards at risk level ${riskName}.</div>`;
+                            : '';
 
                         const probHtml = probability > 0
-                            ? `<span class="font-mono text-white">${Math.round(probability)}% Prob</span>`
-                            : `<span class="font-mono text-gray-500">0% Prob</span>`;
+                            ? `<span class="font-mono text-white">${Math.round(probability)}% chance</span>`
+                            : `<span class="font-mono text-gray-500">0% chance</span>`;
 
                         const tHtml = `
                             <div class="flex justify-between border-b border-gray-700 pb-1 mb-2">
@@ -2250,10 +2238,9 @@
                             </div>
                             <div class="mb-2">
                                 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded" style="background-color:${config.color}; color:${config.textColor}">RISK: ${riskName.toUpperCase()}</span>
-                                ${impactLevel > 0 ? `<span class="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-800 text-gray-300">IMPACT: ${impactLevel}</span>` : ''}
                             </div>
-                            ${displayMetric ? `<div class="text-[10px] italic text-gray-400 bg-gray-800 p-1 rounded mb-1">Threshold/metric: ${displayMetric}</div>` : ''}
-                            ${timeString ? `<div class="text-[10px] text-gray-400 bg-gray-800 p-1 rounded mb-1">Peak window: ${timeString}</div>` : ''}
+                            ${displayMetric ? `<div class="text-[10px] text-gray-400 bg-gray-800 p-1 rounded mb-1">${displayMetric}</div>` : ''}
+                            ${timeString ? `<div class="text-[10px] text-gray-400 bg-gray-800 p-1 rounded mb-1">Peak: ${timeString}</div>` : ''}
                             ${reasonHtml}
                         `;
 
