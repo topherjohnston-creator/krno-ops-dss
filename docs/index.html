@@ -1987,6 +1987,82 @@
             });
         }
 
+        function futureTimelineHazardSummary(refKey) {
+            if (!Array.isArray(nbmBlockHazards) || !Array.isArray(nbmBlocks)) return null;
+
+            const nowMs = globalNow?.getTime?.() || Date.now();
+            let best = null;
+
+            nbmBlockHazards.forEach((hazards, bi) => {
+                const hdata = hazards?.[refKey];
+                const block = nbmBlocks[bi] || {};
+                if (!hdata) return;
+
+                const endMs = hdata.valid_end_utc
+                    ? new Date(hdata.valid_end_utc).getTime() + 3600000
+                    : block.valid_end_utc
+                        ? new Date(block.valid_end_utc).getTime() + 3600000
+                        : null;
+                if (endMs && endMs <= nowMs) return;
+
+                const risk = Number(hdata.risk || 0);
+                const prob = Number(hdata.prob ?? hdata.probability ?? 0);
+                if (
+                    !best ||
+                    risk > Number(best.risk || 0) ||
+                    (risk === Number(best.risk || 0) && prob > Number(best.prob || 0))
+                ) {
+                    best = { ...hdata, prob, probability: prob, risk, block_index: bi };
+                }
+            });
+
+            return best;
+        }
+
+        function forecastValueText(refKey, hdata, fallback) {
+            if (Number(hdata?.risk || 0) === 0 && refKey !== 'TEMPERATURE') return '';
+
+            const hours = Array.isArray(hdata?.hourly_values) ? hdata.hourly_values : [];
+            const peakFxx = hdata?.source_fxx;
+            const peakHour = hours.find(h => h.fxx === peakFxx)
+                || hours.reduce((best, hour) => {
+                    if (!best) return hour;
+                    const br = Number(best.risk || 0), hr = Number(hour.risk || 0);
+                    const bp = Number(best.prob || 0), hp = Number(hour.prob || 0);
+                    return hr > br || (hr === br && hp > bp) ? hour : best;
+                }, null);
+
+            const value = peakHour?.value ?? hdata?.gust_max_mph ?? hdata?.visibility_mi ?? hdata?.temp_f;
+            const unit = peakHour?.unit
+                || (refKey === 'WIND' ? 'mph' : refKey === 'VISIBILITY' ? 'mi' : refKey === 'TEMPERATURE' ? '°F' : '');
+
+            if (value !== undefined && value !== null && Number.isFinite(Number(value))) {
+                const n = Number(value);
+                const rounded = Number.isInteger(n) ? Math.round(n) : n.toFixed(refKey === 'VISIBILITY' ? 1 : 0);
+                const labelMap = {
+                    prob: 'chance',
+                    gust: 'gust',
+                    visibility: 'visibility',
+                    temp: 'temp',
+                    flash_freeze: 'flash freeze',
+                };
+                const rawLabel = peakHour?.label || (refKey === 'WIND' ? 'gust' : refKey.toLowerCase().replace('_', ' '));
+                const label = labelMap[rawLabel] || rawLabel;
+                const spacer = unit && !['%', '°F'].includes(unit) ? ' ' : '';
+                return `${label}: ${rounded}${spacer}${unit}`;
+            }
+
+            if (
+                fallback?.display_label &&
+                fallback?.display_value !== undefined &&
+                fallback?.display_value !== null &&
+                !['', 'None', 'No data'].includes(String(fallback.display_value))
+            ) {
+                return `${fallback.display_label}: ${fallback.display_value}`;
+            }
+            return '';
+        }
+
         async function initDashboard() {
             try {
                 await loadConfig();
@@ -2094,15 +2170,13 @@
                     };
 
                     const hazards = HAZARD_DETAILS.map(h => {
-                        let prob = 0;
-                        let risk = 0;
                         const refKey = hazardMapping[h.id] || h.id.toUpperCase();
-                        
-                        if (refsThreats && refsThreats[refKey]) {
-                            prob = refsThreats[refKey].prob;
-                            risk = refsThreats[refKey].risk;
-                        }
-                        return { ...h, prob, risk }; 
+                        const threatData = refsThreats?.[refKey] || {};
+                        const timelineData = futureTimelineHazardSummary(refKey);
+                        const sourceData = timelineData || threatData;
+                        const prob = Number(sourceData.prob ?? sourceData.probability ?? 0);
+                        const risk = Number(sourceData.risk ?? 0);
+                        return { ...h, prob, risk, refKey, timelineData, threatData };
                     });
 
                     // Sort: risk level DESC (most severe first), then prob DESC as tiebreaker
@@ -2117,8 +2191,8 @@
                         const isNone = r === 0;
                         const isActive = r >= 2;
 
-                        const refKey = hazardMapping[h.id] || h.id.toUpperCase();
-                        const threatData = refsThreats && refsThreats[refKey] ? refsThreats[refKey] : {};
+                        const refKey = h.refKey || hazardMapping[h.id] || h.id.toUpperCase();
+                        const threatData = { ...(h.threatData || {}), ...(h.timelineData || {}) };
 
                         const hazardTitle = (h.name || refKey).toUpperCase();
                         const probability = Number(threatData.prob ?? h.prob ?? 0);
@@ -2142,7 +2216,10 @@
                             !['', 'None', 'No data'].includes(String(threatData.display_value))
                         );
                         let displayMetric = '';
-                        if (isNone && !hasRealDisplayValue) {
+                        if (h.timelineData) {
+                            displayMetric = forecastValueText(refKey, h.timelineData, h.threatData);
+                            if (isNone && !displayMetric) displayMetric = 'No current signal';
+                        } else if (isNone && !hasRealDisplayValue) {
                             displayMetric = 'No current signal';
                         } else if (threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
                             displayMetric = `${threatData.display_label}: ${threatData.display_value}`;
@@ -2156,7 +2233,15 @@
 
                         let timeString = '';
                         const thr = threatData;
-                        if (thr && thr.peak_start_fxx && probability > 0) {
+                        if (h.timelineData?.peak_valid_utc && probability > 0) {
+                            const peakDate = new Date(h.timelineData.peak_valid_utc);
+                            const fmt = d => {
+                                const hh=d.getHours(); const ap=hh>=12?'P':'A';
+                                const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+                                return `${dy} ${hh%12||12}${ap}`;
+                            };
+                            timeString = `PEAK ${fmt(peakDate)}`;
+                        } else if (thr && thr.peak_start_fxx && probability > 0) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
                             const d2 = new Date(baseMs + (thr.peak_end_fxx || thr.peak_start_fxx) * 3600000);
