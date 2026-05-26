@@ -1689,12 +1689,11 @@ def lightning_signal(hour: dict[str, Any], all_hours: dict[int, dict[str, Any]] 
     prob = round(float(prob), 1)
     fxx = int(hour.get("fxx", -999))
 
-    # The LTNG probability field occasionally returns an isolated 100% point at KRNO
-    # while surrounding DESI/REFS hours stay near zero. Treat that as a bad point.
-    if prob >= 95.0 and all_hours:
-        prev_prob = value_or_none(all_hours.get(fxx - 1, {}), "lightning_prob") or 0.0
-        next_prob = value_or_none(all_hours.get(fxx + 1, {}), "lightning_prob") or 0.0
-        if max(prev_prob, next_prob) < 10.0:
+    # The LTNG probability field can produce short, high spikes at the point that
+    # do not match the surrounding DESI probability envelope. Drop 1-2 hour
+    # spikes when the hours immediately before and after the spike are low.
+    if prob >= 25.0 and all_hours:
+        if is_short_lightning_spike(fxx, all_hours):
             prob = 0.0
 
     risk = matrix_risk(prob, 3) if prob > 0 else 0
@@ -1704,6 +1703,28 @@ def lightning_signal(hour: dict[str, Any], all_hours: dict[int, dict[str, Any]] 
         "probability": prob if risk > 0 else 0.0,
         "metric": "thunder probability" if risk > 0 else "No signal",
     }
+
+
+def lightning_probability_at(all_hours: dict[int, dict[str, Any]], fxx: int) -> float:
+    return float(value_or_none(all_hours.get(fxx, {}), "lightning_prob") or 0.0)
+
+
+def is_short_lightning_spike(fxx: int, all_hours: dict[int, dict[str, Any]]) -> bool:
+    start = fxx
+    while lightning_probability_at(all_hours, start - 1) >= 25.0:
+        start -= 1
+
+    end = fxx
+    while lightning_probability_at(all_hours, end + 1) >= 25.0:
+        end += 1
+
+    span = end - start + 1
+    if span > 2:
+        return False
+
+    before = lightning_probability_at(all_hours, start - 1)
+    after = lightning_probability_at(all_hours, end + 1)
+    return before < 10.0 and after < 10.0
 
 
 def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
