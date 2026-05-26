@@ -531,10 +531,16 @@
 
 
             // Clock — update every second
+            let lastTimelineMinute = -1;
             setInterval(() => {
                 globalNow = new Date();
                 const timeEl = document.getElementById('timestamp2');
                 if (timeEl) timeEl.textContent = getHeaderDateSec(globalNow);
+                if (globalNow.getMinutes() !== lastTimelineMinute) {
+                    lastTimelineMinute = globalNow.getMinutes();
+                    renderTimelinePanel(globalNow);
+                    renderWWA(globalNow);
+                }
             }, 1000);
 
             // METAR + Alerts — every 60 seconds
@@ -1895,6 +1901,103 @@
             Temperature:'TEMPERATURE'
         };
 
+        function renderTimelinePanel(now) {
+            const labelsCtx = document.getElementById('timeline-labels');
+            const barsCtx = document.getElementById('timeline-bars');
+            const bgCtx = document.getElementById('timeline-bg');
+            const linesCtx = document.getElementById('timeline-lines');
+            const axisCtx = document.getElementById('timeline-axis');
+            if (!labelsCtx || !barsCtx || !bgCtx || !linesCtx || !axisCtx) return;
+            if (!nbmBlocks || !nbmBlockHazards) return;
+
+            labelsCtx.innerHTML = '';
+            barsCtx.innerHTML = '';
+            bgCtx.innerHTML = '';
+            linesCtx.innerHTML = '';
+            axisCtx.innerHTML = '';
+
+            for (let i = 0; i < TOTAL_HOURS; i++) {
+                const hourDate = new Date(now.getTime() + i * 3600000);
+                const sun = getSunriseSunsetUTC(hourDate);
+                const hourUtc = hourDate.getUTCHours() + hourDate.getUTCMinutes() / 60;
+                const isDay = sun.rise < sun.set
+                    ? (hourUtc >= sun.rise && hourUtc < sun.set)
+                    : (hourUtc >= sun.rise || hourUtc < sun.set);
+                const classStr = isDay ? 'day-segment' : 'night-segment';
+                bgCtx.innerHTML += `<div class="${classStr}" style="width: ${100 / TOTAL_HOURS}%;" onmouseenter="showHourTooltip(${i})" onmouseleave="hideTooltip()"></div>`;
+
+                if (hourDate.getHours() === 0) {
+                    const leftPos = (i / TOTAL_HOURS) * 100;
+                    const dayName = hourDate.toLocaleDateString('en-US', { weekday: 'short' });
+                    linesCtx.innerHTML += `<div class="midnight-line" style="left: ${leftPos}%;"><div class="midnight-label">${dayName}</div></div>`;
+                }
+            }
+
+            const axisBlockCount = nbmBlocks?.length || 20;
+            for (let bi = 0; bi <= axisBlockCount; bi += 4) {
+                const leftPos = (bi / axisBlockCount) * 100;
+                const hoursOut = bi * 3;
+                const topLabel = bi === 0 ? 'Now' : `+${hoursOut}h`;
+                const timeLabel = getHourLabel(now, hoursOut);
+                const alignClass = bi === 0 ? '' : (bi === axisBlockCount ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
+                const [localPart, zuluPart] = timeLabel.includes('/') ? timeLabel.split('/') : [timeLabel, ''];
+                axisCtx.innerHTML += `
+                    <div class="absolute top-0 ${alignClass} text-center" style="left: ${leftPos}%">
+                        <div class="font-bold text-slate-300" style="font-size:0.7rem;">${topLabel}</div>
+                        <div class="font-mono mt-0.5 leading-none" style="font-size:0.62rem;">
+                            <span style="color:#cbd5e1;font-weight:800;">${localPart}</span>${zuluPart ? `<span style="color:#52525b;font-weight:600;">/${zuluPart}</span>` : ''}
+                        </div>
+                    </div>`;
+            }
+
+            const nBlocks = nbmBlocks?.length || 20;
+            const blockBg = {0:'#27272a',1:'#3f3f46',2:'#ffeb3b',3:'#ff9800',4:'#f44336',5:'#9c27b0'};
+            const blockTx = {0:'#52525b',1:'#71717a',2:'#3f3000',3:'#3f1a00',4:'#ffffff',5:'#ffffff'};
+            const hzKey = (id) => HZ_KEY_MAP[id] || id.toUpperCase().replace('FLASHFREEZE','FLASH_FREEZE');
+
+            HAZARD_DETAILS.forEach((h, hIdx) => {
+                labelsCtx.innerHTML += `<div class="h-full flex items-center justify-end text-xs font-bold text-slate-400 pr-2 uppercase tracking-wider">${h.timelineName || h.name}</div>`;
+
+                const refKey = hzKey(h.id);
+                const rowStripe = hIdx % 2 === 0 ? 'timeline-row-even' : 'timeline-row-odd';
+                let rowHtml = `<div class="timeline-row ${rowStripe}" style="position:relative;"><div class="horizontal-guide"></div><div class="bar-container" style="position:relative;">`;
+
+                for (let bi = 0; bi < nBlocks; bi++) {
+                    const blk = nbmBlocks?.[bi];
+                    const bhaz = nbmBlockHazards?.[bi]?.[refKey];
+                    const cycleMs = cycleStartTime || now.getTime();
+                    const sFxx = blk?.start_fxx ?? (bi * 3 + 1);
+                    const eFxx = blk?.end_fxx ?? (bi * 3 + 3);
+                    const sHr = (cycleMs + sFxx * 3600000 - now.getTime()) / 3600000;
+                    const eHr = (cycleMs + (eFxx + 1) * 3600000 - now.getTime()) / 3600000;
+                    if (eHr <= 0 || sHr >= TOTAL_HOURS) continue;
+
+                    const clampS = Math.max(0, sHr);
+                    const clampE = Math.min(TOTAL_HOURS, eHr);
+                    const leftPct = (clampS / TOTAL_HOURS * 100).toFixed(2);
+                    const widthPct = ((clampE - clampS) / TOTAL_HOURS * 100).toFixed(2);
+                    const prob = bhaz?.prob ?? 0;
+                    const risk = bhaz?.risk ?? 0;
+                    const bg = blockBg[risk] || blockBg[0];
+                    const tx = blockTx[risk] || blockTx[0];
+                    const d1 = new Date(cycleMs + sFxx * 3600000);
+                    const d2 = new Date(cycleMs + (eFxx + 1) * 3600000);
+                    const tf = d => { const hh = d.getHours(); return `${hh % 12 || 12}${hh >= 12 ? 'P' : 'A'}`; };
+                    const gustTip = refKey === 'WIND' && bhaz?.gust_max_mph != null
+                        ? ` · ${Math.round(bhaz.gust_max_mph)} mph gust`
+                        : '';
+                    const tip = `${tf(d1)}-${tf(d2)}: ${Math.round(prob)}%${bhaz?.level > 0 ? ' L' + bhaz.level : ''}${gustTip}`;
+                    const hrOff = Math.round((cycleMs + sFxx * 3600000 - now.getTime()) / 3600000);
+                    const hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, hrOff));
+
+                    rowHtml += `<div class="timeline-block" title="${tip}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()"></div>`;
+                }
+
+                rowHtml += `</div></div>`;
+                barsCtx.innerHTML += rowHtml;
+            });
+        }
+
         async function initDashboard() {
             try {
                 await loadConfig();
@@ -2160,114 +2263,7 @@
                     });
                 }
 
-                // --- TIMELINE ---
-                const labelsCtx = document.getElementById('timeline-labels');
-                const barsCtx = document.getElementById('timeline-bars');
-                const bgCtx = document.getElementById('timeline-bg');
-                const linesCtx = document.getElementById('timeline-lines');
-                const axisCtx = document.getElementById('timeline-axis');
-                
-                if(labelsCtx) {
-                    labelsCtx.innerHTML = ''; barsCtx.innerHTML = ''; bgCtx.innerHTML = ''; linesCtx.innerHTML = ''; axisCtx.innerHTML = '';
-
-                    for(let i=0; i<TOTAL_HOURS; i++) {
-                        const _hDate = new Date(globalNow.getTime() + i*3600000);
-                        const _sun = getSunriseSunsetUTC(_hDate);
-                        const _hUTC = _hDate.getUTCHours() + _hDate.getUTCMinutes()/60;
-                        const isDay = _sun.rise < _sun.set ? (_hUTC >= _sun.rise && _hUTC < _sun.set) : (_hUTC >= _sun.rise || _hUTC < _sun.set);
-                        const classStr = isDay ? 'day-segment' : 'night-segment';
-                        const width = 100 / TOTAL_HOURS;
-                        bgCtx.innerHTML += `<div class="${classStr}" style="width: ${width}%;" onmouseenter="showHourTooltip(${i})" onmouseleave="hideTooltip()"></div>`;
-                        // Midnight lines aligned to blocks
-                        const _hDate2 = new Date(globalNow.getTime() + i*3600000);
-                        if (_hDate2.getHours() === 0) {
-                            // Snap to nearest block boundary
-                            const blockCount = nbmBlocks?.length || 20;
-                            const blockPos = Math.round(i / 3) / blockCount * 100;
-                            const dayName = _hDate2.toLocaleDateString('en-US', { weekday: 'short' });
-                            linesCtx.innerHTML += `<div class="midnight-line" style="left: ${blockPos}%;"><div class="midnight-label">${dayName}</div></div>`;
-                        }
-                    }
-
-                    // Axis: 12-hour labels plus the 60-hour endpoint for clarity.
-                    const axisBlockCount = nbmBlocks?.length || 20;
-                    for(let bi=0; bi<=axisBlockCount; bi+=4) {
-                        const leftPos = (bi / axisBlockCount) * 100;
-                        const hoursOut = bi * 3;
-                        let topLabel = bi === 0 ? 'Now' : `+${hoursOut}h`;
-                        let timeLabel = getHourLabel(globalNow, hoursOut);
-                        let alignClass = bi===0 ? '' : (bi===axisBlockCount ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
-                        const [localPart, zuluPart] = timeLabel.includes('/') ? timeLabel.split('/') : [timeLabel, ''];
-                        axisCtx.innerHTML += `
-                            <div class="absolute top-0 ${alignClass} text-center" style="left: ${leftPos}%">
-                                <div class="font-bold text-slate-300" style="font-size:0.7rem;">${topLabel}</div>
-                                <div class="font-mono mt-0.5 leading-none" style="font-size:0.62rem;">
-                                    <span style="color:#cbd5e1;font-weight:800;">${localPart}</span>${zuluPart ? `<span style="color:#52525b;font-weight:600;">/${zuluPart}</span>` : ''}
-                                </div>
-                            </div>`;
-                    }
-
-                    // ── REFS 3-hour block timeline ──────────────────
-                    const N_BLOCKS = nbmBlocks?.length || 20;
-                    const BLOCK_W  = 100 / N_BLOCKS;
-                    const BLK_BG   = {0:'#27272a',1:'#3f3f46',2:'#ffeb3b',3:'#ff9800',4:'#f44336',5:'#9c27b0'};
-                    const BLK_TX   = {0:'#52525b',1:'#71717a',2:'#3f3000',3:'#3f1a00',4:'#ffffff',5:'#ffffff'};
-
-                    const HZ_KEY = (id) => ({
-                        Wind:'WIND',Lightning:'LIGHTNING',Snow:'SNOW',
-                        Visibility:'VISIBILITY',Fzra:'FZRA',
-                        FlashFreeze:'FLASH_FREEZE',Rain:'RAIN',
-                        Temperature:'TEMPERATURE'
-                    })[id] || id.toUpperCase().replace('FLASHFREEZE','FLASH_FREEZE');
-
-                    HAZARD_DETAILS.forEach((h, hIdx) => {
-                        const axisLabel = h.timelineName || h.name;
-                        labelsCtx.innerHTML += `<div class="h-full flex items-center justify-end text-xs font-bold text-slate-400 pr-2 uppercase tracking-wider">${axisLabel}</div>`;
-
-                        const refKey = HZ_KEY(h.id);
-                        const rowStripe = hIdx % 2 === 0 ? 'timeline-row-even' : 'timeline-row-odd';
-                        let rowHtml = `<div class="timeline-row ${rowStripe}" style="position:relative;"><div class="horizontal-guide"></div><div class="bar-container" style="position:relative;">`;
-
-                        for (let bi = 0; bi < N_BLOCKS; bi++) {
-                            const blk   = nbmBlocks?.[bi];
-                            const bhaz  = nbmBlockHazards?.[bi]?.[refKey];
-                            // Position by actual UTC time using cycleStartTime
-                            const cycleMs = cycleStartTime || globalNow.getTime();
-                            const sFxx = blk?.start_fxx ?? (bi*3+1);
-                            const eFxx = blk?.end_fxx   ?? (bi*3+3);
-                            const sHr  = (cycleMs + sFxx*3600000 - globalNow.getTime()) / 3600000;
-                            const eHr  = (cycleMs + (eFxx+1)*3600000 - globalNow.getTime()) / 3600000;
-                            if (eHr <= 0 || sHr >= TOTAL_HOURS) continue;
-                            const clampS   = Math.max(0, sHr);
-                            const clampE   = Math.min(TOTAL_HOURS, eHr);
-                            const leftPct  = (clampS / TOTAL_HOURS * 100).toFixed(2);
-                            const widthPct = ((clampE - clampS) / TOTAL_HOURS * 100).toFixed(2);
-                            const prob  = bhaz?.prob ?? 0;
-                            const risk  = bhaz?.risk ?? 0;
-                            const bg    = BLK_BG[risk] || BLK_BG[0];
-                            const tx    = BLK_TX[risk] || BLK_TX[0];
-                            // Cycle-accurate tooltip times
-                            const d1 = new Date(cycleMs + sFxx*3600000);
-                            const d2 = new Date(cycleMs + (eFxx+1)*3600000);
-                            const tf = d => { const hh=d.getHours(); return `${hh%12||12}${hh>=12?'P':'A'}`; };
-                            const gustTip = refKey === 'WIND' && bhaz?.gust_max_mph != null
-                                ? ` · ${Math.round(bhaz.gust_max_mph)} mph gust`
-                                : '';
-                            const tip = `${tf(d1)}-${tf(d2)}: ${Math.round(prob)}%${bhaz?.level>0?' L'+bhaz.level:''}${gustTip}`;
-
-                            // No prob % on bars — color speaks for itself; details in tooltip
-                            const txt = '';
-
-                            // Compute hours-from-now for this block so tooltip gets correct time
-                            const _hrOff = Math.round((cycleMs + sFxx*3600000 - globalNow.getTime()) / 3600000);
-                            const _hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, _hrOff));
-                            rowHtml += `<div class="timeline-block" title="${tip}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${_hrClamp},${bi})" onmouseleave="hideTooltip()">${txt}</div>`;
-                        }
-
-                        rowHtml += `</div></div>`;
-                        barsCtx.innerHTML += rowHtml;
-                    });
-                }
+                renderTimelinePanel(globalNow);
 
                 renderWWA(globalNow);
 
