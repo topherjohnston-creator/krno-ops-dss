@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-05-26T04:07:51Z",
+  "generated_utc": "2026-05-26T06:36:00Z",
   "cycle_utc_iso": "2026-05-26T00:00:00Z",
   "cycle": "REFS 00Z",
   "valid_period": "next_60_hours",
@@ -2185,8 +2185,8 @@
             "value": 28.2,
             "unit": "mph",
             "gust_max_mph": 28.2,
-            "gust_mean_mph": 15.6,
-            "member_count": 14,
+            "gust_mean_mph": 15.3,
+            "member_count": 13,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -11283,6 +11283,16 @@
             "label": "prob",
             "value": 0.0,
             "unit": "%"
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards"
@@ -11320,6 +11330,16 @@
           {
             "fxx": 59,
             "valid_utc": "2026-05-28T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal",
@@ -11371,6 +11391,17 @@
             "value": 11.48,
             "unit": "mi",
             "visibility_mi": 11.48
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 11.65,
+            "unit": "mi",
+            "visibility_mi": 11.65
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
@@ -11409,6 +11440,16 @@
           {
             "fxx": 59,
             "valid_utc": "2026-05-28T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal",
@@ -11462,6 +11503,18 @@
             "unit": "%",
             "cold_prob": 0.0,
             "wet_prob": 16.5
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "joint prob",
+            "value": 0.0,
+            "unit": "%",
+            "cold_prob": 0.0,
+            "wet_prob": 16.5
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
@@ -11507,6 +11560,16 @@
             "label": "prob",
             "value": 16.5,
             "unit": "%"
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
+            "prob": 16.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "prob",
+            "value": 16.5,
+            "unit": "%"
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards"
@@ -11523,8 +11586,8 @@
         "probability": 0.0,
         "metric": "No signal",
         "driver": "No threshold-level signal in this 3-hour block",
-        "source_fxx": 59,
-        "peak_valid_utc": "2026-05-28T11:00:00Z",
+        "source_fxx": 60,
+        "peak_valid_utc": "2026-05-28T12:00:00Z",
         "valid_start_utc": "2026-05-28T10:00:00Z",
         "valid_end_utc": "2026-05-28T12:00:00Z",
         "start_fxx": 58,
@@ -11552,10 +11615,21 @@
             "value": 43.7,
             "unit": "F",
             "temp_f": 43.7
+          },
+          {
+            "fxx": 60,
+            "valid_utc": "2026-05-28T12:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 43.5,
+            "unit": "F",
+            "temp_f": 43.5
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
-        "temp_f": 43.7
+        "temp_f": 43.5
       }
     }
   ],

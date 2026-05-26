@@ -3,11 +3,11 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-05-26T04:07:51Z",
+  "generated_utc": "2026-05-26T06:36:00Z",
   "cycle_utc_iso": "2026-05-26T00:00:00Z",
   "selected_prefix": "rrfs_a/refs.20260526/00/enspost/",
   "builder_mode": "refs_point_extraction",
-  "candidate_file_count": 944,
+  "candidate_file_count": 960,
   "products": {
     "avrg": {
       "idx_hours": [
@@ -69,7 +69,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -130,7 +131,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "eas": {
@@ -193,7 +195,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -254,7 +257,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "ffri": {
@@ -317,7 +321,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -378,7 +383,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "lpmm": {
@@ -441,7 +447,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -502,7 +509,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "mean": {
@@ -565,7 +573,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -626,7 +635,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "pmmn": {
@@ -689,7 +699,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -750,7 +761,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "prob": {
@@ -813,7 +825,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -874,7 +887,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     },
     "sprd": {
@@ -937,7 +951,8 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ],
       "grib_hours": [
         1,
@@ -998,22 +1013,23 @@
         56,
         57,
         58,
-        59
+        59,
+        60
       ]
     }
   },
   "field_map": {
     "status": "ok",
-    "file_count": 36,
+    "file_count": 39,
     "category_counts": {
-      "rain_precip": 304,
-      "lightning_convection": 288,
-      "wind": 540,
-      "temperature_wetbulb": 216,
-      "other": 296,
-      "visibility": 96,
-      "snow": 251,
-      "freezing_rain": 48
+      "rain_precip": 337,
+      "lightning_convection": 312,
+      "wind": 585,
+      "temperature_wetbulb": 234,
+      "other": 326,
+      "visibility": 104,
+      "snow": 279,
+      "freezing_rain": 52
     },
     "errors": []
   },
@@ -1021,7 +1037,7 @@
     "WIND": {
       "risk": 2,
       "risk_label": "Minor",
-      "field_map_matches": 540,
+      "field_map_matches": 585,
       "mapped_hours": [
         1,
         2,
@@ -1034,7 +1050,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "17:20356245:d=2026052600:UGRD:10 m above ground:1 hour fcst:wt ens mean",
@@ -1048,7 +1065,7 @@
       "mean_wind_proxy_allowed": false,
       "ok_mean_hours": 0,
       "ok_probability_hours": 60,
-      "ok_gust_values": 780,
+      "ok_gust_values": 779,
       "mean_wind_60hr_max_mph": null,
       "mean_member_max_gust_mph": 34.5,
       "members_found": [
@@ -1159,7 +1176,7 @@
     "LIGHTNING": {
       "risk": 2,
       "risk_label": "Minor",
-      "field_map_matches": 288,
+      "field_map_matches": 312,
       "mapped_hours": [
         1,
         2,
@@ -1172,7 +1189,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "1:0:d=2026052600:CAPE:90-0 mb above ground:1 hour fcst:wt ens mean",
@@ -1188,7 +1206,7 @@
     "SNOW": {
       "risk": 0,
       "risk_label": "None",
-      "field_map_matches": 251,
+      "field_map_matches": 279,
       "mapped_hours": [
         1,
         2,
@@ -1201,7 +1219,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "54:65056891:d=2026052600:WEASD:surface:0-1 hour acc fcst:wt ens mean",
@@ -1217,7 +1236,7 @@
     "VISIBILITY": {
       "risk": 3,
       "risk_label": "Moderate",
-      "field_map_matches": 96,
+      "field_map_matches": 104,
       "mapped_hours": [
         1,
         2,
@@ -1230,7 +1249,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "46:52639791:d=2026052600:VIS:surface:1 hour fcst:wt ens mean",
@@ -1246,7 +1266,7 @@
     "FZRA": {
       "risk": 0,
       "risk_label": "None",
-      "field_map_matches": 48,
+      "field_map_matches": 52,
       "mapped_hours": [
         1,
         2,
@@ -1259,7 +1279,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "58:65367710:d=2026052600:CFRZR:surface:1 hour fcst:wt ens mean",
@@ -1287,7 +1308,7 @@
     "RAIN": {
       "risk": 1,
       "risk_label": "Little to None",
-      "field_map_matches": 304,
+      "field_map_matches": 337,
       "mapped_hours": [
         1,
         2,
@@ -1300,7 +1321,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "1:0:d=2026052600:APCP:surface:0-1 hour acc fcst:wt ens mean:process=193",
@@ -1316,7 +1338,7 @@
     "TEMPERATURE": {
       "risk": 0,
       "risk_label": "None",
-      "field_map_matches": 216,
+      "field_map_matches": 234,
       "mapped_hours": [
         1,
         2,
@@ -1329,7 +1351,8 @@
         36,
         42,
         48,
-        54
+        54,
+        60
       ],
       "sample_lines": [
         "32:38341351:d=2026052600:TMP:250 mb:1 hour fcst:wt ens mean",
@@ -1352,8 +1375,8 @@
   "secondary_extraction": {
     "status": "ok",
     "method": "refs_idx_byte_range_secondary_hazards",
-    "task_count": 472,
-    "ok_values": 472,
+    "task_count": 480,
+    "ok_values": 480,
     "errors": []
   }
 }
