@@ -42,6 +42,9 @@ RRFSENS_MEMBERS = [
     if member.strip()
 ]
 GUST_WORKERS = max(1, int(os.getenv("DSS_GUST_WORKERS", "8")))
+REFS_FIELD_WORKERS = max(1, int(os.getenv("DSS_REFS_FIELD_WORKERS", "8")))
+EXTRACT_REFS_SECONDARY_HAZARDS = os.getenv("DSS_EXTRACT_REFS_SECONDARY_HAZARDS", "1") == "1"
+EXTRACT_REFS_ACCUM_PROBS = os.getenv("DSS_EXTRACT_REFS_ACCUM_PROBS", "0") == "1"
 HRRR_HTTP_BASE = "https://noaa-hrrr-bdp-pds.s3.amazonaws.com"
 
 HAZARD_ORDER = [
@@ -617,6 +620,14 @@ def normalize_probability(value: float) -> float:
     return round(max(0.0, min(100.0, value)), 1)
 
 
+def k_to_f(kelvin: float) -> float:
+    return (kelvin - 273.15) * 9.0 / 5.0 + 32.0
+
+
+def meters_to_miles(meters: float) -> float:
+    return meters / 1609.344
+
+
 def evaluate_wind_thresholds(mean_mph: float | None, threshold_probs: dict[str, float | None]) -> dict[str, Any]:
     candidates = []
     for threshold in WIND_THRESHOLDS:
@@ -1019,6 +1030,187 @@ def extract_wind_hourly(
     }
 
 
+def find_idx_row(rows: list[dict[str, Any]], *needles: str, exclude: tuple[str, ...] = ()) -> dict[str, Any] | None:
+    wanted = tuple(needle.upper() for needle in needles)
+    blocked = tuple(item.upper() for item in exclude)
+    for row in rows:
+        line = row["line"].upper()
+        if all(needle in line for needle in wanted) and not any(item in line for item in blocked):
+            return row
+    return None
+
+
+def secondary_field_plan() -> dict[str, dict[str, Any]]:
+    plan = {
+        "temp_mean_k": {
+            "product": "mean",
+            "needles": (":TMP:2 M ABOVE GROUND:", "WT ENS MEAN"),
+            "hazards": ("TEMPERATURE", "FLASH_FREEZE"),
+        },
+        "temp_freezing_prob": {
+            "product": "prob",
+            "needles": (":TMP:2 M ABOVE GROUND:", "PROB <273.15:"),
+            "hazards": ("TEMPERATURE", "FLASH_FREEZE"),
+            "probability": True,
+        },
+        "visibility_mean_m": {
+            "product": "mean",
+            "needles": (":VIS:SURFACE:", "WT ENS MEAN"),
+            "hazards": ("VISIBILITY",),
+        },
+        "visibility_lt_3mi_prob": {
+            "product": "prob",
+            "needles": (":VIS:SURFACE:", "PROB <4829:"),
+            "hazards": ("VISIBILITY",),
+            "probability": True,
+        },
+        "lightning_prob": {
+            "product": "prob",
+            "needles": (":LTNG:ENTIRE ATMOSPHERE:", "PROB >0.08:"),
+            "hazards": ("LIGHTNING",),
+            "probability": True,
+        },
+        "rain_prob": {
+            "product": "prob",
+            "needles": (":CRAIN:SURFACE:", "PROB"),
+            "hazards": ("RAIN", "FLASH_FREEZE"),
+            "probability": True,
+        },
+        "snow_prob": {
+            "product": "prob",
+            "needles": (":CSNOW:SURFACE:", "PROB"),
+            "hazards": ("SNOW", "FLASH_FREEZE"),
+            "probability": True,
+        },
+        "fzra_prob": {
+            "product": "prob",
+            "needles": (":CFRZR:SURFACE:", "PROB"),
+            "hazards": ("FZRA", "FLASH_FREEZE"),
+            "probability": True,
+        },
+    }
+    if EXTRACT_REFS_ACCUM_PROBS:
+        plan.update(
+            {
+                "rain_heavy_prob": {
+                    "product": "prob",
+                    "needles": (":APCP:SURFACE:", "PROB >12.7:"),
+                    "hazards": ("RAIN",),
+                    "probability": True,
+                },
+                "snow_accum_prob": {
+                    "product": "prob",
+                    "needles": (":ASNOW:SURFACE:", "PROB >0.025:"),
+                    "hazards": ("SNOW",),
+                    "probability": True,
+                },
+                "fzra_accum_prob": {
+                    "product": "prob",
+                    "needles": (":FRZR:SURFACE:", "PROB >0.254:"),
+                    "hazards": ("FZRA",),
+                    "probability": True,
+                },
+            }
+        )
+    return plan
+
+
+def blank_secondary_hour(cycle_dt: datetime, fxx: int) -> dict[str, Any]:
+    return {
+        "fxx": fxx,
+        "valid_utc": (cycle_dt + timedelta(hours=fxx)).isoformat().replace("+00:00", "Z"),
+        "values": {},
+        "idx_lines": {},
+        "errors": [],
+    }
+
+
+def extract_refs_secondary_hourly(
+    file_index: dict[tuple[str, int, str], RefsFile],
+    cycle_dt: datetime,
+) -> dict[str, Any]:
+    if not EXTRACT_REFS_SECONDARY_HAZARDS:
+        return {
+            "status": "disabled",
+            "method": "refs_idx_byte_range_secondary_hazards_disabled",
+            "hourly": [],
+            "errors": [],
+        }
+
+    try:
+        import requests  # noqa: F401
+        import xarray  # noqa: F401
+        import cfgrib  # noqa: F401
+    except Exception as exc:
+        return {
+            "status": "missing_dependencies",
+            "method": "refs_idx_byte_range_secondary_hazards",
+            "hourly": [],
+            "errors": [{"stage": "import", "message": str(exc)}],
+        }
+
+    idx_cache: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    plan = secondary_field_plan()
+    hourly = {fxx: blank_secondary_hour(cycle_dt, fxx) for fxx in FORECAST_HOURS}
+    tasks: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+
+    for fxx in FORECAST_HOURS:
+        for field_key, spec in plan.items():
+            product = str(spec["product"])
+            rows = load_idx_rows(file_index, idx_cache, product, fxx)
+            row = find_idx_row(rows, *spec["needles"])
+            if not row:
+                continue
+            grib_file = get_file(file_index, product, fxx, "grib")
+            if not grib_file:
+                continue
+            tasks.append(
+                {
+                    "field_key": field_key,
+                    "fxx": fxx,
+                    "row": row,
+                    "grib_url": s3_to_http(grib_file.key),
+                    "probability": bool(spec.get("probability")),
+                }
+            )
+            hourly[fxx]["idx_lines"][field_key] = row["line"]
+
+    def read_task(task: dict[str, Any]) -> dict[str, Any]:
+        raw = nearest_grid_value(
+            task["grib_url"],
+            task["row"],
+            f"{task['field_key']}_f{int(task['fxx']):03d}",
+        )
+        value = normalize_probability(raw) if task["probability"] else round(float(raw), 3)
+        return {"field_key": task["field_key"], "fxx": task["fxx"], "value": value}
+
+    with ThreadPoolExecutor(max_workers=REFS_FIELD_WORKERS) as executor:
+        future_map = {executor.submit(read_task, task): task for task in tasks}
+        for future in as_completed(future_map):
+            task = future_map[future]
+            fxx = int(task["fxx"])
+            field_key = str(task["field_key"])
+            try:
+                result = future.result()
+                hourly[fxx]["values"][field_key] = result["value"]
+            except Exception as exc:
+                message = str(exc)
+                hourly[fxx]["errors"].append({"field": field_key, "message": message})
+                errors.append({"fxx": fxx, "field": field_key, "message": message})
+
+    hourly_list = [hourly[fxx] for fxx in FORECAST_HOURS]
+    ok_values = sum(len(hour["values"]) for hour in hourly_list)
+    return {
+        "status": "ok" if ok_values else "no_values",
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "task_count": len(tasks),
+        "ok_values": ok_values,
+        "hourly": hourly_list,
+        "errors": errors[:30],
+    }
+
+
 def field_map_by_hazard(field_map: dict[str, Any]) -> dict[str, dict[str, Any]]:
     hazard_categories = {
         "WIND": {"wind"},
@@ -1347,8 +1539,322 @@ def wind_block_payload(
 def hazard_reason(hazard: str, field_summary: dict[str, Any]) -> str:
     matches = int(field_summary.get(hazard, {}).get("field_map_matches", 0))
     if matches:
-        return f"REFS field-map found {matches} candidate IDX lines; value extraction not enabled in lean builder"
+        return f"REFS field-map found {matches} candidate IDX lines; no exact extracted point value was available"
     return "No matched REFS field-map candidates; risk set to None"
+
+
+def secondary_hours(secondary_result: dict[str, Any], start_fxx: int | None = None, end_fxx: int | None = None) -> list[dict[str, Any]]:
+    hours = secondary_result.get("hourly") or []
+    if start_fxx is None or end_fxx is None:
+        return [h for h in hours if h.get("values")]
+    return [
+        h for h in hours
+        if h.get("values") and start_fxx <= int(h.get("fxx", -999)) <= end_fxx
+    ]
+
+
+def value_or_none(hour: dict[str, Any], key: str) -> float | None:
+    value = (hour.get("values") or {}).get(key)
+    return float(value) if isinstance(value, (int, float)) else None
+
+
+def temperature_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    temp_k = value_or_none(hour, "temp_mean_k")
+    cold_prob = value_or_none(hour, "temp_freezing_prob")
+    if temp_k is None and cold_prob is None:
+        return None
+
+    temp_f = k_to_f(temp_k) if temp_k is not None else None
+    hot_risk = 0
+    hot_impact = 0
+    hot_prob = 0.0
+    hot_metric = "No heat signal"
+    if temp_f is not None:
+        if temp_f >= 105:
+            hot_impact, hot_prob, hot_metric = 5, 100.0, ">=105 F"
+        elif temp_f >= 100:
+            hot_impact, hot_prob, hot_metric = 4, 100.0, ">=100 F"
+        elif temp_f >= 95:
+            hot_impact, hot_prob, hot_metric = 3, 100.0, ">=95 F"
+        if hot_impact:
+            hot_risk = matrix_risk(hot_prob, hot_impact)
+
+    cold_prob = round(float(cold_prob or 0.0), 1)
+    cold_impact = 2 if cold_prob > 0 else 0
+    cold_metric = "<32 F"
+    if temp_f is not None:
+        if temp_f <= 10:
+            cold_impact, cold_metric = 4, "<=10 F"
+        elif temp_f <= 20:
+            cold_impact, cold_metric = 3, "<=20 F"
+        elif temp_f <= 32:
+            cold_impact, cold_metric = 2, "<=32 F"
+            cold_prob = max(cold_prob, 100.0)
+    cold_risk = matrix_risk(cold_prob, cold_impact) if cold_impact else 0
+
+    if cold_risk > hot_risk:
+        risk, impact, prob, metric = cold_risk, cold_impact, cold_prob, cold_metric
+    else:
+        risk, impact, prob, metric = hot_risk, hot_impact, hot_prob, hot_metric
+
+    return {
+        "risk": risk,
+        "impact_level": impact,
+        "probability": prob,
+        "metric": metric if risk > 0 else "No signal",
+        "temp_f": round(temp_f, 1) if temp_f is not None else None,
+        "cold_prob": cold_prob,
+    }
+
+
+def visibility_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    vis_m = value_or_none(hour, "visibility_mean_m")
+    prob = value_or_none(hour, "visibility_lt_3mi_prob")
+    if vis_m is None and prob is None:
+        return None
+
+    vis_mi = meters_to_miles(vis_m) if vis_m is not None else None
+    prob = round(float(prob or 0.0), 1)
+    impact = 2 if prob > 0 else 0
+    metric = "<3 mi"
+    if vis_mi is not None:
+        if vis_mi <= 0.5:
+            impact, metric, prob = 5, "<=0.5 mi", max(prob, 100.0)
+        elif vis_mi <= 1.0:
+            impact, metric, prob = 4, "<=1 mi", max(prob, 100.0)
+        elif vis_mi <= 3.0:
+            impact, metric, prob = 3, "<=3 mi", max(prob, 100.0)
+        elif vis_mi <= 5.0 and prob > 0:
+            impact, metric = max(impact, 2), "<5 mi"
+    risk = matrix_risk(prob, impact) if impact else 0
+    return {
+        "risk": risk,
+        "impact_level": impact if risk > 0 else 0,
+        "probability": prob if risk > 0 else 0.0,
+        "metric": metric if risk > 0 else "No signal",
+        "visibility_mi": round(vis_mi, 2) if vis_mi is not None else None,
+    }
+
+
+def probability_signal(
+    hour: dict[str, Any],
+    probability_key: str,
+    metric: str,
+    impact_level: int,
+    extra_key: str | None = None,
+    extra_impact: int | None = None,
+) -> dict[str, Any] | None:
+    prob = value_or_none(hour, probability_key)
+    extra_prob = value_or_none(hour, extra_key) if extra_key else None
+    if prob is None and extra_prob is None:
+        return None
+    prob = round(float(prob or 0.0), 1)
+    impact = impact_level
+    if extra_prob is not None and extra_prob > prob:
+        prob = round(float(extra_prob), 1)
+        impact = int(extra_impact or impact_level)
+    risk = matrix_risk(prob, impact) if prob > 0 else 0
+    return {
+        "risk": risk,
+        "impact_level": impact if risk > 0 else 0,
+        "probability": prob if risk > 0 else 0.0,
+        "metric": metric if risk > 0 else "No signal",
+    }
+
+
+def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    cold_prob = value_or_none(hour, "temp_freezing_prob")
+    temp_k = value_or_none(hour, "temp_mean_k")
+    wet_prob = max(
+        value_or_none(hour, "rain_prob") or 0.0,
+        value_or_none(hour, "snow_prob") or 0.0,
+        value_or_none(hour, "fzra_prob") or 0.0,
+    )
+    if cold_prob is None and temp_k is None:
+        return None
+    if temp_k is not None and k_to_f(temp_k) <= 32.0:
+        cold_prob = max(float(cold_prob or 0.0), 100.0)
+    joint_prob = round(min(float(cold_prob or 0.0), float(wet_prob or 0.0)), 1)
+    risk = matrix_risk(joint_prob, 3) if joint_prob > 0 else 0
+    return {
+        "risk": risk,
+        "impact_level": 3 if risk > 0 else 0,
+        "probability": joint_prob if risk > 0 else 0.0,
+        "metric": "wet + <=32 F" if risk > 0 else "No signal",
+        "cold_prob": round(float(cold_prob or 0.0), 1),
+        "wet_prob": round(float(wet_prob or 0.0), 1),
+    }
+
+
+def secondary_signal_for_hazard(hazard: str, hour: dict[str, Any]) -> dict[str, Any] | None:
+    if hazard == "TEMPERATURE":
+        return temperature_signal(hour)
+    if hazard == "VISIBILITY":
+        return visibility_signal(hour)
+    if hazard == "LIGHTNING":
+        return probability_signal(hour, "lightning_prob", "LTNG >0.08", 3)
+    if hazard == "RAIN":
+        return probability_signal(hour, "rain_prob", "rain type", 1, "rain_heavy_prob", 3)
+    if hazard == "SNOW":
+        return probability_signal(hour, "snow_prob", "snow type", 2, "snow_accum_prob", 3)
+    if hazard == "FZRA":
+        return probability_signal(hour, "fzra_prob", "freezing rain type", 3, "fzra_accum_prob", 4)
+    if hazard == "FLASH_FREEZE":
+        return flash_freeze_signal(hour)
+    return None
+
+
+def best_secondary_hour(hazard: str, hours: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    candidates = []
+    for hour in hours:
+        signal = secondary_signal_for_hazard(hazard, hour)
+        if not signal:
+            continue
+        candidates.append((hour, signal))
+    if not candidates:
+        return None
+
+    if hazard == "TEMPERATURE":
+        return max(
+            candidates,
+            key=lambda item: (
+                item[1].get("risk", 0),
+                item[1].get("probability", 0.0),
+                abs((item[1].get("temp_f") or 60.0) - 60.0),
+            ),
+        )
+    if hazard == "VISIBILITY":
+        return max(
+            candidates,
+            key=lambda item: (
+                item[1].get("risk", 0),
+                item[1].get("probability", 0.0),
+                -1.0 * (item[1].get("visibility_mi") if item[1].get("visibility_mi") is not None else 999.0),
+            ),
+        )
+    return max(candidates, key=lambda item: (item[1].get("risk", 0), item[1].get("probability", 0.0), item[1].get("impact_level", 0)))
+
+
+def secondary_hourly_values(hazard: str, hours: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    values = []
+    for hour in sorted(hours, key=lambda item: int(item.get("fxx", 999))):
+        signal = secondary_signal_for_hazard(hazard, hour)
+        if not signal:
+            continue
+        item = {
+            "fxx": hour.get("fxx"),
+            "valid_utc": hour.get("valid_utc"),
+            "prob": signal.get("probability", 0.0),
+            "risk": signal.get("risk", 0),
+            "metric": signal.get("metric", "No signal"),
+        }
+        if hazard == "TEMPERATURE":
+            item.update({"label": "temp", "value": signal.get("temp_f"), "unit": "F", "temp_f": signal.get("temp_f")})
+        elif hazard == "VISIBILITY":
+            item.update({"label": "visibility", "value": signal.get("visibility_mi"), "unit": "mi", "visibility_mi": signal.get("visibility_mi")})
+        elif hazard == "FLASH_FREEZE":
+            item.update({"label": "joint prob", "value": signal.get("probability"), "unit": "%", "cold_prob": signal.get("cold_prob"), "wet_prob": signal.get("wet_prob")})
+        else:
+            item.update({"label": "prob", "value": signal.get("probability"), "unit": "%"})
+        values.append(item)
+    return values
+
+
+def secondary_threat_payload(hazard: str, secondary_result: dict[str, Any], fallback: dict[str, Any]) -> dict[str, Any]:
+    selected = best_secondary_hour(hazard, secondary_hours(secondary_result))
+    if not selected:
+        return fallback
+    hour, signal = selected
+    risk = int(signal.get("risk", 0))
+    prob = round(float(signal.get("probability", 0.0)), 1)
+    fxx = hour.get("fxx")
+
+    display_label = "60-hr max probability"
+    display_value = f"{prob:.0f}%" if risk > 0 else "None"
+    if hazard == "TEMPERATURE":
+        display_label = "60-hr temp signal"
+        display_value = f"{float(signal['temp_f']):.0f} F" if signal.get("temp_f") is not None else "No temp value"
+    elif hazard == "VISIBILITY":
+        display_label = "60-hr min visibility"
+        display_value = f"{float(signal['visibility_mi']):.1f} mi" if signal.get("visibility_mi") is not None else "No visibility value"
+
+    return {
+        **fallback,
+        "prob": prob,
+        "probability": prob,
+        "risk": risk,
+        "risk_level": risk,
+        "risk_label": risk_label(risk),
+        "level": int(signal.get("impact_level", 0)),
+        "impact_level": int(signal.get("impact_level", 0)),
+        "metric": signal.get("metric", "No signal") if risk > 0 else "No signal",
+        "display_label": display_label,
+        "display_value": display_value,
+        "peak_start_fxx": fxx,
+        "peak_end_fxx": fxx,
+        "source_fxx": fxx,
+        "peak_valid_utc": hour.get("valid_utc"),
+        "driver": (
+            f"REFS point extraction found {display_value} for {signal.get('metric', 'hazard signal')}"
+            if risk > 0
+            else "REFS point extraction found no threshold-level signal"
+        ),
+        "methodology": "REFS IDX-selected byte-range point extraction at the DSS location. Missing fields fail per hazard.",
+        "data_status": secondary_result.get("status", "unknown"),
+        "method": secondary_result.get("method"),
+    }
+
+
+def secondary_block_payload(
+    hazard: str,
+    secondary_result: dict[str, Any],
+    start_fxx: int,
+    end_fxx: int,
+    valid_start: datetime,
+    valid_end: datetime,
+    fallback: dict[str, Any],
+) -> dict[str, Any]:
+    hours = secondary_hours(secondary_result, start_fxx, end_fxx)
+    selected = best_secondary_hour(hazard, hours)
+    hourly_values = secondary_hourly_values(hazard, hours)
+    if not selected and not hourly_values:
+        return fallback
+    if not selected:
+        return {**fallback, "hourly_values": hourly_values, "data_status": secondary_result.get("status", "unknown")}
+
+    hour, signal = selected
+    risk = int(signal.get("risk", 0))
+    prob = round(float(signal.get("probability", 0.0)), 1)
+    payload = {
+        **fallback,
+        "risk": risk,
+        "risk_label": risk_label(risk),
+        "level": int(signal.get("impact_level", 0)),
+        "impact_level": int(signal.get("impact_level", 0)),
+        "prob": prob,
+        "probability": prob,
+        "metric": signal.get("metric", "No signal") if risk > 0 else "No signal",
+        "driver": (
+            f"Block peak {signal.get('metric', 'signal')} at {prob:.0f}%"
+            if risk > 0
+            else "No threshold-level signal in this 3-hour block"
+        ),
+        "source_fxx": hour.get("fxx"),
+        "peak_valid_utc": hour.get("valid_utc"),
+        "valid_start_utc": valid_start.isoformat().replace("+00:00", "Z"),
+        "valid_end_utc": valid_end.isoformat().replace("+00:00", "Z"),
+        "hourly_values": hourly_values,
+        "data_status": secondary_result.get("status", "unknown"),
+        "method": secondary_result.get("method"),
+    }
+    if hazard == "TEMPERATURE":
+        payload["temp_f"] = signal.get("temp_f")
+    elif hazard == "VISIBILITY":
+        payload["visibility_mi"] = signal.get("visibility_mi")
+    elif hazard == "FLASH_FREEZE":
+        payload["cold_prob"] = signal.get("cold_prob")
+        payload["wet_prob"] = signal.get("wet_prob")
+    return payload
 
 
 def build_outputs(
@@ -1357,6 +1863,7 @@ def build_outputs(
     file_index: dict[tuple[str, int, str], RefsFile],
     field_map: dict[str, Any],
     wind_result: dict[str, Any] | None = None,
+    secondary_result: dict[str, Any] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     generated = utc_now()
     cycle_iso = cycle_dt.isoformat().replace("+00:00", "Z")
@@ -1381,12 +1888,12 @@ def build_outputs(
         "hazards": [],
         "methodology": (
             "REFS-only DSS backend. This lean pass indexes the selected cycle and compact field map, "
-            "then writes complete dashboard JSON without broad GRIB parsing. Hazards remain risk 0 "
-            "until exact byte-range extraction is enabled per field."
+            "then writes complete dashboard JSON using exact IDX-selected byte ranges. Missing fields "
+            "fail per hazard and fall back to risk 0."
         ),
         "metadata": {
-            "builder_mode": "refs_wind_first_pass",
-            "extraction": "wind_enabled",
+            "builder_mode": "refs_point_extraction",
+            "extraction": "wind_and_secondary_hazards_enabled",
             "selected_prefix": selected.get("prefix"),
             "available_products": sorted(file_summary.keys()),
             "field_map_status": field_map.get("status", "unknown"),
@@ -1405,6 +1912,8 @@ def build_outputs(
                 "WIND is intentionally not populated from 10 m mean WIND. "
                 "Operational WIND risk requires gust/member-gust data."
             )
+        elif hazard != "WIND" and secondary_result and secondary_result.get("status") == "ok":
+            threat = secondary_threat_payload(hazard, secondary_result, threat)
         threats["threats"][hazard] = threat
         threats["hazards"].append(
             {
@@ -1435,8 +1944,8 @@ def build_outputs(
         "blocks": [],
         "block_hazards": [],
         "metadata": {
-            "builder_mode": "refs_wind_first_pass",
-            "extraction": "wind_enabled",
+            "builder_mode": "refs_point_extraction",
+            "extraction": "wind_and_secondary_hazards_enabled",
         },
     }
 
@@ -1470,6 +1979,8 @@ def build_outputs(
                 payload["driver"] = "No REFS gust field found; mean wind is not used as a gust proxy"
                 payload["data_status"] = "missing_gust_field"
                 payload["method"] = "gust_required_no_proxy"
+            elif hazard != "WIND" and secondary_result and secondary_result.get("status") == "ok":
+                payload = secondary_block_payload(hazard, secondary_result, start_fxx, end_fxx, valid_start, valid_end, payload)
             hazard_block[hazard] = payload
             block[hazard] = payload["risk"]
 
@@ -1484,7 +1995,7 @@ def build_outputs(
         "generated_utc": generated,
         "cycle_utc_iso": cycle_iso,
         "selected_prefix": selected.get("prefix"),
-        "builder_mode": "refs_wind_first_pass",
+        "builder_mode": "refs_point_extraction",
         "candidate_file_count": len(file_index),
         "products": file_summary,
         "field_map": {
@@ -1507,7 +2018,8 @@ def build_outputs(
         "notes": [
             "No full GRIB files are downloaded by this builder.",
             "Wind uses IDX-selected byte ranges for DESI-style time-lagged GUST:surface fields when available.",
-            "Outputs are complete and low-risk when exact REFS fields are missing or not yet enabled.",
+            "Secondary hazards use a small set of exact REFS mean/probability rows selected from IDX files.",
+            "Outputs are complete and low-risk when exact REFS fields are missing.",
         ],
     }
 
@@ -1532,6 +2044,28 @@ def build_outputs(
                 "errors": wind_result.get("errors", [])[:10],
             }
         )
+
+    if secondary_result:
+        for hazard in ("LIGHTNING", "SNOW", "VISIBILITY", "FZRA", "FLASH_FREEZE", "RAIN", "TEMPERATURE"):
+            threat = threats["threats"][hazard]
+            builder_summary["hazards"][hazard].update(
+                {
+                    "risk": threat.get("risk", 0),
+                    "risk_label": threat.get("risk_label", "None"),
+                    "status": secondary_result.get("status"),
+                    "method": secondary_result.get("method"),
+                    "source_fxx": threat.get("source_fxx"),
+                    "probability": threat.get("probability"),
+                    "metric": threat.get("metric"),
+                }
+            )
+        builder_summary["secondary_extraction"] = {
+            "status": secondary_result.get("status"),
+            "method": secondary_result.get("method"),
+            "task_count": secondary_result.get("task_count", 0),
+            "ok_values": secondary_result.get("ok_values", 0),
+            "errors": secondary_result.get("errors", [])[:10],
+        }
 
     return threats, timeline, builder_summary
 
@@ -1559,7 +2093,23 @@ def main() -> None:
         f"prob_hours={wind_result.get('ok_probability_hours', 0)}"
     )
 
-    threats, timeline, builder_summary = build_outputs(cycle_dt, selected, file_index, field_map, wind_result)
+    print("Extracting secondary REFS hazard fields")
+    secondary_result = extract_refs_secondary_hourly(file_index, cycle_dt)
+    print(
+        "Secondary extraction: "
+        f"status={secondary_result.get('status')} "
+        f"tasks={secondary_result.get('task_count', 0)} "
+        f"values={secondary_result.get('ok_values', 0)}"
+    )
+
+    threats, timeline, builder_summary = build_outputs(
+        cycle_dt,
+        selected,
+        file_index,
+        field_map,
+        wind_result,
+        secondary_result,
+    )
 
     write_json(DOCS / "threats.json", threats)
     write_json(DOCS / "timeline.json", timeline)
