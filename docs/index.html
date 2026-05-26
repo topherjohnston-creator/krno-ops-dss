@@ -1008,7 +1008,7 @@
                             ? `<span style="color:${col};font-weight:800;">${Math.round(gust)} mph</span>`
                             : `<span style="color:#71717a;font-weight:800;">--</span>`;
                     } else {
-                        const fallbackUnits = { TEMPERATURE:'F', VISIBILITY:'mi', RAIN:'in', SNOW:'in', FZRA:'%', LIGHTNING:'%', FLASH_FREEZE:'F' };
+                        const fallbackUnits = { TEMPERATURE:'F', VISIBILITY:'mi', RAIN:'in', SNOW:'in', FZRA:'in', LIGHTNING:'%', FLASH_FREEZE:'F' };
                         const value = hour.value;
                         const unit = hour.unit || fallbackUnits[key] || '';
                         main = value != null
@@ -1077,8 +1077,8 @@
                     const acc = hdata?.hourly_values?.find(x => x.rain_in != null)?.rain_in;
                     if (acc != null) metLine = `<span style="color:${deciColormap('RAIN', parseFloat(acc))||'#fff'};font-weight:800;">Rain ${Number(acc).toFixed(2)} in</span>`;
                 } else if (key === 'FZRA') {
-                    const fr = hdata?.hourly_values?.find(x => x.fzra_chance != null)?.fzra_chance;
-                    if (fr != null) metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${Math.round(fr)}%</span>`;
+                    const fr = hdata?.hourly_values?.find(x => x.fzra_in != null)?.fzra_in;
+                    if (fr != null) metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${Number(fr).toFixed(2)} in</span>`;
                 } else if (key === 'FLASH_FREEZE') {
                     const tw = hdata?.hourly_values?.find(x => x.wet_bulb_f != null)?.wet_bulb_f;
                     if (tw != null) metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet bulb ${Math.round(tw)}°F</span>`;

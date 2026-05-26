@@ -1738,6 +1738,8 @@ def fzra_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
         return None
     signal = signal or {"risk": 0, "impact_level": 0, "probability": 0.0, "metric": "No signal"}
     signal["fzra_chance"] = round(normalize_probability(float(type_mean)), 1) if type_mean is not None else signal.get("probability", 0.0)
+    accum_prob = value_or_none(hour, "fzra_accum_prob")
+    signal["fzra_in"] = 0.01 if accum_prob and accum_prob > 0 else 0.0
     return signal
 
 
@@ -1900,7 +1902,12 @@ def secondary_hourly_values(hazard: str, hours: list[dict[str, Any]]) -> list[di
         elif hazard == "SNOW":
             item.update({"label": "snow", "value": signal.get("snow_in"), "unit": "in", "snow_in": signal.get("snow_in")})
         elif hazard == "FZRA":
-            item.update({"label": "freezing rain", "value": signal.get("fzra_chance"), "unit": "%", "fzra_chance": signal.get("fzra_chance")})
+            item.update({
+                "label": "freezing rain",
+                "value": signal.get("fzra_in"),
+                "unit": "in",
+                "fzra_in": signal.get("fzra_in"),
+            })
         else:
             item.update({"label": "prob", "value": signal.get("probability"), "unit": "%"})
         values.append(item)
