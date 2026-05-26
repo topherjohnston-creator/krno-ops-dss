@@ -628,6 +628,16 @@ def meters_to_miles(meters: float) -> float:
     return meters / 1609.344
 
 
+def mm_to_inches(mm: float) -> float:
+    return mm / 25.4
+
+
+def wet_bulb_f_from_temp_dewpoint(temp_f: float | None, dewpoint_f: float | None) -> float | None:
+    if temp_f is None or dewpoint_f is None:
+        return None
+    return temp_f - (temp_f - dewpoint_f) / 3.0
+
+
 def evaluate_wind_thresholds(mean_mph: float | None, threshold_probs: dict[str, float | None]) -> dict[str, Any]:
     candidates = []
     for threshold in WIND_THRESHOLDS:
@@ -1047,6 +1057,11 @@ def secondary_field_plan() -> dict[str, dict[str, Any]]:
             "needles": (":TMP:2 M ABOVE GROUND:", "WT ENS MEAN"),
             "hazards": ("TEMPERATURE", "FLASH_FREEZE"),
         },
+        "dewpoint_mean_k": {
+            "product": "mean",
+            "needles": (":DPT:2 M ABOVE GROUND:", "WT ENS MEAN"),
+            "hazards": ("FLASH_FREEZE",),
+        },
         "temp_freezing_prob": {
             "product": "prob",
             "needles": (":TMP:2 M ABOVE GROUND:", "PROB <273.15:"),
@@ -1076,17 +1091,32 @@ def secondary_field_plan() -> dict[str, dict[str, Any]]:
             "hazards": ("RAIN", "FLASH_FREEZE"),
             "probability": True,
         },
+        "rain_amount_mm": {
+            "product": "mean",
+            "needles": (":APCP:SURFACE:", "WT ENS MEAN"),
+            "hazards": ("RAIN", "FLASH_FREEZE"),
+        },
         "snow_prob": {
             "product": "prob",
             "needles": (":CSNOW:SURFACE:", "PROB"),
             "hazards": ("SNOW", "FLASH_FREEZE"),
             "probability": True,
         },
+        "snow_amount_mm": {
+            "product": "mean",
+            "needles": (":ASNOW:SURFACE:", "WT ENS MEAN"),
+            "hazards": ("SNOW",),
+        },
         "fzra_prob": {
             "product": "prob",
             "needles": (":CFRZR:SURFACE:", "PROB"),
             "hazards": ("FZRA", "FLASH_FREEZE"),
             "probability": True,
+        },
+        "fzra_type_mean": {
+            "product": "mean",
+            "needles": (":CFRZR:SURFACE:", "WT ENS MEAN"),
+            "hazards": ("FZRA",),
         },
     }
     if EXTRACT_REFS_ACCUM_PROBS:
@@ -1681,6 +1711,36 @@ def probability_signal(
     }
 
 
+def rain_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    signal = probability_signal(hour, "rain_prob", "rain type", 1, "rain_heavy_prob", 3)
+    amount_mm = value_or_none(hour, "rain_amount_mm")
+    if signal is None and amount_mm is None:
+        return None
+    signal = signal or {"risk": 0, "impact_level": 0, "probability": 0.0, "metric": "No signal"}
+    signal["rain_in"] = round(mm_to_inches(float(amount_mm)), 3) if amount_mm is not None else None
+    return signal
+
+
+def snow_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    signal = probability_signal(hour, "snow_prob", "snow type", 2, "snow_accum_prob", 3)
+    amount_mm = value_or_none(hour, "snow_amount_mm")
+    if signal is None and amount_mm is None:
+        return None
+    signal = signal or {"risk": 0, "impact_level": 0, "probability": 0.0, "metric": "No signal"}
+    signal["snow_in"] = round(mm_to_inches(float(amount_mm)), 3) if amount_mm is not None else None
+    return signal
+
+
+def fzra_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
+    signal = probability_signal(hour, "fzra_prob", "freezing rain type", 3, "fzra_accum_prob", 4)
+    type_mean = value_or_none(hour, "fzra_type_mean")
+    if signal is None and type_mean is None:
+        return None
+    signal = signal or {"risk": 0, "impact_level": 0, "probability": 0.0, "metric": "No signal"}
+    signal["fzra_chance"] = round(normalize_probability(float(type_mean)), 1) if type_mean is not None else signal.get("probability", 0.0)
+    return signal
+
+
 def lightning_signal(hour: dict[str, Any], all_hours: dict[int, dict[str, Any]] | None = None) -> dict[str, Any] | None:
     prob = value_or_none(hour, "lightning_prob")
     if prob is None:
@@ -1730,6 +1790,10 @@ def is_short_lightning_spike(fxx: int, all_hours: dict[int, dict[str, Any]]) -> 
 def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
     cold_prob = value_or_none(hour, "temp_freezing_prob")
     temp_k = value_or_none(hour, "temp_mean_k")
+    dewpoint_k = value_or_none(hour, "dewpoint_mean_k")
+    temp_f = k_to_f(temp_k) if temp_k is not None else None
+    dewpoint_f = k_to_f(dewpoint_k) if dewpoint_k is not None else None
+    wet_bulb_f = wet_bulb_f_from_temp_dewpoint(temp_f, dewpoint_f)
     wet_prob = max(
         value_or_none(hour, "rain_prob") or 0.0,
         value_or_none(hour, "snow_prob") or 0.0,
@@ -1737,7 +1801,9 @@ def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
     )
     if cold_prob is None and temp_k is None:
         return None
-    if temp_k is not None and k_to_f(temp_k) <= 32.0:
+    if temp_f is not None and temp_f <= 32.0:
+        cold_prob = max(float(cold_prob or 0.0), 100.0)
+    if wet_bulb_f is not None and wet_bulb_f <= 32.0:
         cold_prob = max(float(cold_prob or 0.0), 100.0)
     joint_prob = round(min(float(cold_prob or 0.0), float(wet_prob or 0.0)), 1)
     risk = matrix_risk(joint_prob, 3) if joint_prob > 0 else 0
@@ -1748,6 +1814,7 @@ def flash_freeze_signal(hour: dict[str, Any]) -> dict[str, Any] | None:
         "metric": "wet + <=32 F" if risk > 0 else "No signal",
         "cold_prob": round(float(cold_prob or 0.0), 1),
         "wet_prob": round(float(wet_prob or 0.0), 1),
+        "wet_bulb_f": round(wet_bulb_f, 1) if wet_bulb_f is not None else None,
     }
 
 
@@ -1759,11 +1826,11 @@ def secondary_signal_for_hazard(hazard: str, hour: dict[str, Any]) -> dict[str, 
     if hazard == "LIGHTNING":
         return lightning_signal(hour)
     if hazard == "RAIN":
-        return probability_signal(hour, "rain_prob", "rain type", 1, "rain_heavy_prob", 3)
+        return rain_signal(hour)
     if hazard == "SNOW":
-        return probability_signal(hour, "snow_prob", "snow type", 2, "snow_accum_prob", 3)
+        return snow_signal(hour)
     if hazard == "FZRA":
-        return probability_signal(hour, "fzra_prob", "freezing rain type", 3, "fzra_accum_prob", 4)
+        return fzra_signal(hour)
     if hazard == "FLASH_FREEZE":
         return flash_freeze_signal(hour)
     return None
@@ -1820,7 +1887,20 @@ def secondary_hourly_values(hazard: str, hours: list[dict[str, Any]]) -> list[di
         elif hazard == "VISIBILITY":
             item.update({"label": "visibility", "value": signal.get("visibility_mi"), "unit": "mi", "visibility_mi": signal.get("visibility_mi")})
         elif hazard == "FLASH_FREEZE":
-            item.update({"label": "flash freeze", "value": signal.get("probability"), "unit": "%", "cold_prob": signal.get("cold_prob"), "wet_prob": signal.get("wet_prob")})
+            item.update({
+                "label": "wet bulb",
+                "value": signal.get("wet_bulb_f"),
+                "unit": "F",
+                "wet_bulb_f": signal.get("wet_bulb_f"),
+                "cold_prob": signal.get("cold_prob"),
+                "wet_prob": signal.get("wet_prob"),
+            })
+        elif hazard == "RAIN":
+            item.update({"label": "rain", "value": signal.get("rain_in"), "unit": "in", "rain_in": signal.get("rain_in")})
+        elif hazard == "SNOW":
+            item.update({"label": "snow", "value": signal.get("snow_in"), "unit": "in", "snow_in": signal.get("snow_in")})
+        elif hazard == "FZRA":
+            item.update({"label": "freezing rain", "value": signal.get("fzra_chance"), "unit": "%", "fzra_chance": signal.get("fzra_chance")})
         else:
             item.update({"label": "prob", "value": signal.get("probability"), "unit": "%"})
         values.append(item)

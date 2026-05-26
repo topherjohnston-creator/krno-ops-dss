@@ -912,11 +912,40 @@
             showTooltip(tip);
         };
 
+        function blockStartMs(block) {
+            return block?.valid_start_utc ? new Date(block.valid_start_utc).getTime() : null;
+        }
+
+        function blockEndMs(block) {
+            return block?.valid_end_utc ? new Date(block.valid_end_utc).getTime() + 3600000 : null;
+        }
+
+        function blockIndexForOffset(offset) {
+            if (!Array.isArray(nbmBlocks) || !nbmBlocks.length) return 0;
+            const targetMs = globalNow.getTime() + offset * 3600000;
+            const exact = nbmBlocks.findIndex(block => {
+                const start = blockStartMs(block);
+                const end = blockEndMs(block);
+                return start !== null && end !== null && targetMs >= start && targetMs < end;
+            });
+            if (exact >= 0) return exact;
+
+            let nearest = 0;
+            let nearestDist = Infinity;
+            nbmBlocks.forEach((block, index) => {
+                const start = blockStartMs(block);
+                if (start === null) return;
+                const dist = Math.abs(start - targetMs);
+                if (dist < nearestDist) {
+                    nearest = index;
+                    nearestDist = dist;
+                }
+            });
+            return nearest;
+        }
+
         window.showHourTooltip = function(offset, actualBi) {
-            // offset = hours from now for time display
-            // actualBi = exact block index (passed from block hover, avoids cycle-offset error)
-            const blockCount = nbmBlocks?.length || 20;
-            const bi    = (actualBi !== undefined) ? actualBi : Math.min(Math.max(Math.floor(offset / 3), 0), blockCount - 1);
+            const bi = (actualBi !== undefined) ? actualBi : blockIndexForOffset(offset);
             const block = nbmBlocks?.[bi];
             const bhaz  = nbmBlockHazards?.[bi];
 
@@ -950,6 +979,27 @@
                     const hourRisk = hour.risk ?? 0;
                     const hourCfg = RISK_LEVELS[hourRisk] || RISK_LEVELS[0];
                     const riskColor = hourRisk > 0 ? hourCfg.color : '#71717a';
+                    const valueColor = key === 'LIGHTNING'
+                        ? riskColor
+                        : (deciColormap(key, Number(hour.value)) || riskColor);
+                    const decimals = {
+                        VISIBILITY: 1,
+                        RAIN: 2,
+                        SNOW: 2,
+                        FZRA: 0,
+                        LIGHTNING: 0,
+                        FLASH_FREEZE: 0,
+                        TEMPERATURE: 0,
+                    };
+                    const formatValue = (value, unit) => {
+                        if (value === null || value === undefined || Number.isNaN(Number(value))) return '--';
+                        const n = Number(value);
+                        const places = decimals[key] ?? 0;
+                        const rounded = places > 0 ? n.toFixed(places) : Math.round(n);
+                        const spacer = unit && !['%', 'F', '°F'].includes(unit) ? ' ' : '';
+                        const displayUnit = unit === 'F' ? '°F' : unit;
+                        return `${rounded}${spacer}${displayUnit || ''}`;
+                    };
 
                     if (key === 'WIND') {
                         const gust = hour.gust_max_mph ?? hour.value;
@@ -958,16 +1008,15 @@
                             ? `<span style="color:${col};font-weight:800;">${Math.round(gust)} mph</span>`
                             : `<span style="color:#71717a;font-weight:800;">--</span>`;
                     } else {
-                        const fallbackUnits = { TEMPERATURE:'°F', VISIBILITY:'mi', RAIN:'%', SNOW:'%', FZRA:'%', LIGHTNING:'%', FLASH_FREEZE:'%' };
+                        const fallbackUnits = { TEMPERATURE:'F', VISIBILITY:'mi', RAIN:'in', SNOW:'in', FZRA:'%', LIGHTNING:'%', FLASH_FREEZE:'F' };
                         const value = hour.value;
                         const unit = hour.unit || fallbackUnits[key] || '';
-                        const rounded = Number.isInteger(Number(value)) ? Math.round(Number(value)) : Number(value).toFixed(key === 'VISIBILITY' ? 1 : 0);
                         main = value != null
-                            ? `<span style="color:${riskColor};font-weight:800;">${rounded}${unit}</span>`
+                            ? `<span style="color:${valueColor};font-weight:800;">${formatValue(value, unit)}</span>`
                             : `<span style="color:#71717a;font-weight:800;">--</span>`;
                     }
 
-                    const prob = hour.prob != null && Number(hour.prob) > 0
+                    const prob = key === 'LIGHTNING' && hour.prob != null && Number(hour.prob) > 0
                         ? `<span style="color:${riskColor};font-weight:800;">${Math.round(Number(hour.prob))}%</span>`
                         : '';
 
@@ -1007,27 +1056,32 @@
                         metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">Gust ${Math.round(gustVal)} mph</span>`;
                         if (block?.WDR != null) metLine += `<span style="color:#71717a;"> from ${block.WDR * 10}°</span>`;
                     }
-                } else if (key === 'TEMPERATURE' && block?.TMP != null) {
-                    var tmpC = deciColormap('TEMPERATURE', Math.round(block.TMP)) || '#fff';
-                    metLine = `<span style="color:${tmpC};font-weight:800;">Temp ${Math.round(block.TMP)}°F</span>`;
-                    if (block.DPT != null) metLine += `<span style="color:#71717a;"> · Dew ${Math.round(block.DPT)}°F</span>`;
-                } else if (key === 'VISIBILITY' && block?.VIS != null) {
-                    const sm = block.VIS / 10;
-                    const vCol = deciColormap('VISIBILITY', sm);
-                    metLine = `<span style="color:${vCol||'#fff'};font-weight:800;">Visibility ${sm >= 10 ? '10+ mi' : sm.toFixed(1) + ' mi'}</span>`;
+                } else if (key === 'TEMPERATURE') {
+                    const tempVal = hdata?.temp_f;
+                    if (tempVal != null) {
+                        var tmpC = deciColormap('TEMPERATURE', Math.round(tempVal)) || '#fff';
+                        metLine = `<span style="color:${tmpC};font-weight:800;">Temp ${Math.round(tempVal)}°F</span>`;
+                    }
+                } else if (key === 'VISIBILITY') {
+                    const sm = hdata?.visibility_mi;
+                    if (sm != null) {
+                        const vCol = deciColormap('VISIBILITY', sm);
+                        metLine = `<span style="color:${vCol||'#fff'};font-weight:800;">Visibility ${sm >= 10 ? '10+ mi' : sm.toFixed(1) + ' mi'}</span>`;
+                    }
                 } else if (key === 'LIGHTNING') {
                     metLine = `<span style="color:${txtCol};font-weight:800;">Thunder ${Math.round(prob)}%</span>`;
-                } else if (key === 'SNOW' && block?.s3hr_in > 0) {
-                    const acc = block.s3hr_in.toFixed(2);
-                    metLine = `<span style="color:${deciColormap('SNOW', parseFloat(acc))||'#fff'};font-weight:800;">Snow ${acc}" / 3hr</span>`;
-                } else if (key === 'RAIN' && block?.Q01 > 0) {
-                    const rate = (block.Q01 / 100).toFixed(2);
-                    metLine = `<span style="color:${deciColormap('RAIN', parseFloat(rate))||'#fff'};font-weight:800;">Rain ${rate} in/hr</span>`;
-                } else if (key === 'FZRA' && block?.I01 > 0) {
-                    metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${(block.I01/100).toFixed(3)}" / hr</span>`;
-                } else if (key === 'FLASH_FREEZE' && block?.TMP != null && block?.DPT != null) {
-                    const tw = block.TMP - (block.TMP - block.DPT) / 3;
-                    metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet-bulb ${Math.round(tw)}°F</span>`;
+                } else if (key === 'SNOW') {
+                    const acc = hdata?.hourly_values?.find(x => x.snow_in != null)?.snow_in;
+                    if (acc != null) metLine = `<span style="color:${deciColormap('SNOW', parseFloat(acc))||'#fff'};font-weight:800;">Snow ${Number(acc).toFixed(2)} in</span>`;
+                } else if (key === 'RAIN') {
+                    const acc = hdata?.hourly_values?.find(x => x.rain_in != null)?.rain_in;
+                    if (acc != null) metLine = `<span style="color:${deciColormap('RAIN', parseFloat(acc))||'#fff'};font-weight:800;">Rain ${Number(acc).toFixed(2)} in</span>`;
+                } else if (key === 'FZRA') {
+                    const fr = hdata?.hourly_values?.find(x => x.fzra_chance != null)?.fzra_chance;
+                    if (fr != null) metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${Math.round(fr)}%</span>`;
+                } else if (key === 'FLASH_FREEZE') {
+                    const tw = hdata?.hourly_values?.find(x => x.wet_bulb_f != null)?.wet_bulb_f;
+                    if (tw != null) metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet bulb ${Math.round(tw)}°F</span>`;
                 }
 
                 rows += `<div style="margin-bottom:4px;padding:4px 6px;border-radius:3px;background:${bgCol};border-left:3px solid ${cfg.color};">
@@ -1046,7 +1100,7 @@
 
             showTooltip(`
                 <div style="font-size:0.68rem;font-weight:800;color:${hdrCol};border-bottom:1px solid #3f3f46;padding-bottom:3px;margin-bottom:5px;">
-                    ${fmt(d1)} – ${fmt(d2)}<span style="float:right;font-weight:400;color:#52525b;font-size:0.58rem;">${zStr} · +${offset}h</span>
+                    ${fmt(d1)} – ${fmt(d2)}<span style="float:right;font-weight:400;color:#52525b;font-size:0.58rem;">${zStr}</span>
                 </div>
                 ${rows}${noData}`);
         };
@@ -1959,11 +2013,12 @@
                 for (let bi = 0; bi < nBlocks; bi++) {
                     const blk = nbmBlocks?.[bi];
                     const bhaz = nbmBlockHazards?.[bi]?.[refKey];
-                    const cycleMs = cycleStartTime || now.getTime();
                     const sFxx = blk?.start_fxx ?? (bi * 3 + 1);
                     const eFxx = blk?.end_fxx ?? (bi * 3 + 3);
-                    const sHr = (cycleMs + sFxx * 3600000 - now.getTime()) / 3600000;
-                    const eHr = (cycleMs + (eFxx + 1) * 3600000 - now.getTime()) / 3600000;
+                    const startMs = blockStartMs(blk) ?? ((cycleStartTime || now.getTime()) + sFxx * 3600000);
+                    const endMs = blockEndMs(blk) ?? ((cycleStartTime || now.getTime()) + (eFxx + 1) * 3600000);
+                    const sHr = (startMs - now.getTime()) / 3600000;
+                    const eHr = (endMs - now.getTime()) / 3600000;
                     if (eHr <= 0 || sHr >= TOTAL_HOURS) continue;
 
                     const clampS = Math.max(0, sHr);
@@ -1973,10 +2028,10 @@
                     const risk = bhaz?.risk ?? 0;
                     const bg = blockBg[risk] || blockBg[0];
                     const tx = blockTx[risk] || blockTx[0];
-                    const d1 = new Date(cycleMs + sFxx * 3600000);
-                    const d2 = new Date(cycleMs + (eFxx + 1) * 3600000);
+                    const d1 = new Date(startMs);
+                    const d2 = new Date(endMs);
                     const tf = d => { const hh = d.getHours(); return `${hh % 12 || 12}${hh >= 12 ? 'P' : 'A'}`; };
-                    const hrOff = Math.round((cycleMs + sFxx * 3600000 - now.getTime()) / 3600000);
+                    const hrOff = Math.round((startMs - now.getTime()) / 3600000);
                     const hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, hrOff));
 
                     rowHtml += `<div class="timeline-block" aria-label="${tf(d1)}-${tf(d2)} ${h.name}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()"></div>`;
@@ -2149,6 +2204,9 @@
                     nbmBlockHazards = timelineResp.value.block_hazards;
                     nbhHourly       = timelineResp.value.nbh_hourly || [];
                     refsTimeline    = timelineResp.value;
+                    if (timelineResp.value.cycle_utc_iso) {
+                        cycleStartTime = new Date(timelineResp.value.cycle_utc_iso).getTime();
+                    }
                 }
 
                 if (!liveMetar) {
