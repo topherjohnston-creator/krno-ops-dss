@@ -150,13 +150,294 @@
             white-space: normal;
         }
 
+        :root {
+            --risk-0: #3a3f46;
+            --risk-1: #3b5268;
+            --risk-2: #d8a92b;
+            --risk-3: #e87822;
+            --risk-4: #df3b3b;
+            --risk-5: #b91c5c;
+            --bg-main: #080b10;
+            --bg-panel: rgba(18, 24, 32, 0.82);
+            --bg-panel-solid: #111821;
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --text-primary: #f5f7fa;
+            --text-secondary: #aeb8c5;
+            --text-muted: #6f7a86;
+            --radius-panel: 8px;
+            --radius-control: 6px;
+        }
+
+        html, body {
+            background:
+                radial-gradient(circle at 18% 0%, rgba(58, 82, 104, 0.22), transparent 34rem),
+                linear-gradient(180deg, #0b1017 0%, var(--bg-main) 52%, #05070a 100%);
+            color: var(--text-primary);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+            gap: 10px;
+        }
+
+        .app-header {
+            display: grid;
+            grid-template-columns: minmax(240px, 1fr) auto;
+            gap: 16px;
+            align-items: center;
+            padding: 12px 14px;
+            background: linear-gradient(180deg, rgba(20, 28, 38, 0.88), rgba(11, 16, 23, 0.78));
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand-lockup {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0;
+            color: var(--text-primary);
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .header-status {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 25px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.045);
+            color: var(--text-secondary);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-pill::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 12px currentColor;
+            opacity: 0.9;
+        }
+
+        .status-pill.green { color: #34d399; }
+        .status-pill.amber { color: #fbbf24; }
+        .status-pill.red { color: #f87171; }
+        .status-pill.gray { color: #94a3b8; }
+        .status-pill.risk-0 { color: var(--risk-0); }
+        .status-pill.risk-1 { color: var(--risk-1); }
+        .status-pill.risk-2 { color: var(--risk-2); }
+        .status-pill.risk-3 { color: var(--risk-3); }
+        .status-pill.risk-4 { color: var(--risk-4); }
+        .status-pill.risk-5 { color: var(--risk-5); }
+
+        .summary-strip {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 1px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-panel);
+            background: var(--border-subtle);
+        }
+
+        .summary-item {
+            min-width: 0;
+            padding: 9px 11px;
+            background: rgba(13, 19, 27, 0.86);
+        }
+
+        .summary-label {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--text-muted);
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            display: block;
+            overflow: hidden;
+            color: var(--text-primary);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dashboard-grid {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            border-color: var(--border-subtle);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .ops-card, .asos-box, .alert-card {
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid var(--border-subtle) !important;
+            border-radius: var(--radius-control);
+            transition: transform 120ms ease-out, border-color 120ms ease-out, background-color 120ms ease-out, opacity 120ms ease-out;
+        }
+
+        .ops-card:hover, .asos-box:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 255, 255, 0.18) !important;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .ops-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 3px;
+            background: var(--risk-color, var(--risk-0));
+            opacity: var(--risk-accent-opacity, 0.45);
+        }
+
+        .hazard-card-title, .hazard-criteria, .hazard-time, .asos-value, .asos-sub, .tabular-clock {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0;
+        }
+
+        #global-tooltip {
+            width: min(360px, calc(100vw - 24px));
+            background: rgba(8, 12, 18, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-left: 3px solid var(--tooltip-risk-color, var(--risk-1));
+            border-radius: 8px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            transform: translate(12px, 12px) scale(0.98);
+            transition: opacity 120ms ease-out, transform 120ms ease-out;
+        }
+
+        #global-tooltip.visible { transform: translate(12px, 12px) scale(1); }
+
+        .timeline-block {
+            border-radius: 2px;
+            min-width: 2px;
+            transition: filter 120ms ease-out, box-shadow 120ms ease-out, opacity 120ms ease-out;
+        }
+
+        .timeline-block:hover,
+        .timeline-block:focus {
+            filter: brightness(1.18) saturate(1.1);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.78), 0 0 18px rgba(255, 255, 255, 0.12);
+            outline: none;
+        }
+
+        @media (max-width: 1100px) {
+            html, body { overflow-y: auto; }
+            .app-shell { height: auto; min-height: 100%; }
+            .app-header { grid-template-columns: 1fr; }
+            .header-status { justify-content: flex-start; }
+            .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .dashboard-grid { min-height: 1180px; }
+        }
+
+        @media (max-width: 640px) {
+            .summary-strip { grid-template-columns: 1fr; }
+            .brand-title { font-size: 1rem; }
+            .status-pill { font-size: 0.62rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
     </style>
 </head>
 <body class="p-2 lg:p-4 h-screen box-border relative">
 
     <div id="global-tooltip"></div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4 h-full">
+    <main class="app-shell">
+        <header class="app-header">
+            <div class="brand-lockup">
+                <div class="brand-title">KRNO Ops DSS</div>
+                <div class="brand-subtitle">Reno-Tahoe International Airport Weather Decision Support</div>
+            </div>
+            <div class="header-status">
+                <span class="status-pill gray" id="header-clock">--</span>
+                <span class="status-pill gray" id="header-obs">Obs unavailable</span>
+                <span class="status-pill gray" id="header-cycle">Forecast loading</span>
+                <span class="status-pill gray" id="header-risk">Current risk pending</span>
+                <span class="status-pill amber">Beta</span>
+            </div>
+        </header>
+
+        <section class="summary-strip" aria-label="Operational summary">
+            <div class="summary-item">
+                <span class="summary-label">Primary Concern</span>
+                <span class="summary-value" id="summary-primary">Loading forecast</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Peak Window</span>
+                <span class="summary-value" id="summary-peak">--</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Airport Impact</span>
+                <span class="summary-value" id="summary-impact">Assessing operational impact</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">SOP Status</span>
+                <span class="summary-value" id="summary-sop">Monitor</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Data Health</span>
+                <span class="summary-value" id="summary-health">Loading</span>
+            </div>
+        </section>
+
+        <div class="dashboard-grid grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 gap-4">
         
         <div class="panel p-4" style="z-index: 20;"> 
             <div class="flex justify-between items-start mb-3">
@@ -382,7 +663,8 @@
 
             <div id="wwa-container" class="space-y-2 overflow-y-auto flex-grow pr-1 relative z-30"></div>
         </div>
-    </div>
+        </div>
+    </main>
 
     <script>
         // Config loaded from config.json
@@ -493,12 +775,12 @@
         }
 
         const RISK_LEVELS = {
-            5: { name: "Extreme", color: '#9c27b0', textColor: '#ffffff' }, 
-            4: { name: "Major", color: '#f44336', textColor: '#ffffff' },   
-            3: { name: "Moderate", color: '#ff9800', textColor: '#000000' }, 
-            2: { name: "Minor", color: '#ffeb3b', textColor: '#000000' },   
-            1: { name: "Little to None", color: '#3f3f46', textColor: '#71717a' }, 
-            0: { name: "", color: '#27272a', textColor: '#52525b' } 
+            5: { name: "Extreme", color: '#b91c5c', textColor: '#ffffff' },
+            4: { name: "Major", color: '#df3b3b', textColor: '#ffffff' },
+            3: { name: "Moderate", color: '#e87822', textColor: '#101318' },
+            2: { name: "Minor", color: '#d8a92b', textColor: '#101318' },
+            1: { name: "Little to None", color: '#3b5268', textColor: '#dbe5ef' },
+            0: { name: "None", color: '#3a3f46', textColor: '#aeb8c5' }
         };
 
         const SHORT_FUSED_WARNINGS = ["Severe Thunderstorm Warning", "Tornado Warning", "Flash Flood Warning", "Flash Flood Emergency", "Flood Advisory", "Snow Squall Warning", "Dust Storm Warning", "Blowing Dust Advisory", "Special Weather Statement", "Airport Weather Warning"];
@@ -535,7 +817,10 @@
             setInterval(() => {
                 globalNow = new Date();
                 const timeEl = document.getElementById('timestamp2');
-                if (timeEl) timeEl.textContent = getHeaderDateSec(globalNow);
+                const headerClock = document.getElementById('header-clock');
+                const clockText = getHeaderDateSec(globalNow);
+                if (timeEl) timeEl.textContent = clockText;
+                if (headerClock) headerClock.textContent = clockText;
                 if (globalNow.getMinutes() !== lastTimelineMinute) {
                     lastTimelineMinute = globalNow.getMinutes();
                     renderTimelinePanel(globalNow);
@@ -571,8 +856,13 @@
                     timeEl.textContent = mins < 1 ? 'Updated just now' : `Updated ${mins}m ago`;
                     const ld = document.getElementById('live-dot');
                     if (ld) ld.style.display = mins < 3 ? 'inline-block' : 'none';
+                    updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
                 }
             }, 30 * 1000);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') hideTooltip();
+            });
         });
 
         const tooltip = document.getElementById('global-tooltip');
@@ -580,14 +870,117 @@
             if (tooltip && tooltip.classList.contains('visible')) {
                 let left = e.clientX + 15;
                 let top = e.clientY + 15;
-                if(left + 240 > window.innerWidth) left = e.clientX - 255;
-                if(top + 200 > window.innerHeight) top = e.clientY - 210;
+                const rect = tooltip.getBoundingClientRect();
+                if(left + rect.width + 12 > window.innerWidth) left = e.clientX - rect.width - 16;
+                if(top + rect.height + 12 > window.innerHeight) top = e.clientY - rect.height - 16;
+                left = Math.max(8, left);
+                top = Math.max(8, top);
                 tooltip.style.left = `${left}px`;
                 tooltip.style.top = `${top}px`;
             }
         });
-        function showTooltip(html) { if(tooltip) { tooltip.innerHTML = html; tooltip.classList.add('visible'); } }
+        function showTooltip(html, riskColor) {
+            if(tooltip) {
+                tooltip.innerHTML = html;
+                tooltip.style.setProperty('--tooltip-risk-color', riskColor || '#3b5268');
+                tooltip.classList.add('visible');
+            }
+        }
         function hideTooltip() { if(tooltip) { tooltip.classList.remove('visible'); } }
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        function setPill(id, text, tone) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = text;
+            el.className = `status-pill ${tone || 'gray'}`;
+        }
+
+        function riskTone(level) {
+            const n = Math.max(0, Math.min(5, Number(level || 0)));
+            return `risk-${n}`;
+        }
+
+        function operationalImpactText(refKey, risk) {
+            const elevated = Number(risk || 0) >= 3;
+            const impact = {
+                WIND: elevated ? 'Ramp and aircraft handling impacts possible' : 'Wind remains below primary ramp thresholds',
+                LIGHTNING: elevated ? 'Ramp lightning monitoring or holds may be needed' : 'Lightning monitoring only if storms approach',
+                SNOW: elevated ? 'Snow crew staging and runway treatment may be needed' : 'Snow treatment impacts are limited',
+                VISIBILITY: elevated ? 'Low-visibility procedures may need close monitoring' : 'Visibility impacts are limited',
+                FZRA: elevated ? 'Pavement treatment and icing impacts possible' : 'Freezing rain signal is limited',
+                FLASH_FREEZE: elevated ? 'Wet pavement freeze-up monitoring may be needed' : 'Flash-freeze signal is limited',
+                RAIN: elevated ? 'Watch drainage, ponding, and ramp braking conditions' : 'Rain impacts are limited',
+                TEMPERATURE: elevated ? 'Temperature-sensitive pavement or crew impacts possible' : 'Temperature remains operationally manageable',
+            };
+            return impact[refKey] || 'Operational impacts are limited';
+        }
+
+        function obsAgeMinutes() {
+            const candidates = [
+                liveMetar?.observed_utc,
+                liveMetar?.observation_time,
+                liveMetar?.obsTime,
+                liveMetar?.time,
+                liveMetar?.generated_utc,
+            ].filter(Boolean);
+            for (const candidate of candidates) {
+                const d = new Date(candidate);
+                if (!Number.isNaN(d.getTime())) return Math.max(0, Math.round((Date.now() - d.getTime()) / 60000));
+            }
+            if (window._lastMetarFetch) return Math.max(0, Math.round((Date.now() - window._lastMetarFetch) / 60000));
+            return null;
+        }
+
+        function updateOpsChrome(primaryHazard, dataStatus = {}) {
+            const clockText = getHeaderDateSec(globalNow || new Date());
+            setText('header-clock', clockText);
+
+            const obsAge = obsAgeMinutes();
+            if (obsAge === null) {
+                setPill('header-obs', 'Obs unavailable', 'gray');
+            } else if (obsAge <= 15) {
+                setPill('header-obs', `Obs ${obsAge < 1 ? 'fresh' : obsAge + 'm old'}`, 'green');
+            } else if (obsAge <= 45) {
+                setPill('header-obs', `Obs ${obsAge}m old`, 'amber');
+            } else {
+                setPill('header-obs', `Obs stale ${obsAge}m`, 'red');
+            }
+
+            const cycleText = refsTimeline?.cycle || dataStatus.cycle || refsThreats?.cycle || 'Forecast pending';
+            const cycleAgeHrs = cycleStartTime ? (Date.now() - cycleStartTime) / 3600000 : null;
+            const cycleTone = !cycleText || cycleText === 'Forecast pending'
+                ? 'gray'
+                : cycleAgeHrs === null
+                    ? 'amber'
+                    : cycleAgeHrs < 9
+                        ? 'green'
+                        : cycleAgeHrs < 15
+                            ? 'amber'
+                            : 'red';
+            setPill('header-cycle', cycleText, cycleTone);
+
+            const primary = primaryHazard || window._primaryHazard || null;
+            if (primary) {
+                const r = Number(primary.risk || 0);
+                const cfg = RISK_LEVELS[r] || RISK_LEVELS[0];
+                setPill('header-risk', `${cfg.name}: ${primary.name}`, riskTone(r));
+                setText('summary-primary', primary.name || 'None');
+                setText('summary-peak', primary.timeString || 'No elevated window');
+                setText('summary-impact', operationalImpactText(primary.refKey, r));
+                setText('summary-sop', r >= 4 ? 'Action likely' : r >= 3 ? 'Monitor closely' : r >= 2 ? 'Watch' : 'Normal');
+            } else {
+                setPill('header-risk', 'Current risk pending', 'gray');
+            }
+
+            const forecastOk = (dataStatus.forecastOk ?? Boolean(refsTimeline || refsThreats)) && cycleTone !== 'red';
+            const obsOk = obsAge !== null && obsAge <= 15;
+            setText('summary-health', forecastOk && obsOk ? 'Forecast and obs fresh' : forecastOk ? 'Forecast fresh, obs checking' : cycleTone === 'red' ? 'Forecast cycle stale' : 'Forecast loading');
+        }
 
         // ── SPARKLINE HELPERS ────────────────────────────────────────────────────
 
@@ -1102,7 +1495,7 @@
                 <div style="font-size:0.68rem;font-weight:800;color:${hdrCol};border-bottom:1px solid #3f3f46;padding-bottom:3px;margin-bottom:5px;">
                     ${fmt(d1)} – ${fmt(d2)}<span style="float:right;font-weight:400;color:#52525b;font-size:0.58rem;">${zStr}</span>
                 </div>
-                ${rows}${noData}`);
+                ${rows}${noData}`, hdrCol);
         };
 
         function getHazardTimeString(h_id, refsTimeline) {
@@ -1210,6 +1603,7 @@
                 liveMetar = generated;
                 setStatus('✓ Source: 5-min obs file', '#22c55e');
                 applyMETARtoDisplay(liveMetar);
+                updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
                 return true;
             } catch(e) {
                 return false;
@@ -1380,6 +1774,7 @@
                 const src = rawText ? (token ? 'tgftp + Synoptic' : 'tgftp') : 'failed';
                 setStatus(`✓ Source: ${src}`, rawText ? '#22c55e' : '#f44336');
                 applyMETARtoDisplay(liveMetar);
+                updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
             } catch(e) {
                 setStatus(`✗ METAR Fetch failed: ${e.message}`, '#f44336');
             }
@@ -2051,8 +2446,8 @@
             }
 
             const nBlocks = nbmBlocks?.length || 20;
-            const blockBg = {0:'#27272a',1:'#3f3f46',2:'#ffeb3b',3:'#ff9800',4:'#f44336',5:'#9c27b0'};
-            const blockTx = {0:'#52525b',1:'#71717a',2:'#3f3000',3:'#3f1a00',4:'#ffffff',5:'#ffffff'};
+            const blockBg = Object.fromEntries(Object.entries(RISK_LEVELS).map(([level, cfg]) => [level, cfg.color]));
+            const blockTx = Object.fromEntries(Object.entries(RISK_LEVELS).map(([level, cfg]) => [level, cfg.textColor]));
             const hzKey = (id) => HZ_KEY_MAP[id] || id.toUpperCase().replace('FLASHFREEZE','FLASH_FREEZE');
 
             HAZARD_DETAILS.forEach((h, hIdx) => {
@@ -2086,7 +2481,7 @@
                     const hrOff = Math.round((startMs - now.getTime()) / 3600000);
                     const hrClamp = Math.max(0, Math.min(TOTAL_HOURS - 1, hrOff));
 
-                    rowHtml += `<div class="timeline-block" aria-label="${tf(d1)}-${tf(d2)} ${h.name}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()"></div>`;
+                    rowHtml += `<div class="timeline-block" tabindex="0" aria-label="${tf(d1)}-${tf(d2)} ${h.name} ${(RISK_LEVELS[risk] || RISK_LEVELS[0]).name}" style="left:${leftPct}%;width:${widthPct}%;background:${bg};color:${tx};display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,0.18);position:absolute;cursor:help;" onmouseenter="showHourTooltip(${hrClamp},${bi})" onfocus="showHourTooltip(${hrClamp},${bi})" onmouseleave="hideTooltip()" onblur="hideTooltip()"></div>`;
                 }
 
                 rowHtml += `</div></div>`;
@@ -2175,7 +2570,9 @@
                 await loadConfig();
                 globalNow = new Date();
                 const timeEl = document.getElementById('timestamp2');
-                if(timeEl) timeEl.textContent = getHeaderDate(globalNow);
+                const clockText = getHeaderDate(globalNow);
+                if(timeEl) timeEl.textContent = clockText;
+                setText('header-clock', clockText);
 
                 // --- FETCH LIVE DATA (WITH NGROK BYPASS HEADER) ---
                 const fetchOpts = { headers: { "ngrok-skip-browser-warning": "true" } };
@@ -2295,6 +2692,8 @@
                         return b.prob - a.prob;
                     });
 
+                    let primaryHazard = null;
+
                     hazards.forEach(h => {
                         const r = Number(h.risk || 0);
                         const config = RISK_LEVELS[r] || RISK_LEVELS[0];
@@ -2375,10 +2774,14 @@
                         }
 
                         const card = document.createElement('div');
-                        card.className = 'ops-card flex flex-col justify-between p-3';
+                        card.className = 'ops-card risk-card flex flex-col justify-between p-3';
+                        card.style.setProperty('--risk-color', config.color);
+                        card.style.setProperty('--risk-accent-opacity', r >= 3 ? '1' : r >= 1 ? '0.7' : '0.35');
+                        card.setAttribute('tabindex', '0');
+                        card.setAttribute('aria-label', `${hazardTitle} ${riskName}. ${displayMetric || 'No current signal'}. ${timeString || 'No peak window'}`);
 
                         if (isActive) {
-                            card.style.border = `3px solid ${config.color}`;
+                            card.style.border = `1px solid ${config.color}`;
                             card.style.backgroundColor = config.color + '1a';
                             card.style.opacity = '1';
                         } else if (r === 1) {
@@ -2389,6 +2792,16 @@
                             card.style.border = '1px solid rgba(255,255,255,0.06)';
                             card.style.backgroundColor = '';
                             card.style.opacity = '0.58';
+                        }
+
+                        if (!primaryHazard || r > Number(primaryHazard.risk || 0) || (r === Number(primaryHazard.risk || 0) && probability > Number(primaryHazard.prob || 0))) {
+                            primaryHazard = {
+                                name: h.name,
+                                refKey,
+                                risk: r,
+                                prob: probability,
+                                timeString: timeString.replace(/^PEAK\s*/, '') || 'No elevated window',
+                            };
                         }
 
                         const titleColor = isNone ? '#71717a' : '#e2e8f0';
@@ -2422,9 +2835,11 @@
                                </div>`
                             : '';
 
-                        const probHtml = probability > 0
-                            ? `<span class="font-mono text-white">${Math.round(probability)}% chance</span>`
-                            : `<span class="font-mono text-gray-500">0% chance</span>`;
+                        const probHtml = refKey === 'LIGHTNING'
+                            ? (probability > 0
+                                ? `<span class="font-mono text-white">${Math.round(probability)}% chance</span>`
+                                : `<span class="font-mono text-gray-500">0% chance</span>`)
+                            : `<span class="font-mono text-gray-500">${refsTimeline?.cycle || refsThreats?.cycle || 'Forecast'}</span>`;
 
                         const tHtml = `
                             <div class="flex justify-between border-b border-gray-700 pb-1 mb-2">
@@ -2439,9 +2854,17 @@
                             ${reasonHtml}
                         `;
 
-                        card.addEventListener('mouseenter', () => showTooltip(tHtml));
+                        card.addEventListener('mouseenter', () => showTooltip(tHtml, config.color));
+                        card.addEventListener('focus', () => showTooltip(tHtml, config.color));
                         card.addEventListener('mouseleave', hideTooltip);
+                        card.addEventListener('blur', hideTooltip);
                         grid.appendChild(card);
+                    });
+
+                    window._primaryHazard = primaryHazard;
+                    updateOpsChrome(primaryHazard, {
+                        forecastOk: threatsResp.status === 'fulfilled' || timelineResp.status === 'fulfilled',
+                        cycle: timelineResp.value?.cycle || threatsResp.value?.cycle,
                     });
                 }
 
@@ -2451,6 +2874,7 @@
 
             } catch(e) {
                 console.error("Dashboard Render Failed", e);
+                window.__dashboardLastError = e?.stack || e?.message || String(e);
             }
         }
     </script>
