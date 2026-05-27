@@ -9,8 +9,10 @@ from typing import Any
 import requests
 
 
-OUT = Path("docs")
-OUT.mkdir(exist_ok=True)
+DOCS_OUT = Path("docs")
+DATA_OUT = Path("data")
+DOCS_OUT.mkdir(exist_ok=True)
+DATA_OUT.mkdir(exist_ok=True)
 
 SITE = "KRNO"
 KRNO_LAT = 39.4991
@@ -56,6 +58,15 @@ def get_ob_time(observations: dict[str, Any]) -> str | None:
             return value["date_time"]
 
     return None
+
+
+def mph_to_kt(value: Any) -> int | None:
+    if value is None:
+        return None
+    try:
+        return round(float(value) / 1.15078)
+    except (TypeError, ValueError):
+        return None
 
 
 def build_error_obs(message: str, raw: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -111,6 +122,8 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
 
     observations = station.get("OBSERVATIONS", {})
     observed_utc = get_ob_time(observations)
+    wind_speed_mph = get_ob_value(observations, ["wind_speed"])
+    wind_gust_mph = get_ob_value(observations, ["wind_gust"])
 
     obs = {
         "site": SITE,
@@ -124,8 +137,10 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         "elevation_ft": station.get("ELEVATION"),
         "observed_utc": observed_utc,
         "wind_dir_deg": get_ob_value(observations, ["wind_direction"]),
-        "wind_speed_kt": get_ob_value(observations, ["wind_speed"]),
-        "wind_gust_kt": get_ob_value(observations, ["wind_gust"]),
+        "wind_speed_kt": mph_to_kt(wind_speed_mph),
+        "wind_gust_kt": mph_to_kt(wind_gust_mph),
+        "wind_speed_mph": wind_speed_mph,
+        "wind_gust_mph": wind_gust_mph,
         "visibility_sm": get_ob_value(observations, ["visibility"]),
         "temperature_f": get_ob_value(observations, ["air_temp"]),
         "dewpoint_f": get_ob_value(observations, ["dew_point_temperature"]),
@@ -159,9 +174,15 @@ def main() -> None:
         except Exception as exc:
             obs = build_error_obs(f"Synoptic API fetch failed: {exc}")
 
-    output_path = OUT / "obs.json"
-    output_path.write_text(json.dumps(obs, indent=2))
-    print(f"Wrote {output_path}")
+    payload = json.dumps(obs, indent=2)
+    output_paths = [
+        DOCS_OUT / "obs.json",
+        DOCS_OUT / "observations.json",
+        DATA_OUT / "observations.json",
+    ]
+    for output_path in output_paths:
+        output_path.write_text(payload)
+        print(f"Wrote {output_path}")
 
 
 if __name__ == "__main__":
