@@ -191,6 +191,10 @@ jobs:
           git rm -f --ignore-unmatch data/krno_lightning_risk.json
           git rm -f --ignore-unmatch data/krno_fzra_risk.json
 
+      - name: Build NBM DSS outputs from AWS
+        run: |
+          python scripts/build_nbm_dss_outputs.py
+
       - name: Commit updated DSS files
         run: |
           git config user.name "github-actions[bot]"
@@ -199,6 +203,8 @@ jobs:
           # Frontend-required files.
           git add docs/threats.json || true
           git add docs/timeline.json || true
+          git add docs/nbm_threats.json || true
+          git add docs/nbm_timeline.json || true
 
           if [ -f docs/observations.json ]; then
             git add docs/observations.json
@@ -210,6 +216,7 @@ jobs:
           git add data/refs_field_map.txt || true
           git add data/refs_field_map_summary.json || true
           git add data/refs_builder_summary.json || true
+          git add data/nbm_dss_methodology.json || true
 
           # Final safety reset: never commit huge/generated raw files.
           git reset -- data/rrfs_refs_inventory.json || true
