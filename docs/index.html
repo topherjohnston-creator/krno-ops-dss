@@ -1548,6 +1548,10 @@
                     const tw = hdata?.hourly_values?.find(x => x.wet_bulb_f != null)?.wet_bulb_f;
                     if (tw != null) metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet bulb ${Math.round(tw)}°F</span>`;
                 }
+                if (!metLine && !hourlyLine) {
+                    const hasHazard = Boolean(hdata);
+                    metLine = `<span style="color:#52525b;font-weight:800;">${hasHazard ? 'No forecast value in this block yet' : 'No forecast value in selected cycle'}</span>`;
+                }
 
                 rows += `<div style="margin-bottom:4px;padding:4px 6px;border-radius:3px;background:${bgCol};border-left:3px solid ${cfg.color};">
                     <div style="display:flex;justify-content:space-between;align-items:baseline;">
