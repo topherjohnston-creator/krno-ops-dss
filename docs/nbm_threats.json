@@ -3,8 +3,8 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NBM/QMD schema scaffold",
-  "generated_utc": "2026-05-27T22:11:33Z",
+  "source": "NOAA NBM core AWS 18Z",
+  "generated_utc": "2026-05-27T22:34:30Z",
   "cycle_utc_iso": "2026-05-27T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -15,27 +15,27 @@
   "threats": {
     "WIND": {
       "id": "WIND",
-      "title": "WIND",
-      "name": "WIND",
-      "prob": 0,
-      "probability": 0,
+      "title": "Wind",
+      "name": "Wind",
+      "prob": null,
+      "probability": null,
       "risk": 0,
       "risk_level": 0,
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "metric": "Peak gust 20 mph",
+      "display_label": "72-hr peak gust",
+      "display_value": "20 mph",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "source_fxx": 3,
+      "peak_valid_utc": "2026-05-27T21:00:00Z",
+      "driver": "NBM core deterministic wind/gust at KRNO",
+      "methodology": "Initial NBM AWS implementation uses live core wind/gust for the timeline. QMD probabilities will be layered into risk cards next.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -49,7 +49,9 @@
           "window_hours": 3,
           "source": "NBM 3-hour wind / QMD 24-hour max gust"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z",
+      "source_cycle_utc_iso": "2026-05-27T18:00:00Z"
     },
     "LIGHTNING": {
       "id": "LIGHTNING",
@@ -322,7 +324,7 @@
     {
       "id": "WIND",
       "risk": 0,
-      "probability": 0,
+      "probability": null,
       "level": 0
     },
     {
