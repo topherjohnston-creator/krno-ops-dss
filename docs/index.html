@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRNO Ops DSS Dashboard</title>
+    <title>RENO-TAHOE INTERNATIONAL AIRPORT - WEATHER DECISION SUPPORT DASHBOARD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
         .hazard-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a1a1aa; z-index: 10; position: relative; line-height: 1.1; }
         .hazard-card-title {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(0.74rem, 0.82vw, 0.92rem);
+            font-size: clamp(0.86rem, 0.98vw, 1.12rem);
             font-weight: 900;
             letter-spacing: 0.015em;
             line-height: 1.05;
@@ -32,15 +32,15 @@
             overflow: visible;
             max-width: 100%;
         }
-        .hazard-criteria { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: #71717a; margin-top: 2px; z-index: 10; position: relative; font-weight: 700; }
-        .hazard-time { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; margin-top: 4px; z-index: 10; position: relative; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .hazard-criteria { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #71717a; margin-top: 3px; z-index: 10; position: relative; font-weight: 800; line-height: 1.18; }
+        .hazard-time { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; margin-top: 5px; z-index: 10; position: relative; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; }
         .watermark-icon { position: absolute; right: -8px; bottom: -8px; font-size: 4rem; opacity: 0.12; transform: rotate(-10deg); z-index: 0; pointer-events: none; }
 
         /* TOOLTIP */
         #global-tooltip {
             position: fixed; top: 0; left: 0; width: 340px;
             background-color: #09090b; border: 1px solid #52525b; color: #fff;
-            padding: 12px; border-radius: 4px; font-size: 0.75rem;
+            padding: 12px; border-radius: 4px; font-size: 0.86rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
             pointer-events: none; z-index: 9999; opacity: 0;
             transition: opacity 0.1s ease, transform 0.1s ease;
@@ -83,7 +83,7 @@
         .day-segment:hover, .night-segment:hover { background-color: rgba(255, 255, 255, 0.1); cursor: crosshair; }
 
         .midnight-line { border-left: 1px solid #94a3b8; height: 100%; position: absolute; top: 0; z-index: 5; opacity: 0.3; }
-        .midnight-label { position: absolute; top: -15px; transform: translateX(-50%); font-size: 10px; font-weight: bold; color: #94a3b8; background: #18181b; padding: 0 2px; }
+        .midnight-label { position: absolute; top: -17px; transform: translateX(-50%); font-size: 12px; font-weight: bold; color: #94a3b8; background: #18181b; padding: 0 2px; }
         
         .wwa-item { cursor: help; transition: background 0.2s; }
         .wwa-item:hover { background-color: #3f3f46 !important; }
@@ -94,9 +94,9 @@
         /* ASOS */
         .asos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; height: 100%; }
         .asos-box { background: #27272a; border-radius: 4px; padding: 10px; display: flex; flex-direction: column; justify-content: flex-start; position: relative; overflow: hidden; }
-        .asos-label { font-size: 0.7rem; color: #a1a1aa; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 2px; z-index: 10; }
-        .asos-value { font-family: 'JetBrains Mono', monospace; font-size: 2rem; color: white; font-weight: 700; leading: 1; z-index: 10; margin-top: auto; margin-bottom: auto;}
-        .asos-sub { font-size: 0.75rem; color: #71717a; margin-top: 2px; z-index: 10; font-weight: 700; }
+        .asos-label { font-size: 0.82rem; color: #a1a1aa; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 2px; z-index: 10; }
+        .asos-value { font-family: 'JetBrains Mono', monospace; font-size: 2.25rem; color: white; font-weight: 800; leading: 1; z-index: 10; margin-top: auto; margin-bottom: auto;}
+        .asos-sub { font-size: 0.86rem; color: #71717a; margin-top: 2px; z-index: 10; font-weight: 800; }
         
         .flight-cat { position: absolute; top: 10px; right: 10px; background: #22c55e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; z-index: 10; }
         .threat-badge { position: absolute; top: 10px; right: 10px; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; z-index: 10; color: #18181b; }
@@ -187,7 +187,7 @@
 
         .app-header {
             display: grid;
-            grid-template-columns: minmax(240px, 1fr) auto;
+            grid-template-columns: minmax(420px, 1fr) auto;
             gap: 16px;
             align-items: center;
             padding: 12px 14px;
@@ -205,20 +205,11 @@
         }
 
         .brand-title {
-            font-size: 1.15rem;
-            line-height: 1;
+            font-size: clamp(1.08rem, 1.3vw, 1.5rem);
+            line-height: 1.05;
             font-weight: 800;
             letter-spacing: 0;
             color: var(--text-primary);
-        }
-
-        .brand-subtitle {
-            margin-top: 4px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--text-muted);
         }
 
         .header-status {
@@ -253,7 +244,7 @@
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.045);
             color: var(--text-secondary);
-            font-size: 0.68rem;
+            font-size: 0.78rem;
             font-weight: 800;
             letter-spacing: 0.03em;
             text-transform: uppercase;
@@ -301,7 +292,7 @@
             display: block;
             margin-bottom: 3px;
             color: var(--text-muted);
-            font-size: 0.62rem;
+            font-size: 0.74rem;
             font-weight: 800;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -311,7 +302,7 @@
             display: block;
             overflow: hidden;
             color: var(--text-primary);
-            font-size: 0.82rem;
+            font-size: 0.96rem;
             font-weight: 700;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -321,7 +312,7 @@
             width: 52%;
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            grid-template-rows: repeat(2, minmax(0, 1fr));
+            grid-template-rows: 1.05fr 0.85fr 0.85fr;
             gap: 8px;
             min-height: 0;
         }
@@ -331,13 +322,13 @@
         }
 
         .obs-panel-grid .asos-label {
-            font-size: 0.54rem;
+            font-size: 0.68rem;
             line-height: 1.05;
             margin-bottom: 3px;
         }
 
         .obs-panel-grid .asos-value {
-            font-size: clamp(1.05rem, 1.55vw, 1.45rem);
+            font-size: clamp(1.08rem, 1.45vw, 1.46rem);
             line-height: 1;
             margin-top: 0;
             margin-bottom: 0;
@@ -349,14 +340,51 @@
         }
 
         #sky-val {
-            font-size: clamp(1.05rem, 1.65vw, 1.45rem);
+            font-size: clamp(1.18rem, 1.8vw, 1.72rem);
             line-height: 0.95;
         }
 
-        #sky-sub, #rh-val {
-            font-size: 0.68rem;
+        #sky-sub, #rh-val, #moisture-sub {
+            font-size: 0.82rem;
             line-height: 1.15;
             overflow-wrap: anywhere;
+        }
+
+        .moisture-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px 8px;
+            margin-top: 4px;
+        }
+
+        #temp-box {
+            grid-column: 1 / -1;
+            grid-row: 1;
+        }
+
+        .moisture-metric {
+            min-width: 0;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .moisture-metric span:first-child {
+            color: #71717a;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .moisture-metric span:last-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.96rem, 1.2vw, 1.28rem);
+            font-weight: 900;
+            line-height: 1.05;
+            color: #f8fafc;
+            white-space: nowrap;
         }
 
         .flight-cat-inline {
@@ -376,6 +404,12 @@
         .dashboard-grid {
             flex: 1;
             min-height: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                grid-template-rows: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            }
         }
 
         .panel {
@@ -453,7 +487,10 @@
         @media (max-width: 640px) {
             .summary-strip { grid-template-columns: 1fr; }
             .brand-title { font-size: 1rem; }
-            .status-pill { font-size: 0.62rem; }
+            .status-pill { font-size: 0.68rem; }
+            .app-header { grid-template-columns: 1fr; }
+            .moisture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            #temp-box { grid-column: span 1; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -472,8 +509,7 @@
     <main class="app-shell">
         <header class="app-header">
             <div class="brand-lockup">
-                <div class="brand-title">RENO-TAHOE INTERNATIONAL AIRPORT WEATHER DECISION SUPPORT</div>
-                <div class="brand-subtitle">KRNO operational weather dashboard</div>
+                <div class="brand-title">RENO-TAHOE INTERNATIONAL AIRPORT - WEATHER DECISION SUPPORT DASHBOARD</div>
             </div>
             <div class="header-status">
                 <span class="status-pill gray" id="header-clock">--</span>
@@ -645,10 +681,12 @@
                     </div>
 
                     <div class="asos-box" id="temp-box">
-                        <div class="asos-label">TEMPERATURE</div>
-                        <div class="asos-value">
-                            <span id="t-val">--</span>
-                            <span class="text-sm align-top text-gray-500">°F</span>
+                        <div class="asos-label">TEMP / MOISTURE</div>
+                        <div class="moisture-grid">
+                            <div class="moisture-metric"><span>Temp</span><span id="t-val">--</span></div>
+                            <div class="moisture-metric"><span>Dewpoint</span><span id="d-val">--</span></div>
+                            <div class="moisture-metric"><span>RH</span><span id="rh-val">--%</span></div>
+                            <div class="moisture-metric"><span>Wet Bulb</span><span id="wb-val">--</span></div>
                         </div>
                         <div id="sfc-temp-row" style="display:none;margin-top:2px;">
                             <span class="asos-label" style="font-size:0.6rem;">SFC TEMP</span>
@@ -673,14 +711,11 @@
                         <i class="ph-fill ph-cloud-lightning absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" id="dew-box">
-                        <div class="asos-label">DEWPOINT</div>
-                        <div class="asos-value">
-                            <span id="d-val">--</span>
-                            <span class="text-sm align-top text-gray-500">°F</span>
-                        </div>
-                        <div class="asos-sub" id="rh-val">RH --%</div>
-                        <i class="ph-fill ph-drop-half absolute bottom-2 right-2 text-2xl opacity-10"></i>
+                    <div class="asos-box" id="pressure-box">
+                        <div class="asos-label">PRESSURE</div>
+                        <div class="asos-value" id="pressure-val">--</div>
+                        <div class="asos-sub" id="pressure-sub"></div>
+                        <i class="ph-fill ph-gauge absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
                     <div class="asos-box">
@@ -726,7 +761,7 @@
         }
 
 
-        const TOTAL_HOURS = 60; 
+        const TOTAL_HOURS = 48;
         let globalNow = new Date(); 
 
         // --- CUSTOM COLOR SCALES ---
@@ -882,7 +917,7 @@
             }, 1000);
 
             // REFS threats + timeline
-            setInterval(() => { initDashboard(); }, 15 * 60 * 1000);
+            setInterval(() => { initDashboard(); }, 5 * 60 * 1000);
 
             // Tick "updated X ago" display every 30 seconds
             setInterval(() => {
@@ -1449,7 +1484,7 @@
                         ? `<span style="color:${riskColor};font-weight:800;">${Math.round(Number(hour.prob))}%</span>`
                         : '';
 
-                    return `<div style="display:flex;justify-content:space-between;gap:8px;font-family:monospace;font-size:0.58rem;line-height:1.15;">
+                    return `<div style="display:flex;justify-content:space-between;gap:8px;font-family:monospace;font-size:0.68rem;line-height:1.18;">
                         <span style="color:#a1a1aa;min-width:28px;">${label}</span>
                         <span>${main}</span>
                         ${prob}
@@ -1471,13 +1506,14 @@
                 const risk  = hdata?.risk  ?? 0;
                 const prob  = hdata?.prob  ?? 0;
                 const hourlyLine = renderHourlyValues(key, hdata);
-                if (prob === 0 && risk === 0 && !hourlyLine) return;
 
                 const cfg    = RISK_LEVELS[risk] || RISK_LEVELS[0];
                 const bgCol  = cfg.color + '1a';
                 const txtCol = risk > 0 ? cfg.color : '#71717a';
 
-                let metLine = '';
+                let metLine = !hdata
+                    ? `<span style="color:#52525b;font-weight:800;">No forecast value in selected cycle</span>`
+                    : '';
                 if (key === 'WIND') {
                     const gustVal = hdata?.gust_max_mph ?? block?.GST;
                     if (gustVal != null) {
@@ -1515,21 +1551,21 @@
 
                 rows += `<div style="margin-bottom:4px;padding:4px 6px;border-radius:3px;background:${bgCol};border-left:3px solid ${cfg.color};">
                     <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                        <span style="font-weight:800;font-size:0.68rem;color:#e4e4e7;text-transform:uppercase;">${h.name}</span>
-                        <span style="font-size:0.62rem;font-weight:800;color:${txtCol};">${cfg.name.toUpperCase()}</span>
+                        <span style="font-weight:800;font-size:0.78rem;color:#e4e4e7;text-transform:uppercase;">${h.name}</span>
+                        <span style="font-size:0.72rem;font-weight:800;color:${txtCol};">${cfg.name.toUpperCase()}</span>
                     </div>
-                    ${metLine ? `<div style="font-size:0.63rem;font-family:monospace;margin-top:2px;">${metLine}</div>` : ''}
+                    ${metLine ? `<div style="font-size:0.72rem;font-family:monospace;margin-top:2px;">${metLine}</div>` : ''}
                     ${hourlyLine}
                 </div>`;
             });
 
             const noData = !rows
-                ? `<div style="color:#52525b;font-size:0.68rem;text-align:center;padding:6px;">No active hazards this period</div>`
+                ? `<div style="color:#52525b;font-size:0.76rem;text-align:center;padding:6px;">No timeline data this period</div>`
                 : '';
 
             showTooltip(`
-                <div style="font-size:0.68rem;font-weight:800;color:${hdrCol};border-bottom:1px solid #3f3f46;padding-bottom:3px;margin-bottom:5px;">
-                    ${fmt(d1)} – ${fmt(d2)}<span style="float:right;font-weight:400;color:#52525b;font-size:0.58rem;">${zStr}</span>
+                <div style="font-size:0.8rem;font-weight:800;color:${hdrCol};border-bottom:1px solid #3f3f46;padding-bottom:3px;margin-bottom:5px;">
+                    ${fmt(d1)} – ${fmt(d2)}<span style="float:right;font-weight:400;color:#52525b;font-size:0.68rem;">${zStr}</span>
                 </div>
                 ${rows}${noData}`, hdrCol);
         };
@@ -1600,6 +1636,22 @@
 
         function fToC(f) { return (Number(f) - 32) * 5 / 9; }
         function ktToMph(kt) { return Math.round(Number(kt || 0) * 1.15078); }
+        function wetBulbF(tempF, dewpointF) {
+            if (!Number.isFinite(Number(tempF)) || !Number.isFinite(Number(dewpointF))) return null;
+            const tC = (Number(tempF) - 32) * 5 / 9;
+            const rh = Math.max(1, Math.min(100, 100 * Math.exp((17.625 * ((Number(dewpointF) - 32) * 5 / 9)) / (243.04 + ((Number(dewpointF) - 32) * 5 / 9)) - (17.625 * tC) / (243.04 + tC))));
+            const twC = tC * Math.atan(0.151977 * Math.sqrt(rh + 8.313659))
+                + Math.atan(tC + rh)
+                - Math.atan(rh - 1.676331)
+                + 0.00391838 * Math.pow(rh, 1.5) * Math.atan(0.023101 * rh)
+                - 4.686035;
+            return twC * 9 / 5 + 32;
+        }
+
+        function altimeterFromMetar(rawText) {
+            const match = String(rawText || '').match(/\bA(\d{4})\b/);
+            return match ? Number(match[1]) / 100 : null;
+        }
 
         function parseCloudsFromMetar(rawText) {
             if (!rawText) return [];
@@ -1634,6 +1686,7 @@
             const visib = obs.visibility_sm == null ? 10 : Math.min(Number(obs.visibility_sm) || 10, 10);
             const rawText = obs.metar || '';
             const parsedClouds = parseCloudsFromMetar(rawText);
+            const altimeter = obs.raw?.OBSERVATIONS?.altimeter_value_1?.value ?? altimeterFromMetar(rawText);
 
             return {
                 wdir,
@@ -1649,6 +1702,7 @@
                 rawOb: rawText,
                 reportTime: obs.observed_utc || obs.generated_utc || new Date().toISOString(),
                 generatedTime: obs.generated_utc,
+                altimeter,
             };
         }
 
@@ -1698,7 +1752,7 @@
                 }
 
                 // Step 2: Parse ALL fields from raw METAR (split by space — no regex escape issues)
-                let wdir = null, wspd = 0, wgst = 0, visib = 10;
+                let wdir = null, wspd = 0, wgst = 0, visib = 10, altimeter = null;
                 let tempC = null, dewC = null, clouds = [], wxString = '';
                 if (rawText) {
                     const tokens = rawText.split(' ');
@@ -1743,6 +1797,7 @@
                              'TSRA','TSGR'].includes(tok)) {
                             wxString += (wxString ? ' ' : '') + tok;
                         }
+                        if (/^A\d{4}$/.test(tok)) altimeter = Number(tok.slice(1)) / 100;
                     }
                 }
 
@@ -1828,7 +1883,7 @@
                 const lightning = parseRawMetarLightning(rawText);
 
                 liveMetar = { wdir, wspd, wgst, visib, temp: tempC, dewp: dewC,
-                              rh, clouds, wxString, lightning, rawOb: rawText, reportTime: new Date().toISOString() };
+                              rh, clouds, wxString, lightning, rawOb: rawText, reportTime: new Date().toISOString(), altimeter };
 
                 const src = rawText ? (token ? 'tgftp + Synoptic' : 'tgftp') : 'failed';
                 setStatus(`✓ Source: ${src}`, rawText ? '#22c55e' : '#f44336');
@@ -2028,17 +2083,36 @@
                 const tTrend = _prevObs ? (tF > _prevObs.tF + 0.5 ? '↑' : tF < _prevObs.tF - 0.5 ? '↓' : '') : '';
                 const dTrend = (_prevObs && dF !== null) ? (dF > _prevObs.dF + 0.5 ? '↑' : dF < _prevObs.dF - 0.5 ? '↓' : '') : '';
                 const tEl = document.getElementById('t-val');
-                tEl.innerHTML = Math.round(tF) + (tTrend ? `<span class="${tTrend==='↑'?'trend-up':'trend-dn'}">${tTrend}</span>` : '');
+                tEl.innerHTML = `${Math.round(tF)}°F` + (tTrend ? `<span class="${tTrend==='↑'?'trend-up':'trend-dn'}">${tTrend}</span>` : '');
                 tEl.style.color = getColor('temp', tF);
                 const dEl = document.getElementById('d-val');
                 if (dF !== null) {
-                    dEl.innerHTML = Math.round(dF) + (dTrend ? `<span class="${dTrend==='↑'?'trend-up':'trend-dn'}">${dTrend}</span>` : '');
+                    dEl.innerHTML = `${Math.round(dF)}°F` + (dTrend ? `<span class="${dTrend==='↑'?'trend-up':'trend-dn'}">${dTrend}</span>` : '');
                     dEl.style.color = getColor('dew', dF);
                 } else { dEl.textContent = '--'; }
                 const rhEl = document.getElementById('rh-val');
                 if (rhEl) {
-                    rhEl.textContent = m.rh != null ? `RH ${m.rh}%` : 'RH --%';
+                    rhEl.textContent = m.rh != null ? `${m.rh}%` : '--%';
                     if (m.rh != null) rhEl.style.color = getColor('rh', m.rh);
+                }
+                const wbEl = document.getElementById('wb-val');
+                if (wbEl) {
+                    const wb = dF !== null ? wetBulbF(tF, dF) : null;
+                    wbEl.textContent = wb !== null ? `${Math.round(wb)}°F` : '--';
+                    wbEl.style.color = wb !== null ? getColor('temp', wb) : '#71717a';
+                }
+
+                const pressureEl = document.getElementById('pressure-val');
+                const pressureSub = document.getElementById('pressure-sub');
+                if (pressureEl) {
+                    if (m.altimeter != null && Number.isFinite(Number(m.altimeter))) {
+                        pressureEl.textContent = Number(m.altimeter).toFixed(2);
+                        pressureEl.style.color = '#e4e4e7';
+                        if (pressureSub) pressureSub.textContent = 'inHg altimeter';
+                    } else {
+                        pressureEl.textContent = '--';
+                        if (pressureSub) pressureSub.textContent = '';
+                    }
                 }
 
             // 1-HR Precip display
@@ -2517,18 +2591,16 @@
                 }
             }
 
-            const axisBlockCount = nbmBlocks?.length || 20;
-            for (let bi = 0; bi <= axisBlockCount; bi += 4) {
-                const leftPos = (bi / axisBlockCount) * 100;
-                const hoursOut = bi * 3;
-                const topLabel = bi === 0 ? 'Now' : `+${hoursOut}h`;
+            for (let hoursOut = 0; hoursOut <= TOTAL_HOURS; hoursOut += 12) {
+                const leftPos = (hoursOut / TOTAL_HOURS) * 100;
+                const topLabel = hoursOut === 0 ? 'Now' : `+${hoursOut}h`;
                 const timeLabel = getHourLabel(now, hoursOut);
-                const alignClass = bi === 0 ? '' : (bi === axisBlockCount ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
+                const alignClass = hoursOut === 0 ? '' : (hoursOut === TOTAL_HOURS ? 'transform -translate-x-full' : 'transform -translate-x-1/2');
                 const [localPart, zuluPart] = timeLabel.includes('/') ? timeLabel.split('/') : [timeLabel, ''];
                 axisCtx.innerHTML += `
                     <div class="absolute top-0 ${alignClass} text-center" style="left: ${leftPos}%">
-                        <div class="font-bold text-slate-300" style="font-size:0.7rem;">${topLabel}</div>
-                        <div class="font-mono mt-0.5 leading-none" style="font-size:0.62rem;">
+                        <div class="font-bold text-slate-300" style="font-size:0.84rem;">${topLabel}</div>
+                        <div class="font-mono mt-0.5 leading-none" style="font-size:0.74rem;">
                             <span style="color:#cbd5e1;font-weight:800;">${localPart}</span>${zuluPart ? `<span style="color:#52525b;font-weight:600;">/${zuluPart}</span>` : ''}
                         </div>
                     </div>`;
@@ -2582,6 +2654,7 @@
             if (!Array.isArray(nbmBlockHazards) || !Array.isArray(nbmBlocks)) return null;
 
             const nowMs = globalNow?.getTime?.() || Date.now();
+            const horizonMs = nowMs + TOTAL_HOURS * 3600000;
             let best = null;
 
             const magnitude = (hdata) => {
@@ -2611,7 +2684,13 @@
                     : block.valid_end_utc
                         ? new Date(block.valid_end_utc).getTime() + 3600000
                         : null;
+                const startMs = hdata.valid_start_utc
+                    ? new Date(hdata.valid_start_utc).getTime()
+                    : block.valid_start_utc
+                        ? new Date(block.valid_start_utc).getTime()
+                        : null;
                 if (endMs && endMs <= nowMs) return;
+                if (startMs && startMs >= horizonMs) return;
 
                 const risk = Number(hdata.risk || 0);
                 const prob = Number(hdata.prob ?? hdata.probability ?? 0);
@@ -2628,6 +2707,51 @@
             });
 
             return best;
+        }
+
+        function accumulationTotalText(refKey) {
+            if (!['RAIN', 'SNOW', 'FZRA'].includes(refKey)) return '';
+            if (!Array.isArray(nbmBlockHazards) || !Array.isArray(nbmBlocks)) return '';
+
+            const nowMs = globalNow?.getTime?.() || Date.now();
+            const horizonMs = nowMs + TOTAL_HOURS * 3600000;
+            const seen = new Set();
+            let total = 0;
+            let hasAny = false;
+
+            nbmBlockHazards.forEach((hazards, bi) => {
+                const hdata = hazards?.[refKey];
+                const block = nbmBlocks[bi] || {};
+                if (!hdata) return;
+                const blockStart = hdata.valid_start_utc || block.valid_start_utc;
+                const blockEnd = hdata.valid_end_utc || block.valid_end_utc;
+                const blockStartMs = blockStart ? new Date(blockStart).getTime() : null;
+                const blockEndMs = blockEnd ? new Date(blockEnd).getTime() + 3600000 : null;
+                if (blockEndMs && blockEndMs <= nowMs) return;
+                if (blockStartMs && blockStartMs >= horizonMs) return;
+
+                (Array.isArray(hdata.hourly_values) ? hdata.hourly_values : []).forEach(hour => {
+                    const validMs = hour.valid_utc ? new Date(hour.valid_utc).getTime() : null;
+                    if (validMs && (validMs < nowMs || validMs >= horizonMs)) return;
+                    const key = hour.valid_utc || `${bi}:${hour.fxx ?? seen.size}`;
+                    if (seen.has(key)) return;
+                    seen.add(key);
+
+                    const raw = refKey === 'RAIN'
+                        ? (hour.rain_in ?? hour.value)
+                        : refKey === 'SNOW'
+                            ? (hour.snow_in ?? hour.value)
+                            : (hour.fzra_in ?? hour.value);
+                    if (raw !== null && raw !== undefined && Number.isFinite(Number(raw))) {
+                        total += Number(raw);
+                        hasAny = true;
+                    }
+                });
+            });
+
+            if (!hasAny) return '';
+            if (total > 0 && total < 0.01) return `${TOTAL_HOURS}-hr total: Trace`;
+            return `${TOTAL_HOURS}-hr total: ${total.toFixed(2)} in`;
         }
 
         function forecastValueText(refKey, hdata, fallback) {
@@ -2761,7 +2885,7 @@
                             dot.style.background   = fresh ? '#22c55e' : '#ef4444';
                             dot.style.animation    = fresh ? 'live-pulse 2s ease-in-out infinite' : 'sop-flash 1.5s infinite';
                             dot.title              = fresh ? 'REFS cycle is current' : 'REFS cycle may be stale';
-                            label.textContent      = `${cycleStr} · 60 HR${genStr ? ` · UPDATED ${genStr}` : ''}`;
+                            label.textContent      = `${cycleStr} · ${TOTAL_HOURS} HR${genStr ? ` · UPDATED ${genStr}` : ''}`;
                             label.style.color      = fresh ? '#52525b' : '#ef4444';
                         }
                     }
@@ -2844,19 +2968,20 @@
                             threatData.display_value !== null &&
                             !['', 'None', 'No data'].includes(String(threatData.display_value))
                         );
-                        let displayMetric = '';
-                        if (h.timelineData) {
+                        const accumulationMetric = accumulationTotalText(refKey);
+                        let displayMetric = accumulationMetric || '';
+                        if (!displayMetric && h.timelineData) {
                             displayMetric = forecastValueText(refKey, h.timelineData, h.threatData);
                             if (isNone && !displayMetric) displayMetric = 'No current signal';
-                        } else if (isNone && !hasRealDisplayValue) {
+                        } else if (!displayMetric && isNone && !hasRealDisplayValue) {
                             displayMetric = 'No current signal';
-                        } else if (threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
+                        } else if (!displayMetric && threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
                             displayMetric = `${threatData.display_label}: ${threatData.display_value}`;
-                        } else if (refKey === 'WIND' && threatData.g24_mph !== undefined && threatData.g24_mph !== null) {
+                        } else if (!displayMetric && refKey === 'WIND' && threatData.g24_mph !== undefined && threatData.g24_mph !== null) {
                             displayMetric = `24-hr max gust: ${Math.round(Number(threatData.g24_mph))} mph`;
-                        } else if (threatData.metric) {
+                        } else if (!displayMetric && threatData.metric) {
                             displayMetric = threatData.metric;
-                        } else if (FALLBACK_METRICS[refKey]?.[impactLevel]) {
+                        } else if (!displayMetric && FALLBACK_METRICS[refKey]?.[impactLevel]) {
                             displayMetric = FALLBACK_METRICS[refKey][impactLevel];
                         }
 

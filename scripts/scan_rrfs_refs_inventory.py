@@ -21,7 +21,7 @@ ROOT = "rrfs_a"
 
 # Scan recent cycles.
 LOOKBACK_HOURS = 72
-MIN_USABLE_HOURS = int(os.getenv("DSS_REFS_MIN_USABLE_HOURS", "18"))
+MIN_USABLE_HOURS = int(os.getenv("DSS_REFS_MIN_USABLE_HOURS", "12"))
 REQUIRED_PRODUCTS = {
     product.strip().lower()
     for product in os.getenv("DSS_REFS_REQUIRED_PRODUCTS", "mean,prob,avrg").split(",")
