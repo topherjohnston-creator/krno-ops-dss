@@ -764,7 +764,8 @@
         }
 
 
-        const TOTAL_HOURS = 48;
+        let TOTAL_HOURS = 48;
+        let forecastSourceMode = 'refs';
         let globalNow = new Date(); 
 
         // --- CUSTOM COLOR SCALES ---
@@ -2862,10 +2863,21 @@
                 // --- FETCH LIVE DATA (WITH NGROK BYPASS HEADER) ---
                 const fetchOpts = { headers: { "ngrok-skip-browser-warning": "true" } };
 
+                const _params = new URLSearchParams(window.location.search);
                 // ?test=<scenario> loads test JSON files instead of live data
-                const _testMode = new URLSearchParams(window.location.search).get('test');
-                const _threatsFile  = _testMode ? `threats_${_testMode}.json`  : 'threats.json';
-                const _timelineFile = _testMode ? `timeline_${_testMode}.json` : 'timeline.json';
+                const _testMode = _params.get('test');
+                forecastSourceMode = (_params.get('source') || 'refs').toLowerCase() === 'nbm' ? 'nbm' : 'refs';
+                TOTAL_HOURS = forecastSourceMode === 'nbm' ? 72 : 48;
+                const _threatsFile = _testMode
+                    ? `threats_${_testMode}.json`
+                    : forecastSourceMode === 'nbm'
+                        ? 'nbm_threats.json'
+                        : 'threats.json';
+                const _timelineFile = _testMode
+                    ? `timeline_${_testMode}.json`
+                    : forecastSourceMode === 'nbm'
+                        ? 'nbm_timeline.json'
+                        : 'timeline.json';
                 if (_testMode) {
                     const banner = document.getElementById('test-mode-banner');
                     if (!banner) {
