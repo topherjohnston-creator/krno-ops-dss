@@ -3,7 +3,7 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-05-26T22:51:00Z",
+  "generated_utc": "2026-05-27T01:38:09Z",
   "cycle_utc_iso": "2026-05-26T18:00:00Z",
   "selected_prefix": "rrfs_a/refs.20260526/18/enspost/",
   "builder_mode": "refs_point_extraction",
@@ -1394,7 +1394,13 @@
     "status": "ok",
     "method": "refs_idx_byte_range_secondary_hazards",
     "task_count": 720,
-    "ok_values": 720,
-    "errors": []
+    "ok_values": 719,
+    "errors": [
+      {
+        "fxx": 10,
+        "field": "rain_amount_mm",
+        "message": "503 Server Error: Service Unavailable for url: https://noaa-rrfs-pds.s3.amazonaws.com/rrfs_a/refs.20260526/18/enspost/refs.t18z.mean.f10.conus.grib2"
+      }
+    ]
   }
 }
