@@ -229,6 +229,20 @@
             gap: 7px;
         }
 
+        .agency-lockup {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding-left: 4px;
+            opacity: 0.72;
+        }
+
+        .agency-lockup img {
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+        }
+
         .status-pill {
             display: inline-flex;
             align-items: center;
@@ -301,6 +315,62 @@
             font-weight: 700;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        .obs-panel-grid {
+            width: 52%;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .obs-panel-grid .asos-box {
+            padding: 8px;
+        }
+
+        .obs-panel-grid .asos-label {
+            font-size: 0.54rem;
+            line-height: 1.05;
+            margin-bottom: 3px;
+        }
+
+        .obs-panel-grid .asos-value {
+            font-size: clamp(1.05rem, 1.55vw, 1.45rem);
+            line-height: 1;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .asos-box {
+            min-width: 0;
+            min-height: 0;
+        }
+
+        #sky-val {
+            font-size: clamp(1.05rem, 1.65vw, 1.45rem);
+            line-height: 0.95;
+        }
+
+        #sky-sub, #rh-val {
+            font-size: 0.68rem;
+            line-height: 1.15;
+            overflow-wrap: anywhere;
+        }
+
+        .flight-cat-inline {
+            position: static !important;
+            display: inline-flex;
+            align-items: center;
+            height: 22px;
+            padding: 2px 7px;
+            border-radius: 999px;
+        }
+
+        .airport-warning-alert {
+            background: rgba(88, 28, 135, 0.18) !important;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.34);
         }
 
         .dashboard-grid {
@@ -402,8 +472,8 @@
     <main class="app-shell">
         <header class="app-header">
             <div class="brand-lockup">
-                <div class="brand-title">KRNO Ops DSS</div>
-                <div class="brand-subtitle">Reno-Tahoe International Airport Weather Decision Support</div>
+                <div class="brand-title">RENO-TAHOE INTERNATIONAL AIRPORT WEATHER DECISION SUPPORT</div>
+                <div class="brand-subtitle">KRNO operational weather dashboard</div>
             </div>
             <div class="header-status">
                 <span class="status-pill gray" id="header-clock">--</span>
@@ -411,6 +481,10 @@
                 <span class="status-pill gray" id="header-cycle">Forecast loading</span>
                 <span class="status-pill gray" id="header-risk">Current risk pending</span>
                 <span class="status-pill amber">Beta</span>
+                <span class="agency-lockup" aria-label="NOAA National Weather Service">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/NOAA_logo.svg" alt="NOAA">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/US-NationalWeatherService-Logo.svg" alt="NWS">
+                </span>
             </div>
         </header>
 
@@ -428,7 +502,7 @@
                 <span class="summary-value" id="summary-impact">Assessing operational impact</span>
             </div>
             <div class="summary-item">
-                <span class="summary-label">SOP Status</span>
+                <span class="summary-label">Airport Action</span>
                 <span class="summary-value" id="summary-sop">Monitor</span>
             </div>
             <div class="summary-item">
@@ -441,35 +515,19 @@
         
         <div class="panel p-4" style="z-index: 20;"> 
             <div class="flex justify-between items-start mb-3">
-                <div class="flex flex-col">
-                    <div style="font-family:'Oswald',sans-serif; font-size:1.05rem; font-weight:700; color:#e2e8f0; letter-spacing:0.06em; text-transform:uppercase; line-height:1.1;">
-                        Weather Decision Support
-                    </div>
-                    <div style="font-family:'Oswald',sans-serif; font-size:0.72rem; font-weight:500; color:#64748b; letter-spacing:0.12em; text-transform:uppercase; margin-top:1px;">
-                        Reno-Tahoe International Airport — KRNO
-                    </div>
-                </div>
-                <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;margin-left:16px;">Risk Matrix</h2>
+                <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;">Risk Matrix</h2>
             </div>
             
             <div id="hazards-grid" class="grid grid-cols-4 gap-3 flex-grow h-full relative" style="z-index: 10;"></div>
             
             <div class="flex justify-between items-center mt-3 pt-2 border-t border-[#27272a]">
-                <div class="flex items-center gap-2">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/NOAA_logo.svg" alt="NOAA" class="h-7 w-7 drop-shadow-md" style="opacity:0.55;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/US-NationalWeatherService-Logo.svg" alt="NWS" class="h-7 w-7 drop-shadow-md" style="opacity:0.55;">
-                    <div class="flex flex-col justify-center">
-                        <span class="text-[8px] font-bold text-slate-600 uppercase leading-none">National</span>
-                        <span class="text-[8px] font-bold text-slate-600 uppercase leading-none">Weather Service</span>
-                    </div>
-                </div>
                 <div class="flex items-center gap-3 flex-wrap justify-end">
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #27272a;"></div>None</div>
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #3f3f46;"></div>Little to None</div>
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #ffeb3b;"></div>Minor</div>
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #ff9800;"></div>Moderate</div>
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #f44336;"></div>Major</div>
-                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #9c27b0;"></div>Extreme</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #3a3f46;"></div>None</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #3b5268;"></div>Little to None</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #d8a92b;"></div>Minor</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #e87822;"></div>Moderate</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #df3b3b;"></div>Major</div>
+                     <div class="flex items-center gap-1.5 text-xs uppercase tracking-wider text-slate-400 font-bold"><div class="w-3 h-3" style="background-color: #b91c5c;"></div>Extreme</div>
                 </div>
             </div>
         </div>
@@ -505,17 +563,17 @@
                  <div class="flex items-center gap-3">
                     <h2 class="font-bold text-base tracking-wider text-slate-300">Current Weather Observations</h2>
                     <span class="text-xs font-mono text-purple-400 bg-purple-400/10 px-2 py-0.5 rounded border border-purple-400/20">KRNO</span>
+                    <span class="flight-cat flight-cat-inline" id="fc-badge">--</span>
                  </div>
                  <div class="flex items-center gap-1 text-[10px] text-slate-500 font-mono"><span class="live-dot" id="live-dot" style="display:none;"></span><span id="asos-time">--</span></div>
             </div>
 
             <div class="flex-grow flex gap-3 min-h-0">
 
-                <div class="asos-box flex flex-col items-center justify-between" id="wind-obs-box" style="width:48%; padding:10px;cursor:crosshair;" onmouseenter="showWindForecast()" onmouseleave="hideTooltip()">
+                <div class="asos-box flex flex-col items-center justify-between" id="wind-obs-box" style="width:48%; padding:10px;cursor:crosshair;" onmouseenter="showWindRoseTooltip()" onmouseleave="hideTooltip()">
                     <div class="asos-label w-full">WIND</div>
 
                     <div class="flex gap-2 mt-1 w-full justify-end">
-                        <div class="flight-cat" id="flight-cat-badge">--</div>
                         <div class="threat-badge" id="xwind-badge" style="display:none;">X-WIND</div>
                     </div>
 
@@ -559,18 +617,18 @@
                             <span id="w-spd">--</span>
                             <span style="font-size:0.9rem; color:#71717a; font-weight:400;">G</span>
                             <span id="w-gst" style="color:#fbbf24;">--</span>
-                            <span style="font-size:0.9rem; color:#71717a; font-weight:400;">KT</span>
+                            <span style="font-size:0.9rem; color:#71717a; font-weight:400;">MPH</span>
                         </div>
                         <div id="wind-dir-text" style="font-family:'JetBrains Mono',monospace; font-size:1.1rem; color:#a1a1aa; font-weight:700; margin-top:2px;">--°</div>
                     </div>
                     <div id="daily-gust-row" style="display:none;position:absolute;bottom:6px;right:8px;text-align:right;">
                         <span class="asos-label" style="font-size:0.55rem;color:#52525b;">24H MAX GUST</span>
                         <span id="daily-gust-val" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:700;color:#fbbf24;margin-left:3px;">--</span>
-                        <span style="font-size:0.6rem;color:#71717a;">KT</span>
+                        <span style="font-size:0.6rem;color:#71717a;">MPH</span>
                     </div>
                 </div>
 
-                <div style="width:52%; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; gap:8px;">
+                <div class="obs-panel-grid">
 
                     <div class="asos-box">
                         <div class="asos-label">VISIBILITY</div>
@@ -579,18 +637,14 @@
                         <i class="ph-fill ph-eye absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" style="cursor:crosshair;"
-                         onmouseenter="showObsForecast('Hourly Cloud Cover Forecast','SKY','SKY',100,'%',null)"
-                         onmouseleave="hideTooltip()">
-                        <div class="flight-cat" id="fc-badge">--</div>
+                    <div class="asos-box">
                         <div class="asos-label">SKY CONDITION</div>
                         <div class="asos-value" id="sky-val">--</div>
                         <div class="asos-sub" id="sky-sub"></div>
                         <i class="ph-fill ph-cloud absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" id="temp-box"
-                         onmouseenter="showTempForecast()" onmouseleave="hideTooltip()">
+                    <div class="asos-box" id="temp-box">
                         <div class="asos-label">TEMPERATURE</div>
                         <div class="asos-value">
                             <span id="t-val">--</span>
@@ -611,9 +665,7 @@
                         <i class="ph-fill ph-thermometer-hot absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" id="wx-card" style="cursor:crosshair;"
-                         onmouseenter="showObsForecast('Hourly Thunder Probability Forecast','T01','LIGHTNING',100,'%',null,true)"
-                         onmouseleave="hideTooltip()">
+                    <div class="asos-box" id="wx-card">
                         <div class="asos-label">PRESENT WEATHER</div>
                         <div class="asos-value" id="wx-icons" style="font-size:1.8rem; margin-top:2px; min-height:28px;">--</div>
                         <div id="wx-detail" class="asos-sub" style="margin-top:2px; font-size:0.60rem; line-height:1.3; color:#a1a1aa;"></div>
@@ -621,8 +673,7 @@
                         <i class="ph-fill ph-cloud-lightning absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" id="dew-box"
-                         onmouseenter="showDewForecast()" onmouseleave="hideTooltip()">
+                    <div class="asos-box" id="dew-box">
                         <div class="asos-label">DEWPOINT</div>
                         <div class="asos-value">
                             <span id="d-val">--</span>
@@ -632,9 +683,7 @@
                         <i class="ph-fill ph-drop-half absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box" style="cursor:crosshair;"
-                         onmouseenter="showObsForecast('Hourly Rainfall Rate Forecast','Q01','RAIN',2,'in',v=>v/100,true)"
-                         onmouseleave="hideTooltip()">
+                    <div class="asos-box">
                         <div class="asos-label">1-HOUR PRECIPITATION</div>
                         <div class="asos-value" id="precip-val">--</div>
                         <div class="asos-sub" id="precip-sub" style="color:#71717a;"></div>
@@ -684,18 +733,13 @@
         const COLOR_SCALES = {
             // Wind speed (mph) — Image 1
             wind: [
-                {max:5,  color:'rgb(200,200,200)'},
-                {max:10, color:'rgb(110,190,210)'},
-                {max:15, color:'rgb(50,160,180)'},
-                {max:20, color:'rgb(30,130,160)'},
-                {max:25, color:'rgb(20,100,140)'},
-                {max:30, color:'rgb(10,70,120)'},
-                {max:40, color:'rgb(80,20,100)'},
-                {max:50, color:'rgb(140,20,60)'},
-                {max:60, color:'rgb(180,30,20)'},
-                {max:70, color:'rgb(200,80,20)'},
-                {max:80, color:'rgb(210,140,20)'},
-                {max:999,color:'rgb(220,200,20)'},
+                {max:5,  color:'rgb(210,228,235)'}, {max:10, color:'rgb(142,184,205)'},
+                {max:15, color:'rgb(96,166,166)'},  {max:20, color:'rgb(72,126,132)'},
+                {max:25, color:'rgb(245,240,110)'}, {max:30, color:'rgb(245,205,12)'},
+                {max:40, color:'rgb(235,152,28)'},  {max:50, color:'rgb(210,67,64)'},
+                {max:60, color:'rgb(168,38,38)'},   {max:70, color:'rgb(105,5,45)'},
+                {max:80, color:'rgb(110,18,62)'},   {max:90, color:'rgb(63,24,90)'},
+                {max:100,color:'rgb(178,86,235)'},  {max:999,color:'rgb(178,86,235)'},
             ],
             // Visibility (SM) — Image 2 — white above 5SM
             vis: [
@@ -710,32 +754,24 @@
             ],
             // Ceiling height AGL (ft) — Image 3
             ceil: [
-                {max:100,  color:'rgb(180,0,180)'},
-                {max:300,  color:'rgb(200,0,100)'},
-                {max:500,  color:'rgb(220,20,20)'},
-                {max:1000, color:'rgb(200,80,20)'},
-                {max:2000, color:'rgb(220,160,20)'},
-                {max:3000, color:'rgb(220,210,20)'},
-                {max:10000,color:'rgb(160,210,100)'},
-                {max:20000,color:'rgb(100,180,180)'},
-                {max:999999,color:'rgb(160,160,160)'},
+                {max:100,  color:'rgb(172,42,170)'}, {max:300,  color:'rgb(188,82,188)'},
+                {max:500,  color:'rgb(238,128,230)'}, {max:1000, color:'rgb(205,0,0)'},
+                {max:2000, color:'rgb(250,245,40)'},  {max:3000, color:'rgb(250,250,195)'},
+                {max:10000,color:'rgb(100,100,95)'},  {max:20000,color:'rgb(155,155,155)'},
+                {max:999999,color:'rgb(220,220,220)'},
             ],
             // 2m Temperature (°F) — Image 4
             temp: [
-                {max:-40, color:'rgb(10,10,80)'},
-                {max:-20, color:'rgb(20,20,150)'},
-                {max:0,   color:'rgb(40,80,200)'},
-                {max:20,  color:'rgb(60,140,210)'},
-                {max:32,  color:'rgb(100,180,220)'},
-                {max:40,  color:'rgb(140,210,230)'},
-                {max:50,  color:'rgb(180,230,200)'},
-                {max:60,  color:'rgb(200,230,150)'},
-                {max:70,  color:'rgb(230,220,100)'},
-                {max:80,  color:'rgb(240,180,60)'},
-                {max:90,  color:'rgb(240,120,30)'},
-                {max:100, color:'rgb(220,60,20)'},
-                {max:110, color:'rgb(180,20,20)'},
-                {max:999, color:'rgb(120,10,10)'},
+                {max:-60, color:'rgb(190,0,90)'},    {max:-50, color:'rgb(220,25,110)'},
+                {max:-40, color:'rgb(235,45,150)'},   {max:-30, color:'rgb(238,105,185)'},
+                {max:-20, color:'rgb(232,232,238)'},  {max:-10, color:'rgb(178,178,205)'},
+                {max:0,   color:'rgb(18,18,145)'},    {max:10,  color:'rgb(25,112,185)'},
+                {max:20,  color:'rgb(55,175,235)'},   {max:30,  color:'rgb(150,232,235)'},
+                {max:40,  color:'rgb(20,150,140)'},   {max:50,  color:'rgb(12,125,50)'},
+                {max:60,  color:'rgb(105,190,112)'},  {max:70,  color:'rgb(205,245,185)'},
+                {max:80,  color:'rgb(250,230,120)'},  {max:90,  color:'rgb(250,160,42)'},
+                {max:100, color:'rgb(232,35,28)'},    {max:110, color:'rgb(150,0,35)'},
+                {max:120, color:'rgb(72,0,82)'},      {max:999, color:'rgb(35,0,55)'},
             ],
             // 2m Dew Point (°F) — Image 5
             dew: [
@@ -1199,7 +1235,7 @@
                     var xw = Math.round(Math.abs(spd * Math.sin(diff * Math.PI / 180)));
                     var hw = Math.round(spd * Math.cos(diff * Math.PI / 180));
                     var xc = xw >= 35 ? '#ef4444' : xw >= 25 ? '#f97316' : xw >= 15 ? '#eab308' : '#22c55e';
-                    out.push('<div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.65rem;margin-bottom:2px;"><span style="color:#a1a1aa;">RWY ' + RWYS[r].name + '</span><span style="color:' + xc + ';font-weight:800;">XWIND ' + xw + 'KT</span><span style="color:#52525b;">' + (hw < 0 ? 'TAIL' : 'HEAD') + ' ' + Math.abs(hw) + 'KT</span></div>');
+                    out.push('<div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.65rem;margin-bottom:2px;"><span style="color:#a1a1aa;">RWY ' + RWYS[r].name + '</span><span style="color:' + xc + ';font-weight:800;">XWIND ' + ktToMph(xw) + 'MPH</span><span style="color:#52525b;">' + (hw < 0 ? 'TAIL' : 'HEAD') + ' ' + ktToMph(Math.abs(hw)) + 'MPH</span></div>');
                 }
             }
 
@@ -1297,11 +1333,11 @@
                 const xCol = xw >= 35 ? '#ef4444' : xw >= 25 ? '#f97316' : xw >= 15 ? '#eab308' : '#22c55e';
                 rows += `<div style="display:flex;justify-content:space-between;align-items:center;font-family:monospace;font-size:0.68rem;margin-top:4px;">
                     <span style="color:#a1a1aa;font-weight:700;min-width:70px;">RWY ${rwy.name}</span>
-                    <span style="color:${xCol};font-weight:800;min-width:60px;">XWIND ${xw}KT</span>
-                    <span style="color:#71717a;">${isTail?'TAILWIND':'HEADWIND'} ${Math.abs(hw)}KT</span>
+                    <span style="color:${xCol};font-weight:800;min-width:70px;">XWIND ${ktToMph(xw)}MPH</span>
+                    <span style="color:#71717a;">${isTail?'TAILWIND':'HEADWIND'} ${ktToMph(Math.abs(hw))}MPH</span>
                 </div>`;
             });
-            const tip = `<div style="font-weight:800;font-size:0.7rem;border-bottom:1px solid #3f3f46;pb-1;margin-bottom:6px;padding-bottom:4px;">RUNWAY CROSSWINDS<span style="float:right;color:#71717a;font-weight:400;">${wDir}° @ ${wSpd}${wGst>wSpd?'G'+wGst:''}KT</span></div>${rows}`;
+            const tip = `<div style="font-weight:800;font-size:0.7rem;border-bottom:1px solid #3f3f46;pb-1;margin-bottom:6px;padding-bottom:4px;">RUNWAY CROSSWINDS<span style="float:right;color:#71717a;font-weight:400;">${wDir}° @ ${ktToMph(wSpd)}${wGst>wSpd?'G'+ktToMph(wGst):''}MPH</span></div>${rows}`;
             showTooltip(tip);
         };
 
@@ -1546,6 +1582,9 @@
 
         function getAlertConfig(eventStr) {
             const e = eventStr.toLowerCase();
+            if (e.includes("airport weather warning")) {
+                return { name: "Airport Weather Warning", color: '#a855f7', textColor: '#ffffff' };
+            }
             let riskLevel = 0;
             if (EXTREME_WARNINGS_LIST.some(w => e.includes(w))) riskLevel = 5; 
             else if (e.includes("warning")) riskLevel = 4; 
@@ -1560,6 +1599,25 @@
         }
 
         function fToC(f) { return (Number(f) - 32) * 5 / 9; }
+        function ktToMph(kt) { return Math.round(Number(kt || 0) * 1.15078); }
+
+        function parseCloudsFromMetar(rawText) {
+            if (!rawText) return [];
+            return rawText.split(/\s+/)
+                .filter(tok => /^(FEW|SCT|BKN|OVC|VV)[0-9]{3}/.test(tok))
+                .map(tok => ({
+                    cover: tok.slice(0, 3),
+                    base: parseInt(tok.slice(3, 6), 10) * 100,
+                }))
+                .filter(layer => Number.isFinite(layer.base));
+        }
+
+        function parseWeatherFromMetar(rawText) {
+            if (!rawText) return '';
+            const wxTokens = ['TS','RA','SN','FG','BR','HZ','DZ','GR','GS','PL',
+                '+RA','+SN','-RA','-SN','RASN','FZRA','FZDZ','BLSN','TSRA','TSGR'];
+            return rawText.split(/\s+/).filter(tok => wxTokens.includes(tok)).join(' ');
+        }
 
         function metarFromGeneratedObs(obs) {
             if (!obs || obs.status !== 'ok') return null;
@@ -1575,6 +1633,7 @@
             const dewC = obs.dewpoint_f == null ? null : fToC(obs.dewpoint_f);
             const visib = obs.visibility_sm == null ? 10 : Math.min(Number(obs.visibility_sm) || 10, 10);
             const rawText = obs.metar || '';
+            const parsedClouds = parseCloudsFromMetar(rawText);
 
             return {
                 wdir,
@@ -1584,8 +1643,8 @@
                 temp: tempC,
                 dewp: dewC,
                 rh: obs.relative_humidity == null ? null : Math.round(Number(obs.relative_humidity)),
-                clouds: [],
-                wxString: '',
+                clouds: parsedClouds,
+                wxString: parseWeatherFromMetar(rawText),
                 lightning: parseRawMetarLightning(rawText),
                 rawOb: rawText,
                 reportTime: obs.observed_utc || obs.generated_utc || new Date().toISOString(),
@@ -1731,13 +1790,13 @@
                                 window._precip1hr = 0;
                             }
 
-                            // Daily peak wind gust (kt)
+                            // Daily peak wind gust (mph)
                             const pkWind = obs.peak_wind_speed_value_1?.value;
                             if (pkWind != null) {
-                                const pkKt = Math.round(pkWind / 1.15078);
+                                const pkMph = Math.round(pkWind);
                                 const gustEl  = document.getElementById('daily-gust-val');
                                 const gustRow = document.getElementById('daily-gust-row');
-                                if (gustEl && gustRow) { gustEl.textContent = pkKt; gustRow.style.display = 'block'; }
+                                if (gustEl && gustRow) { gustEl.textContent = pkMph; gustRow.style.display = 'block'; }
                             }
 
                             // 24hr high/low temperature (°F)
@@ -1807,8 +1866,15 @@
                     const expires = p.expires ? new Date(p.expires) : new Date(now.getTime() + 3*3600000);
                     const startHr = Math.max(0, (onset - now) / 3600000);
                     const endHr = Math.min(TOTAL_HOURS, (expires - now) / 3600000);
-                    return { event: p.event || 'Unknown Alert', headline: p.headline || '', startHr: startHr, endHr: endHr > startHr ? endHr : startHr + 1 };
-                }).filter(a => a.endHr > 0);
+                    return {
+                        event: p.event || 'Unknown Alert',
+                        headline: p.headline || '',
+                        description: p.description || '',
+                        instruction: p.instruction || '',
+                        startHr: startHr,
+                        endHr: endHr > startHr ? endHr : startHr + 1
+                    };
+                }).filter(a => a.endHr > 0 && !/lake wind advisory/i.test(a.event || ''));
             } catch(e) { console.warn('Alerts fetch error:', e); }
         }
 
@@ -1834,7 +1900,6 @@
             const effectiveSpd = (wGst && wGst > wSpd) ? wGst : wSpd;
             const diff = ((wDir - 160) + 360) % 360;
             const xw   = Math.round(Math.abs(effectiveSpd * Math.sin(diff * Math.PI / 180)));
-            const gustFlag = (wGst && wGst > wSpd) ? 'G' : '';
 
             // Three categories: Light / Medium / Heavy aircraft
             // Light  (C172, PA28):              limit ~15 kt
@@ -1843,13 +1908,13 @@
             let label, color;
             // SOP limits (KRNO): ramp ops caution ≥25kt, suspend ≥35kt
             if (xw >= 35) {
-                label = `XWIND ${xw}${gustFlag}KT`;  color = '#ef4444';
+                label = `XWIND ${ktToMph(xw)}MPH`;  color = '#ef4444';
             } else if (xw >= 25) {
-                label = `XWIND ${xw}${gustFlag}KT`;  color = '#f97316';
+                label = `XWIND ${ktToMph(xw)}MPH`;  color = '#f97316';
             } else if (xw >= 15) {
-                label = `XWIND ${xw}${gustFlag}KT`;  color = '#eab308';
+                label = `XWIND ${ktToMph(xw)}MPH`;  color = '#eab308';
             } else if (xw > 0) {
-                label = `XWIND ${xw}${gustFlag}KT`;  color = '#71717a';
+                label = `XWIND ${ktToMph(xw)}MPH`;  color = '#71717a';
             } else {
                 label = 'HEADWIND';                   color = '#22c55e';
             }
@@ -1870,11 +1935,11 @@
 
             // Wind speed/gust
             const spdEl = document.getElementById('w-spd');
-            spdEl.textContent = isCalm ? 'CALM' : wSpd;
+            spdEl.textContent = isCalm ? 'CALM' : ktToMph(wSpd);
             spdEl.style.fontSize = isCalm ? '1.6rem' : '';
             document.getElementById('w-spd').style.color = isCalm ? '#71717a' : getColor('wind', Math.round(wSpd * 1.15078));
             const gstEl = document.getElementById('w-gst');
-            gstEl.textContent = wGst > 0 ? wGst : '--';
+            gstEl.textContent = wGst > 0 ? ktToMph(wGst) : '--';
             gstEl.style.color = wGst > 0 ? getColor('wind', Math.round(wGst * 1.15078)) : '#71717a';
 
             // Wind direction text
@@ -1913,7 +1978,7 @@
                 if (wGst >= SOP_SUSPEND_KT) {
                     windObsBox.classList.add('sop-alert');
                     windObsBox.style.borderColor = '#f97316';
-                    windObsBox.title = `SOP ALERT: ${wGst}kt gust exceeds ramp ops limit (${SOP_SUSPEND_KT}kt)`;
+                    windObsBox.removeAttribute('title');
                 } else {
                     windObsBox.classList.remove('sop-alert');
                     windObsBox.style.borderColor = '';
@@ -1923,7 +1988,7 @@
 
             // Flight category
             const flightCat = getFlightCat(m);
-            ['flight-cat', 'fc-badge'].forEach(id => {
+            ['flight-cat-badge', 'fc-badge'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) { el.textContent = flightCat.cat; el.style.backgroundColor = flightCat.color; }
             });
@@ -2202,7 +2267,8 @@
 
             alerts.forEach((alert, index) => {
                 const config = getAlertConfig(alert.event);
-                const flashClass = alert.event.includes("Airport Weather Warning") ? "animate-flash" : "";
+                const isAirportWeatherWarning = /airport weather warning/i.test(alert.event || '');
+                const flashClass = isAirportWeatherWarning ? "animate-flash" : "";
                 const startTimeLabel = getSimpleTime(now, alert.startHr);
                 const endTimeLabel = getSimpleTime(now, alert.endHr);
 
@@ -2212,7 +2278,7 @@
                 const endMs = globalNow.getTime() + alert.endHr * 3600000;
                 
                 const listItem = document.createElement('div');
-                listItem.className = `alert-card ${flashClass}`;
+                listItem.className = `alert-card ${flashClass} ${isAirportWeatherWarning ? 'airport-warning-alert' : ''}`;
                 listItem.style.borderLeft = `4px solid ${config.color}`;
                 listItem.innerHTML = `
                     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -2229,7 +2295,7 @@
                     <div style="display:flex;justify-content:flex-end;margin-top:6px;">
                         <span id="${btnId}" onclick="toggleAlertExpand(${index})" style="font-size:0.58rem;color:#52525b;cursor:pointer;user-select:none;padding:2px 4px;border-radius:2px;transition:color 0.1s;" onmouseenter="this.style.color='#94a3b8'" onmouseleave="this.style.color='#52525b'">Read Full Bulletin ▾</span>
                     </div>
-                    <div id="${rawId}" class="alert-raw">${alert.headline || 'No additional details available.'}</div>`;
+                    <div id="${rawId}" class="alert-raw">${alert.description || alert.headline || 'No additional details available.'}</div>`;
                 
                 wwaContainer.appendChild(listItem);
                 // Register for countdown ticks
@@ -2244,6 +2310,11 @@
                 bar.style.backgroundColor = config.color; bar.style.left = `${left}%`; bar.style.width = `${width}%`; bar.style.top = `${top}%`; bar.style.height = `30%`; bar.style.color = config.textColor; 
                 bar.innerHTML = `<span class="px-1 truncate font-mono">${alert.event.toUpperCase()} (${startTimeLabel}-${endTimeLabel})</span>`;
                 
+                const tHtml = `
+                    <div style="font-weight:800;font-size:0.72rem;color:${config.color};border-bottom:1px solid #3f3f46;padding-bottom:4px;margin-bottom:6px;text-transform:uppercase;">${alert.event}</div>
+                    <div style="font-size:0.65rem;color:#cbd5e1;margin-bottom:5px;">${startTimeLabel}–${endTimeLabel}</div>
+                    <div style="font-size:0.62rem;color:#aeb8c5;line-height:1.35;">${alert.headline || alert.description || 'No details available.'}</div>
+                `;
                 bar.addEventListener('mouseenter', () => showTooltip(tHtml));
                 bar.addEventListener('mouseleave', hideTooltip);
                 wwaTimeline.appendChild(bar);
@@ -2297,13 +2368,13 @@
         const DESI_CMAPS = {
             // 10m Wind Gust (mph)
             WIND: [
-                {max:5,   rgb:[210,210,210]}, {max:10,  rgb:[160,210,230]},
-                {max:15,  rgb:[90,190,210]},  {max:20,  rgb:[40,170,190]},
-                {max:25,  rgb:[10,145,160]},  {max:30,  rgb:[235,235,30]},
-                {max:35,  rgb:[240,190,20]},  {max:40,  rgb:[235,110,20]},
-                {max:45,  rgb:[220,50,20]},   {max:50,  rgb:[190,20,20]},
-                {max:60,  rgb:[140,5,10]},    {max:70,  rgb:[100,0,20]},
-                {max:80,  rgb:[70,0,60]},     {max:999, rgb:[50,0,90]},
+                {max:5,   rgb:[210,228,235]}, {max:10,  rgb:[142,184,205]},
+                {max:15,  rgb:[96,166,166]},  {max:20,  rgb:[72,126,132]},
+                {max:25,  rgb:[245,240,110]}, {max:30,  rgb:[245,205,12]},
+                {max:40,  rgb:[235,152,28]},  {max:50,  rgb:[210,67,64]},
+                {max:60,  rgb:[168,38,38]},   {max:70,  rgb:[105,5,45]},
+                {max:80,  rgb:[110,18,62]},   {max:90,  rgb:[63,24,90]},
+                {max:100, rgb:[178,86,235]},  {max:999, rgb:[178,86,235]},
             ],
             // Visibility (SM) — darker = worse
             VISIBILITY: [
@@ -2340,20 +2411,24 @@
             ],
             // Lightning probability (%) — amber/gold intensity
             LIGHTNING: [
-                {max:5,   rgb:[160,140,80]},  {max:10,  rgb:[200,170,30]},
-                {max:25,  rgb:[225,195,15]},  {max:50,  rgb:[230,130,20]},
-                {max:75,  rgb:[210,50,20]},   {max:999, rgb:[160,0,160]},
+                {max:10,  rgb:[245,205,230]}, {max:20,  rgb:[240,145,232]},
+                {max:30,  rgb:[238,95,232]},  {max:40,  rgb:[232,58,222]},
+                {max:50,  rgb:[225,28,210]},  {max:60,  rgb:[210,10,205]},
+                {max:70,  rgb:[190,0,185]},   {max:80,  rgb:[165,0,160]},
+                {max:90,  rgb:[120,0,130]},   {max:999, rgb:[95,0,120]},
             ],
             // Temperature (°F) — Max and Min use same colormap (from PDF)
             TEMPERATURE: [
-                {max:-60, rgb:[200,0,130]},   {max:-40, rgb:[210,30,100]},
-                {max:-20, rgb:[220,140,180]},  {max:0,   rgb:[230,230,250]},
-                {max:20,  rgb:[160,200,235]},  {max:32,  rgb:[100,170,220]},
-                {max:40,  rgb:[60,190,200]},   {max:50,  rgb:[40,170,110]},
-                {max:60,  rgb:[100,185,60]},   {max:70,  rgb:[215,230,30]},
-                {max:80,  rgb:[240,180,20]},   {max:90,  rgb:[230,80,20]},
-                {max:100, rgb:[185,15,15]},    {max:110, rgb:[120,0,10]},
-                {max:999, rgb:[80,0,30]},
+                {max:-60, rgb:[190,0,90]},    {max:-50, rgb:[220,25,110]},
+                {max:-40, rgb:[235,45,150]},   {max:-30, rgb:[238,105,185]},
+                {max:-20, rgb:[232,232,238]},  {max:-10, rgb:[178,178,205]},
+                {max:0,   rgb:[18,18,145]},    {max:10,  rgb:[25,112,185]},
+                {max:20,  rgb:[55,175,235]},   {max:30,  rgb:[150,232,235]},
+                {max:40,  rgb:[20,150,140]},   {max:50,  rgb:[12,125,50]},
+                {max:60,  rgb:[105,190,112]},  {max:70,  rgb:[205,245,185]},
+                {max:80,  rgb:[250,230,120]},  {max:90,  rgb:[250,160,42]},
+                {max:100, rgb:[232,35,28]},    {max:110, rgb:[150,0,35]},
+                {max:120, rgb:[72,0,82]},      {max:999, rgb:[35,0,55]},
             ],
             // Alias COLD/HEAT to TEMPERATURE for backwards compat
             get COLD() { return this.TEMPERATURE; },
@@ -2366,9 +2441,23 @@
             ],
             // Flash Freeze wet-bulb °F
             FLASH_FREEZE: [
-                {max:25,  rgb:[140,0,170]},   {max:28,  rgb:[195,0,55]},
-                {max:32,  rgb:[225,95,15]},   {max:36,  rgb:[235,205,15]},
-                {max:40,  rgb:[150,205,225]}, {max:999, rgb:[195,225,195]},
+                {max:-60, rgb:[190,0,90]},    {max:-50, rgb:[220,25,110]},
+                {max:-40, rgb:[235,45,150]},   {max:-30, rgb:[238,105,185]},
+                {max:-20, rgb:[232,232,238]},  {max:-10, rgb:[178,178,205]},
+                {max:0,   rgb:[18,18,145]},    {max:10,  rgb:[25,112,185]},
+                {max:20,  rgb:[55,175,235]},   {max:30,  rgb:[150,232,235]},
+                {max:40,  rgb:[20,150,140]},   {max:50,  rgb:[12,125,50]},
+                {max:60,  rgb:[105,190,112]},  {max:70,  rgb:[205,245,185]},
+                {max:80,  rgb:[250,230,120]},  {max:90,  rgb:[250,160,42]},
+                {max:100, rgb:[232,35,28]},    {max:110, rgb:[150,0,35]},
+                {max:120, rgb:[72,0,82]},      {max:999, rgb:[35,0,55]},
+            ],
+            CEILING: [
+                {max:0.1, rgb:[172,42,170]}, {max:0.3, rgb:[188,82,188]},
+                {max:0.5, rgb:[238,128,230]}, {max:1, rgb:[205,0,0]},
+                {max:2, rgb:[250,245,40]}, {max:3, rgb:[250,250,195]},
+                {max:10, rgb:[100,100,95]}, {max:20, rgb:[155,155,155]},
+                {max:999, rgb:[220,220,220]},
             ],
         };
 
@@ -2495,6 +2584,23 @@
             const nowMs = globalNow?.getTime?.() || Date.now();
             let best = null;
 
+            const magnitude = (hdata) => {
+                const hours = Array.isArray(hdata?.hourly_values) ? hdata.hourly_values : [];
+                const nums = [];
+                hours.forEach(hour => {
+                    const candidates = [
+                        hour.rain_in, hour.snow_in, hour.fzra_in, hour.wet_bulb_f,
+                        hour.gust_max_mph, hour.visibility_mi, hour.temp_f, hour.value,
+                    ];
+                    candidates.forEach(value => {
+                        if (value !== null && value !== undefined && Number.isFinite(Number(value))) nums.push(Number(value));
+                    });
+                });
+                if (refKey === 'VISIBILITY') return nums.length ? -Math.min(...nums) : 0;
+                if (refKey === 'FLASH_FREEZE') return nums.length ? -Math.min(...nums) : 0;
+                return nums.length ? Math.max(...nums) : 0;
+            };
+
             nbmBlockHazards.forEach((hazards, bi) => {
                 const hdata = hazards?.[refKey];
                 const block = nbmBlocks[bi] || {};
@@ -2509,10 +2615,13 @@
 
                 const risk = Number(hdata.risk || 0);
                 const prob = Number(hdata.prob ?? hdata.probability ?? 0);
+                const mag = refKey === 'LIGHTNING' ? prob : magnitude(hdata);
+                const bestMag = best ? (refKey === 'LIGHTNING' ? Number(best.prob || 0) : magnitude(best)) : -Infinity;
                 if (
                     !best ||
                     risk > Number(best.risk || 0) ||
-                    (risk === Number(best.risk || 0) && prob > Number(best.prob || 0))
+                    (risk === Number(best.risk || 0) && mag > bestMag) ||
+                    (risk === Number(best.risk || 0) && mag === bestMag && prob > Number(best.prob || 0))
                 ) {
                     best = { ...hdata, prob, probability: prob, risk, block_index: bi };
                 }
@@ -2540,16 +2649,26 @@
 
             if (value !== undefined && value !== null && Number.isFinite(Number(value))) {
                 const n = Number(value);
-                const rounded = Number.isInteger(n) ? Math.round(n) : n.toFixed(refKey === 'VISIBILITY' ? 1 : 0);
+                const decimalPlaces = {
+                    VISIBILITY: 1,
+                    RAIN: 2,
+                    SNOW: 2,
+                    FZRA: 2,
+                };
+                const places = decimalPlaces[refKey] ?? (Number.isInteger(n) ? 0 : 0);
+                const rounded = places > 0 ? n.toFixed(places) : Math.round(n);
                 const labelMap = {
-                    prob: 'chance',
-                    gust: 'gust',
-                    visibility: 'visibility',
-                    temp: 'temp',
-                    flash_freeze: 'flash freeze',
+                    prob: 'Chance',
+                    gust: 'Gust',
+                    visibility: 'Visibility',
+                    temp: 'Temp',
+                    rain: 'Rain',
+                    snow: 'Snow',
+                    fzra: 'Freezing Rain',
+                    flash_freeze: 'Wet Bulb',
                 };
                 const rawLabel = peakHour?.label || (refKey === 'WIND' ? 'gust' : refKey.toLowerCase().replace('_', ' '));
-                const label = labelMap[rawLabel] || rawLabel;
+                const label = labelMap[rawLabel] || String(rawLabel).replace(/\b\w/g, c => c.toUpperCase());
                 const spacer = unit && !['%', '°F'].includes(unit) ? ' ' : '';
                 return `${label}: ${rounded}${spacer}${unit}`;
             }
@@ -2560,7 +2679,8 @@
                 fallback?.display_value !== null &&
                 !['', 'None', 'No data'].includes(String(fallback.display_value))
             ) {
-                return `${fallback.display_label}: ${fallback.display_value}`;
+                const label = String(fallback.display_label).replace(/\b\w/g, c => c.toUpperCase());
+                return `${label}: ${fallback.display_value}`;
             }
             return '';
         }

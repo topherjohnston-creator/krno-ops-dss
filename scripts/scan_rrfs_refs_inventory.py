@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -20,6 +21,12 @@ ROOT = "rrfs_a"
 
 # Scan recent cycles.
 LOOKBACK_HOURS = 72
+MIN_USABLE_HOURS = int(os.getenv("DSS_REFS_MIN_USABLE_HOURS", "18"))
+REQUIRED_PRODUCTS = {
+    product.strip().lower()
+    for product in os.getenv("DSS_REFS_REQUIRED_PRODUCTS", "mean,prob,avrg").split(",")
+    if product.strip()
+}
 
 # We are intentionally broad here.
 # Do not fail just because the exact expected products are not found.
@@ -204,20 +211,40 @@ def summarize_cycle(cycle: datetime, objects: list[dict[str, Any]]) -> dict[str,
 
 def choose_best_cycle(cycles: list[dict[str, Any]]) -> dict[str, Any] | None:
     """
-    Choose the cycle with the most usable IDX hours.
-    We use IDX hours because byte-range extraction needs IDX files.
+    Choose the newest usable REFS cycle.
+
+    Older logic scored "most complete" first, which could keep selecting an
+    older 60-hour cycle while a newer cycle was already available. Operations
+    users care about the newest run; if a cycle has the minimum usable lead
+    time and the required products, use it.
     """
-    usable = [c for c in cycles if c.get("idx_count", 0) > 0]
+    usable = []
+    for c in cycles:
+        idx_hours = set(c.get("idx_hours", []))
+        grib_hours = set(c.get("grib_hours", []))
+        products = {str(p).lower() for p in c.get("products", [])}
+        if not idx_hours or not grib_hours:
+            continue
+        if max(idx_hours) < MIN_USABLE_HOURS:
+            continue
+        if REQUIRED_PRODUCTS and not REQUIRED_PRODUCTS.issubset(products):
+            continue
+        usable.append(c)
 
     if not usable:
         return None
 
-    def score(c: dict[str, Any]) -> tuple[int, int, int]:
+    def score(c: dict[str, Any]) -> tuple[datetime, int, int, int]:
         idx_hours = c.get("idx_hours", [])
         grib_hours = c.get("grib_hours", [])
+        try:
+            cycle_dt = datetime.fromisoformat(str(c.get("cycle_utc")).replace("Z", "+00:00"))
+        except ValueError:
+            cycle_dt = datetime.min.replace(tzinfo=timezone.utc)
         return (
-            len(idx_hours),
+            cycle_dt,
             max(idx_hours) if idx_hours else -1,
+            len(idx_hours),
             len(grib_hours),
         )
 
