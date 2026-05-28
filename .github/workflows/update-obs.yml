@@ -36,6 +36,12 @@ jobs:
         run: |
           python scripts/extract_synoptic_obs.py
 
+      - name: Extract OpenWeather lightning observations
+        env:
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+        run: |
+          python scripts/extract_openweather_lightning.py
+
       - name: Commit updated observations
         run: |
           git config user.name "github-actions[bot]"
@@ -43,6 +49,8 @@ jobs:
 
           git add docs/observations.json || true
           git add data/observations.json || true
+          git add docs/lightning.json || true
+          git add data/lightning.json || true
 
           git commit -m "Update KRNO observations" || echo "No changes to commit"
           git push

@@ -442,6 +442,58 @@
             min-height: 23px !important;
         }
 
+        .wx-sky-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            align-items: end;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .wx-sky-cell {
+            min-width: 0;
+        }
+
+        .ltg-distance {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.45rem, 1.8vw, 2.05rem);
+            font-weight: 900;
+            line-height: 0.98;
+            color: #e4e4e7;
+            letter-spacing: -0.02em;
+            z-index: 10;
+        }
+
+        .ltg-rings {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 3px;
+            margin-top: 5px;
+            z-index: 10;
+        }
+
+        .ltg-ring {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 2px 3px;
+            color: #94a3b8;
+            background: rgba(255,255,255,0.035);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.56rem;
+            font-weight: 900;
+            line-height: 1.05;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        #lightning-obs-card.lightning-alert {
+            border-color: #c026d3 !important;
+            background:
+                radial-gradient(circle at 82% 20%, rgba(192, 38, 211, 0.28), transparent 42%),
+                linear-gradient(160deg, rgba(31, 18, 42, 0.98), rgba(14, 18, 24, 0.98));
+            animation: sop-flash 1.2s infinite;
+        }
+
         #temp-box > i {
             color: #94a3b8;
             opacity: 0.24;
@@ -774,11 +826,17 @@
                         <i class="ph-fill ph-eye absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
-                    <div class="asos-box">
-                        <div class="asos-label">SKY CONDITION</div>
-                        <div class="asos-value" id="sky-val">--</div>
-                        <div class="asos-sub" id="sky-sub"></div>
-                        <i class="ph-fill ph-cloud absolute bottom-2 right-2 text-2xl opacity-10"></i>
+                    <div class="asos-box" id="lightning-obs-card">
+                        <div class="asos-label">LIGHTNING PROXIMITY</div>
+                        <div class="ltg-distance" id="ltg-distance">--</div>
+                        <div class="asos-sub" id="ltg-sub">Awaiting feed</div>
+                        <div class="ltg-rings">
+                            <div class="ltg-ring" id="ltg-ring-10">10 NM --</div>
+                            <div class="ltg-ring" id="ltg-ring-15">15 NM --</div>
+                            <div class="ltg-ring" id="ltg-ring-20">20 NM --</div>
+                            <div class="ltg-ring" id="ltg-ring-25">25 NM --</div>
+                        </div>
+                        <i class="ph-fill ph-lightning absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
                     <div class="asos-box" id="temp-box">
@@ -812,9 +870,17 @@
                     </div>
 
                     <div class="asos-box" id="wx-card">
-                        <div class="asos-label">PRESENT WEATHER</div>
-                        <div class="asos-value" id="wx-icons" style="margin-top:2px;">--</div>
-                        <div id="wx-detail" class="asos-sub" style="margin-top:2px; font-size:0.60rem; line-height:1.3; color:#a1a1aa;"></div>
+                        <div class="asos-label">PRESENT WX / SKY</div>
+                        <div class="wx-sky-grid">
+                            <div class="wx-sky-cell">
+                                <div class="asos-value" id="wx-icons" style="margin-top:2px;">--</div>
+                                <div id="wx-detail" class="asos-sub" style="margin-top:2px; font-size:0.60rem; line-height:1.3; color:#a1a1aa;"></div>
+                            </div>
+                            <div class="wx-sky-cell">
+                                <div class="asos-value" id="sky-val">--</div>
+                                <div class="asos-sub" id="sky-sub"></div>
+                            </div>
+                        </div>
                         <i class="ph-fill ph-cloud-lightning absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
@@ -971,6 +1037,7 @@
 
         // --- DATA STATE ---
         let liveMetar = null;
+        let liveLightning = null;
         let _prevObs = null;  // previous observation for trend arrows
         let liveAlerts = [];
         let cycleStartTime = null;
@@ -982,6 +1049,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initDashboard();
+            fetchLightningObs();
 
 
             // Clock — update every second
@@ -998,8 +1066,8 @@
                 }
             }, 1000);
 
-            // METAR + Alerts — every 60 seconds
-            setInterval(() => { fetchMETAR(); fetchAlerts(); }, 60 * 1000);
+            // METAR + alerts + lightning — every 60 seconds
+            setInterval(() => { fetchMETAR(); fetchAlerts(); fetchLightningObs(); }, 60 * 1000);
 
             // Alert countdown timers — tick every second
             setInterval(() => {
@@ -1896,6 +1964,92 @@
                 if (Number.isFinite(ms)) return ms;
             }
             return null;
+        }
+
+        function lightningAgeText(minutes) {
+            const m = Number(minutes);
+            if (!Number.isFinite(m)) return '';
+            if (m < 1) return '<1 min ago';
+            if (m < 60) return `${Math.round(m)} min ago`;
+            const h = Math.floor(m / 60);
+            const rem = Math.round(m % 60);
+            return rem ? `${h}h ${rem}m ago` : `${h}h ago`;
+        }
+
+        function lightningColor(level) {
+            if (level === 'inside_10_nm') return '#c026d3';
+            if (level === 'monitor_15_nm') return '#e879f9';
+            if (level === 'monitor_20_nm') return '#facc15';
+            if (level === 'monitor_25_nm') return '#60a5fa';
+            if (level === 'unavailable') return '#71717a';
+            return '#94a3b8';
+        }
+
+        function updateLightningDisplay(payload) {
+            const card = document.getElementById('lightning-obs-card');
+            const distEl = document.getElementById('ltg-distance');
+            const subEl = document.getElementById('ltg-sub');
+            if (!card || !distEl || !subEl) return;
+
+            const level = payload?.alert_level || 'unavailable';
+            const color = lightningColor(level);
+            const last = payload?.last_strike || null;
+            const nearest = payload?.nearest_strike || null;
+            const displayStrike = last || nearest;
+            const isAlert = level === 'inside_10_nm';
+
+            card.classList.toggle('lightning-alert', isAlert);
+            card.style.borderColor = color;
+            const labelEl = card.querySelector('.asos-label');
+            const iconEl = card.querySelector('i');
+            if (labelEl) labelEl.style.color = color;
+            if (iconEl) iconEl.style.color = color;
+
+            if (payload?.status !== 'ok') {
+                distEl.textContent = '--';
+                distEl.style.color = '#71717a';
+                subEl.textContent = payload?.message ? 'Feed unavailable' : 'Awaiting feed';
+            } else if (!displayStrike) {
+                distEl.textContent = 'NO STRIKE';
+                distEl.style.color = '#71717a';
+                subEl.textContent = `None within ${payload.search_radius_nm || 25} nm / ${payload.window_minutes || 45} min`;
+            } else {
+                distEl.textContent = `${Number(displayStrike.distance_nm).toFixed(1)} NM`;
+                distEl.style.color = color;
+                const age = lightningAgeText(displayStrike.age_minutes);
+                const bearing = displayStrike.bearing_cardinal ? ` · ${displayStrike.bearing_cardinal}` : '';
+                const nearestText = nearest && last && nearest.distance_nm !== last.distance_nm
+                    ? ` · nearest ${Number(nearest.distance_nm).toFixed(1)} NM`
+                    : '';
+                subEl.textContent = `${age}${bearing}${nearestText}`;
+            }
+
+            [10, 15, 20, 25].forEach(limit => {
+                const el = document.getElementById(`ltg-ring-${limit}`);
+                if (!el) return;
+                const ring = payload?.rings?.[`within_${limit}_nm`];
+                const count = Number(ring?.count || 0);
+                el.textContent = `${limit} NM ${count}`;
+                el.style.color = count > 0 ? lightningColor(limit <= 10 ? 'inside_10_nm' : `monitor_${limit}_nm`) : '#64748b';
+                el.style.borderColor = count > 0 ? el.style.color : 'rgba(255,255,255,0.08)';
+            });
+        }
+
+        async function fetchLightningObs() {
+            try {
+                const r = await fetch('lightning.json?cb=' + Date.now(), { cache: 'no-store' });
+                if (!r.ok) throw new Error('lightning.json unavailable');
+                liveLightning = await r.json();
+                updateLightningDisplay(liveLightning);
+            } catch(e) {
+                liveLightning = {
+                    status: 'error',
+                    alert_level: 'unavailable',
+                    message: e.message,
+                    rings: {},
+                };
+                updateLightningDisplay(liveLightning);
+            }
         }
 
         async function fetchMETAR() {
