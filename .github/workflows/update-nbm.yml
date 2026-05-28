@@ -1,0 +1,57 @@
+name: Update KRNO NBM DSS Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    # NBM cycles arrive in pieces; check frequently and let the builder choose
+    # the newest complete AWS core cycle.
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-krno-nbm-dss-data
+  cancel-in-progress: true
+
+jobs:
+  update-nbm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libeccodes0 libeccodes-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests xarray cfgrib eccodes numpy
+
+      - name: Build NBM DSS outputs from AWS
+        run: |
+          python scripts/build_nbm_dss_outputs.py
+
+      - name: Commit updated NBM DSS files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs/nbm_threats.json
+          git add docs/nbm_timeline.json
+          git add data/nbm_dss_methodology.json
+
+          echo "---- git status before commit ----"
+          git status --short
+
+          git commit -m "Update KRNO NBM DSS data" || echo "No changes to commit"
+          git push
