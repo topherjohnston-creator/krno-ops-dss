@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRNO Airport Weather DSS Concept</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111d;
+      --bg-2: #0b1725;
+      --panel: #101d2b;
+      --panel-2: #132436;
+      --panel-3: #0d1825;
+      --line: rgba(184, 205, 226, 0.18);
+      --line-strong: rgba(222, 235, 247, 0.32);
+      --text: #f4f8fc;
+      --text-soft: #c7d5e2;
+      --text-muted: #8798a8;
+      --noaa: #1f5d8f;
+      --nws: #2f77b5;
+      --green: #5dd39e;
+      --yellow: #f1c84b;
+      --orange: #ee8a33;
+      --red: #db4b47;
+      --purple: #b84fd6;
+      --none: #1a2632;
+      --little: #446174;
+      --minor: #e7c64d;
+      --moderate: #ee8a33;
+      --major: #d94e46;
+      --extreme: #a83acc;
+      --radius: 8px;
+      --shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+      --font: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(18, 47, 73, 0.72), rgba(7, 17, 29, 0.96) 34rem),
+        radial-gradient(circle at 85% 0%, rgba(50, 119, 181, 0.24), transparent 25rem),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1880px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 18px 0 24px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 88px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(19, 36, 54, 0.96), rgba(10, 25, 40, 0.96));
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .seal {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.78);
+      background: linear-gradient(135deg, #1f5d8f, #143d62);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 2px;
+      color: var(--text-soft);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .brand-text strong {
+      color: var(--text);
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+    }
+
+    .title-block {
+      min-width: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.55rem, 2.25vw, 2.35rem);
+      line-height: 1.05;
+      font-weight: 820;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: var(--text-soft);
+      font-size: clamp(0.88rem, 1vw, 1rem);
+      font-weight: 650;
+    }
+
+    .mast-meta {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 680px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(7, 17, 29, 0.68);
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .pill strong {
+      color: var(--text);
+      font-weight: 840;
+    }
+
+    .pill.fresh {
+      border-color: rgba(93, 211, 158, 0.38);
+      color: #bdf2d8;
+      background: rgba(37, 100, 74, 0.28);
+    }
+
+    .pill.moderate {
+      border-color: rgba(238, 138, 51, 0.54);
+      color: #ffd1a9;
+      background: rgba(143, 71, 23, 0.35);
+    }
+
+    .pill.beta {
+      border-color: rgba(184, 205, 226, 0.28);
+      color: #d9e6f2;
+      background: rgba(38, 55, 72, 0.58);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--line);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+    }
+
+    .status-item {
+      min-height: 76px;
+      padding: 12px 13px;
+      background: rgba(13, 26, 40, 0.96);
+    }
+
+    .status-item.primary {
+      background: linear-gradient(180deg, rgba(77, 44, 18, 0.98), rgba(40, 28, 22, 0.98));
+      border-left: 4px solid var(--moderate);
+    }
+
+    .status-label {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 820;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-value {
+      margin-top: 6px;
+      color: var(--text);
+      font-size: clamp(1rem, 1.08vw, 1.18rem);
+      line-height: 1.15;
+      font-weight: 850;
+    }
+
+    .status-sub {
+      margin-top: 4px;
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      line-height: 1.25;
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(390px, 0.75fr);
+      gap: 12px;
+      margin-top: 12px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(16, 29, 43, 0.96), rgba(10, 21, 33, 0.96));
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 10px 13px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 19, 31, 0.62);
+    }
+
+    .panel-title {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 880;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .panel-note {
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 750;
+      text-align: right;
+    }
+
+    .matrix-wrap {
+      overflow-x: auto;
+      overflow-y: visible;
+      scrollbar-color: #426178 #0b1725;
+    }
+
+    .timeline {
+      min-width: 1180px;
+      padding: 10px 12px 14px;
+      position: relative;
+    }
+
+    .time-grid,
+    .hazard-row {
+      display: grid;
+      grid-template-columns: 96px repeat(24, minmax(42px, 1fr));
+      gap: 2px;
+      align-items: stretch;
+    }
+
+    .time-grid {
+      margin-bottom: 4px;
+    }
+
+    .corner {
+      display: flex;
+      align-items: end;
+      justify-content: flex-start;
+      padding: 0 0 4px 4px;
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 820;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .time-cell {
+      min-height: 36px;
+      padding: 4px 2px;
+      border-bottom: 1px solid rgba(184, 205, 226, 0.22);
+      color: var(--text-soft);
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 760;
+      line-height: 1.15;
+    }
+
+    .time-cell .day {
+      display: block;
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+
+    .time-cell.major-tick {
+      border-left: 1px solid rgba(255, 255, 255, 0.34);
+    }
+
+    .time-cell.night,
+    .impact-cell.night {
+      box-shadow: inset 0 0 0 999px rgba(1, 7, 13, 0.18);
+    }
+
+    .hazard-row {
+      margin-bottom: 3px;
+    }
+
+    .hazard-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 35px;
+      padding: 0 10px;
+      border: 1px solid rgba(184, 205, 226, 0.16);
+      border-left: 4px solid rgba(184, 205, 226, 0.36);
+      border-radius: 5px 0 0 5px;
+      background: rgba(7, 17, 29, 0.78);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 880;
+      letter-spacing: 0.07em;
+    }
+
+    .hazard-label span:last-child {
+      color: var(--text-muted);
+      font-size: 0.62rem;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    .impact-cell {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 35px;
+      border: 1px solid rgba(184, 205, 226, 0.13);
+      border-radius: 3px;
+      color: #ffffff;
+      cursor: default;
+      isolation: isolate;
+      transition: border-color 120ms ease-out, filter 120ms ease-out, transform 120ms ease-out;
+    }
+
+    .impact-cell:hover,
+    .impact-cell:focus {
+      z-index: 5;
+      border-color: rgba(255, 255, 255, 0.82);
+      filter: brightness(1.15);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .impact-cell .cell-text {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 0.67rem;
+      font-weight: 860;
+      line-height: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.34);
+    }
+
+    .impact-cell[data-risk="None"] {
+      background: var(--none);
+      color: #9aaaba;
+    }
+
+    .impact-cell[data-risk="Little to None"] {
+      background: var(--little);
+    }
+
+    .impact-cell[data-risk="Minor"] {
+      background: var(--minor);
+      color: #201b09;
+    }
+
+    .impact-cell[data-risk="Minor"] .cell-text {
+      color: #201b09;
+      text-shadow: none;
+    }
+
+    .impact-cell[data-risk="Moderate"] {
+      background: var(--moderate);
+    }
+
+    .impact-cell[data-risk="Major"] {
+      background: var(--major);
+    }
+
+    .impact-cell[data-risk="Extreme"] {
+      background: var(--extreme);
+    }
+
+    .now-line {
+      position: absolute;
+      top: 47px;
+      bottom: 14px;
+      left: calc(12px + 96px + (100% - 24px - 96px) * 0.055);
+      width: 2px;
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(7, 17, 29, 0.7), 0 0 12px rgba(255, 255, 255, 0.28);
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .now-tag {
+      position: absolute;
+      top: 27px;
+      left: calc(12px + 96px + (100% - 24px - 96px) * 0.055);
+      translate: -50% 0;
+      padding: 2px 6px;
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 999px;
+      background: #ffffff;
+      color: #0b1725;
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      z-index: 6;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 12px 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-soft);
+      font-size: 0.75rem;
+      font-weight: 760;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 2px;
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 50;
+      width: min(320px, calc(100vw - 24px));
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 90ms ease-out, transform 90ms ease-out;
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-card {
+      border: 1px solid rgba(226, 238, 249, 0.26);
+      border-left: 4px solid var(--moderate);
+      border-radius: 8px;
+      background: rgba(8, 18, 29, 0.97);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+      overflow: hidden;
+    }
+
+    .tooltip-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 11px 7px;
+      border-bottom: 1px solid rgba(184, 205, 226, 0.14);
+    }
+
+    .tooltip-title {
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 890;
+    }
+
+    .tooltip-risk {
+      font-size: 0.78rem;
+      font-weight: 860;
+      white-space: nowrap;
+    }
+
+    .tooltip-body {
+      display: grid;
+      gap: 6px;
+      padding: 9px 11px 11px;
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      line-height: 1.32;
+    }
+
+    .tooltip-body strong {
+      color: var(--text);
+    }
+
+    .lower-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(420px, 0.88fr);
+      gap: 12px;
+      margin-top: 12px;
+      align-items: start;
+    }
+
+    .hazard-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      padding: 12px;
+    }
+
+    .hazard-card {
+      position: relative;
+      min-height: 132px;
+      padding: 12px 12px 10px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--none);
+      border-radius: 7px;
+      background: rgba(9, 20, 32, 0.84);
+    }
+
+    .hazard-card.active {
+      background: linear-gradient(180deg, rgba(37, 29, 21, 0.96), rgba(12, 23, 35, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .hazard-card-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hazard-icon {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .card-risk {
+      margin-top: 8px;
+      font-size: 1.08rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .card-metric {
+      margin-top: 9px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 830;
+    }
+
+    .card-peak,
+    .card-impact {
+      margin-top: 5px;
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      line-height: 1.28;
+      font-weight: 650;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .obs-grid {
+      display: grid;
+      grid-template-columns: minmax(230px, 0.9fr) minmax(0, 1.1fr);
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .wind-module {
+      min-height: 335px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(7, 17, 29, 0.72);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+    }
+
+    .wind-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .gust-badge {
+      padding: 4px 7px;
+      border: 1px solid rgba(238, 138, 51, 0.42);
+      border-radius: 999px;
+      background: rgba(238, 138, 51, 0.13);
+      color: #ffd8b8;
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .wind-rose {
+      width: 100%;
+      max-width: 290px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .wind-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .wind-value {
+      padding: 8px;
+      border: 1px solid rgba(184, 205, 226, 0.14);
+      border-radius: 6px;
+      background: rgba(16, 29, 43, 0.78);
+    }
+
+    .wind-value .label {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 840;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .wind-value .value {
+      margin-top: 4px;
+      color: var(--text);
+      font-size: 1.34rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .obs-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .obs-card {
+      min-height: 92px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(12, 25, 39, 0.82);
+    }
+
+    .obs-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .obs-label {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .obs-value {
+      margin-top: 6px;
+      color: var(--text);
+      font-size: 1.22rem;
+      line-height: 1.06;
+      font-weight: 900;
+    }
+
+    .obs-sub {
+      margin-top: 5px;
+      color: var(--text-soft);
+      font-size: 0.76rem;
+      line-height: 1.25;
+      font-weight: 660;
+    }
+
+    .metar {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .alert-body {
+      padding: 12px;
+    }
+
+    .all-clear {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid rgba(93, 211, 158, 0.26);
+      border-radius: 7px;
+      background: rgba(27, 74, 58, 0.18);
+    }
+
+    .clear-mark {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid rgba(93, 211, 158, 0.62);
+      color: #bdf2d8;
+      font-weight: 950;
+      font-size: 1.1rem;
+    }
+
+    .clear-title {
+      color: #d9fce9;
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+
+    .clear-text {
+      margin-top: 3px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      line-height: 1.3;
+    }
+
+    .method-list {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    .health-row {
+      display: grid;
+      grid-template-columns: 116px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 10px;
+      border: 1px solid rgba(184, 205, 226, 0.13);
+      border-radius: 6px;
+      background: rgba(8, 19, 31, 0.54);
+    }
+
+    .health-label {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 870;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .health-value {
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 720;
+    }
+
+    .health-state {
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(93, 211, 158, 0.35);
+      color: #bdf2d8;
+      background: rgba(37, 100, 74, 0.22);
+      font-size: 0.7rem;
+      font-weight: 880;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .footer-strip {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(8, 19, 31, 0.72);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .footer-strip strong {
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 1500px) {
+      .masthead,
+      .grid-main,
+      .lower-grid,
+      .obs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mast-meta {
+        justify-content: flex-start;
+        max-width: none;
+      }
+
+      .status-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .hazard-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100vw - 16px, 1880px);
+        padding-top: 8px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .status-strip,
+      .hazard-cards,
+      .obs-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .health-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead" aria-label="KRNO Airport Weather DSS header">
+      <div class="brand" aria-label="NOAA and National Weather Service branding">
+        <div class="seal">NOAA</div>
+        <div class="seal">NWS</div>
+        <div class="brand-text">
+          <strong>Aviation Weather</strong>
+          <span>Decision Support Prototype</span>
+        </div>
+      </div>
+      <div class="title-block">
+        <h1>KRNO Airport Weather DSS</h1>
+        <div class="subtitle">Reno-Tahoe International Airport Ground Operations</div>
+      </div>
+      <div class="mast-meta" aria-label="Data and risk status">
+        <div class="pill"><span>Updated</span><strong id="updated-local">May 28, 2026 9:40 AM PDT</strong></div>
+        <div class="pill"><span>UTC</span><strong id="updated-utc">1640Z</strong></div>
+        <div class="pill fresh"><span>Obs</span><strong id="obs-freshness">Fresh</strong></div>
+        <div class="pill"><span>Model</span><strong id="model-cycle">NBM 12Z</strong></div>
+        <div class="pill moderate"><span>Primary Risk</span><strong>Moderate - Lightning</strong></div>
+        <div class="pill beta">Beta / Internal Use</div>
+      </div>
+    </header>
+
+    <section class="status-strip" aria-label="Primary operational concern">
+      <div class="status-item primary">
+        <div class="status-label">Primary Concern</div>
+        <div class="status-value">Lightning</div>
+        <div class="status-sub">Afternoon convective window</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">Risk Category</div>
+        <div class="status-value">Moderate</div>
+        <div class="status-sub">Ramp monitoring likely needed</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">Peak Window</div>
+        <div class="status-value">Thu 5 PM</div>
+        <div class="status-sub">Highest signal in the evening block</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">Airport Impact</div>
+        <div class="status-value">Ramp lightning monitoring</div>
+        <div class="status-sub">Ground crews and exposed ramp operations</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">Airport Action</div>
+        <div class="status-value">Monitor closely</div>
+        <div class="status-sub">Coordinate timing with operations leads</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">Data Health</div>
+        <div class="status-value">Forecast and obs fresh</div>
+        <div class="status-sub">No stale-data flag</div>
+      </div>
+    </section>
+
+    <main class="grid-main">
+      <section class="panel" aria-labelledby="timeline-title">
+        <div class="panel-header">
+          <h2 class="panel-title" id="timeline-title">72-Hour Impact Timeline</h2>
+          <div class="panel-note">3-hour airport impact blocks | Category words only</div>
+        </div>
+        <div class="matrix-wrap">
+          <div class="timeline" id="timeline" aria-label="72-hour weather impact matrix">
+            <div class="now-tag">NOW</div>
+            <div class="now-line" aria-hidden="true"></div>
+            <div class="time-grid" id="time-axis"></div>
+            <div id="matrix-rows"></div>
+          </div>
+        </div>
+        <div class="legend" aria-label="Risk category legend" id="legend"></div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="panel" aria-labelledby="obs-title">
+          <div class="panel-header">
+            <h2 class="panel-title" id="obs-title">Current Weather Observations</h2>
+            <div class="pill fresh">VFR</div>
+          </div>
+          <div class="obs-grid">
+            <div class="wind-module">
+              <div class="wind-title">
+                <span>Wind Rose</span>
+                <span class="gust-badge">Gust: --</span>
+              </div>
+              <svg class="wind-rose" viewBox="0 0 240 240" role="img" aria-label="Wind rose showing wind from 280 degrees at 6 miles per hour">
+                <defs>
+                  <filter id="arrow-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.35"/>
+                  </filter>
+                </defs>
+                <circle cx="120" cy="120" r="104" fill="#101d2b" stroke="rgba(199,213,226,0.28)" stroke-width="2"/>
+                <circle cx="120" cy="120" r="72" fill="none" stroke="rgba(199,213,226,0.16)" stroke-width="1" stroke-dasharray="4 5"/>
+                <circle cx="120" cy="120" r="38" fill="none" stroke="rgba(199,213,226,0.1)" stroke-width="1"/>
+                <line x1="120" y1="18" x2="120" y2="222" stroke="rgba(199,213,226,0.18)" stroke-width="1"/>
+                <line x1="18" y1="120" x2="222" y2="120" stroke="rgba(199,213,226,0.18)" stroke-width="1"/>
+                <line x1="48" y1="48" x2="192" y2="192" stroke="rgba(199,213,226,0.11)" stroke-width="1"/>
+                <line x1="192" y1="48" x2="48" y2="192" stroke="rgba(199,213,226,0.11)" stroke-width="1"/>
+                <text x="120" y="16" text-anchor="middle" fill="#c7d5e2" font-size="11" font-weight="800">N</text>
+                <text x="226" y="124" text-anchor="middle" fill="#c7d5e2" font-size="11" font-weight="800">E</text>
+                <text x="120" y="236" text-anchor="middle" fill="#c7d5e2" font-size="11" font-weight="800">S</text>
+                <text x="14" y="124" text-anchor="middle" fill="#c7d5e2" font-size="11" font-weight="800">W</text>
+                <g transform="rotate(280 120 120)" filter="url(#arrow-shadow)">
+                  <line x1="120" y1="120" x2="120" y2="38" stroke="#f1c84b" stroke-width="8" stroke-linecap="round"/>
+                  <polygon points="120,24 108,48 132,48" fill="#f1c84b"/>
+                  <circle cx="120" cy="120" r="9" fill="#f1c84b" stroke="#07111d" stroke-width="3"/>
+                </g>
+              </svg>
+              <div class="wind-values">
+                <div class="wind-value">
+                  <div class="label">Direction</div>
+                  <div class="value" id="wind-dir">280&deg;</div>
+                </div>
+                <div class="wind-value">
+                  <div class="label">Speed</div>
+                  <div class="value" id="wind-speed">6 mph</div>
+                </div>
+              </div>
+            </div>
+            <div class="obs-cards">
+              <div class="obs-card">
+                <div class="obs-label">Visibility</div>
+                <div class="obs-value" id="obs-vis">10+ SM</div>
+                <div class="obs-sub">No low-visibility procedure signal</div>
+              </div>
+              <div class="obs-card">
+                <div class="obs-label">Sky Condition</div>
+                <div class="obs-value" id="obs-sky">BKN023 / BKN055</div>
+                <div class="obs-sub">Ceiling not driving ground ops impact</div>
+              </div>
+              <div class="obs-card">
+                <div class="obs-label">Temperature</div>
+                <div class="obs-value"><span id="obs-temp">46&deg;F</span> / <span id="obs-dew">37&deg;F</span></div>
+                <div class="obs-sub">Temp / Dew Point</div>
+              </div>
+              <div class="obs-card">
+                <div class="obs-label">Moisture</div>
+                <div class="obs-value"><span id="obs-rh">71%</span> / <span id="obs-wb">41&deg;F</span></div>
+                <div class="obs-sub">Relative Humidity / Wet Bulb</div>
+              </div>
+              <div class="obs-card">
+                <div class="obs-label">Present Weather</div>
+                <div class="obs-value" id="obs-wx">None</div>
+                <div class="obs-sub">No active weather at the field</div>
+              </div>
+              <div class="obs-card">
+                <div class="obs-label">1-Hour Precip</div>
+                <div class="obs-value" id="obs-pcp">--</div>
+                <div class="obs-sub">Trace not operationally significant</div>
+              </div>
+              <div class="obs-card wide">
+                <div class="obs-label">Observation Timestamp</div>
+                <div class="obs-value" id="obs-time">May 28, 2026 9:39 AM PDT</div>
+                <div class="obs-sub metar" id="obs-metar">KRNO 281639Z 28006KT 10SM BKN023 BKN055 08/03 A2992</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="alerts-title">
+          <div class="panel-header">
+            <h2 class="panel-title" id="alerts-title">Official Alerts / WWA / Airport Warnings</h2>
+            <div class="panel-note">Official products only</div>
+          </div>
+          <div class="alert-body">
+            <div class="all-clear" id="alerts-clear">
+              <div class="clear-mark">OK</div>
+              <div>
+                <div class="clear-title">All Clear</div>
+                <div class="clear-text">No active watches, warnings, advisories, or airport weather warnings.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="lower-grid">
+      <section class="panel" aria-labelledby="hazard-title">
+        <div class="panel-header">
+          <h2 class="panel-title" id="hazard-title">Hazard Detail Cards</h2>
+          <div class="panel-note">72-hour summary for airport operations</div>
+        </div>
+        <div class="hazard-cards" id="hazard-cards"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="health-title">
+        <div class="panel-header">
+          <h2 class="panel-title" id="health-title">Data Health / Methodology</h2>
+          <div class="panel-note">Prototype status strip</div>
+        </div>
+        <div class="method-list">
+          <div class="health-row">
+            <div class="health-label">Obs</div>
+            <div class="health-value" id="health-obs">Fresh, updated 9:39 AM PDT</div>
+            <div class="health-state">Fresh</div>
+          </div>
+          <div class="health-row">
+            <div class="health-label">Forecast</div>
+            <div class="health-value" id="health-model">NBM 12Z, 72-hour airport DSS window</div>
+            <div class="health-state">Fresh</div>
+          </div>
+          <div class="health-row">
+            <div class="health-label">JSON Build</div>
+            <div class="health-value" id="health-build">15:18Z, last successful build</div>
+            <div class="health-state">Good</div>
+          </div>
+          <div class="health-row">
+            <div class="health-label">Timeline</div>
+            <div class="health-value">3-hour blocks. Precipitation can summarize native NBM windows into the closest airport impact block.</div>
+            <div class="health-state">Good</div>
+          </div>
+          <div class="health-row">
+            <div class="health-label">Categories</div>
+            <div class="health-value">None, Little to None, Minor, Moderate, Major, Extreme. Numeric values are intentionally hidden from the interface.</div>
+            <div class="health-state">Good</div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <div class="footer-strip">
+      <strong>Concept prototype:</strong> A dark, AWC-inspired airport operations DSS layout for KRNO. This page is standalone and does not overwrite the current dashboard. It is designed for comparison, partner review, and future implementation planning.
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <script>
+    const categories = ["None", "Little to None", "Minor", "Moderate", "Major", "Extreme"];
+    const categoryColors = {
+      "None": "#1a2632",
+      "Little to None": "#446174",
+      "Minor": "#e7c64d",
+      "Moderate": "#ee8a33",
+      "Major": "#d94e46",
+      "Extreme": "#a83acc"
+    };
+
+    const hazardDefs = [
+      { id: "WIND", label: "WIND", full: "Wind", short: "Wind", icon: "W" },
+      { id: "LTNG", label: "LTNG", full: "Lightning", short: "LTNG", icon: "L" },
+      { id: "SNOW", label: "SNOW", full: "Snow", short: "Snow", icon: "S" },
+      { id: "VIS", label: "VIS", full: "Visibility", short: "VIS", icon: "V" },
+      { id: "FZRA", label: "FZRA", full: "Freezing Rain", short: "FZRA", icon: "F" },
+      { id: "FLASHFZ", label: "FLASH FZ", full: "Flash Freeze", short: "FZ", icon: "FF" },
+      { id: "RAIN", label: "RAIN", full: "Rain", short: "Rain", icon: "R" },
+      { id: "TEMP", label: "TEMP", full: "Temperature", short: "Temp", icon: "T" }
+    ];
+
+    const hazardCards = [
+      {
+        id: "LTNG",
+        name: "Lightning",
+        risk: "Moderate",
+        metric: "Chance: 17%",
+        peak: "Peak: Thu 5 PM",
+        impact: "Ramp lightning monitoring",
+        icon: "L"
+      },
+      {
+        id: "RAIN",
+        name: "Rain",
+        risk: "Little to None",
+        metric: "72-hr total: 0.02 in",
+        peak: "Peak: Thu 2 PM",
+        impact: "Drainage impacts unlikely",
+        icon: "R"
+      },
+      {
+        id: "VIS",
+        name: "Visibility",
+        risk: "Little to None",
+        metric: "Visibility: 6+ mi",
+        peak: "Lowest: Fri 11 AM",
+        impact: "Low-vis procedures unlikely",
+        icon: "V"
+      },
+      {
+        id: "WIND",
+        name: "Wind",
+        risk: "Little to None",
+        metric: "Max gust: 26 mph",
+        peak: "Peak: Fri 11 PM",
+        impact: "No restrictions expected",
+        icon: "W"
+      },
+      {
+        id: "SNOW",
+        name: "Snow",
+        risk: "None",
+        metric: "72-hr total: 0.00 in",
+        peak: "No current signal",
+        impact: "Snow crews not triggered",
+        icon: "S"
+      },
+      {
+        id: "FZRA",
+        name: "Freezing Rain",
+        risk: "None",
+        metric: "72-hr total: 0.00 in",
+        peak: "No current signal",
+        impact: "Icing impacts unlikely",
+        icon: "F"
+      },
+      {
+        id: "FLASHFZ",
+        name: "Flash Freeze",
+        risk: "None",
+        metric: "Temp remains above freezing",
+        peak: "No current signal",
+        impact: "Pavement freeze unlikely",
+        icon: "FF"
+      },
+      {
+        id: "TEMP",
+        name: "Temperature",
+        risk: "None",
+        metric: "Max/Min: 67 / 38°F",
+        peak: "No current signal",
+        impact: "No temperature action",
+        icon: "T"
+      }
+    ];
+
+    const timeBlocks = [
+      { day: "Thu", label: "Now", hour: "12 PM", night: false, tick: true },
+      { day: "Thu", label: "+3h", hour: "3 PM", night: false },
+      { day: "Thu", label: "+6h", hour: "6 PM", night: false },
+      { day: "Thu", label: "+9h", hour: "9 PM", night: true },
+      { day: "Fri", label: "+12h", hour: "12 AM", night: true, tick: true },
+      { day: "Fri", label: "+15h", hour: "3 AM", night: true },
+      { day: "Fri", label: "+18h", hour: "6 AM", night: false },
+      { day: "Fri", label: "+21h", hour: "9 AM", night: false },
+      { day: "Fri", label: "+24h", hour: "12 PM", night: false, tick: true },
+      { day: "Fri", label: "+27h", hour: "3 PM", night: false },
+      { day: "Fri", label: "+30h", hour: "6 PM", night: false },
+      { day: "Fri", label: "+33h", hour: "9 PM", night: true },
+      { day: "Sat", label: "+36h", hour: "12 AM", night: true, tick: true },
+      { day: "Sat", label: "+39h", hour: "3 AM", night: true },
+      { day: "Sat", label: "+42h", hour: "6 AM", night: false },
+      { day: "Sat", label: "+45h", hour: "9 AM", night: false },
+      { day: "Sat", label: "+48h", hour: "12 PM", night: false, tick: true },
+      { day: "Sat", label: "+51h", hour: "3 PM", night: false },
+      { day: "Sat", label: "+54h", hour: "6 PM", night: false },
+      { day: "Sat", label: "+57h", hour: "9 PM", night: true },
+      { day: "Sun", label: "+60h", hour: "12 AM", night: true, tick: true },
+      { day: "Sun", label: "+63h", hour: "3 AM", night: true },
+      { day: "Sun", label: "+66h", hour: "6 AM", night: false },
+      { day: "Sun", label: "+72h", hour: "12 PM", night: false, tick: true }
+    ];
+
+    const rowRisks = {
+      WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
+      LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
+      SNOW: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      VIS: ["Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None"],
+      FZRA: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      FLASHFZ: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      RAIN: ["Little to None","Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None"],
+      TEMP: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"]
+    };
+
+    function blockMetric(hazardId, risk, index) {
+      if (hazardId === "LTNG") {
+        const values = ["8%", "17%", "15%", "6%", "3%"];
+        return risk === "None" ? "Chance: 0%" : `Chance: ${values[Math.min(index, values.length - 1)] || "5%"}`;
+      }
+      if (hazardId === "WIND") return risk === "None" ? "Gust: 18 mph" : "Gust: 22-26 mph";
+      if (hazardId === "RAIN") return risk === "None" ? "Rain: 0.00 in" : "Rain: 0.01-0.02 in";
+      if (hazardId === "VIS") return risk === "None" ? "Visibility: 10+ mi" : "Visibility: 6+ mi";
+      if (hazardId === "TEMP") return "Temperature: 38-67°F";
+      if (hazardId === "FLASHFZ") return "Pavement freeze: not indicated";
+      if (hazardId === "FZRA") return "Freezing rain: 0.00 in";
+      return "Snow: 0.00 in";
+    }
+
+    function impactText(hazardId, risk) {
+      if (hazardId === "LTNG" && risk === "Moderate") return "Ramp lightning monitoring";
+      if (hazardId === "LTNG") return "Watch convective trend";
+      if (hazardId === "WIND") return "Ramp handling check";
+      if (hazardId === "VIS") return "Low-vis procedures unlikely";
+      if (hazardId === "RAIN") return "Drainage impacts unlikely";
+      if (hazardId === "SNOW") return "Snow crews not triggered";
+      if (hazardId === "FZRA") return "Icing impacts unlikely";
+      if (hazardId === "FLASHFZ") return "Pavement freeze unlikely";
+      return "No temperature action";
+    }
+
+    function actionText(hazardId, risk) {
+      if (risk === "Moderate") return "Monitor closely";
+      if (risk === "Minor") return "Monitor trend";
+      if (risk === "Little to None") return "Routine awareness";
+      return "No action";
+    }
+
+    function renderTimeAxis() {
+      const axis = document.getElementById("time-axis");
+      axis.innerHTML = `<div class="corner">Hazard</div>`;
+      timeBlocks.forEach(block => {
+        const div = document.createElement("div");
+        div.className = `time-cell${block.night ? " night" : ""}${block.tick ? " major-tick" : ""}`;
+        div.innerHTML = `<span class="day">${block.day}</span>${block.label}<br>${block.hour}`;
+        axis.appendChild(div);
+      });
+    }
+
+    function cellLabel(risk, hazardId) {
+      if (risk === "None") return "";
+      if (risk === "Little to None") return "";
+      if (hazardId === "LTNG") return "LTNG";
+      if (hazardId === "VIS") return "VIS";
+      if (hazardId === "WIND") return "GUST";
+      return risk.slice(0, 3).toUpperCase();
+    }
+
+    function renderMatrix() {
+      const rows = document.getElementById("matrix-rows");
+      rows.innerHTML = "";
+      hazardDefs.forEach(hazard => {
+        const row = document.createElement("div");
+        row.className = "hazard-row";
+        const label = document.createElement("div");
+        label.className = "hazard-label";
+        label.innerHTML = `<span>${hazard.label}</span><span>${hazard.full}</span>`;
+        row.appendChild(label);
+        rowRisks[hazard.id].forEach((risk, index) => {
+          const block = timeBlocks[index];
+          const cell = document.createElement("div");
+          cell.className = `impact-cell${block.night ? " night" : ""}`;
+          cell.dataset.risk = risk;
+          cell.tabIndex = 0;
+          cell.setAttribute("aria-label", `${hazard.full}, ${block.day} ${block.hour}, Risk: ${risk}`);
+          const metric = blockMetric(hazard.id, risk, index);
+          const start = `${block.day} ${block.hour}`;
+          const end = timeBlocks[index + 1] ? `${timeBlocks[index + 1].day} ${timeBlocks[index + 1].hour}` : "Sun 3 PM";
+          cell.dataset.tooltip = JSON.stringify({
+            title: hazard.full,
+            risk,
+            time: `${start} - ${end}`,
+            metric,
+            peak: hazard.id === "LTNG" && risk === "Moderate" ? "Peak: Thu 5 PM" : `Peak window: ${start}`,
+            impact: impactText(hazard.id, risk),
+            action: actionText(hazard.id, risk)
+          });
+          cell.title = `${hazard.full}\n${start} - ${end}\nRisk: ${risk}\n${metric}\nAirport Impact: ${impactText(hazard.id, risk)}\nAction: ${actionText(hazard.id, risk)}`;
+          const text = cellLabel(risk, hazard.id);
+          if (text) cell.innerHTML = `<span class="cell-text">${text}</span>`;
+          cell.addEventListener("pointerenter", showTooltip);
+          cell.addEventListener("pointermove", moveTooltip);
+          cell.addEventListener("pointerleave", hideTooltip);
+          cell.addEventListener("mouseenter", showTooltip);
+          cell.addEventListener("mousemove", moveTooltip);
+          cell.addEventListener("mouseleave", hideTooltip);
+          cell.addEventListener("focus", showTooltip);
+          cell.addEventListener("blur", hideTooltip);
+          row.appendChild(cell);
+        });
+        rows.appendChild(row);
+      });
+    }
+
+    function renderLegend() {
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      categories.forEach(category => {
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        item.innerHTML = `<span class="legend-swatch" style="background:${categoryColors[category]}"></span>${category}`;
+        legend.appendChild(item);
+      });
+    }
+
+    function renderCards() {
+      const grid = document.getElementById("hazard-cards");
+      grid.innerHTML = "";
+      hazardCards.forEach(card => {
+        const el = document.createElement("article");
+        el.className = `hazard-card${card.risk === "Moderate" || card.risk === "Major" || card.risk === "Extreme" ? " active" : ""}`;
+        el.style.borderTopColor = categoryColors[card.risk];
+        el.innerHTML = `
+          <div class="hazard-card-title">
+            <span>${card.name}</span>
+            <span class="hazard-icon" style="color:${categoryColors[card.risk]}">${card.icon}</span>
+          </div>
+          <div class="card-risk" style="color:${categoryColors[card.risk]}">${card.risk}</div>
+          <div class="card-metric">${card.metric}</div>
+          <div class="card-peak">${card.peak}</div>
+          <div class="card-impact">${card.impact}</div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    function showTooltip(event) {
+      const tip = document.getElementById("tooltip");
+      const data = JSON.parse(event.currentTarget.dataset.tooltip);
+      tip.innerHTML = `
+        <div class="tooltip-card" style="border-left-color:${categoryColors[data.risk]}">
+          <div class="tooltip-head">
+            <div class="tooltip-title">${data.title}</div>
+            <div class="tooltip-risk" style="color:${categoryColors[data.risk]}">Risk: ${data.risk}</div>
+          </div>
+          <div class="tooltip-body">
+            <div><strong>${data.time}</strong></div>
+            <div>${data.metric}</div>
+            <div>${data.peak}</div>
+            <div><strong>Airport Impact:</strong> ${data.impact}</div>
+            <div><strong>Action:</strong> ${data.action}</div>
+          </div>
+        </div>
+      `;
+      tip.classList.add("visible");
+      tip.setAttribute("aria-hidden", "false");
+      moveTooltip(event);
+    }
+
+    function moveTooltip(event) {
+      const tip = document.getElementById("tooltip");
+      const margin = 14;
+      const x = event.clientX || event.currentTarget.getBoundingClientRect().left;
+      const y = event.clientY || event.currentTarget.getBoundingClientRect().top;
+      const rect = tip.getBoundingClientRect();
+      let left = x + margin;
+      let top = y + margin;
+      if (left + rect.width > window.innerWidth - margin) left = window.innerWidth - rect.width - margin;
+      if (top + rect.height > window.innerHeight - margin) top = y - rect.height - margin;
+      tip.style.left = `${Math.max(margin, left)}px`;
+      tip.style.top = `${Math.max(margin, top)}px`;
+    }
+
+    function hideTooltip() {
+      const tip = document.getElementById("tooltip");
+      tip.classList.remove("visible");
+      tip.setAttribute("aria-hidden", "true");
+    }
+
+    function formatLocalTime(iso) {
+      if (!iso) return null;
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      });
+    }
+
+    function formatUtc(iso) {
+      if (!iso) return null;
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      const hh = String(date.getUTCHours()).padStart(2, "0");
+      const mm = String(date.getUTCMinutes()).padStart(2, "0");
+      return `${hh}${mm}Z`;
+    }
+
+    function cloudFromMetar(raw) {
+      if (!raw) return "BKN023 / BKN055";
+      const clouds = raw.split(/\s+/).filter(part => /^(FEW|SCT|BKN|OVC|VV)\d{3}/.test(part));
+      return clouds.length ? clouds.join(" / ") : "Not reported";
+    }
+
+    async function tryLoadLocalJson() {
+      const urls = {
+        obs: "../observations.json",
+        timeline: "../nbm_timeline.json",
+        alerts: "../alerts.json"
+      };
+      try {
+        const [obsResp, timelineResp, alertsResp] = await Promise.allSettled([
+          fetch(urls.obs, { cache: "no-store" }),
+          fetch(urls.timeline, { cache: "no-store" }),
+          fetch(urls.alerts, { cache: "no-store" })
+        ]);
+
+        if (obsResp.status === "fulfilled" && obsResp.value.ok) {
+          const obs = await obsResp.value.json();
+          if (obs && obs.status === "ok") {
+            const localTime = formatLocalTime(obs.observed_utc || obs.generated_utc);
+            const utcTime = formatUtc(obs.observed_utc || obs.generated_utc);
+            if (localTime) {
+              document.getElementById("updated-local").textContent = localTime;
+              document.getElementById("obs-time").textContent = localTime;
+              document.getElementById("health-obs").textContent = `Fresh, updated ${localTime}`;
+            }
+            if (utcTime) document.getElementById("updated-utc").textContent = utcTime;
+            if (obs.wind_dir_deg != null) document.getElementById("wind-dir").innerHTML = `${Math.round(obs.wind_dir_deg)}&deg;`;
+            if (obs.wind_speed_mph != null) document.getElementById("wind-speed").textContent = `${Math.round(obs.wind_speed_mph)} mph`;
+            if (obs.visibility_sm != null) document.getElementById("obs-vis").textContent = Number(obs.visibility_sm) >= 10 ? "10+ SM" : `${Number(obs.visibility_sm).toFixed(1)} SM`;
+            if (obs.metar) {
+              document.getElementById("obs-metar").textContent = obs.metar;
+              document.getElementById("obs-sky").textContent = cloudFromMetar(obs.metar);
+            }
+            if (obs.temperature_f != null) document.getElementById("obs-temp").innerHTML = `${Math.round(obs.temperature_f)}&deg;F`;
+            if (obs.dewpoint_f != null) document.getElementById("obs-dew").innerHTML = `${Math.round(obs.dewpoint_f)}&deg;F`;
+            if (obs.relative_humidity != null) document.getElementById("obs-rh").textContent = `${Math.round(obs.relative_humidity)}%`;
+            const wetBulb = obs.raw?.OBSERVATIONS?.wet_bulb_temp_value_1d?.value;
+            if (wetBulb != null) document.getElementById("obs-wb").innerHTML = `${Math.round(Number(wetBulb))}&deg;F`;
+            const wx = obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
+            if (wx) document.getElementById("obs-wx").textContent = String(wx).replace(/\b\w/g, char => char.toUpperCase());
+            if (obs.precip_1hr_in != null) document.getElementById("obs-pcp").textContent = Number(obs.precip_1hr_in) > 0 ? `${Number(obs.precip_1hr_in).toFixed(2)} in` : "--";
+          }
+        }
+
+        if (timelineResp.status === "fulfilled" && timelineResp.value.ok) {
+          const timeline = await timelineResp.value.json();
+          if (timeline?.cycle) {
+            document.getElementById("model-cycle").textContent = timeline.cycle;
+            document.getElementById("health-model").textContent = `${timeline.cycle}, 72-hour airport DSS window`;
+          }
+          if (timeline?.generated_utc) {
+            document.getElementById("health-build").textContent = `${formatUtc(timeline.generated_utc)}, last successful build`;
+          }
+        }
+
+        if (alertsResp.status === "fulfilled" && alertsResp.value.ok) {
+          const alerts = await alertsResp.value.json();
+          if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
+            const clear = document.getElementById("alerts-clear");
+            clear.innerHTML = `
+              <div class="clear-mark">!</div>
+              <div>
+                <div class="clear-title">${alerts.alerts.length} official alert product${alerts.alerts.length > 1 ? "s" : ""}</div>
+                <div class="clear-text">Review active watches, warnings, advisories, and aviation products before briefing airport operations.</div>
+              </div>
+            `;
+          }
+        }
+      } catch (error) {
+        console.info("Standalone mock data in use.", error);
+      }
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") hideTooltip();
+    });
+
+    document.addEventListener("mouseover", event => {
+      const cell = event.target.closest?.(".impact-cell");
+      if (cell) showTooltip({ currentTarget: cell, clientX: event.clientX, clientY: event.clientY });
+    });
+
+    document.addEventListener("mousemove", event => {
+      const cell = event.target.closest?.(".impact-cell");
+      if (cell) moveTooltip({ currentTarget: cell, clientX: event.clientX, clientY: event.clientY });
+    });
+
+    document.addEventListener("mouseout", event => {
+      if (event.target.closest?.(".impact-cell") && !event.relatedTarget?.closest?.(".impact-cell")) hideTooltip();
+    });
+
+    document.addEventListener("focusin", event => {
+      const cell = event.target.closest?.(".impact-cell");
+      if (cell) showTooltip({ currentTarget: cell });
+    });
+
+    document.addEventListener("focusout", event => {
+      if (event.target.closest?.(".impact-cell")) hideTooltip();
+    });
+
+    renderTimeAxis();
+    renderMatrix();
+    renderLegend();
+    renderCards();
+    tryLoadLocalJson();
+  </script>
+</body>
+</html>
