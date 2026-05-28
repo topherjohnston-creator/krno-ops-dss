@@ -912,6 +912,8 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "metric": f"Max gust {peak['gust_mph']:.0f} mph",
             "display_label": "Max gust",
             "display_value": f"{peak['gust_mph']:.0f} mph",
+            "peak_start_fxx": max(1, int(peak["fxx"]) - 23),
+            "peak_end_fxx": peak["fxx"],
             "source_fxx": peak["fxx"],
             "peak_valid_utc": peak["valid_utc"],
             "driver": "NBM QMD 24-hour maximum gust at KRNO",

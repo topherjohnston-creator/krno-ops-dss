@@ -3177,7 +3177,11 @@
                             const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
                             return `${dy} ${hh%12||12}${ap}`;
                         };
+                        const fmtPeakDay = d => d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+                        const isDailyWindMax = refKey === 'WIND'
+                            && /24-hour|24-hr|daymax|day-max|qmd/i.test(`${thr?.driver || ''} ${thr?.method || ''} ${thr?.methodology || ''}`);
                         const timingLabel = (() => {
+                            if (refKey === 'WIND') return 'MAX';
                             if (refKey === 'VISIBILITY') return 'MIN';
                             if (refKey === 'FLASH_FREEZE') return 'MIN';
                             if (refKey === 'TEMPERATURE') {
@@ -3191,7 +3195,10 @@
                         })();
                         const peakIso = h.timelineData?.peak_valid_utc || thr?.peak_valid_utc;
                         if (peakIso && shouldShowPeak) {
-                            timeString = `${timingLabel} ${fmtPeak(new Date(peakIso))}`;
+                            const peakDate = new Date(peakIso);
+                            timeString = isDailyWindMax
+                                ? `${timingLabel} ${fmtPeakDay(peakDate)}`
+                                : `${timingLabel} ${fmtPeak(peakDate)}`;
                         } else if (thr && thr.peak_start_fxx && shouldShowPeak) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
@@ -3199,7 +3206,10 @@
                             const nowMs = globalNow.getTime();
                             if (d2.getTime() > nowMs || thr.peak_valid_utc) {
                                 if (refKey === 'WIND' && thr.peak_valid_utc) {
-                                    timeString = `${timingLabel} ${fmtPeak(new Date(thr.peak_valid_utc))}`;
+                                    const peakDate = new Date(thr.peak_valid_utc);
+                                    timeString = isDailyWindMax
+                                        ? `${timingLabel} ${fmtPeakDay(peakDate)}`
+                                        : `${timingLabel} ${fmtPeak(peakDate)}`;
                                 } else if ((thr.peak_end_fxx || thr.peak_start_fxx) === thr.peak_start_fxx) {
                                     timeString = `${timingLabel} ${fmtPeak(d1)}`;
                                 } else {
