@@ -205,7 +205,7 @@ def build_payload(raw: dict[str, Any], now: datetime) -> dict[str, Any]:
 
 
 def main() -> None:
-    api_key = os.getenv("OPENWEATHER_API_KEY")
+    api_key = (os.getenv("OPENWEATHER_API_KEY") or "").strip()
     now = utc_now_dt()
 
     if not api_key:
