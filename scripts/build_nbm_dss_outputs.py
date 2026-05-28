@@ -477,7 +477,7 @@ def block_label_for_wind(hourly_values: list[dict[str, Any]]) -> str:
 def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
     cycle = find_latest_available_cycle("core", [1, 72])
     cycle_iso = iso(cycle)
-    fxx_values = list(range(3, 73, 3))
+    fxx_values = sorted({*range(1, 49), *range(51, 73, 3)})
 
     hourly_by_fxx: dict[int, dict[str, Any]] = {}
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -492,6 +492,7 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
 
     best_block: dict[str, Any] | None = None
     best_hazard: dict[str, Any] | None = None
+    best_gust = -1.0
     max_gust = 0.0
     max_risk = 0
 
@@ -510,6 +511,7 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
         peak = max(block_hours, key=lambda row: row.get("gust_mph") or 0)
         gust = float(peak.get("gust_mph") or 0.0)
         risk = wind_risk_from_gust(gust)
+
         max_gust = max(max_gust, gust)
         max_risk = max(max_risk, risk)
         block["WIND"] = risk
@@ -540,6 +542,7 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
                         "value": hour.get("gust_mph"),
                         "unit": "mph",
                         "label": "gust",
+                        "window_hours": 1 if int(hour.get("fxx") or 0) <= 48 else 3,
                     }
                     for hour in block_hours
                 ],
@@ -553,10 +556,10 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
                 },
             }
         )
-
-        if best_hazard is None or risk > best_hazard["risk"] or (risk == best_hazard["risk"] and gust > max_gust):
+        if best_hazard is None or risk > best_hazard["risk"] or (risk == best_hazard["risk"] and gust > best_gust):
             best_block = block
             best_hazard = hazard
+            best_gust = gust
 
     threat = threats_payload["threats"]["WIND"]
     threat.update(
@@ -605,6 +608,7 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
     one_hr = one_hour_accum_window(fxx)
     three_hr = f":{max(0, fxx - 3)}-{fxx} hour acc fcst:"
     six_hr = six_hour_accum_window(fxx)
+    tstm_window = one_hr if fxx <= 36 else three_hr
 
     selectors = {
         "rain": select_first_row(rows, lambda line: ":APCP:surface:" in line and one_hr in line and is_deterministic(line)),
@@ -619,7 +623,7 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
         "fzra_prob_trace": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.254" in line),
         "fzra_prob_0p1": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >2.54" in line),
         "fzra_prob_0p2": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and ("prob >5.08" in line or "prob >6.35" in line)),
-        "tstm": select_first_row(rows, lambda line: ":TSTM:surface:" in line and three_hr in line and "probability forecast" in line),
+        "tstm": select_first_row(rows, lambda line: ":TSTM:surface:" in line and tstm_window in line and "probability forecast" in line),
         "temp": select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
         "vis": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
         "vis_lt1": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and "prob <1609.34" in line),
@@ -642,7 +646,7 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
 def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
     cycle = find_latest_available_cycle("core", [1, 72])
     source = f"NOAA NBM core AWS {cycle:%HZ}"
-    fxx_values = list(range(3, 73, 3))
+    fxx_values = list(range(1, 73))
 
     decoded: dict[int, dict[str, Any]] = {}
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -654,22 +658,51 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
     temp_values: list[dict[str, Any]] = []
 
     for bi, block in enumerate(timeline["blocks"]):
+        start_fxx = int(block["start_fxx"])
         end_fxx = int(block["end_fxx"])
-        row = decoded.get(end_fxx) or decoded.get(min(decoded, key=lambda fxx: abs(fxx - end_fxx)))
+        block_rows = [decoded[fxx] for fxx in sorted(decoded) if start_fxx <= fxx <= end_fxx and decoded.get(fxx)]
+        row = decoded.get(end_fxx) or (block_rows[-1] if block_rows else decoded.get(min(decoded, key=lambda fxx: abs(fxx - end_fxx))))
         if not row:
             continue
+        if not block_rows:
+            block_rows = [row]
 
         valid_utc = row["valid_utc"]
         fxx = int(row["fxx"])
 
-        rain_in = float(row.get("rain", 0.0) or 0.0) * MM_TO_IN
+        def row_rain_in(src: dict[str, Any]) -> float:
+            return float(src.get("rain", 0.0) or 0.0) * MM_TO_IN
+
+        def row_snow_in(src: dict[str, Any]) -> float:
+            return float(src.get("snow", 0.0) or 0.0) * M_TO_IN
+
+        def row_fzra_in(src: dict[str, Any]) -> float:
+            return float(src.get("fzra", 0.0) or 0.0) * MM_TO_IN
+
+        def row_temp_f(src: dict[str, Any]) -> float:
+            return k_to_f(float(src.get("temp", 273.15) or 273.15))
+
+        rain_in = row_rain_in(row)
         rain6_in = float(row.get("rain6", 0.0) or 0.0) * MM_TO_IN
         rain_prob_trace = float(row.get("rain_prob_trace", 0.0) or 0.0)
         rain_risk = max(
             value_risk(rain_in, [(1.0, 5), (0.70, 4), (0.30, 3), (0.10, 2), (0.001, 1)]),
             prob_risk(rain_prob_trace, [(10, 1)]),
         )
-        totals["RAIN"] += rain_in
+        rain_hourly_values = [
+            {
+                "fxx": int(src["fxx"]),
+                "valid_utc": src["valid_utc"],
+                "rain_in": round(row_rain_in(src), 3),
+                "prob_gt_trace": round(float(src.get("rain_prob_trace", 0.0) or 0.0), 1),
+                "value": round(row_rain_in(src), 3),
+                "unit": "in",
+                "label": "rain",
+                "window_hours": 1,
+            }
+            for src in block_rows
+        ]
+        totals["RAIN"] += sum(item["rain_in"] for item in rain_hourly_values)
         set_hazard_live(
             timeline,
             bi,
@@ -677,12 +710,12 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             rain_risk,
             f"Rain {rain_in:.2f} in",
             {"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "probability": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in", "label": "rain"}],
+            rain_hourly_values,
             source,
             "NBM core precipitation amount and probability of measurable rain at KRNO",
         )
 
-        snow_in = float(row.get("snow", 0.0) or 0.0) * M_TO_IN
+        snow_in = row_snow_in(row)
         snow_probs = {
             "trace": float(row.get("snow_prob_trace", 0.0) or 0.0),
             "0p5": float(row.get("snow_prob_0p5", 0.0) or 0.0),
@@ -693,7 +726,23 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             threshold_probability_risk(snow_probs, [("2", 5), ("1", 4), ("0p5", 3), ("trace", 2)]),
             value_risk(snow_in, [(2.0, 5), (1.0, 4), (0.50, 3), (0.001, 2)]),
         )
-        totals["SNOW"] += snow_in
+        snow_hourly_values = [
+            {
+                "fxx": int(src["fxx"]),
+                "valid_utc": src["valid_utc"],
+                "snow_in": round(row_snow_in(src), 3),
+                "prob_gt_trace": round(float(src.get("snow_prob_trace", 0.0) or 0.0), 1),
+                "prob_gt_0p5_in": round(float(src.get("snow_prob_0p5", 0.0) or 0.0), 1),
+                "prob_gt_1_in": round(float(src.get("snow_prob_1", 0.0) or 0.0), 1),
+                "prob_gt_2_in": round(float(src.get("snow_prob_2", 0.0) or 0.0), 1),
+                "value": round(row_snow_in(src), 3),
+                "unit": "in",
+                "label": "snow",
+                "window_hours": 1 if int(src["fxx"]) <= 48 else 6,
+            }
+            for src in block_rows
+        ]
+        totals["SNOW"] += sum(item["snow_in"] for item in snow_hourly_values)
         set_hazard_live(
             timeline,
             bi,
@@ -701,12 +750,12 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             snow_risk,
             "Snow Trace" if 0 < snow_in < 0.01 else f"Snow {snow_in:.2f} in",
             {"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "prob_gt_trace": round(snow_probs["trace"], 1), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "prob_gt_1_in": round(snow_probs["1"], 1), "prob_gt_2_in": round(snow_probs["2"], 1), "probability": round(max(snow_probs.values()), 1), "value": round(snow_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "value": round(snow_in, 3), "unit": "in", "label": "snow"}],
+            snow_hourly_values,
             source,
             "NBM core snowfall amount and probability-of-threshold exceedance at KRNO",
         )
 
-        fzra_in = float(row.get("fzra", 0.0) or 0.0) * MM_TO_IN
+        fzra_in = row_fzra_in(row)
         fzra_probs = {
             "trace": float(row.get("fzra_prob_trace", 0.0) or 0.0),
             "0p1": float(row.get("fzra_prob_0p1", 0.0) or 0.0),
@@ -716,7 +765,22 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             threshold_probability_risk(fzra_probs, [("0p2", 5), ("0p1", 4), ("trace", 3)]),
             value_risk(fzra_in, [(0.20, 5), (0.10, 4), (0.001, 2)]),
         )
-        totals["FZRA"] += fzra_in
+        fzra_hourly_values = [
+            {
+                "fxx": int(src["fxx"]),
+                "valid_utc": src["valid_utc"],
+                "fzra_in": round(row_fzra_in(src), 3),
+                "prob_gt_trace": round(float(src.get("fzra_prob_trace", 0.0) or 0.0), 1),
+                "prob_gt_0p1_in": round(float(src.get("fzra_prob_0p1", 0.0) or 0.0), 1),
+                "prob_gt_0p2_in": round(float(src.get("fzra_prob_0p2", 0.0) or 0.0), 1),
+                "value": round(row_fzra_in(src), 3),
+                "unit": "in",
+                "label": "fzra",
+                "window_hours": 1 if int(src["fxx"]) <= 48 else 6,
+            }
+            for src in block_rows
+        ]
+        totals["FZRA"] += sum(item["fzra_in"] for item in fzra_hourly_values)
         set_hazard_live(
             timeline,
             bi,
@@ -724,7 +788,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             fzra_risk,
             "Freezing rain Trace" if 0 < fzra_in < 0.01 else f"Freezing rain {fzra_in:.2f} in",
             {"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "prob_gt_0p1_in": round(fzra_probs["0p1"], 1), "prob_gt_0p2_in": round(fzra_probs["0p2"], 1), "probability": round(max(fzra_probs.values()), 1), "value": round(fzra_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "value": round(fzra_in, 3), "unit": "in", "label": "fzra"}],
+            fzra_hourly_values,
             source,
             "NBM core freezing rain/ice accretion amount and probability-of-threshold exceedance at KRNO",
         )
@@ -738,7 +802,18 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             ltg_risk,
             f"Thunder {tstm_prob:.0f}%",
             {"fxx": fxx, "valid_utc": valid_utc, "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%", "label": "prob"}],
+            [
+                {
+                    "fxx": int(src["fxx"]),
+                    "valid_utc": src["valid_utc"],
+                    "prob": round(float(src.get("tstm", 0.0) or 0.0), 1),
+                    "value": round(float(src.get("tstm", 0.0) or 0.0), 1),
+                    "unit": "%",
+                    "label": "prob",
+                    "window_hours": 1 if int(src["fxx"]) <= 36 else 3,
+                }
+                for src in block_rows
+            ],
             source,
             "NBM core thunder probability at KRNO",
         )
@@ -769,12 +844,26 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                 "value": round(min(vis_mi, 10.0), 2),
                 "unit": "mi",
             },
-            [{"fxx": fxx, "valid_utc": valid_utc, "visibility_mi": round(min(vis_mi, 10.0), 2), "value": round(min(vis_mi, 10.0), 2), "unit": "mi", "label": "visibility"}],
+            [
+                {
+                    "fxx": int(src["fxx"]),
+                    "valid_utc": src["valid_utc"],
+                    "visibility_mi": round(min(float(src.get("vis", 16093.4) or 16093.4) * M_TO_MI, 10.0), 2),
+                    "prob_lt_1mi": round(float(src.get("vis_lt1", 0.0) or 0.0), 1),
+                    "prob_lt_3mi": round(float(src.get("vis_lt3", 0.0) or 0.0), 1),
+                    "prob_lt_5mi": round(float(src.get("vis_lt5", 0.0) or 0.0), 1),
+                    "value": round(min(float(src.get("vis", 16093.4) or 16093.4) * M_TO_MI, 10.0), 2),
+                    "unit": "mi",
+                    "label": "visibility",
+                    "window_hours": 1 if int(src["fxx"]) <= 36 else 3,
+                }
+                for src in block_rows
+            ],
             source,
             "NBM core visibility and low-visibility probabilities at KRNO",
         )
 
-        temp_f = k_to_f(float(row.get("temp", 273.15) or 273.15))
+        temp_f = row_temp_f(row)
         temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f})
         cold_risk = value_risk(temp_f, [(10, 4), (20, 3), (32, 2)], reverse=True)
         heat_risk = value_risk(temp_f, [(105, 5), (100, 4), (95, 3), (90, 2)])
@@ -786,7 +875,18 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             temp_risk,
             f"Temp {temp_f:.0f}°F",
             {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F", "label": "temp"}],
+            [
+                {
+                    "fxx": int(src["fxx"]),
+                    "valid_utc": src["valid_utc"],
+                    "temp_f": round(row_temp_f(src), 1),
+                    "value": round(row_temp_f(src), 1),
+                    "unit": "°F",
+                    "label": "temp",
+                    "window_hours": 1 if int(src["fxx"]) <= 48 else 3,
+                }
+                for src in block_rows
+            ],
             source,
             "NBM core 2-meter temperature at KRNO",
         )
@@ -806,7 +906,21 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             flash_risk,
             f"Temp {temp_f:.0f}°F",
             {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F", "label": "temp"}],
+            [
+                {
+                    "fxx": int(src["fxx"]),
+                    "valid_utc": src["valid_utc"],
+                    "temp_f": round(row_temp_f(src), 1),
+                    "rain_in": round(row_rain_in(src), 3),
+                    "fzra_in": round(row_fzra_in(src), 3),
+                    "wet_surface": row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001,
+                    "value": round(row_temp_f(src), 1),
+                    "unit": "°F",
+                    "label": "temp",
+                    "window_hours": 1 if int(src["fxx"]) <= 48 else 3,
+                }
+                for src in block_rows
+            ],
             source,
             "NBM core temperature used as flash-freeze proxy with precipitation as wet-surface signal",
         )
@@ -958,7 +1072,7 @@ def empty_hazard(hazard: str, start_fxx: int, end_fxx: int, start: datetime, end
 
 def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     generated = utc_now()
-    cycle = latest_cycle_floor()
+    cycle = find_latest_available_cycle("core", [1, 72])
     cycle_iso = iso(cycle)
     cycle_label = f"NBM {cycle:%HZ}"
 

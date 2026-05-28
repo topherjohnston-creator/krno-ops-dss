@@ -2867,6 +2867,107 @@
             return best;
         }
 
+        function futureTimelinePeakWindow(refKey) {
+            if (!Array.isArray(nbmBlockHazards) || !Array.isArray(nbmBlocks)) return null;
+
+            const nowMs = globalNow?.getTime?.() || Date.now();
+            const horizonMs = nowMs + TOTAL_HOURS * 3600000;
+            const lowerIsWorse = ['VISIBILITY', 'FLASH_FREEZE'].includes(refKey);
+            let best = null;
+
+            const number = value => {
+                const n = Number(value);
+                return Number.isFinite(n) ? n : null;
+            };
+            const strongestProbability = (hour, hdata) => Math.max(
+                number(hour?.prob) ?? -Infinity,
+                number(hour?.probability) ?? -Infinity,
+                number(hour?.prob_gt_trace) ?? -Infinity,
+                number(hour?.prob_gt_0p5_in) ?? -Infinity,
+                number(hour?.prob_gt_1_in) ?? -Infinity,
+                number(hour?.prob_gt_2_in) ?? -Infinity,
+                number(hour?.prob_gt_0p1_in) ?? -Infinity,
+                number(hour?.prob_gt_0p2_in) ?? -Infinity,
+                number(hdata?.prob) ?? -Infinity,
+                number(hdata?.probability) ?? -Infinity
+            );
+            const deterministicValue = (hour, hdata) => {
+                if (refKey === 'WIND') return number(hour?.gust_max_mph ?? hour?.gust_mph ?? hour?.value ?? hdata?.gust_max_mph ?? hdata?.values?.peak_gust_mph);
+                if (refKey === 'VISIBILITY') return number(hour?.visibility_mi ?? hour?.value ?? hdata?.visibility_mi ?? hdata?.values?.visibility_mi);
+                if (refKey === 'TEMPERATURE' || refKey === 'FLASH_FREEZE') return number(hour?.temp_f ?? hour?.value ?? hdata?.temp_f ?? hdata?.values?.temp_f);
+                if (refKey === 'RAIN') return number(hour?.rain_in ?? hour?.value ?? hdata?.values?.rain_in);
+                if (refKey === 'SNOW') return number(hour?.snow_in ?? hour?.value ?? hdata?.values?.snow_in);
+                if (refKey === 'FZRA') return number(hour?.fzra_in ?? hour?.value ?? hdata?.values?.fzra_in);
+                return number(hour?.value ?? hdata?.values?.value);
+            };
+            const scoreFor = (hour, hdata) => {
+                const risk = number(hour?.risk ?? hdata?.risk) ?? 0;
+                const prob = strongestProbability(hour, hdata);
+                const value = deterministicValue(hour, hdata);
+                const valueScore = value === null ? -Infinity : (lowerIsWorse ? -value : value);
+                if (['LIGHTNING', 'RAIN', 'SNOW', 'FZRA'].includes(refKey)) {
+                    return [risk, prob, valueScore];
+                }
+                return [risk, valueScore, prob];
+            };
+            const better = (candidate, incumbent) => {
+                if (!incumbent) return true;
+                for (let i = 0; i < candidate.score.length; i++) {
+                    if (candidate.score[i] > incumbent.score[i]) return true;
+                    if (candidate.score[i] < incumbent.score[i]) return false;
+                }
+                return candidate.startMs < incumbent.startMs;
+            };
+
+            nbmBlockHazards.forEach((hazards, bi) => {
+                const hdata = hazards?.[refKey];
+                const block = nbmBlocks[bi] || {};
+                if (!hdata || hdata.data_status !== 'live') return;
+
+                const blockStart = blockStartMs(block);
+                const blockEnd = blockEndMs(block);
+                if (blockEnd && blockEnd <= nowMs) return;
+                if (blockStart && blockStart >= horizonMs) return;
+
+                const hours = Array.isArray(hdata.hourly_values) && hdata.hourly_values.length
+                    ? hdata.hourly_values
+                    : [hdata.values || hdata];
+
+                hours.forEach((hour, index) => {
+                    let startMs = hour?.valid_utc ? new Date(hour.valid_utc).getTime() : null;
+                    const windowHours = Math.max(1, Number(hour?.window_hours || 1));
+                    const blockStartOk = Number.isFinite(blockStart);
+                    const blockEndOk = Number.isFinite(blockEnd);
+
+                    if (!Number.isFinite(startMs)) {
+                        startMs = blockStartOk ? blockStart + index * 3600000 : null;
+                    }
+                    if (!Number.isFinite(startMs)) return;
+
+                    // Older generated JSON may have a valid_utc from the source cycle
+                    // while the visual block has already been rolled forward. Keep the
+                    // card timing aligned with the timeline in that case.
+                    if (blockStartOk && blockEndOk && (startMs < blockStart - 60000 || startMs > blockEnd + 60000)) {
+                        startMs = Math.min(blockEnd, blockStart + index * 3600000);
+                    }
+
+                    const endMs = startMs + windowHours * 3600000;
+                    if (endMs <= nowMs || startMs >= horizonMs) return;
+
+                    const candidate = {
+                        startMs: Math.max(startMs, nowMs),
+                        endMs: Math.min(endMs, horizonMs),
+                        hour,
+                        hdata,
+                        score: scoreFor(hour, hdata),
+                    };
+                    if (better(candidate, best)) best = candidate;
+                });
+            });
+
+            return best;
+        }
+
         function accumulationTotalText(refKey) {
             if (!['RAIN', 'SNOW', 'FZRA'].includes(refKey)) return '';
             if (!Array.isArray(nbmBlockHazards) || !Array.isArray(nbmBlocks)) return '';
@@ -3096,8 +3197,8 @@
                     const hazards = HAZARD_DETAILS.map(h => {
                         const refKey = hazardMapping[h.id] || h.id.toUpperCase();
                         const threatData = refsThreats?.[refKey] || {};
-                        const timelineData = refKey === 'WIND' ? null : futureTimelineHazardSummary(refKey);
-                        const sourceData = timelineData || threatData;
+                        const timelineData = futureTimelineHazardSummary(refKey);
+                        const sourceData = refKey === 'WIND' ? threatData : (timelineData || threatData);
                         const prob = Number(sourceData.prob ?? sourceData.probability ?? 0);
                         const risk = Number(sourceData.risk ?? 0);
                         return { ...h, prob, risk, refKey, timelineData, threatData };
@@ -3162,6 +3263,12 @@
                         if (refKey === 'WIND') {
                             displayMetric = String(displayMetric || '').replace(/^Mean 24-hr max gust:\s*/i, 'Max gust: ');
                         }
+                        if (!displayMetric && h.threatData?.display_label && h.threatData?.display_value !== undefined && h.threatData?.display_value !== null) {
+                            displayMetric = `${h.threatData.display_label}: ${h.threatData.display_value}`;
+                        }
+                        if (!displayMetric && refKey === 'WIND' && h.threatData?.metric) {
+                            displayMetric = h.threatData.metric;
+                        }
 
                         let timeString = '';
                         const thr = threatData;
@@ -3177,16 +3284,26 @@
                             const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
                             return `${dy} ${hh%12||12}${ap}`;
                         };
-                        const fmtPeakDay = d => d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
-                        const isDailyWindMax = refKey === 'WIND'
-                            && /24-hour|24-hr|daymax|day-max|qmd/i.test(`${thr?.driver || ''} ${thr?.method || ''} ${thr?.methodology || ''}`);
+                        const fmtWindow = (startMs, endMs) => {
+                            const start = new Date(startMs);
+                            const end = new Date(endMs);
+                            const startDay = start.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+                            const endDay = end.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+                            const time = d => {
+                                const hh = d.getHours();
+                                return `${hh % 12 || 12}${hh >= 12 ? 'P' : 'A'}`;
+                            };
+                            return startDay === endDay
+                                ? `${startDay} ${time(start)}-${time(end)}`
+                                : `${startDay} ${time(start)}-${endDay} ${time(end)}`;
+                        };
+                        const peakWindow = futureTimelinePeakWindow(refKey);
                         const timingLabel = (() => {
-                            if (refKey === 'WIND') return 'MAX';
                             if (refKey === 'VISIBILITY') return 'MIN';
                             if (refKey === 'FLASH_FREEZE') return 'MIN';
                             if (refKey === 'TEMPERATURE') {
                                 if (isNone) return '';
-                                const tempVal = Number(thr?.values?.temp_f ?? thr?.temp_f ?? h.timelineData?.values?.temp_f ?? h.timelineData?.temp_f);
+                                const tempVal = Number(peakWindow?.hour?.temp_f ?? peakWindow?.hour?.value ?? thr?.values?.temp_f ?? thr?.temp_f ?? h.timelineData?.values?.temp_f ?? h.timelineData?.temp_f);
                                 if (Number.isFinite(tempVal) && tempVal <= 50) return 'MIN';
                                 if (Number.isFinite(tempVal) && tempVal >= 80) return 'MAX';
                                 return 'PEAK';
@@ -3194,11 +3311,10 @@
                             return 'PEAK';
                         })();
                         const peakIso = h.timelineData?.peak_valid_utc || thr?.peak_valid_utc;
-                        if (peakIso && shouldShowPeak) {
-                            const peakDate = new Date(peakIso);
-                            timeString = isDailyWindMax
-                                ? `${timingLabel} ${fmtPeakDay(peakDate)}`
-                                : `${timingLabel} ${fmtPeak(peakDate)}`;
+                        if (peakWindow && shouldShowPeak && timingLabel) {
+                            timeString = `${timingLabel} ${fmtWindow(peakWindow.startMs, peakWindow.endMs)}`;
+                        } else if (peakIso && shouldShowPeak && timingLabel) {
+                            timeString = `${timingLabel} ${fmtPeak(new Date(peakIso))}`;
                         } else if (thr && thr.peak_start_fxx && shouldShowPeak) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
@@ -3206,10 +3322,7 @@
                             const nowMs = globalNow.getTime();
                             if (d2.getTime() > nowMs || thr.peak_valid_utc) {
                                 if (refKey === 'WIND' && thr.peak_valid_utc) {
-                                    const peakDate = new Date(thr.peak_valid_utc);
-                                    timeString = isDailyWindMax
-                                        ? `${timingLabel} ${fmtPeakDay(peakDate)}`
-                                        : `${timingLabel} ${fmtPeak(peakDate)}`;
+                                    timeString = `${timingLabel} ${fmtPeak(new Date(thr.peak_valid_utc))}`;
                                 } else if ((thr.peak_end_fxx || thr.peak_start_fxx) === thr.peak_start_fxx) {
                                     timeString = `${timingLabel} ${fmtPeak(d1)}`;
                                 } else {
