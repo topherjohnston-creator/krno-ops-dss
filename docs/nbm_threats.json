@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-05-28T18:58:31Z",
+  "generated_utc": "2026-05-28T19:09:58Z",
   "cycle_utc_iso": "2026-05-28T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -72,27 +72,27 @@
     },
     "LIGHTNING": {
       "id": "LIGHTNING",
-      "title": "LIGHTNING",
-      "name": "LIGHTNING",
-      "prob": 0,
-      "probability": 0,
-      "risk": 0,
-      "risk_level": 0,
-      "risk_label": "None",
-      "level": 0,
-      "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "title": "Lightning",
+      "name": "Lightning",
+      "prob": 8.0,
+      "probability": 8.0,
+      "risk": 2,
+      "risk_level": 2,
+      "risk_label": "Minor",
+      "level": 2,
+      "impact_level": 2,
+      "metric": "Peak thunder probability",
+      "display_label": "Peak thunder probability",
+      "display_value": "Thunder 8%",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 52,
+      "peak_end_fxx": 54,
+      "source_fxx": 54,
+      "peak_valid_utc": "2026-05-31T00:00:00Z",
+      "driver": "NBM core thunder probability at KRNO",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -106,31 +106,32 @@
           "window_hours": 3,
           "source": "NBM 3-hour thunder probability"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "SNOW": {
       "id": "SNOW",
-      "title": "SNOW",
-      "name": "SNOW",
-      "prob": 0,
-      "probability": 0,
+      "title": "Snow",
+      "name": "Snow",
+      "prob": 0.0,
+      "probability": 0.0,
       "risk": 0,
       "risk_level": 0,
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "metric": "72-hr total 0.00 in",
+      "display_label": "72-hr total",
+      "display_value": "0.00 in",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "source_fxx": 3,
+      "peak_valid_utc": "2026-05-28T21:00:00Z",
+      "driver": "NBM core snow amount summarized over 72 hours",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -144,31 +145,32 @@
           "window_hours": 6,
           "source": "NBM 6-hour snow amount/probability"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
-      "title": "VISIBILITY",
-      "name": "VISIBILITY",
-      "prob": 0,
-      "probability": 0,
-      "risk": 0,
-      "risk_level": 0,
-      "risk_label": "None",
-      "level": 0,
-      "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "title": "Visibility",
+      "name": "Visibility",
+      "prob": 19.0,
+      "probability": 19.0,
+      "risk": 1,
+      "risk_level": 1,
+      "risk_label": "Little to None",
+      "level": 1,
+      "impact_level": 1,
+      "metric": "Lowest visibility",
+      "display_label": "Lowest visibility",
+      "display_value": "Visibility 6.0 mi",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 22,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
+      "peak_valid_utc": "2026-05-29T18:00:00Z",
+      "driver": "NBM core visibility at KRNO",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -182,31 +184,32 @@
           "window_hours": 3,
           "source": "NBM 3-hour visibility probabilities"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FZRA": {
       "id": "FZRA",
-      "title": "FZRA",
-      "name": "FZRA",
-      "prob": 0,
-      "probability": 0,
+      "title": "Fzra",
+      "name": "Fzra",
+      "prob": 0.0,
+      "probability": 0.0,
       "risk": 0,
       "risk_level": 0,
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "metric": "72-hr total 0.00 in",
+      "display_label": "72-hr total",
+      "display_value": "0.00 in",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "source_fxx": 3,
+      "peak_valid_utc": "2026-05-28T21:00:00Z",
+      "driver": "NBM core fzra amount summarized over 72 hours",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -220,31 +223,32 @@
           "window_hours": 6,
           "source": "NBM QMD 6-hour freezing rain probabilities"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
-      "title": "FLASH_FREEZE",
-      "name": "FLASH_FREEZE",
-      "prob": 0,
-      "probability": 0,
+      "title": "Flash Freeze",
+      "name": "Flash Freeze",
+      "prob": null,
+      "probability": null,
       "risk": 0,
       "risk_level": 0,
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "metric": "Temperature/wet-surface freeze risk",
+      "display_label": "Lowest temperature",
+      "display_value": "Temp 45\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 40,
+      "peak_end_fxx": 42,
+      "source_fxx": 42,
+      "peak_valid_utc": "2026-05-30T12:00:00Z",
+      "driver": "NBM core temperature and precipitation proxy at KRNO",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -258,31 +262,32 @@
           "window_hours": 3,
           "source": "NBM 3-hour temperature probabilities + wet-surface proxy"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "RAIN": {
       "id": "RAIN",
-      "title": "RAIN",
-      "name": "RAIN",
-      "prob": 0,
-      "probability": 0,
-      "risk": 0,
-      "risk_level": 0,
-      "risk_label": "None",
-      "level": 0,
-      "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "title": "Rain",
+      "name": "Rain",
+      "prob": 27.0,
+      "probability": 27.0,
+      "risk": 1,
+      "risk_level": 1,
+      "risk_label": "Little to None",
+      "level": 1,
+      "impact_level": 1,
+      "metric": "72-hr total 0.01 in",
+      "display_label": "72-hr total",
+      "display_value": "0.01 in",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
-      "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "source_fxx": 3,
+      "peak_valid_utc": "2026-05-28T21:00:00Z",
+      "driver": "NBM core rain amount summarized over 72 hours",
+      "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -296,7 +301,8 @@
           "window_hours": 6,
           "source": "NBM QMD 6-hour rain probabilities"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     },
     "TEMPERATURE": {
       "id": "TEMPERATURE",
@@ -309,18 +315,18 @@
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Awaiting NBM/QMD extraction",
-      "display_label": "72-hr probabilistic risk",
-      "display_value": "Pending",
+      "metric": "Max 59\u00b0F / Min 45\u00b0F",
+      "display_label": "24-hr max/min",
+      "display_value": "59/45\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": null,
-      "peak_end_fxx": null,
-      "source_fxx": null,
-      "peak_valid_utc": null,
-      "driver": "NBM schema is wired; hazard extraction is pending",
+      "peak_start_fxx": 6,
+      "peak_end_fxx": 6,
+      "source_fxx": 6,
+      "peak_valid_utc": "2026-05-29T00:00:00Z",
+      "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
       "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
-      "data_status": "schema_pending",
-      "method": "nbm_dss_schema_v1",
+      "data_status": "live",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -334,7 +340,8 @@
           "window_hours": 3,
           "source": "NBM 3-hour temperature probabilities / QMD max-min"
         }
-      ]
+      ],
+      "source": "NOAA NBM core AWS 18Z"
     }
   },
   "hazards": [
@@ -346,44 +353,44 @@
     },
     {
       "id": "LIGHTNING",
-      "risk": 0,
-      "probability": 0,
-      "level": 0
+      "risk": 2,
+      "probability": 8.0,
+      "level": 2
     },
     {
       "id": "SNOW",
       "risk": 0,
-      "probability": 0,
+      "probability": 0.0,
       "level": 0
     },
     {
       "id": "VISIBILITY",
-      "risk": 0,
-      "probability": 0,
-      "level": 0
+      "risk": 1,
+      "probability": 19.0,
+      "level": 1
     },
     {
       "id": "FZRA",
       "risk": 0,
-      "probability": 0,
+      "probability": 0.0,
       "level": 0
     },
     {
       "id": "FLASH_FREEZE",
       "risk": 0,
-      "probability": 0,
+      "probability": null,
       "level": 0
     },
     {
       "id": "RAIN",
-      "risk": 0,
-      "probability": 0,
-      "level": 0
+      "risk": 1,
+      "probability": 27.0,
+      "level": 1
     },
     {
       "id": "TEMPERATURE",
       "risk": 0,
-      "probability": 0,
+      "probability": null,
       "level": 0
     }
   ],
@@ -616,8 +623,5 @@
       "hazards": "Enabled variables, row order, labels, thresholds, tooltips",
       "timeline": "Horizon, native windows, display windows, card aggregation rules"
     }
-  },
-  "extraction_errors": {
-    "CORE_HAZARDS": "404 Client Error: Not Found for url: https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20260528/18/core/blend.t18z.core.f049.co.grib2.idx"
   }
 }
