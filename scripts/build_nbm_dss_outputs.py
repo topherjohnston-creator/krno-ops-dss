@@ -830,8 +830,9 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
     update_threat_from_blocks(threats_payload, timeline, "FLASH_FREEZE", "Lowest temperature", "", "Temperature/wet-surface freeze risk", "NBM core temperature and precipitation proxy at KRNO", source, "temp_f", lower_is_worse=True)
 
     if temp_values:
-        max_temp = max(temp_values, key=lambda row: row["temp_f"])
-        min_temp = min(temp_values, key=lambda row: row["temp_f"])
+        card_temp_values = [row for row in temp_values if int(row.get("fxx", 999)) <= 24] or temp_values
+        max_temp = max(card_temp_values, key=lambda row: row["temp_f"])
+        min_temp = min(card_temp_values, key=lambda row: row["temp_f"])
         risk = max(
             value_risk(float(max_temp["temp_f"]), [(105, 5), (100, 4), (95, 3), (90, 2)]),
             value_risk(float(min_temp["temp_f"]), [(10, 4), (20, 3), (32, 2)], reverse=True),
@@ -845,13 +846,13 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                 "level": risk,
                 "impact_level": risk,
                 "metric": f"Max {max_temp['temp_f']:.0f}°F / Min {min_temp['temp_f']:.0f}°F",
-                "display_label": "72-hr max/min",
+                "display_label": "24-hr max/min",
                 "display_value": f"{max_temp['temp_f']:.0f}/{min_temp['temp_f']:.0f}°F",
                 "peak_start_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
                 "peak_end_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
                 "source_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
                 "peak_valid_utc": min_temp["valid_utc"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["valid_utc"],
-                "driver": "NBM core 2-meter temperature max/min at KRNO",
+                "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
                 "data_status": "live",
                 "method": CORE_SOURCE_METHOD,
                 "source": source,
@@ -908,8 +909,8 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "risk_label": RISK_LABELS[risk],
             "level": risk,
             "impact_level": risk,
-            "metric": f"Mean 24-hr max gust {peak['gust_mph']:.0f} mph",
-            "display_label": "Mean 24-hr max gust",
+            "metric": f"Max gust {peak['gust_mph']:.0f} mph",
+            "display_label": "Max gust",
             "display_value": f"{peak['gust_mph']:.0f} mph",
             "source_fxx": peak["fxx"],
             "peak_valid_utc": peak["valid_utc"],

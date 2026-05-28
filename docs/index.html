@@ -388,6 +388,10 @@
 
         #sky-sub {
             display: block;
+            font-size: 0.54rem;
+            line-height: 1.12;
+            margin-top: 0;
+            min-height: 0.66rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -417,7 +421,7 @@
 
         .moisture-metric span:first-child {
             color: #8ea6b1;
-            font-size: 0.66rem;
+            font-size: 0.72rem;
             font-weight: 900;
             letter-spacing: 0.02em;
             text-transform: uppercase;
@@ -425,7 +429,7 @@
 
         .moisture-metric span:last-child {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
+            font-size: clamp(1.18rem, 1.55vw, 1.38rem);
             font-weight: 900;
             line-height: 1.05;
             color: #f8fafc;
@@ -439,8 +443,8 @@
         }
 
         #temp-box > i {
-            color: #d6e65e;
-            opacity: 0.58;
+            color: #94a3b8;
+            opacity: 0.24;
             font-size: 1.65rem;
         }
 
@@ -609,7 +613,6 @@
                 <span class="status-pill gray" id="header-obs">Obs unavailable</span>
                 <span class="status-pill gray" id="header-cycle">Forecast loading</span>
                 <span class="status-pill gray" id="header-risk">Current risk pending</span>
-                <span class="status-pill amber">Beta</span>
                 <span class="agency-lockup" aria-label="NOAA National Weather Service">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/NOAA_logo.svg" alt="NOAA">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/US-NationalWeatherService-Logo.svg" alt="NWS">
@@ -645,7 +648,7 @@
         <div class="panel p-4" style="z-index: 20;"> 
             <div class="flex justify-between items-start mb-3">
                 <div>
-                    <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;">Risk Matrix</h2>
+                    <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;">Weather Risk Summary</h2>
                     <div class="method-note">72-hour summary risk</div>
                 </div>
             </div>
@@ -668,7 +671,7 @@
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-3">
                     <div>
-                        <h2 class="font-bold text-base tracking-wider text-slate-300">Timeline Analysis</h2>
+                        <h2 class="font-bold text-base tracking-wider text-slate-300">Weather Risk Timeline</h2>
                         <div class="method-note">3-hour block risk</div>
                     </div>
                 </div>
@@ -1660,13 +1663,13 @@
                         if (block?.WDR != null) metLine += `<span style="color:#71717a;"> from ${block.WDR * 10}°</span>`;
                     }
                 } else if (key === 'TEMPERATURE') {
-                    const tempVal = hdata?.temp_f;
+                    const tempVal = hdata?.temp_f ?? hdata?.values?.temp_f ?? hdata?.hourly_values?.find(x => x.temp_f != null)?.temp_f;
                     if (tempVal != null) {
                         var tmpC = deciColormap('TEMPERATURE', Math.round(tempVal)) || '#fff';
                         metLine = `<span style="color:${tmpC};font-weight:800;">Temp ${Math.round(tempVal)}°F</span>`;
                     }
                 } else if (key === 'VISIBILITY') {
-                    const sm = hdata?.visibility_mi;
+                    const sm = hdata?.visibility_mi ?? hdata?.values?.visibility_mi ?? hdata?.hourly_values?.find(x => x.visibility_mi != null)?.visibility_mi;
                     if (sm != null) {
                         const vCol = deciColormap('VISIBILITY', sm);
                         metLine = `<span style="color:${vCol||'#fff'};font-weight:800;">Visibility ${sm >= 10 ? '10+ mi' : sm.toFixed(1) + ' mi'}</span>`;
@@ -1683,12 +1686,16 @@
                     const fr = hdata?.hourly_values?.find(x => x.fzra_in != null)?.fzra_in;
                     if (fr != null) metLine = `<span style="color:#60a5fa;font-weight:800;">Freezing rain ${Number(fr).toFixed(2)} in</span>`;
                 } else if (key === 'FLASH_FREEZE') {
-                    const tw = hdata?.hourly_values?.find(x => x.wet_bulb_f != null)?.wet_bulb_f;
-                    if (tw != null) metLine = `<span style="color:${deciColormap('FLASH_FREEZE', tw)||'#fff'};font-weight:800;">Wet bulb ${Math.round(tw)}°F</span>`;
+                    const temp = hdata?.values?.temp_f ?? hdata?.temp_f ?? hdata?.hourly_values?.find(x => x.temp_f != null)?.temp_f;
+                    const rain = bhaz?.RAIN?.values?.rain_in ?? bhaz?.RAIN?.hourly_values?.find(x => x.rain_in != null)?.rain_in ?? 0;
+                    const fr = bhaz?.FZRA?.values?.fzra_in ?? bhaz?.FZRA?.hourly_values?.find(x => x.fzra_in != null)?.fzra_in ?? 0;
+                    if (temp != null) {
+                        metLine = `<span style="color:${deciColormap('FLASH_FREEZE', temp)||'#fff'};font-weight:800;">Temp ${Math.round(temp)}°F</span><span style="color:#94a3b8;"> · Rain ${Number(rain || 0).toFixed(2)} in${Number(fr || 0) > 0 ? ` · FZRA ${Number(fr).toFixed(2)} in` : ''}</span>`;
+                    }
                 }
                 if (!metLine && !hourlyLine) {
                     const hasHazard = Boolean(hdata);
-                    metLine = `<span style="color:#52525b;font-weight:800;">${hasHazard ? 'No signal in block' : 'No data in block'}</span>`;
+                    metLine = `<span style="color:#52525b;font-weight:800;">${hasHazard ? 'No forecast value' : 'No data in block'}</span>`;
                 }
 
                 rows += `<div style="margin-bottom:4px;padding:5px 7px;border-radius:6px;background:${bgCol};border-left:3px solid ${cfg.color};">
@@ -3151,11 +3158,14 @@
                         } else if (!displayMetric && threatData.display_label && threatData.display_value !== undefined && threatData.display_value !== null) {
                             displayMetric = `${threatData.display_label}: ${threatData.display_value}`;
                         } else if (!displayMetric && refKey === 'WIND' && threatData.g24_mph !== undefined && threatData.g24_mph !== null) {
-                            displayMetric = `24-hr max gust: ${Math.round(Number(threatData.g24_mph))} mph`;
+                            displayMetric = `Max gust: ${Math.round(Number(threatData.g24_mph))} mph`;
                         } else if (!displayMetric && threatData.metric) {
                             displayMetric = threatData.metric;
                         } else if (!displayMetric && FALLBACK_METRICS[refKey]?.[impactLevel]) {
                             displayMetric = FALLBACK_METRICS[refKey][impactLevel];
+                        }
+                        if (refKey === 'WIND') {
+                            displayMetric = String(displayMetric || '').replace(/^Mean 24-hr max gust:\s*/i, 'Max gust: ');
                         }
 
                         let timeString = '';
