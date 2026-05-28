@@ -125,37 +125,92 @@
     ]
   },
   "snow": {
-    "basis": "12-hour snowfall probability thresholds using operational impact language, not NWS product language.",
+    "basis": "Timeline uses NBM snowfall amount/probability thresholds by native window. Risk cards summarize the highest 72-hour snow signal.",
     "impact_thresholds": [
       {
         "level": 0,
         "label": "None",
-        "threshold": "No meaningful snow signal"
-      },
-      {
-        "level": 1,
-        "label": "Little to None",
-        "threshold": "Trace/light snow signal"
+        "threshold": "0 inches"
       },
       {
         "level": 2,
         "label": "Minor",
-        "threshold": "Near-threshold snow or low probability"
+        "threshold": "Trace to 0.5 inches per native window"
       },
       {
         "level": 3,
         "label": "Moderate",
-        "threshold": "Meaningful chance of >=2 inches / 12 hr"
+        "threshold": "0.5 to 1 inch per native window"
       },
       {
         "level": 4,
         "label": "Major",
-        "threshold": "Meaningful chance of >=4 inches / 12 hr"
+        "threshold": "1 to 2 inches per native window"
       },
       {
         "level": 5,
         "label": "Extreme",
-        "threshold": "High confidence >4 inches / 12 hr or substantially above threshold"
+        "threshold": "Greater than 2 inches per native window"
+      }
+    ]
+  },
+  "rain": {
+    "basis": "Timeline uses hourly deterministic rain rates with NBM probability of measurable rain where available; QMD probability thresholds can be layered for 6-hour decision windows.",
+    "impact_thresholds": [
+      {
+        "level": 1,
+        "label": "Little to None",
+        "threshold": "Less than 0.10 inches per hour"
+      },
+      {
+        "level": 2,
+        "label": "Minor",
+        "threshold": "0.10 to 0.29 inches per hour"
+      },
+      {
+        "level": 3,
+        "label": "Moderate",
+        "threshold": "0.30 to 0.69 inches per hour"
+      },
+      {
+        "level": 4,
+        "label": "Major",
+        "threshold": "0.70 to 0.99 inches per hour"
+      },
+      {
+        "level": 5,
+        "label": "Extreme",
+        "threshold": "At least 1 inch per hour"
+      }
+    ]
+  },
+  "fzra": {
+    "basis": "Timeline uses freezing-rain/ice amount plus NBM probability-of-threshold exceedance where available.",
+    "impact_thresholds": [
+      {
+        "level": 0,
+        "label": "None",
+        "threshold": "None"
+      },
+      {
+        "level": 2,
+        "label": "Minor",
+        "threshold": "Trace"
+      },
+      {
+        "level": 3,
+        "label": "Moderate",
+        "threshold": "Greater than trace"
+      },
+      {
+        "level": 4,
+        "label": "Major",
+        "threshold": "Greater than 0.10 inches"
+      },
+      {
+        "level": 5,
+        "label": "Extreme",
+        "threshold": "Greater than 0.20 inches"
       }
     ]
   },
