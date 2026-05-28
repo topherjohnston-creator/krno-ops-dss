@@ -1470,7 +1470,7 @@
                     };
 
                     if (key === 'WIND') {
-                        const gust = hour.gust_max_mph ?? hour.value;
+                        const gust = hour.gust_max_mph ?? hour.gust_mph ?? hour.value;
                         const col = deciColormap('WIND', gust) || '#fbbf24';
                         main = gust != null
                             ? `<span style="color:${col};font-weight:800;">${Math.round(gust)} mph</span>`
@@ -1517,7 +1517,7 @@
 
                 let metLine = '';
                 if (key === 'WIND') {
-                    const gustVal = hdata?.gust_max_mph ?? block?.GST;
+                    const gustVal = hdata?.gust_max_mph ?? hdata?.values?.peak_gust_mph ?? hdata?.values?.gust_max_mph ?? block?.GST;
                     if (gustVal != null) {
                         const gCol = deciColormap('WIND', gustVal);
                         metLine = `<span style="color:${gCol||'#fff'};font-weight:800;">Gust ${Math.round(gustVal)} mph</span>`;
@@ -2705,7 +2705,7 @@
                 hours.forEach(hour => {
                     const candidates = [
                         hour.rain_in, hour.snow_in, hour.fzra_in, hour.wet_bulb_f,
-                        hour.gust_max_mph, hour.visibility_mi, hour.temp_f, hour.value,
+                        hour.gust_max_mph, hour.gust_mph, hour.visibility_mi, hour.temp_f, hour.value,
                     ];
                     candidates.forEach(value => {
                         if (value !== null && value !== undefined && Number.isFinite(Number(value))) nums.push(Number(value));
@@ -2809,7 +2809,7 @@
                     return hr > br || (hr === br && hp > bp) ? hour : best;
                 }, null);
 
-            const value = peakHour?.value ?? hdata?.gust_max_mph ?? hdata?.visibility_mi ?? hdata?.temp_f;
+            const value = peakHour?.value ?? peakHour?.gust_max_mph ?? peakHour?.gust_mph ?? hdata?.gust_max_mph ?? hdata?.values?.peak_gust_mph ?? hdata?.visibility_mi ?? hdata?.temp_f;
             const unit = peakHour?.unit
                 || (refKey === 'WIND' ? 'mph' : refKey === 'VISIBILITY' ? 'mi' : refKey === 'TEMPERATURE' ? '°F' : '');
 
@@ -2976,7 +2976,7 @@
                     const hazards = HAZARD_DETAILS.map(h => {
                         const refKey = hazardMapping[h.id] || h.id.toUpperCase();
                         const threatData = refsThreats?.[refKey] || {};
-                        const timelineData = futureTimelineHazardSummary(refKey);
+                        const timelineData = refKey === 'WIND' ? null : futureTimelineHazardSummary(refKey);
                         const sourceData = timelineData || threatData;
                         const prob = Number(sourceData.prob ?? sourceData.probability ?? 0);
                         const risk = Number(sourceData.risk ?? 0);

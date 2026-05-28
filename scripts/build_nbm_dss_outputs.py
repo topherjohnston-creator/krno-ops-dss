@@ -505,11 +505,24 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
                 "data_status": "live",
                 "method": "nbm_core_aws_gridpoint",
                 "source": f"NOAA NBM core AWS {cycle:%HZ}",
-                "hourly_values": block_hours,
+                "gust_max_mph": round(gust, 1),
+                "hourly_values": [
+                    {
+                        **hour,
+                        "gust_max_mph": hour.get("gust_mph"),
+                        "value": hour.get("gust_mph"),
+                        "unit": "mph",
+                        "label": "gust",
+                    }
+                    for hour in block_hours
+                ],
                 "values": {
                     "peak_gust_mph": round(gust, 1),
+                    "gust_max_mph": round(gust, 1),
                     "wind_mph": peak.get("wind_mph"),
                     "direction_deg": peak.get("direction_deg"),
+                    "value": round(gust, 1),
+                    "unit": "mph",
                 },
             }
         )
