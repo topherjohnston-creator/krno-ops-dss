@@ -675,7 +675,6 @@
                         <div class="method-note">3-hour block risk</div>
                     </div>
                 </div>
-                <p class="text-xs text-slate-400 tabular-clock tracking-tight font-bold" id="timestamp2"></p>
             </div>
             <div class="flex flex-col flex-grow h-full relative">
                 <div class="flex flex-grow w-full relative">
@@ -989,10 +988,8 @@
             let lastTimelineMinute = -1;
             setInterval(() => {
                 globalNow = new Date();
-                const timeEl = document.getElementById('timestamp2');
                 const headerClock = document.getElementById('header-clock');
                 const clockText = getHeaderDateSec(globalNow);
-                if (timeEl) timeEl.textContent = clockText;
                 if (headerClock) headerClock.textContent = clockText;
                 if (globalNow.getMinutes() !== lastTimelineMinute) {
                     lastTimelineMinute = globalNow.getMinutes();
@@ -2974,9 +2971,7 @@
             try {
                 await loadConfig();
                 globalNow = new Date();
-                const timeEl = document.getElementById('timestamp2');
                 const clockText = getHeaderDate(globalNow);
-                if(timeEl) timeEl.textContent = clockText;
                 setText('header-clock', clockText);
 
                 // --- FETCH LIVE DATA (WITH NGROK BYPASS HEADER) ---
