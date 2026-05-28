@@ -16,6 +16,9 @@ DATA = Path("data")
 AWS_BASE = "https://noaa-nbm-grib2-pds.s3.amazonaws.com"
 DOMAIN = "co"
 MPS_TO_MPH = 2.2369362921
+M_TO_MI = 0.000621371192
+M_TO_IN = 39.37007874
+MM_TO_IN = 0.03937007874
 
 SITE = {
     "site": "KRNO",
@@ -31,6 +34,8 @@ WIND_THRESHOLDS_MPH = [
     (30, 2),
     (20, 1),
 ]
+
+CORE_SOURCE_METHOD = "nbm_core_aws_gridpoint"
 
 HAZARDS = ["WIND", "LIGHTNING", "SNOW", "VISIBILITY", "FZRA", "FLASH_FREEZE", "RAIN", "TEMPERATURE"]
 
@@ -196,6 +201,26 @@ def select_core_wind_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dic
     return selected
 
 
+def one_hour_accum_window(fxx: int) -> str:
+    return f":{max(0, fxx - 1)}-{fxx} hour acc fcst:"
+
+
+def six_hour_accum_window(fxx: int) -> str:
+    return f":{max(0, fxx - 6)}-{fxx} hour acc fcst:"
+
+
+def twelve_hour_accum_window(fxx: int) -> str:
+    return f":{max(0, fxx - 12)}-{fxx} hour acc fcst:"
+
+
+def select_first_row(rows: list[dict[str, Any]], predicate) -> dict[str, Any] | None:
+    return next((row for row in rows if predicate(row["line"])), None)
+
+
+def is_deterministic(line: str) -> bool:
+    return "prob" not in line and "level" not in line and "ens std dev" not in line and "@(" not in line
+
+
 def download_one_message(grib_url: str, row: dict[str, Any], out_path: Path) -> None:
     end = row["end_byte"]
     headers = {"Range": f"bytes={row['start_byte']}-{end}"} if end is not None else {"Range": f"bytes={row['start_byte']}-"}
@@ -235,6 +260,135 @@ def extract_gridpoint_value(grib_path: Path) -> float:
         return float(values[iy, ix])
     finally:
         ds.close()
+
+
+def extract_row_value(grib_url: str, row: dict[str, Any], tmp: Path, label: str) -> float:
+    msg_path = tmp / f"{label}_{row['msg_num']}.grib2"
+    download_one_message(grib_url, row, msg_path)
+    return extract_gridpoint_value(msg_path)
+
+
+def get_core_rows(cycle: datetime, fxx: int) -> list[dict[str, Any]]:
+    return parse_idx(fetch_text(aws_grib_url(cycle, "core", fxx) + ".idx"))
+
+
+def value_risk(value: float, thresholds: list[tuple[float, int]], reverse: bool = False) -> int:
+    for threshold, level in thresholds:
+        if reverse:
+            if value <= threshold:
+                return level
+        elif value >= threshold:
+            return level
+    return 0
+
+
+def prob_risk(prob: float, thresholds: list[tuple[float, int]]) -> int:
+    return value_risk(prob, thresholds)
+
+
+def k_to_f(value_k: float) -> float:
+    return (value_k - 273.15) * 9 / 5 + 32
+
+
+def set_hazard_live(
+    timeline: dict[str, Any],
+    bi: int,
+    hazard_id: str,
+    risk: int,
+    metric: str,
+    values: dict[str, Any],
+    hourly_values: list[dict[str, Any]],
+    source: str,
+    driver: str,
+) -> None:
+    block = timeline["blocks"][bi]
+    hdata = timeline["block_hazards"][bi][hazard_id]
+    timeline["blocks"][bi][hazard_id] = risk
+    hdata.update(
+        {
+            "label": hazard_id.replace("_", " ").title(),
+            "name": hazard_id.replace("_", " ").title(),
+            "risk": risk,
+            "risk_label": RISK_LABELS[risk],
+            "level": risk,
+            "impact_level": risk,
+            "prob": values.get("probability"),
+            "probability": values.get("probability"),
+            "metric": metric,
+            "driver": driver,
+            "source_fxx": values.get("fxx", block.get("end_fxx")),
+            "peak_valid_utc": values.get("valid_utc", block.get("valid_end_utc")),
+            "data_status": "live",
+            "method": CORE_SOURCE_METHOD,
+            "source": source,
+            "hourly_values": hourly_values,
+            "values": values,
+        }
+    )
+
+
+def update_threat_from_blocks(
+    threats_payload: dict[str, Any],
+    timeline: dict[str, Any],
+    hazard_id: str,
+    display_label: str,
+    display_value: str,
+    metric: str,
+    driver: str,
+    source: str,
+    magnitude_key: str | None = None,
+    lower_is_worse: bool = False,
+) -> None:
+    best = None
+    for bi, hazards in enumerate(timeline["block_hazards"]):
+        hdata = hazards.get(hazard_id)
+        if not hdata or hdata.get("data_status") != "live":
+            continue
+        risk = int(hdata.get("risk") or 0)
+        values = hdata.get("values") or {}
+        mag = values.get(magnitude_key) if magnitude_key else None
+        mag_num = float(mag) if mag is not None and np.isfinite(float(mag)) else 0.0
+        score_mag = -mag_num if lower_is_worse else mag_num
+        if (
+            best is None
+            or risk > best["risk"]
+            or (risk == best["risk"] and score_mag > best["score_mag"])
+        ):
+            best = {"risk": risk, "score_mag": score_mag, "hdata": hdata, "bi": bi}
+
+    risk = int(best["risk"]) if best else 0
+    hdata = best["hdata"] if best else {}
+    block = timeline["blocks"][best["bi"]] if best else {}
+    threat = threats_payload["threats"][hazard_id]
+    threat.update(
+        {
+            "title": hazard_id.replace("_", " ").title(),
+            "name": hazard_id.replace("_", " ").title(),
+            "prob": hdata.get("prob"),
+            "probability": hdata.get("probability"),
+            "risk": risk,
+            "risk_level": risk,
+            "risk_label": RISK_LABELS[risk],
+            "level": risk,
+            "impact_level": risk,
+            "metric": metric,
+            "display_label": display_label,
+            "display_value": display_value or hdata.get("metric") or metric,
+            "window": "72 hr",
+            "peak_start_fxx": block.get("start_fxx"),
+            "peak_end_fxx": block.get("end_fxx"),
+            "source_fxx": hdata.get("source_fxx"),
+            "peak_valid_utc": hdata.get("peak_valid_utc"),
+            "driver": driver,
+            "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
+            "data_status": "live",
+            "method": CORE_SOURCE_METHOD,
+            "source": source,
+        }
+    )
+    for hazard in threats_payload["hazards"]:
+        if hazard["id"] == hazard_id:
+            hazard.update({"risk": risk, "probability": hdata.get("probability"), "level": risk})
 
 
 def extract_core_wind_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any] | None:
@@ -405,6 +559,304 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
     threats_payload["cycle"] = timeline["cycle"]
 
 
+def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any]:
+    grib_url = aws_grib_url(cycle, "core", fxx)
+    rows = get_core_rows(cycle, fxx)
+    one_hr = one_hour_accum_window(fxx)
+    three_hr = f":{max(0, fxx - 3)}-{fxx} hour acc fcst:"
+    six_hr = six_hour_accum_window(fxx)
+
+    selectors = {
+        "rain": select_first_row(rows, lambda line: ":APCP:surface:" in line and one_hr in line and is_deterministic(line)),
+        "rain6": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and is_deterministic(line)),
+        "snow": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and is_deterministic(line)),
+        "fzra": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and is_deterministic(line)),
+        "tstm": select_first_row(rows, lambda line: ":TSTM:surface:" in line and three_hr in line and "probability forecast" in line),
+        "temp": select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
+        "vis": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
+        "vis_lt1": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and "prob <1609.34" in line),
+        "vis_lt3": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and "prob <4828.03" in line),
+        "vis_lt5": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and "prob <8046.73" in line),
+    }
+
+    out: dict[str, Any] = {"fxx": fxx, "valid_utc": iso(cycle + timedelta(hours=fxx))}
+    for key, row in selectors.items():
+        if row is None:
+            continue
+        try:
+            out[key] = extract_row_value(grib_url, row, tmp, f"core_{fxx:03d}_{key}")
+        except Exception as exc:
+            out.setdefault("errors", {})[key] = str(exc)
+
+    return out
+
+
+def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    cycle = find_latest_available_cycle("core", [1, 72])
+    source = f"NOAA NBM core AWS {cycle:%HZ}"
+    fxx_values = list(range(3, 73, 3))
+
+    decoded: dict[int, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in fxx_values:
+            decoded[fxx] = extract_core_block_values(cycle, fxx, tmp)
+
+    totals = {"RAIN": 0.0, "SNOW": 0.0, "FZRA": 0.0}
+    temp_values: list[dict[str, Any]] = []
+
+    for bi, block in enumerate(timeline["blocks"]):
+        end_fxx = int(block["end_fxx"])
+        row = decoded.get(end_fxx) or decoded.get(min(decoded, key=lambda fxx: abs(fxx - end_fxx)))
+        if not row:
+            continue
+
+        valid_utc = row["valid_utc"]
+        fxx = int(row["fxx"])
+
+        rain_in = float(row.get("rain", 0.0) or 0.0) * MM_TO_IN
+        rain6_in = float(row.get("rain6", 0.0) or 0.0) * MM_TO_IN
+        rain_risk = value_risk(max(rain_in, rain6_in), [(2.5, 5), (1.5, 4), (0.75, 3), (0.25, 2), (0.01, 1)])
+        totals["RAIN"] += rain_in
+        set_hazard_live(
+            timeline,
+            bi,
+            "RAIN",
+            rain_risk,
+            f"Rain {rain_in:.2f} in",
+            {"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "value": round(rain_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "value": round(rain_in, 3), "unit": "in", "label": "rain"}],
+            source,
+            "NBM core precipitation amount at KRNO",
+        )
+
+        snow_in = float(row.get("snow", 0.0) or 0.0) * M_TO_IN
+        snow_risk = value_risk(snow_in, [(6.0, 5), (4.0, 4), (2.0, 3), (0.01, 2)])
+        totals["SNOW"] += snow_in
+        set_hazard_live(
+            timeline,
+            bi,
+            "SNOW",
+            snow_risk,
+            "Snow Trace" if 0 < snow_in < 0.01 else f"Snow {snow_in:.2f} in",
+            {"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "value": round(snow_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "value": round(snow_in, 3), "unit": "in", "label": "snow"}],
+            source,
+            "NBM core snowfall amount at KRNO",
+        )
+
+        fzra_in = float(row.get("fzra", 0.0) or 0.0) * MM_TO_IN
+        fzra_risk = value_risk(fzra_in, [(0.20, 5), (0.10, 4), (0.01, 3), (0.001, 2)])
+        totals["FZRA"] += fzra_in
+        set_hazard_live(
+            timeline,
+            bi,
+            "FZRA",
+            fzra_risk,
+            "Freezing rain Trace" if 0 < fzra_in < 0.01 else f"Freezing rain {fzra_in:.2f} in",
+            {"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "value": round(fzra_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "value": round(fzra_in, 3), "unit": "in", "label": "fzra"}],
+            source,
+            "NBM core freezing rain/ice accretion amount at KRNO",
+        )
+
+        tstm_prob = float(row.get("tstm", 0.0) or 0.0)
+        ltg_risk = prob_risk(tstm_prob, [(60, 5), (40, 4), (15, 3), (5, 2), (1, 1)])
+        set_hazard_live(
+            timeline,
+            bi,
+            "LIGHTNING",
+            ltg_risk,
+            f"Thunder {tstm_prob:.0f}%",
+            {"fxx": fxx, "valid_utc": valid_utc, "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%", "label": "prob"}],
+            source,
+            "NBM core thunder probability at KRNO",
+        )
+
+        vis_mi = float(row.get("vis", 16093.4) or 16093.4) * M_TO_MI
+        vis_lt1 = float(row.get("vis_lt1", 0.0) or 0.0)
+        vis_lt3 = float(row.get("vis_lt3", 0.0) or 0.0)
+        vis_lt5 = float(row.get("vis_lt5", 0.0) or 0.0)
+        vis_risk = max(
+            value_risk(vis_mi, [(0.5, 5), (1.0, 4), (3.0, 3), (5.0, 2)], reverse=True),
+            prob_risk(vis_lt1, [(40, 4), (15, 3), (5, 2), (1, 1)]),
+            prob_risk(vis_lt3, [(50, 3), (15, 2), (1, 1)]),
+        )
+        set_hazard_live(
+            timeline,
+            bi,
+            "VISIBILITY",
+            vis_risk,
+            f"Visibility {min(vis_mi, 10.0):.1f} mi",
+            {
+                "fxx": fxx,
+                "valid_utc": valid_utc,
+                "visibility_mi": round(min(vis_mi, 10.0), 2),
+                "prob_lt_1mi": round(vis_lt1, 1),
+                "prob_lt_3mi": round(vis_lt3, 1),
+                "prob_lt_5mi": round(vis_lt5, 1),
+                "probability": round(max(vis_lt1, vis_lt3, vis_lt5), 1),
+                "value": round(min(vis_mi, 10.0), 2),
+                "unit": "mi",
+            },
+            [{"fxx": fxx, "valid_utc": valid_utc, "visibility_mi": round(min(vis_mi, 10.0), 2), "value": round(min(vis_mi, 10.0), 2), "unit": "mi", "label": "visibility"}],
+            source,
+            "NBM core visibility and low-visibility probabilities at KRNO",
+        )
+
+        temp_f = k_to_f(float(row.get("temp", 273.15) or 273.15))
+        temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f})
+        cold_risk = value_risk(temp_f, [(10, 4), (20, 3), (32, 2)], reverse=True)
+        heat_risk = value_risk(temp_f, [(105, 5), (100, 4), (95, 3), (90, 2)])
+        temp_risk = max(cold_risk, heat_risk)
+        set_hazard_live(
+            timeline,
+            bi,
+            "TEMPERATURE",
+            temp_risk,
+            f"Temp {temp_f:.0f}°F",
+            {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F", "label": "temp"}],
+            source,
+            "NBM core 2-meter temperature at KRNO",
+        )
+
+        wet_surface = rain_in >= 0.01 or fzra_in >= 0.001
+        flash_risk = 0
+        if temp_f <= 28 and wet_surface:
+            flash_risk = 4
+        elif temp_f <= 32 and wet_surface:
+            flash_risk = 3
+        elif temp_f <= 32:
+            flash_risk = 1
+        set_hazard_live(
+            timeline,
+            bi,
+            "FLASH_FREEZE",
+            flash_risk,
+            f"Temp {temp_f:.0f}°F",
+            {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F", "label": "temp"}],
+            source,
+            "NBM core temperature with precipitation as wet-surface proxy",
+        )
+
+    for hazard_id, key in [("RAIN", "rain_in"), ("SNOW", "snow_in"), ("FZRA", "fzra_in")]:
+        total = totals[hazard_id]
+        update_threat_from_blocks(
+            threats_payload,
+            timeline,
+            hazard_id,
+            "72-hr total",
+            "Trace" if 0 < total < 0.01 else f"{total:.2f} in",
+            "Trace" if 0 < total < 0.01 else f"72-hr total {total:.2f} in",
+            f"NBM core {hazard_id.lower()} amount summarized over 72 hours",
+            source,
+            key,
+        )
+
+    update_threat_from_blocks(threats_payload, timeline, "LIGHTNING", "Peak thunder probability", "", "Peak thunder probability", "NBM core thunder probability at KRNO", source, "probability")
+    update_threat_from_blocks(threats_payload, timeline, "VISIBILITY", "Lowest visibility", "", "Lowest visibility", "NBM core visibility at KRNO", source, "visibility_mi", lower_is_worse=True)
+    update_threat_from_blocks(threats_payload, timeline, "FLASH_FREEZE", "Lowest temperature", "", "Temperature/wet-surface freeze risk", "NBM core temperature and precipitation proxy at KRNO", source, "temp_f", lower_is_worse=True)
+
+    if temp_values:
+        max_temp = max(temp_values, key=lambda row: row["temp_f"])
+        min_temp = min(temp_values, key=lambda row: row["temp_f"])
+        risk = max(
+            value_risk(float(max_temp["temp_f"]), [(105, 5), (100, 4), (95, 3), (90, 2)]),
+            value_risk(float(min_temp["temp_f"]), [(10, 4), (20, 3), (32, 2)], reverse=True),
+        )
+        threat = threats_payload["threats"]["TEMPERATURE"]
+        threat.update(
+            {
+                "risk": risk,
+                "risk_level": risk,
+                "risk_label": RISK_LABELS[risk],
+                "level": risk,
+                "impact_level": risk,
+                "metric": f"Max {max_temp['temp_f']:.0f}°F / Min {min_temp['temp_f']:.0f}°F",
+                "display_label": "72-hr max/min",
+                "display_value": f"{max_temp['temp_f']:.0f}/{min_temp['temp_f']:.0f}°F",
+                "peak_start_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
+                "peak_end_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
+                "source_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
+                "peak_valid_utc": min_temp["valid_utc"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["valid_utc"],
+                "driver": "NBM core 2-meter temperature max/min at KRNO",
+                "data_status": "live",
+                "method": CORE_SOURCE_METHOD,
+                "source": source,
+            }
+        )
+        for hazard in threats_payload["hazards"]:
+            if hazard["id"] == "TEMPERATURE":
+                hazard.update({"risk": risk, "probability": None, "level": risk})
+
+
+def select_qmd_daymax_gust_row(rows: list[dict[str, Any]], day_index: int) -> dict[str, Any] | None:
+    label = f"{day_index}-{day_index + 1} day max fcst"
+    return select_first_row(rows, lambda line: ":GUST:10 m above ground:" in line and label in line and is_deterministic(line))
+
+
+def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    qmd_cycle = None
+    for cycle in candidate_cycles(count=8):
+        try:
+            rows = parse_idx(fetch_text(aws_grib_url(cycle, "qmd", 24) + ".idx"))
+        except Exception:
+            continue
+        if select_qmd_daymax_gust_row(rows, 0):
+            qmd_cycle = cycle
+            break
+    if not qmd_cycle:
+        return
+
+    day_rows = []
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for day_index, fxx in enumerate([24, 48, 72]):
+            try:
+                grib_url = aws_grib_url(qmd_cycle, "qmd", fxx)
+                rows = parse_idx(fetch_text(grib_url + ".idx"))
+                row = select_qmd_daymax_gust_row(rows, day_index)
+                if not row:
+                    continue
+                gust_mph = extract_row_value(grib_url, row, tmp, f"qmd_gust_day{day_index}") * MPS_TO_MPH
+                day_rows.append({"day_index": day_index, "fxx": fxx, "gust_mph": gust_mph, "valid_utc": iso(qmd_cycle + timedelta(hours=fxx))})
+            except Exception:
+                continue
+
+    if not day_rows:
+        return
+
+    peak = max(day_rows, key=lambda row: row["gust_mph"])
+    risk = wind_risk_from_gust(float(peak["gust_mph"]))
+    threat = threats_payload["threats"]["WIND"]
+    threat.update(
+        {
+            "risk": risk,
+            "risk_level": risk,
+            "risk_label": RISK_LABELS[risk],
+            "level": risk,
+            "impact_level": risk,
+            "metric": f"Mean 24-hr max gust {peak['gust_mph']:.0f} mph",
+            "display_label": "Mean 24-hr max gust",
+            "display_value": f"{peak['gust_mph']:.0f} mph",
+            "source_fxx": peak["fxx"],
+            "peak_valid_utc": peak["valid_utc"],
+            "driver": "NBM QMD 24-hour maximum gust at KRNO",
+            "methodology": "Wind risk card uses the mean 24-hour maximum gust from the newest available QMD cycle with day-max fields.",
+            "data_status": "live",
+            "method": "nbm_qmd_aws_gridpoint",
+            "source": f"NOAA NBM QMD AWS {qmd_cycle:%HZ}",
+            "daily_values": [{"fxx": row["fxx"], "gust_mph": round(row["gust_mph"], 1), "valid_utc": row["valid_utc"]} for row in day_rows],
+        }
+    )
+    for hazard in threats_payload["hazards"]:
+        if hazard["id"] == "WIND":
+            hazard.update({"risk": risk, "probability": None, "level": risk})
+
+
 def empty_hazard(hazard: str, start_fxx: int, end_fxx: int, start: datetime, end: datetime) -> dict[str, Any]:
     return {
         "id": hazard,
@@ -522,6 +974,18 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["WIND"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["WIND"] = str(exc)
+
+    try:
+        apply_core_remaining_hazards(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
+
+    try:
+        apply_qmd_wind_card(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_WIND"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_WIND"] = str(exc)
 
     return timeline, threats_payload
 
