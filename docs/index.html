@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RENO-TAHOE INTERNATIONAL AIRPORT - WEATHER DECISION SUPPORT DASHBOARD</title>
+    <title>RNO Wx DSS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -209,7 +209,8 @@
             line-height: 1.05;
             font-weight: 800;
             letter-spacing: 0;
-            color: var(--text-primary);
+            color: #67e8f9;
+            text-shadow: 0 0 18px rgba(103, 232, 249, 0.28), 0 0 2px rgba(255, 255, 255, 0.35);
         }
 
         .header-status {
@@ -308,6 +309,28 @@
             white-space: nowrap;
         }
 
+        .summary-primary-value {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .summary-primary-value i {
+            color: #facc15;
+            font-size: 1.08rem;
+            flex-shrink: 0;
+        }
+
+        .method-note {
+            color: #94a3b8;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            line-height: 1.15;
+            text-transform: uppercase;
+        }
+
         .obs-panel-grid {
             width: 52%;
             display: grid;
@@ -381,11 +404,17 @@
 
         .moisture-metric span:last-child {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.68rem;
+            font-size: clamp(0.78rem, 0.92vw, 1.02rem);
             font-weight: 900;
             line-height: 1.05;
             color: #f8fafc;
             white-space: nowrap;
+        }
+
+        #wx-icons {
+            font-size: clamp(2.25rem, 2.7vw, 3.1rem) !important;
+            line-height: 1;
+            min-height: 40px !important;
         }
 
         #temp-box > i {
@@ -561,7 +590,10 @@
         
         <div class="panel p-4" style="z-index: 20;"> 
             <div class="flex justify-between items-start mb-3">
-                <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;">Risk Matrix</h2>
+                <div>
+                    <h2 class="font-bold text-base tracking-wider text-slate-300" style="flex-shrink:0;">Risk Matrix</h2>
+                    <div class="method-note">72-hour summary risk</div>
+                </div>
             </div>
             
             <div id="hazards-grid" class="grid grid-cols-4 gap-3 flex-grow h-full relative" style="z-index: 10;"></div>
@@ -581,7 +613,10 @@
         <div class="panel p-4" style="z-index: 10;">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-3">
-                    <h2 class="font-bold text-base tracking-wider text-slate-300">Timeline Analysis</h2>
+                    <div>
+                        <h2 class="font-bold text-base tracking-wider text-slate-300">Timeline Analysis</h2>
+                        <div class="method-note">3-hour block risk · precip uses native NBM windows</div>
+                    </div>
                 </div>
                 <p class="text-xs text-slate-400 tabular-clock tracking-tight font-bold" id="timestamp2"></p>
             </div>
@@ -691,12 +726,10 @@
                     </div>
 
                     <div class="asos-box" id="temp-box">
-                        <div class="asos-label">TEMP / MOISTURE</div>
+                        <div class="asos-label">TEMPERATURE</div>
                         <div class="moisture-grid">
                             <div class="moisture-metric"><span>T</span><span id="t-val">--</span></div>
                             <div class="moisture-metric"><span>DP</span><span id="d-val">--</span></div>
-                            <div class="moisture-metric"><span>RH</span><span id="rh-val">--%</span></div>
-                            <div class="moisture-metric"><span>WB</span><span id="wb-val">--</span></div>
                         </div>
                         <div id="sfc-temp-row" style="display:none;margin-top:2px;">
                             <span class="asos-label" style="font-size:0.6rem;">SFC TEMP</span>
@@ -713,9 +746,18 @@
                         <i class="ph-fill ph-thermometer-hot absolute bottom-2 right-2 text-2xl opacity-10"></i>
                     </div>
 
+                    <div class="asos-box" id="moisture-box">
+                        <div class="asos-label">MOISTURE</div>
+                        <div class="moisture-grid">
+                            <div class="moisture-metric"><span>RH</span><span id="rh-val">--%</span></div>
+                            <div class="moisture-metric"><span>WB</span><span id="wb-val">--</span></div>
+                        </div>
+                        <i class="ph-fill ph-drop-half absolute bottom-2 right-2 text-2xl opacity-10"></i>
+                    </div>
+
                     <div class="asos-box" id="wx-card">
                         <div class="asos-label">PRESENT WEATHER</div>
-                        <div class="asos-value" id="wx-icons" style="font-size:1.8rem; margin-top:2px; min-height:28px;">--</div>
+                        <div class="asos-value" id="wx-icons" style="margin-top:2px;">--</div>
                         <div id="wx-detail" class="asos-sub" style="margin-top:2px; font-size:0.60rem; line-height:1.3; color:#a1a1aa;"></div>
                         <div id="ltg-alert" style="display:none; margin-top:4px; background:#7c3aed22; border:1px solid #a855f7; border-radius:3px; padding:2px 6px; font-size:0.65rem; font-weight:800; color:#a855f7; font-family:monospace;">⚡ SUSPEND OPS</div>
                         <i class="ph-fill ph-cloud-lightning absolute bottom-2 right-2 text-2xl opacity-10"></i>
@@ -1044,17 +1086,34 @@
                 const r = Number(primary.risk || 0);
                 const cfg = RISK_LEVELS[r] || RISK_LEVELS[0];
                 setPill('header-risk', `${cfg.name}: ${primary.name}`, riskTone(r));
-                setText('summary-primary', primary.name || 'None');
+                setPrimaryConcern(primary);
                 setText('summary-peak', primary.timeString || 'No elevated window');
                 setText('summary-impact', operationalImpactText(primary.refKey, r));
                 setText('summary-sop', r >= 4 ? 'Action likely' : r >= 3 ? 'Monitor closely' : r >= 2 ? 'Watch' : 'Normal');
             } else {
                 setPill('header-risk', 'Current risk pending', 'gray');
+                setPrimaryConcern(null);
             }
 
             const forecastOk = (dataStatus.forecastOk ?? Boolean(refsTimeline || refsThreats)) && cycleTone !== 'red';
             const obsOk = obsAge !== null && obsAge <= 15;
             setText('summary-health', forecastOk && obsOk ? 'Forecast and obs fresh' : forecastOk ? 'Forecast fresh, obs checking' : cycleTone === 'red' ? 'Forecast cycle stale' : 'Forecast loading');
+        }
+
+        function setPrimaryConcern(primary) {
+            const el = document.getElementById('summary-primary');
+            if (!el) return;
+            if (!primary) {
+                el.textContent = 'None';
+                return;
+            }
+            const refKey = primary.refKey || '';
+            const detail = HAZARD_DETAILS.find(h => {
+                const mapped = ({ Wind:'WIND', Lightning:'LIGHTNING', Snow:'SNOW', Visibility:'VISIBILITY', Fzra:'FZRA', FlashFreeze:'FLASH_FREEZE', Rain:'RAIN', Temperature:'TEMPERATURE' })[h.id] || h.id.toUpperCase();
+                return mapped === refKey;
+            });
+            const icon = detail?.icon || 'ph-warning';
+            el.innerHTML = `<span class="summary-primary-value"><i class="ph ${icon}" aria-hidden="true"></i><span>${primary.name || 'None'}</span></span>`;
         }
 
         // ── SPARKLINE HELPERS ────────────────────────────────────────────────────
@@ -3040,33 +3099,35 @@
 
                         let timeString = '';
                         const thr = threatData;
-                        if (h.timelineData?.peak_valid_utc && probability > 0) {
-                            const peakDate = new Date(h.timelineData.peak_valid_utc);
-                            const fmt = d => {
-                                const hh=d.getHours(); const ap=hh>=12?'P':'A';
-                                const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
-                                return `${dy} ${hh%12||12}${ap}`;
-                            };
-                            timeString = `PEAK ${fmt(peakDate)}`;
-                        } else if (thr && thr.peak_start_fxx && probability > 0) {
+                        const hasDisplaySignal = Boolean(displayMetric)
+                            && !/No current signal/i.test(displayMetric)
+                            && !/0\.00\s*in/i.test(displayMetric);
+                        const shouldShowPeak = refKey === 'WIND'
+                            || refKey === 'TEMPERATURE'
+                            || r > 0
+                            || hasDisplaySignal;
+                        const fmtPeak = d => {
+                            const hh=d.getHours(); const ap=hh>=12?'P':'A';
+                            const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+                            return `${dy} ${hh%12||12}${ap}`;
+                        };
+                        const peakIso = h.timelineData?.peak_valid_utc || thr?.peak_valid_utc;
+                        if (peakIso && shouldShowPeak) {
+                            timeString = `PEAK ${fmtPeak(new Date(peakIso))}`;
+                        } else if (thr && thr.peak_start_fxx && shouldShowPeak) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
                             const d2 = new Date(baseMs + (thr.peak_end_fxx || thr.peak_start_fxx) * 3600000);
                             const nowMs = globalNow.getTime();
                             if (d2.getTime() > nowMs || thr.peak_valid_utc) {
-                                const fmt = d => {
-                                    const hh=d.getHours(); const ap=hh>=12?'P':'A';
-                                    const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
-                                    return `${dy} ${hh%12||12}${ap}`;
-                                };
                                 if (refKey === 'WIND' && thr.peak_valid_utc) {
-                                    timeString = `PEAK ${fmt(new Date(thr.peak_valid_utc))}`;
+                                    timeString = `PEAK ${fmtPeak(new Date(thr.peak_valid_utc))}`;
                                 } else if ((thr.peak_end_fxx || thr.peak_start_fxx) === thr.peak_start_fxx) {
-                                    timeString = `PEAK ${fmt(d1)}`;
+                                    timeString = `PEAK ${fmtPeak(d1)}`;
                                 } else {
                                     timeString = d1.getTime() < nowMs
-                                    ? `NOW → ${fmt(d2)}`
-                                    : `${fmt(d1)} - ${fmt(d2)}`;
+                                    ? `NOW → ${fmtPeak(d2)}`
+                                    : `${fmtPeak(d1)} - ${fmtPeak(d2)}`;
                                 }
                             }
                         }
@@ -3104,7 +3165,7 @@
 
                         const titleColor = isNone ? '#71717a' : '#e2e8f0';
                         const metricColor = isNone ? '#52525b' : (isActive ? '#d4d4d8' : '#71717a');
-                        const timeColor = isNone ? 'transparent' : (isActive ? config.color : '#52525b');
+                        const timeColor = isNone && !shouldShowPeak ? 'transparent' : (isActive ? config.color : '#94a3b8');
 
                         card.innerHTML = `
                             <div class="flex justify-between items-start z-10">

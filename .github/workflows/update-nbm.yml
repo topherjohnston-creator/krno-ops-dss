@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     # NBM cycles arrive in pieces; check frequently and let the builder choose
-    # the newest complete AWS core cycle.
-    - cron: "*/30 * * * *"
+    # the newest complete AWS core cycle through 72 hours.
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: write

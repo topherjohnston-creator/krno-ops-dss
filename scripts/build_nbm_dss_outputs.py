@@ -90,14 +90,33 @@ METHODOLOGY = {
     "risk_labels": RISK_LABELS,
     "native_windows": NATIVE_WINDOWS,
     "snow": {
-        "basis": "12-hour snowfall probability thresholds using operational impact language, not NWS product language.",
+        "basis": "Timeline uses NBM snowfall amount/probability thresholds by native window. Risk cards summarize the highest 72-hour snow signal.",
         "impact_thresholds": [
-            {"level": 0, "label": "None", "threshold": "No meaningful snow signal"},
-            {"level": 1, "label": "Little to None", "threshold": "Trace/light snow signal"},
-            {"level": 2, "label": "Minor", "threshold": "Near-threshold snow or low probability"},
-            {"level": 3, "label": "Moderate", "threshold": "Meaningful chance of >=2 inches / 12 hr"},
-            {"level": 4, "label": "Major", "threshold": "Meaningful chance of >=4 inches / 12 hr"},
-            {"level": 5, "label": "Extreme", "threshold": "High confidence >4 inches / 12 hr or substantially above threshold"},
+            {"level": 0, "label": "None", "threshold": "0 inches"},
+            {"level": 2, "label": "Minor", "threshold": "Trace to 0.5 inches per native window"},
+            {"level": 3, "label": "Moderate", "threshold": "0.5 to 1 inch per native window"},
+            {"level": 4, "label": "Major", "threshold": "1 to 2 inches per native window"},
+            {"level": 5, "label": "Extreme", "threshold": "Greater than 2 inches per native window"},
+        ],
+    },
+    "rain": {
+        "basis": "Timeline uses hourly deterministic rain rates with NBM probability of measurable rain where available; QMD probability thresholds can be layered for 6-hour decision windows.",
+        "impact_thresholds": [
+            {"level": 1, "label": "Little to None", "threshold": "Less than 0.10 inches per hour"},
+            {"level": 2, "label": "Minor", "threshold": "0.10 to 0.29 inches per hour"},
+            {"level": 3, "label": "Moderate", "threshold": "0.30 to 0.69 inches per hour"},
+            {"level": 4, "label": "Major", "threshold": "0.70 to 0.99 inches per hour"},
+            {"level": 5, "label": "Extreme", "threshold": "At least 1 inch per hour"},
+        ],
+    },
+    "fzra": {
+        "basis": "Timeline uses freezing-rain/ice amount plus NBM probability-of-threshold exceedance where available.",
+        "impact_thresholds": [
+            {"level": 0, "label": "None", "threshold": "None"},
+            {"level": 2, "label": "Minor", "threshold": "Trace"},
+            {"level": 3, "label": "Moderate", "threshold": "Greater than trace"},
+            {"level": 4, "label": "Major", "threshold": "Greater than 0.10 inches"},
+            {"level": 5, "label": "Extreme", "threshold": "Greater than 0.20 inches"},
         ],
     },
     "precip_type_conflict": [
@@ -284,6 +303,14 @@ def value_risk(value: float, thresholds: list[tuple[float, int]], reverse: bool 
 
 def prob_risk(prob: float, thresholds: list[tuple[float, int]]) -> int:
     return value_risk(prob, thresholds)
+
+
+def threshold_probability_risk(values: dict[str, float], thresholds: list[tuple[str, int]], trigger_prob: float = 10.0) -> int:
+    for key, level in thresholds:
+        prob = float(values.get(key, 0.0) or 0.0)
+        if prob >= trigger_prob:
+            return level
+    return 0
 
 
 def k_to_f(value_k: float) -> float:
@@ -582,8 +609,16 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
     selectors = {
         "rain": select_first_row(rows, lambda line: ":APCP:surface:" in line and one_hr in line and is_deterministic(line)),
         "rain6": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and is_deterministic(line)),
+        "rain_prob_trace": select_first_row(rows, lambda line: ":APCP:surface:" in line and one_hr in line and "prob >0.254" in line),
         "snow": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and is_deterministic(line)),
+        "snow_prob_trace": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.00254" in line),
+        "snow_prob_0p5": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.0127" in line),
+        "snow_prob_1": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.0254" in line),
+        "snow_prob_2": select_first_row(rows, lambda line: ":ASNOW:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.0508" in line),
         "fzra": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and is_deterministic(line)),
+        "fzra_prob_trace": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.254" in line),
+        "fzra_prob_0p1": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >2.54" in line),
+        "fzra_prob_0p2": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and ("prob >5.08" in line or "prob >6.35" in line)),
         "tstm": select_first_row(rows, lambda line: ":TSTM:surface:" in line and three_hr in line and "probability forecast" in line),
         "temp": select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
         "vis": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
@@ -629,7 +664,11 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
 
         rain_in = float(row.get("rain", 0.0) or 0.0) * MM_TO_IN
         rain6_in = float(row.get("rain6", 0.0) or 0.0) * MM_TO_IN
-        rain_risk = value_risk(max(rain_in, rain6_in), [(2.5, 5), (1.5, 4), (0.75, 3), (0.25, 2), (0.01, 1)])
+        rain_prob_trace = float(row.get("rain_prob_trace", 0.0) or 0.0)
+        rain_risk = max(
+            value_risk(rain_in, [(1.0, 5), (0.70, 4), (0.30, 3), (0.10, 2), (0.001, 1)]),
+            prob_risk(rain_prob_trace, [(10, 1)]),
+        )
         totals["RAIN"] += rain_in
         set_hazard_live(
             timeline,
@@ -637,14 +676,23 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "RAIN",
             rain_risk,
             f"Rain {rain_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "value": round(rain_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "value": round(rain_in, 3), "unit": "in", "label": "rain"}],
+            {"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "probability": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in", "label": "rain"}],
             source,
-            "NBM core precipitation amount at KRNO",
+            "NBM core precipitation amount and probability of measurable rain at KRNO",
         )
 
         snow_in = float(row.get("snow", 0.0) or 0.0) * M_TO_IN
-        snow_risk = value_risk(snow_in, [(6.0, 5), (4.0, 4), (2.0, 3), (0.01, 2)])
+        snow_probs = {
+            "trace": float(row.get("snow_prob_trace", 0.0) or 0.0),
+            "0p5": float(row.get("snow_prob_0p5", 0.0) or 0.0),
+            "1": float(row.get("snow_prob_1", 0.0) or 0.0),
+            "2": float(row.get("snow_prob_2", 0.0) or 0.0),
+        }
+        snow_risk = max(
+            threshold_probability_risk(snow_probs, [("2", 5), ("1", 4), ("0p5", 3), ("trace", 2)]),
+            value_risk(snow_in, [(2.0, 5), (1.0, 4), (0.50, 3), (0.001, 2)]),
+        )
         totals["SNOW"] += snow_in
         set_hazard_live(
             timeline,
@@ -652,14 +700,22 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "SNOW",
             snow_risk,
             "Snow Trace" if 0 < snow_in < 0.01 else f"Snow {snow_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "value": round(snow_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "value": round(snow_in, 3), "unit": "in", "label": "snow"}],
+            {"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "prob_gt_trace": round(snow_probs["trace"], 1), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "prob_gt_1_in": round(snow_probs["1"], 1), "prob_gt_2_in": round(snow_probs["2"], 1), "probability": round(max(snow_probs.values()), 1), "value": round(snow_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "value": round(snow_in, 3), "unit": "in", "label": "snow"}],
             source,
-            "NBM core snowfall amount at KRNO",
+            "NBM core snowfall amount and probability-of-threshold exceedance at KRNO",
         )
 
         fzra_in = float(row.get("fzra", 0.0) or 0.0) * MM_TO_IN
-        fzra_risk = value_risk(fzra_in, [(0.20, 5), (0.10, 4), (0.01, 3), (0.001, 2)])
+        fzra_probs = {
+            "trace": float(row.get("fzra_prob_trace", 0.0) or 0.0),
+            "0p1": float(row.get("fzra_prob_0p1", 0.0) or 0.0),
+            "0p2": float(row.get("fzra_prob_0p2", 0.0) or 0.0),
+        }
+        fzra_risk = max(
+            threshold_probability_risk(fzra_probs, [("0p2", 5), ("0p1", 4), ("trace", 3)]),
+            value_risk(fzra_in, [(0.20, 5), (0.10, 4), (0.001, 2)]),
+        )
         totals["FZRA"] += fzra_in
         set_hazard_live(
             timeline,
@@ -667,10 +723,10 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "FZRA",
             fzra_risk,
             "Freezing rain Trace" if 0 < fzra_in < 0.01 else f"Freezing rain {fzra_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "value": round(fzra_in, 3), "unit": "in"},
-            [{"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "value": round(fzra_in, 3), "unit": "in", "label": "fzra"}],
+            {"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "prob_gt_0p1_in": round(fzra_probs["0p1"], 1), "prob_gt_0p2_in": round(fzra_probs["0p2"], 1), "probability": round(max(fzra_probs.values()), 1), "value": round(fzra_in, 3), "unit": "in"},
+            [{"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "value": round(fzra_in, 3), "unit": "in", "label": "fzra"}],
             source,
-            "NBM core freezing rain/ice accretion amount at KRNO",
+            "NBM core freezing rain/ice accretion amount and probability-of-threshold exceedance at KRNO",
         )
 
         tstm_prob = float(row.get("tstm", 0.0) or 0.0)
@@ -752,7 +808,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
             [{"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F", "label": "temp"}],
             source,
-            "NBM core temperature with precipitation as wet-surface proxy",
+            "NBM core temperature used as flash-freeze proxy with precipitation as wet-surface signal",
         )
 
     for hazard_id, key in [("RAIN", "rain_in"), ("SNOW", "snow_in"), ("FZRA", "fzra_in")]:
