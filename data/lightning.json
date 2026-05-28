@@ -3,14 +3,18 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "OpenWeather Lightning API",
-  "generated_utc": "2026-05-28T20:48:10Z",
-  "status": "error",
-  "message": "OpenWeather lightning fetch failed: HTTP Error 401: Unauthorized",
-  "window_minutes": 45,
+  "source": "NOAA GOES-18 GLM-L2-LCFA",
+  "satellite": "GOES-18",
+  "product": "GLM-L2-LCFA",
+  "generated_utc": "2026-05-28T21:44:31Z",
+  "status": "ok",
+  "message": null,
+  "window_minutes": 15,
+  "scan_lookback_minutes": 20,
   "search_radius_nm": 25,
-  "alert_level": "unavailable",
-  "alert_label": "Lightning feed unavailable",
+  "alert_level": "none",
+  "alert_label": "No GLM lightning detected",
+  "total_count": 0,
   "last_strike": null,
   "nearest_strike": null,
   "rings": {
@@ -30,5 +34,15 @@
       "count": 0,
       "last_utc": null
     }
-  }
+  },
+  "counts": {
+    "groups": 103779,
+    "flashes": 10782,
+    "events": 243041
+  },
+  "processed_file_count": 55,
+  "latest_file": "GLM-L2-LCFA/2026/148/21/OR_GLM-L2-LCFA_G18_s20261482143400_e20261482144000_c20261482144019.nc",
+  "errors": [],
+  "strikes": [],
+  "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
 }

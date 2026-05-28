@@ -827,7 +827,7 @@
                     </div>
 
                     <div class="asos-box" id="lightning-obs-card">
-                        <div class="asos-label">LIGHTNING PROXIMITY</div>
+                        <div class="asos-label">GLM LIGHTNING PROXIMITY</div>
                         <div class="ltg-distance" id="ltg-distance">--</div>
                         <div class="asos-sub" id="ltg-sub">Awaiting feed</div>
                         <div class="ltg-rings">
@@ -2010,9 +2010,9 @@
                 distEl.style.color = '#71717a';
                 subEl.textContent = payload?.message ? 'Feed unavailable' : 'Awaiting feed';
             } else if (!displayStrike) {
-                distEl.textContent = 'NO STRIKE';
+                distEl.textContent = 'NO LTG';
                 distEl.style.color = '#71717a';
-                subEl.textContent = `None within ${payload.search_radius_nm || 25} nm / ${payload.window_minutes || 45} min`;
+                subEl.textContent = `None within ${payload.search_radius_nm || 25} nm / ${payload.window_minutes || 15} min · GLM`;
             } else {
                 distEl.textContent = `${Number(displayStrike.distance_nm).toFixed(1)} NM`;
                 distEl.style.color = color;
@@ -2021,7 +2021,7 @@
                 const nearestText = nearest && last && nearest.distance_nm !== last.distance_nm
                     ? ` · nearest ${Number(nearest.distance_nm).toFixed(1)} NM`
                     : '';
-                subEl.textContent = `${age}${bearing}${nearestText}`;
+                subEl.textContent = `GLM · ${age}${bearing}${nearestText}`;
             }
 
             [10, 15, 20, 25].forEach(limit => {

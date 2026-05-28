@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests netCDF4 numpy
 
       - name: Extract Synoptic observations
         env:
@@ -36,11 +36,9 @@ jobs:
         run: |
           python scripts/extract_synoptic_obs.py
 
-      - name: Extract OpenWeather lightning observations
-        env:
-          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+      - name: Extract GOES GLM lightning observations
         run: |
-          python scripts/extract_openweather_lightning.py
+          python scripts/extract_glm_lightning.py
 
       - name: Commit updated observations
         run: |
