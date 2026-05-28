@@ -205,12 +205,12 @@
         }
 
         .brand-title {
-            font-size: clamp(0.86rem, 0.98vw, 1.08rem);
+            font-size: clamp(0.96rem, 1.08vw, 1.2rem);
             line-height: 1.05;
             font-weight: 800;
             letter-spacing: 0;
-            color: #67e8f9;
-            text-shadow: 0 0 18px rgba(103, 232, 249, 0.28), 0 0 2px rgba(255, 255, 255, 0.35);
+            color: #f8fafc;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.28);
         }
 
         .header-status {
@@ -303,10 +303,14 @@
             display: block;
             overflow: hidden;
             color: var(--text-primary);
-            font-size: 0.96rem;
+            font-size: 0.94rem;
             font-weight: 700;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        #summary-impact {
+            font-size: 0.9rem;
         }
 
         .summary-primary-value {
@@ -376,7 +380,7 @@
             line-height: 0.95;
         }
 
-        #sky-sub, #rh-val, #moisture-sub {
+        #sky-sub, #moisture-sub {
             font-size: 0.66rem;
             line-height: 1.05;
             overflow-wrap: anywhere;
@@ -390,10 +394,10 @@
         }
 
         .moisture-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 2px 6px;
-            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 3px;
             padding-right: 0;
         }
 
@@ -406,13 +410,14 @@
             min-width: 0;
             display: flex;
             align-items: baseline;
-            justify-content: space-between;
-            gap: 5px;
+            justify-content: flex-start;
+            gap: 4px;
+            flex: 1 1 0;
         }
 
         .moisture-metric span:first-child {
             color: #8ea6b1;
-            font-size: 0.62rem;
+            font-size: 0.66rem;
             font-weight: 900;
             letter-spacing: 0.02em;
             text-transform: uppercase;
@@ -420,7 +425,7 @@
 
         .moisture-metric span:last-child {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(0.96rem, 1.18vw, 1.28rem);
+            font-size: 1rem;
             font-weight: 900;
             line-height: 1.05;
             color: #f8fafc;
@@ -516,6 +521,12 @@
             background: rgba(255, 255, 255, 0.07);
         }
 
+        .ops-card:focus-visible,
+        .timeline-block:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, 0.72);
+            outline-offset: 2px;
+        }
+
         .ops-card::before {
             content: "";
             position: absolute;
@@ -586,7 +597,7 @@
 </head>
 <body class="p-2 lg:p-4 h-screen box-border relative">
 
-    <div id="global-tooltip"></div>
+    <div id="global-tooltip" role="tooltip" aria-hidden="true"></div>
 
     <main class="app-shell">
         <header class="app-header">
@@ -1012,7 +1023,8 @@
                 const timeEl = document.getElementById('asos-time');
                 if (timeEl && window._lastMetarFetch) {
                     const mins = Math.round((Date.now() - window._lastMetarFetch) / 60000);
-                    timeEl.textContent = mins < 1 ? 'Updated just now' : `Updated ${mins}m ago`;
+                    const verb = window._lastObsRefreshVerb || 'Checked';
+                    timeEl.textContent = mins < 1 ? `${verb} just now` : `${verb} ${mins}m ago`;
                     const ld = document.getElementById('live-dot');
                     if (ld) ld.style.display = mins < 3 ? 'inline-block' : 'none';
                     updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
@@ -1043,9 +1055,15 @@
                 tooltip.innerHTML = html;
                 tooltip.style.setProperty('--tooltip-risk-color', riskColor || '#3b5268');
                 tooltip.classList.add('visible');
+                tooltip.setAttribute('aria-hidden', 'false');
             }
         }
-        function hideTooltip() { if(tooltip) { tooltip.classList.remove('visible'); } }
+        function hideTooltip() {
+            if(tooltip) {
+                tooltip.classList.remove('visible');
+                tooltip.setAttribute('aria-hidden', 'true');
+            }
+        }
 
         function setText(id, value) {
             const el = document.getElementById(id);
@@ -1059,6 +1077,23 @@
             el.className = `status-pill ${tone || 'gray'}`;
         }
 
+        function markObsRefresh(verb = 'Checked') {
+            const now = Date.now();
+            window._lastMetarFetch = now;
+            window._lastObsRefreshVerb = verb;
+            const timeEl = document.getElementById('asos-time');
+            if (timeEl) {
+                const d = new Date(now);
+                const h = d.getHours();
+                const m = String(d.getMinutes()).padStart(2, '0');
+                const uh = String(d.getUTCHours()).padStart(2, '0');
+                const um = String(d.getUTCMinutes()).padStart(2, '0');
+                timeEl.textContent = `${verb} just now · ${h % 12 || 12}:${m}${h >= 12 ? 'P' : 'A'} PDT | ${uh}:${um}Z`;
+            }
+            const liveDot = document.getElementById('live-dot');
+            if (liveDot) liveDot.style.display = 'inline-block';
+        }
+
         function riskTone(level) {
             const n = Math.max(0, Math.min(5, Number(level || 0)));
             return `risk-${n}`;
@@ -1067,16 +1102,16 @@
         function operationalImpactText(refKey, risk) {
             const elevated = Number(risk || 0) >= 3;
             const impact = {
-                WIND: elevated ? 'Ramp and aircraft handling impacts possible' : 'Wind remains below primary ramp thresholds',
-                LIGHTNING: elevated ? 'Ramp lightning monitoring or holds may be needed' : 'Lightning monitoring only if storms approach',
-                SNOW: elevated ? 'Snow crew staging and runway treatment may be needed' : 'Snow treatment impacts are limited',
-                VISIBILITY: elevated ? 'Low-visibility procedures may need close monitoring' : 'Visibility impacts are limited',
-                FZRA: elevated ? 'Pavement treatment and icing impacts possible' : 'Freezing rain signal is limited',
-                FLASH_FREEZE: elevated ? 'Wet pavement freeze-up monitoring may be needed' : 'Flash-freeze signal is limited',
-                RAIN: elevated ? 'Watch drainage, ponding, and ramp braking conditions' : 'Rain impacts are limited',
-                TEMPERATURE: elevated ? 'Temperature-sensitive pavement or crew impacts possible' : 'Temperature remains operationally manageable',
+                WIND: elevated ? 'Ramp wind impacts' : 'Wind manageable',
+                LIGHTNING: elevated ? 'Ramp lightning monitoring' : 'Lightning watch only',
+                SNOW: elevated ? 'Snow crew monitoring' : 'No snow ops signal',
+                VISIBILITY: elevated ? 'Low-vis monitoring' : 'Visibility manageable',
+                FZRA: elevated ? 'Pavement icing watch' : 'No icing signal',
+                FLASH_FREEZE: elevated ? 'Wet pavement freeze watch' : 'No freeze signal',
+                RAIN: elevated ? 'Drainage/ponding watch' : 'Rain manageable',
+                TEMPERATURE: elevated ? 'Temp-sensitive ops' : 'Temp manageable',
             };
-            return impact[refKey] || 'Operational impacts are limited';
+            return impact[refKey] || 'Impacts limited';
         }
 
         function obsAgeMinutes() {
@@ -1610,7 +1645,7 @@
                 const hdata = bhaz?.[key];
                 const risk  = hdata?.risk  ?? 0;
                 const prob  = hdata?.prob  ?? 0;
-                const hourlyLine = renderHourlyValues(key, hdata);
+                const hourlyLine = '';
 
                 const cfg    = RISK_LEVELS[risk] || RISK_LEVELS[0];
                 const bgCol  = cfg.color + '1a';
@@ -1653,10 +1688,10 @@
                 }
                 if (!metLine && !hourlyLine) {
                     const hasHazard = Boolean(hdata);
-                    metLine = `<span style="color:#52525b;font-weight:800;">${hasHazard ? 'Awaiting later-hour REFS data' : 'Awaiting REFS data'}</span>`;
+                    metLine = `<span style="color:#52525b;font-weight:800;">${hasHazard ? 'No signal in block' : 'No data in block'}</span>`;
                 }
 
-                rows += `<div style="margin-bottom:4px;padding:4px 6px;border-radius:3px;background:${bgCol};border-left:3px solid ${cfg.color};">
+                rows += `<div style="margin-bottom:4px;padding:5px 7px;border-radius:6px;background:${bgCol};border-left:3px solid ${cfg.color};">
                     <div style="display:flex;justify-content:space-between;align-items:baseline;">
                         <span style="font-weight:800;font-size:0.78rem;color:#e4e4e7;text-transform:uppercase;">${h.name}</span>
                         <span style="font-size:0.72rem;font-weight:800;color:${txtCol};">${cfg.name.toUpperCase()}</span>
@@ -1821,14 +1856,16 @@
                 const generated = metarFromGeneratedObs(obs);
                 if (!generated) {
                     if (liveMetar) {
-                        setStatus('Holding last valid obs', '#fbbf24');
+                        markObsRefresh('Checked');
+                        setStatus('Obs file stale; checking live fallback', '#fbbf24');
                         updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
                     }
-                    return Boolean(liveMetar);
+                    return false;
                 }
                 const newMs = observationTimeMs(generated);
                 const oldMs = observationTimeMs(liveMetar);
                 if (liveMetar && newMs && oldMs && newMs <= oldMs) {
+                    markObsRefresh('Checked');
                     setStatus('Holding latest obs', '#22c55e');
                     updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
                     return true;
@@ -1840,8 +1877,8 @@
                 return true;
             } catch(e) {
                 if (liveMetar) {
-                    setStatus('Holding last valid obs', '#fbbf24');
-                    return true;
+                    markObsRefresh('Checked');
+                    setStatus('Obs file unavailable; checking live fallback', '#fbbf24');
                 }
                 return false;
             }
@@ -1937,6 +1974,7 @@
 
                 if (!rawText) {
                     if (liveMetar) {
+                        markObsRefresh('Checked');
                         setStatus('Holding last valid obs', '#fbbf24');
                         updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
                         return;
@@ -2033,7 +2071,13 @@
                 applyMETARtoDisplay(liveMetar);
                 updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
             } catch(e) {
-                setStatus(`✗ METAR Fetch failed: ${e.message}`, '#f44336');
+                if (liveMetar) {
+                    markObsRefresh('Checked');
+                    setStatus('Holding last valid obs', '#fbbf24');
+                    updateOpsChrome(window._primaryHazard, { forecastOk: Boolean(refsTimeline || refsThreats) });
+                } else {
+                    setStatus(`✗ METAR Fetch failed: ${e.message}`, '#f44336');
+                }
             }
         }
 
@@ -2320,25 +2364,7 @@
             }
 
             // Update timestamp
-            const timeEl = document.getElementById('asos-time');
-            // Update asos-time with last fetch time (not observation time)
-            const timeEl2 = document.getElementById('asos-time');
-            if (timeEl2) {
-                const now = Date.now();
-                if (!window._lastMetarFetch) window._lastMetarFetch = now;
-                window._lastMetarFetch = now;
-
-                const obsNow = new Date();
-                const obsH = obsNow.getHours(), obsM = obsNow.getMinutes();
-                const obsAp = obsH >= 12 ? 'P' : 'A';
-                const obsH12 = obsH % 12 || 12;
-                const obsMStr = String(obsM).padStart(2,'0');
-                const obsUH = String(obsNow.getUTCHours()).padStart(2,'0');
-                const obsUM = String(obsNow.getUTCMinutes()).padStart(2,'0');
-                timeEl2.textContent = `Updated just now · ${obsH12}:${obsMStr}${obsAp} PDT | ${obsUH}:${obsUM}Z`;
-                const liveDot = document.getElementById('live-dot');
-                if (liveDot) liveDot.style.display = 'inline-block';
-            }
+            markObsRefresh('Updated');
 
 
         }
@@ -2977,8 +3003,14 @@
 
                 // GitHub Actions writes threats.json and timeline.json every hour
                 const cacheBust = '?cb=' + Date.now();
-                const [metarResp, alertsResp, threatsResp, timelineResp] = await Promise.allSettled([
-                    fetchMETAR(),
+                fetchMETAR().catch(() => {
+                    if (liveMetar) {
+                        markObsRefresh('Checked');
+                        setStatus('Holding last valid obs', '#fbbf24');
+                    }
+                });
+
+                const [alertsResp, threatsResp, timelineResp] = await Promise.allSettled([
                     _testMode ? Promise.resolve(null) : fetchAlerts(),
                     fetch(_threatsFile  + cacheBust).then(r => r.json()),
                     fetch(_timelineFile + cacheBust).then(r => r.json())
@@ -3109,7 +3141,9 @@
                         );
                         const accumulationMetric = accumulationTotalText(refKey);
                         let displayMetric = accumulationMetric || '';
-                        if (!displayMetric && h.timelineData) {
+                        if (refKey === 'TEMPERATURE' && isNone) {
+                            displayMetric = 'No current signal';
+                        } else if (!displayMetric && h.timelineData) {
                             displayMetric = forecastValueText(refKey, h.timelineData, h.threatData);
                             if (isNone && !displayMetric) displayMetric = 'No current signal';
                         } else if (!displayMetric && isNone && !hasRealDisplayValue) {
@@ -3130,7 +3164,7 @@
                             && !/No current signal/i.test(displayMetric)
                             && !/0\.00\s*in/i.test(displayMetric);
                         const shouldShowPeak = refKey === 'WIND'
-                            || refKey === 'TEMPERATURE'
+                            || (refKey === 'TEMPERATURE' && !isNone)
                             || r > 0
                             || hasDisplaySignal;
                         const fmtPeak = d => {
@@ -3138,9 +3172,21 @@
                             const dy=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
                             return `${dy} ${hh%12||12}${ap}`;
                         };
+                        const timingLabel = (() => {
+                            if (refKey === 'VISIBILITY') return 'MIN';
+                            if (refKey === 'FLASH_FREEZE') return 'MIN';
+                            if (refKey === 'TEMPERATURE') {
+                                if (isNone) return '';
+                                const tempVal = Number(thr?.values?.temp_f ?? thr?.temp_f ?? h.timelineData?.values?.temp_f ?? h.timelineData?.temp_f);
+                                if (Number.isFinite(tempVal) && tempVal <= 50) return 'MIN';
+                                if (Number.isFinite(tempVal) && tempVal >= 80) return 'MAX';
+                                return 'PEAK';
+                            }
+                            return 'PEAK';
+                        })();
                         const peakIso = h.timelineData?.peak_valid_utc || thr?.peak_valid_utc;
                         if (peakIso && shouldShowPeak) {
-                            timeString = `PEAK ${fmtPeak(new Date(peakIso))}`;
+                            timeString = `${timingLabel} ${fmtPeak(new Date(peakIso))}`;
                         } else if (thr && thr.peak_start_fxx && shouldShowPeak) {
                             const baseMs = cycleStartTime || globalNow.getTime();
                             const d1 = new Date(baseMs + thr.peak_start_fxx * 3600000);
@@ -3148,13 +3194,13 @@
                             const nowMs = globalNow.getTime();
                             if (d2.getTime() > nowMs || thr.peak_valid_utc) {
                                 if (refKey === 'WIND' && thr.peak_valid_utc) {
-                                    timeString = `PEAK ${fmtPeak(new Date(thr.peak_valid_utc))}`;
+                                    timeString = `${timingLabel} ${fmtPeak(new Date(thr.peak_valid_utc))}`;
                                 } else if ((thr.peak_end_fxx || thr.peak_start_fxx) === thr.peak_start_fxx) {
-                                    timeString = `PEAK ${fmtPeak(d1)}`;
+                                    timeString = `${timingLabel} ${fmtPeak(d1)}`;
                                 } else {
                                     timeString = d1.getTime() < nowMs
-                                    ? `NOW → ${fmtPeak(d2)}`
-                                    : `${fmtPeak(d1)} - ${fmtPeak(d2)}`;
+                                    ? `${timingLabel} NOW → ${fmtPeak(d2)}`
+                                    : `${timingLabel} ${fmtPeak(d1)} - ${fmtPeak(d2)}`;
                                 }
                             }
                         }
@@ -3186,7 +3232,7 @@
                                 refKey,
                                 risk: r,
                                 prob: probability,
-                                timeString: timeString.replace(/^PEAK\s*/, '') || 'No elevated window',
+                                timeString: timeString.replace(/^(PEAK|MIN|MAX)\s*/, '') || 'No elevated window',
                             };
                         }
 
