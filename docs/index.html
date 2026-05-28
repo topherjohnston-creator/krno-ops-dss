@@ -3244,7 +3244,9 @@
                         );
                         const accumulationMetric = accumulationTotalText(refKey);
                         let displayMetric = accumulationMetric || '';
-                        if (refKey === 'TEMPERATURE' && isNone) {
+                        if (refKey === 'WIND' && h.threatData?.display_label && h.threatData?.display_value !== undefined && h.threatData?.display_value !== null) {
+                            displayMetric = `${h.threatData.display_label}: ${h.threatData.display_value}`;
+                        } else if (refKey === 'TEMPERATURE' && isNone) {
                             displayMetric = 'No current signal';
                         } else if (!displayMetric && h.timelineData) {
                             displayMetric = forecastValueText(refKey, h.timelineData, h.threatData);
