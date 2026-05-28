@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-05-27T20:36:15Z",
+  "generated_utc": "2026-05-28T00:25:07Z",
   "cycle_utc_iso": "2026-05-27T18:00:00Z",
   "cycle": "REFS 18Z",
   "valid_period": "next_60_hours",
@@ -101,10 +101,10 @@
           "member": "RRFS-2",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 24.6,
-          "source_fxx": 34,
-          "source_model_fxx": 34,
-          "peak_valid_utc": "2026-05-29T04:00:00Z"
+          "max_gust_mph": 26.8,
+          "source_fxx": 57,
+          "source_model_fxx": 57,
+          "peak_valid_utc": "2026-05-30T03:00:00Z"
         },
         {
           "member": "RRFS-2-6",
@@ -137,10 +137,10 @@
           "member": "RRFS-4",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 25.5,
-          "source_fxx": 33,
-          "source_model_fxx": 33,
-          "peak_valid_utc": "2026-05-29T03:00:00Z"
+          "max_gust_mph": 26.2,
+          "source_fxx": 35,
+          "source_model_fxx": 35,
+          "peak_valid_utc": "2026-05-29T05:00:00Z"
         },
         {
           "member": "RRFS-4-6",
@@ -155,10 +155,10 @@
           "member": "RRFS-5",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 20.6,
-          "source_fxx": 28,
-          "source_model_fxx": 28,
-          "peak_valid_utc": "2026-05-28T22:00:00Z"
+          "max_gust_mph": 26.8,
+          "source_fxx": 55,
+          "source_model_fxx": 55,
+          "peak_valid_utc": "2026-05-30T01:00:00Z"
         },
         {
           "member": "RRFS-5-6",
@@ -179,27 +179,27 @@
           "peak_valid_utc": "2026-05-29T04:00:00Z"
         }
       ],
-      "mean_member_max_gust_mph": 24.8,
-      "peak_signal_gust_mean_mph": 22.7,
-      "peak_signal_gust_max_mph": 29.3,
+      "mean_member_max_gust_mph": 25.4,
+      "peak_signal_gust_mean_mph": 21.9,
+      "peak_signal_gust_max_mph": 26.4,
       "peak_signal_member_count": 7,
       "peak_gust_mph": 29.3,
-      "peak_gust_member_mean_mph": 22.7,
-      "peak_gust_member_count": 7,
+      "peak_gust_member_mean_mph": 21.1,
+      "peak_gust_member_count": 12,
       "threshold_probabilities_60hr": {
         "gt_30_mph": 0.0,
         "gt_45_mph": 0.0,
         "gt_58_mph": 0.0,
         "gt_65_mph": 0.0
       },
-      "g24_p50_mph": 24.8
+      "g24_p50_mph": 25.4
     },
     "LIGHTNING": {
       "id": "LIGHTNING",
       "title": "LIGHTNING",
       "name": "LIGHTNING",
-      "prob": 10.0,
-      "probability": 10.0,
+      "prob": 18.5,
+      "probability": 18.5,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
@@ -207,13 +207,13 @@
       "impact_level": 3,
       "metric": "thunder probability",
       "display_label": "60-hr max probability",
-      "display_value": "10%",
+      "display_value": "18%",
       "window": "60 hr",
-      "peak_start_fxx": 28,
-      "peak_end_fxx": 28,
-      "source_fxx": 28,
-      "peak_valid_utc": "2026-05-28T22:00:00Z",
-      "driver": "REFS point extraction found 10% for thunder probability",
+      "peak_start_fxx": 27,
+      "peak_end_fxx": 27,
+      "source_fxx": 27,
+      "peak_valid_utc": "2026-05-28T21:00:00Z",
+      "driver": "REFS point extraction found 18% for thunder probability",
       "methodology": "REFS IDX-selected byte-range point extraction at the DSS location. Missing fields fail per hazard.",
       "data_status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards"
@@ -371,13 +371,13 @@
       "risk_level": 2,
       "risk_label": "Minor",
       "impact_level": 3,
-      "probability": 10.0,
-      "peak_start_fxx": 28,
-      "peak_end_fxx": 28,
+      "probability": 18.5,
+      "peak_start_fxx": 27,
+      "peak_end_fxx": 27,
       "metric": "thunder probability",
       "display_label": "60-hr max probability",
-      "display_value": "10%",
-      "driver": "REFS point extraction found 10% for thunder probability"
+      "display_value": "18%",
+      "driver": "REFS point extraction found 18% for thunder probability"
     },
     {
       "id": "RAIN",
