@@ -646,13 +646,16 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
 def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
     cycle = find_latest_available_cycle("core", [1, 72])
     source = f"NOAA NBM core AWS {cycle:%HZ}"
-    fxx_values = list(range(1, 73))
+    fxx_values = sorted({*range(1, 49), *range(51, 73, 3)})
 
     decoded: dict[int, dict[str, Any]] = {}
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
         for fxx in fxx_values:
-            decoded[fxx] = extract_core_block_values(cycle, fxx, tmp)
+            try:
+                decoded[fxx] = extract_core_block_values(cycle, fxx, tmp)
+            except Exception as exc:
+                decoded[fxx] = {"fxx": fxx, "valid_utc": iso(cycle + timedelta(hours=fxx)), "errors": {"core": str(exc)}}
 
     totals = {"RAIN": 0.0, "SNOW": 0.0, "FZRA": 0.0}
     temp_values: list[dict[str, Any]] = []
