@@ -7,22 +7,45 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #07111d;
-      --panel: #101d2b;
-      --panel-2: #132436;
-      --line: rgba(190, 212, 232, 0.14);
-      --line-strong: rgba(230, 240, 250, 0.24);
-      --text: #f4f8fc;
-      --soft: #c7d5e2;
-      --muted: #8fa1b2;
-      --fresh: #5dd39e;
-      --none: #1a2632;
-      --little: #446174;
-      --minor: #e7c64d;
-      --moderate: #ee8a33;
-      --major: #d94e46;
-      --extreme: #a83acc;
-      --radius: 8px;
+      --bg-page: #111722;
+      --bg-panel: #1b2431;
+      --bg-panel-2: #222c39;
+      --bg-panel-3: #263241;
+      --border: #334255;
+      --border-soft: #2b3747;
+      --text-main: #e7edf5;
+      --text-body: #c7d2df;
+      --text-muted: #94a3b8;
+      --text-dim: #6f8095;
+      --accent-blue: #2f78d1;
+      --accent-blue-soft: #3a86e0;
+      --risk-none: #2d3745;
+      --risk-little: #4f677d;
+      --risk-minor: #d7bc4a;
+      --risk-moderate: #d98c33;
+      --risk-major: #d25555;
+      --risk-extreme: #b44fd4;
+      --success: #34c38f;
+      --bg: var(--bg-page);
+      --panel: var(--bg-panel);
+      --panel-2: var(--bg-panel-2);
+      --line: rgba(51, 66, 85, 0.72);
+      --line-strong: rgba(68, 84, 106, 0.94);
+      --text: var(--text-main);
+      --soft: var(--text-body);
+      --muted: var(--text-muted);
+      --fresh: var(--success);
+      --none: var(--risk-none);
+      --little: var(--risk-little);
+      --minor: var(--risk-minor);
+      --moderate: var(--risk-moderate);
+      --major: var(--risk-major);
+      --extreme: var(--risk-extreme);
+      --radius: 10px;
+      --page-pad: 18px;
+      --panel-pad: 18px;
+      --gap-main: 14px;
+      --gap-small: 10px;
       --font: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
       --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
@@ -47,18 +70,17 @@
 
     body {
       background:
-        linear-gradient(180deg, rgba(19, 48, 75, 0.82), rgba(7, 17, 29, 0.98) 42%),
-        radial-gradient(circle at 88% 4%, rgba(47, 119, 181, 0.22), transparent 33rem),
-        var(--bg);
+        linear-gradient(180deg, rgba(28, 40, 55, 0.98), rgba(17, 23, 34, 0.99) 46%, #0f1520),
+        var(--bg-page);
     }
 
     .app {
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 72px 116px minmax(0, 1fr) 240px;
-      gap: 12px;
-      padding: 14px;
+      grid-template-rows: 72px 112px minmax(0, 1fr) 238px;
+      gap: var(--gap-main);
+      padding: var(--page-pad);
       overflow: hidden;
     }
 
@@ -67,8 +89,8 @@
     .concern {
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(16, 29, 43, 0.97), rgba(9, 20, 32, 0.97));
-      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+      background: linear-gradient(180deg, rgba(34, 44, 57, 0.96), rgba(27, 36, 49, 0.98));
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
       overflow: hidden;
     }
 
@@ -77,7 +99,7 @@
       grid-template-columns: 350px 1fr auto;
       align-items: center;
       gap: 20px;
-      padding: 10px 16px;
+      padding: 10px var(--panel-pad);
     }
 
     .brand {
@@ -94,15 +116,15 @@
       width: 46px;
       height: 46px;
       flex: 0 0 auto;
-      border: 2px solid rgba(255, 255, 255, 0.76);
+      border: 2px solid rgba(199, 210, 223, 0.7);
       border-radius: 50%;
-      background: linear-gradient(135deg, #1f5d8f, #143d62);
-      color: #ffffff;
+      background: linear-gradient(135deg, var(--accent-blue), #1b4f87);
+      color: var(--text-main);
       font-size: 12px;
       font-weight: 900;
       line-height: 1;
       text-align: center;
-      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 0 0 3px rgba(199, 210, 223, 0.1);
     }
 
     .brand-text {
@@ -116,7 +138,7 @@
     }
 
     .brand-text span {
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -124,6 +146,7 @@
 
     .title h1 {
       margin: 0;
+      color: var(--text-main);
       font-size: 32px;
       line-height: 1;
       font-weight: 900;
@@ -131,7 +154,7 @@
 
     .title div {
       margin-top: 4px;
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 15px;
       font-weight: 760;
       white-space: nowrap;
@@ -153,14 +176,14 @@
       padding: 5px 10px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(6, 15, 25, 0.56);
-      color: var(--soft);
+      background: rgba(38, 50, 65, 0.62);
+      color: var(--text-body);
       font-size: 16px;
       font-weight: 780;
     }
 
     .badge strong {
-      color: var(--text);
+      color: var(--text-main);
       margin-left: 5px;
     }
 
@@ -192,7 +215,7 @@
       grid-template-columns: 12px minmax(0, 1fr);
       align-items: center;
       min-height: 0;
-      background: linear-gradient(90deg, rgba(64, 36, 18, 0.98), rgba(17, 31, 45, 0.98) 58%, rgba(11, 24, 38, 0.98));
+      background: linear-gradient(90deg, rgba(38, 50, 65, 0.98), rgba(27, 36, 49, 0.99) 62%, rgba(30, 41, 55, 0.98));
     }
 
     .concern-accent {
@@ -202,12 +225,12 @@
     }
 
     .concern-main {
-      padding: 12px 22px;
+      padding: 12px 24px;
       overflow: hidden;
     }
 
     .concern-label {
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 17px;
       font-weight: 900;
       letter-spacing: 0.08em;
@@ -216,8 +239,8 @@
 
     .concern-title {
       margin-top: 4px;
-      color: #ffffff;
-      font-size: 50px;
+      color: var(--text-main);
+      font-size: 48px;
       line-height: 0.95;
       font-weight: 950;
       white-space: nowrap;
@@ -225,7 +248,7 @@
 
     .concern-detail {
       margin-top: 8px;
-      color: var(--soft);
+      color: var(--text-body);
       font-size: 25px;
       line-height: 1.1;
       font-weight: 760;
@@ -234,7 +257,7 @@
 
     .timeline-panel {
       display: grid;
-      grid-template-rows: 42px minmax(0, 1fr) 30px 34px;
+      grid-template-rows: 44px minmax(0, 1fr) 30px 34px;
       min-height: 0;
     }
 
@@ -243,14 +266,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      padding: 0 14px;
-      border-bottom: 1px solid rgba(190, 212, 232, 0.1);
-      background: rgba(6, 15, 25, 0.32);
+      padding: 0 var(--panel-pad);
+      border-bottom: 1px solid rgba(43, 55, 71, 0.82);
+      background: rgba(34, 44, 57, 0.38);
       overflow: hidden;
     }
 
     .panel-title {
-      color: var(--text);
+      color: var(--text-main);
       font-size: 22px;
       line-height: 1;
       font-weight: 930;
@@ -260,20 +283,20 @@
     }
 
     .timeline-note {
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 18px;
-      font-weight: 820;
+      font-weight: 760;
       white-space: nowrap;
     }
 
     .matrix {
       position: relative;
       display: grid;
-      grid-template-columns: 178px repeat(24, minmax(0, 1fr));
-      grid-template-rows: 48px repeat(var(--timeline-rows, 4), minmax(0, 1fr));
+      grid-template-columns: 190px repeat(24, minmax(0, 1fr));
+      grid-template-rows: 50px repeat(var(--timeline-rows, 4), minmax(0, 1fr));
       gap: 2px;
       min-height: 0;
-      padding: 10px 12px 5px;
+      padding: 12px 14px 6px;
       overflow: hidden;
     }
 
@@ -281,17 +304,17 @@
     .time-cell,
     .row-label,
     .impact-cell {
-      border: 1px solid rgba(190, 212, 232, 0.08);
-      background: rgba(8, 19, 31, 0.58);
+      border: 1px solid rgba(51, 66, 85, 0.42);
+      background: rgba(27, 36, 49, 0.6);
     }
 
     .corner {
       display: flex;
       align-items: end;
       padding: 0 0 8px 10px;
-      color: var(--muted);
+      color: var(--text-dim);
       font-size: 15px;
-      font-weight: 820;
+      font-weight: 760;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
@@ -300,7 +323,7 @@
       display: grid;
       place-items: center;
       padding: 4px 2px;
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 15px;
       line-height: 1.05;
       font-weight: 760;
@@ -309,24 +332,24 @@
 
     .time-cell strong {
       display: block;
-      color: #ffffff;
+      color: var(--text-body);
       font-size: 16px;
-      font-weight: 850;
+      font-weight: 820;
     }
 
     .time-cell.quiet {
-      color: rgba(199, 213, 226, 0.34);
+      color: rgba(148, 163, 184, 0.22);
     }
 
     .time-cell.day-start,
     .impact-cell.day-start {
-      border-left-color: rgba(255, 255, 255, 0.34);
+      border-left-color: rgba(89, 107, 131, 0.76);
       border-left-width: 2px;
     }
 
     .time-cell.night,
     .impact-cell.night {
-      box-shadow: inset 0 0 0 999px rgba(0, 0, 0, 0.12);
+      box-shadow: inset 0 0 0 999px rgba(8, 13, 20, 0.18);
     }
 
     .row-label {
@@ -334,11 +357,11 @@
       place-items: center start;
       align-items: center;
       padding: 0 12px;
-      border-left: 5px solid rgba(190, 212, 232, 0.24);
-      color: var(--text);
-      font-size: 19px;
+      border-left: 5px solid rgba(47, 120, 209, 0.56);
+      color: var(--text-main);
+      font-size: 20px;
       line-height: 1;
-      font-weight: 840;
+      font-weight: 830;
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
@@ -352,9 +375,9 @@
       display: grid;
       place-items: center;
       min-height: 0;
-      color: #ffffff;
+      color: var(--text-main);
       font-size: 18px;
-      font-weight: 880;
+      font-weight: 840;
       line-height: 1;
       text-align: center;
       text-transform: uppercase;
@@ -363,54 +386,59 @@
 
     .impact-cell[data-risk="None"] {
       background: var(--none);
-      opacity: 0.58;
+      color: transparent;
+      opacity: 0.54;
     }
 
     .impact-cell[data-risk="Little to None"] {
       background: var(--little);
-      opacity: 0.72;
+      color: transparent;
+      opacity: 0.62;
     }
 
     .impact-cell[data-risk="Minor"] {
       background: var(--minor);
-      color: #231d07;
+      color: #241f0b;
     }
 
     .impact-cell[data-risk="Moderate"] {
       background: var(--moderate);
+      color: #24170a;
     }
 
     .impact-cell[data-risk="Major"] {
       background: var(--major);
+      color: #fff2f0;
     }
 
     .impact-cell[data-risk="Extreme"] {
       background: var(--extreme);
+      color: #fff0ff;
     }
 
     .now-line {
       position: absolute;
-      top: 10px;
+      top: 12px;
       bottom: 6px;
-      left: calc(12px + 178px + ((100% - 24px - 178px - 48px) / 24) * 1.15);
+      left: calc(14px + 190px + ((100% - 28px - 190px - 48px) / 24) * 1.15);
       width: 3px;
-      background: #ffffff;
-      box-shadow: 0 0 0 1px rgba(7, 17, 29, 0.75), 0 0 14px rgba(255, 255, 255, 0.36);
+      background: var(--accent-blue-soft);
+      box-shadow: 0 0 0 1px rgba(17, 23, 34, 0.78), 0 0 12px rgba(58, 134, 224, 0.35);
       z-index: 5;
       pointer-events: none;
     }
 
     .now-tag {
       position: absolute;
-      top: 18px;
-      left: calc(12px + 178px + ((100% - 24px - 178px - 48px) / 24) * 1.15);
+      top: 20px;
+      left: calc(14px + 190px + ((100% - 28px - 190px - 48px) / 24) * 1.15);
       z-index: 6;
       translate: -50% 0;
       padding: 3px 8px;
-      border: 1px solid rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(139, 184, 245, 0.72);
       border-radius: 999px;
-      background: #ffffff;
-      color: #0b1725;
+      background: #19375c;
+      color: var(--text-main);
       font-size: 13px;
       font-weight: 950;
       letter-spacing: 0.08em;
@@ -420,7 +448,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 16px;
       padding: 0 12px 2px;
       overflow: hidden;
     }
@@ -429,16 +457,16 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 660;
       white-space: nowrap;
     }
 
     .legend-swatch {
       width: 26px;
       height: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(231, 237, 245, 0.16);
       border-radius: 2px;
     }
 
@@ -448,42 +476,42 @@
       justify-content: center;
       min-height: 0;
       padding: 0 16px 2px;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 17px;
-      font-weight: 720;
+      font-weight: 680;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .no-signal strong {
-      color: var(--soft);
-      font-weight: 800;
+      color: var(--text-body);
+      font-weight: 760;
     }
 
     .bottom-row {
       display: grid;
-      grid-template-columns: 1.2fr 1.35fr 0.95fr;
-      gap: 12px;
+      grid-template-columns: 1.18fr 1.28fr 0.98fr;
+      gap: var(--gap-main);
       min-height: 0;
       overflow: hidden;
     }
 
     .bottom-panel {
       display: grid;
-      grid-template-rows: 39px minmax(0, 1fr);
+      grid-template-rows: 42px minmax(0, 1fr);
       min-height: 0;
     }
 
     .bottom-body {
       min-height: 0;
       overflow: hidden;
-      padding: 10px 12px 12px;
+      padding: 12px 14px 14px;
     }
 
     .obs-body {
       display: grid;
-      grid-template-columns: 182px minmax(0, 1fr);
+      grid-template-columns: 184px minmax(0, 1fr);
       gap: 14px;
       align-items: center;
     }
@@ -503,8 +531,8 @@
 
     .wind-big {
       grid-column: 1 / -1;
-      color: #ffffff;
-      font-size: 40px;
+      color: var(--text-main);
+      font-size: 39px;
       line-height: 1;
       font-weight: 950;
       white-space: nowrap;
@@ -514,17 +542,17 @@
       display: flex;
       align-items: baseline;
       gap: 7px;
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 20px;
       line-height: 1.05;
-      font-weight: 800;
+      font-weight: 740;
       white-space: nowrap;
     }
 
     .obs-line strong {
-      color: var(--text);
+      color: var(--text-body);
       font-size: 23px;
-      font-weight: 940;
+      font-weight: 860;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -538,62 +566,68 @@
       display: grid;
       grid-template-rows: repeat(4, minmax(0, 1fr));
       height: 100%;
-      gap: 8px;
+      gap: 9px;
     }
 
     .hazard-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       min-height: 0;
-      padding: 0 14px;
-      border: 1px solid rgba(190, 212, 232, 0.1);
+      padding: 0 16px;
+      border: 1px solid rgba(51, 66, 85, 0.48);
       border-left: 6px solid var(--none);
-      border-radius: 6px;
-      background: rgba(8, 19, 31, 0.46);
+      border-radius: 8px;
+      background: rgba(38, 50, 65, 0.46);
       overflow: hidden;
     }
 
     .hazard-name {
-      color: #ffffff;
-      font-size: 22px;
-      font-weight: 840;
+      color: var(--text-main);
+      font-size: 23px;
+      font-weight: 820;
       white-space: nowrap;
     }
 
     .hazard-name::after {
-      content: ":";
+      content: "";
     }
 
     .hazard-risk {
-      font-size: 21px;
-      font-weight: 800;
+      font-size: 22px;
+      font-weight: 820;
       white-space: nowrap;
     }
 
     .hazard-summary {
-      color: var(--soft);
-      font-size: 20px;
-      font-weight: 680;
+      color: var(--text-body);
+      font-size: 21px;
+      font-weight: 660;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .hazard-dash {
+      color: var(--text-dim);
+      font-size: 21px;
+      font-weight: 600;
     }
 
     .alerts-data {
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: 1fr auto;
-      gap: 10px;
+      gap: var(--gap-small);
       height: 100%;
     }
 
     .alert-clear {
-      padding: 10px 12px;
+      padding: 12px 14px;
       border: 1px solid rgba(93, 211, 158, 0.34);
       border-left: 7px solid var(--fresh);
-      border-radius: 7px;
-      background: rgba(27, 74, 58, 0.18);
+      border-radius: 8px;
+      background: rgba(36, 74, 64, 0.2);
       display: grid;
       align-content: center;
       height: 100%;
@@ -607,7 +641,7 @@
     }
 
     .alert-title {
-      color: #d9fce9;
+      color: #d8f5e7;
       font-size: 27px;
       line-height: 1;
       font-weight: 950;
@@ -615,16 +649,16 @@
 
     .alert-text {
       margin-top: 5px;
-      color: var(--soft);
+      color: var(--text-body);
       font-size: 19px;
-      font-weight: 780;
+      font-weight: 720;
       white-space: nowrap;
     }
 
     .data-summary {
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 660;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -638,10 +672,10 @@
       padding: 13px 14px 14px;
       border: 1px solid var(--line-strong);
       border-left: 7px solid var(--little);
-      border-radius: 8px;
-      background: rgba(7, 17, 29, 0.96);
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
-      color: var(--soft);
+      border-radius: 10px;
+      background: rgba(27, 36, 49, 0.98);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+      color: var(--text-body);
       font-size: 16px;
       line-height: 1.25;
       pointer-events: none;
@@ -652,7 +686,7 @@
     }
 
     .tooltip-title {
-      color: #ffffff;
+      color: var(--text-main);
       font-size: 20px;
       font-weight: 930;
       text-transform: uppercase;
@@ -660,7 +694,7 @@
 
     .tooltip-time {
       margin-top: 5px;
-      color: var(--soft);
+      color: var(--text-muted);
       font-size: 15px;
       font-weight: 760;
     }
@@ -675,18 +709,18 @@
       display: flex;
       justify-content: space-between;
       gap: 14px;
-      border-top: 1px solid rgba(190, 212, 232, 0.1);
+      border-top: 1px solid rgba(51, 66, 85, 0.58);
       padding-top: 5px;
     }
 
     .tooltip-line span {
-      color: var(--muted);
+      color: var(--text-muted);
       font-weight: 760;
       white-space: nowrap;
     }
 
     .tooltip-line strong {
-      color: var(--text);
+      color: var(--text-main);
       font-weight: 880;
       text-align: right;
     }
@@ -791,21 +825,21 @@
                 <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
               </filter>
             </defs>
-            <circle cx="110" cy="110" r="96" fill="#101d2b" stroke="rgba(199,213,226,0.3)" stroke-width="2"></circle>
-            <circle cx="110" cy="110" r="67" fill="none" stroke="rgba(199,213,226,0.17)" stroke-width="1" stroke-dasharray="4 5"></circle>
-            <circle cx="110" cy="110" r="36" fill="none" stroke="rgba(199,213,226,0.12)" stroke-width="1"></circle>
-            <line x1="110" y1="18" x2="110" y2="202" stroke="rgba(199,213,226,0.2)" stroke-width="1"></line>
-            <line x1="18" y1="110" x2="202" y2="110" stroke="rgba(199,213,226,0.2)" stroke-width="1"></line>
-            <line x1="45" y1="45" x2="175" y2="175" stroke="rgba(199,213,226,0.12)" stroke-width="1"></line>
-            <line x1="175" y1="45" x2="45" y2="175" stroke="rgba(199,213,226,0.12)" stroke-width="1"></line>
-            <text x="110" y="17" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">N</text>
-            <text x="205" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">E</text>
-            <text x="110" y="216" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">S</text>
-            <text x="15" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">W</text>
+            <circle cx="110" cy="110" r="96" fill="#222c39" stroke="rgba(148,163,184,0.3)" stroke-width="2"></circle>
+            <circle cx="110" cy="110" r="67" fill="none" stroke="rgba(148,163,184,0.17)" stroke-width="1" stroke-dasharray="4 5"></circle>
+            <circle cx="110" cy="110" r="36" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="1"></circle>
+            <line x1="110" y1="18" x2="110" y2="202" stroke="rgba(148,163,184,0.2)" stroke-width="1"></line>
+            <line x1="18" y1="110" x2="202" y2="110" stroke="rgba(148,163,184,0.2)" stroke-width="1"></line>
+            <line x1="45" y1="45" x2="175" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
+            <line x1="175" y1="45" x2="45" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
+            <text x="110" y="17" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">N</text>
+            <text x="205" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">E</text>
+            <text x="110" y="216" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">S</text>
+            <text x="15" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">W</text>
             <g id="wind-arrow" transform="rotate(100 110 110)" filter="url(#windShadow)">
-              <line x1="110" y1="110" x2="110" y2="35" stroke="#f1c84b" stroke-width="8" stroke-linecap="round"></line>
-              <polygon points="110,20 98,46 122,46" fill="#f1c84b"></polygon>
-              <circle cx="110" cy="110" r="8" fill="#f1c84b" stroke="#07111d" stroke-width="3"></circle>
+              <line x1="110" y1="110" x2="110" y2="35" stroke="#d7bc4a" stroke-width="8" stroke-linecap="round"></line>
+              <polygon points="110,20 98,46 122,46" fill="#d7bc4a"></polygon>
+              <circle cx="110" cy="110" r="8" fill="#d7bc4a" stroke="#111722" stroke-width="3"></circle>
             </g>
           </svg>
           <div class="obs-lines">
@@ -849,12 +883,12 @@
   <script>
     const categories = ["None", "Little to None", "Minor", "Moderate", "Major", "Extreme"];
     const riskColors = {
-      "None": "#1a2632",
-      "Little to None": "#446174",
-      "Minor": "#e7c64d",
-      "Moderate": "#ee8a33",
-      "Major": "#d94e46",
-      "Extreme": "#a83acc"
+      "None": "#2d3745",
+      "Little to None": "#4f677d",
+      "Minor": "#d7bc4a",
+      "Moderate": "#d98c33",
+      "Major": "#d25555",
+      "Extreme": "#b44fd4"
     };
     const impactCellText = {
       "None": "",
@@ -1229,19 +1263,24 @@
         const row = document.createElement("div");
         row.className = "hazard-row";
         row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
+        const rank = rankFromCategory(item.risk);
+        const riskTextColor = rank <= 1 ? "#c7d2df" : (riskColors[item.risk] || riskColors.None);
+        const detailLimit = rank >= 2 ? 2 : 1;
         const details = [
-          rankFromCategory(item.risk) >= 2 ? item.peak : "",
+          rank >= 2 ? item.peak : "",
           compactConcernMetric(item),
-          item.impact
+          rank >= 2 ? item.impact : ""
         ]
           .filter(Boolean)
           .map(text => String(text).replace(/^Peak\s+/i, ""))
           .filter((text, index, all) => all.indexOf(text) === index)
-          .join(" | ");
+          .slice(0, detailLimit)
+          .join(", ");
         row.innerHTML = `
           <div class="hazard-name">${item.name}</div>
+          <div class="hazard-dash">-</div>
           <div class="hazard-summary">
-            <span class="hazard-risk" style="color:${riskColors[item.risk] || riskColors.None}">${item.risk}</span>${details ? `, ${details}` : ""}
+            <span class="hazard-risk" style="color:${riskTextColor}">${item.risk}</span>${details ? `, ${details}` : ""}
           </div>
         `;
         table.appendChild(row);
