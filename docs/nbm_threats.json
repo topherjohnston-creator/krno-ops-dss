@@ -3,14 +3,14 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 06Z",
-  "generated_utc": "2026-05-29T12:16:25Z",
-  "cycle_utc_iso": "2026-05-29T06:00:00Z",
-  "cycle": "NBM 06Z",
+  "source": "NOAA NBM core AWS 12Z",
+  "generated_utc": "2026-05-29T16:10:02Z",
+  "cycle_utc_iso": "2026-05-29T12:00:00Z",
+  "cycle": "NBM 12Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-05-29T07:00:00Z",
-    "end_utc": "2026-06-01T06:00:00Z"
+    "start_utc": "2026-05-29T13:00:00Z",
+    "end_utc": "2026-06-01T12:00:00Z"
   },
   "threats": {
     "WIND": {
@@ -24,13 +24,13 @@
       "risk_label": "Little to None",
       "level": 1,
       "impact_level": 1,
-      "metric": "Max gust 26 mph",
+      "metric": "Max gust 27 mph",
       "display_label": "Max gust",
-      "display_value": "26 mph",
+      "display_value": "27 mph",
       "window": "72 hr",
-      "peak_start_fxx": 25,
-      "peak_end_fxx": 48,
-      "source_fxx": 48,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
       "peak_valid_utc": "2026-05-30T06:00:00Z",
       "driver": "NBM QMD 24-hour maximum gust at KRNO",
       "methodology": "Wind risk card uses the mean 24-hour maximum gust from the newest available QMD cycle with day-max fields.",
@@ -51,22 +51,22 @@
         }
       ],
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-05-29T06:00:00Z",
+      "source_cycle_utc_iso": "2026-05-29T12:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
-          "gust_mph": 21.0,
-          "valid_utc": "2026-05-29T06:00:00Z"
-        },
-        {
-          "fxx": 48,
-          "gust_mph": 26.4,
+          "gust_mph": 26.8,
           "valid_utc": "2026-05-30T06:00:00Z"
         },
         {
-          "fxx": 72,
-          "gust_mph": 22.8,
+          "fxx": 48,
+          "gust_mph": 22.4,
           "valid_utc": "2026-05-31T06:00:00Z"
+        },
+        {
+          "fxx": 72,
+          "gust_mph": 18.8,
+          "valid_utc": "2026-06-01T06:00:00Z"
         }
       ]
     },
@@ -74,8 +74,8 @@
       "id": "LIGHTNING",
       "title": "Lightning",
       "name": "Lightning",
-      "prob": 10.0,
-      "probability": 10.0,
+      "prob": 6.0,
+      "probability": 6.0,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
@@ -83,12 +83,12 @@
       "impact_level": 2,
       "metric": "Peak thunder probability",
       "display_label": "Peak thunder probability",
-      "display_value": "Thunder 10%",
+      "display_value": "Thunder 6%",
       "window": "72 hr",
-      "peak_start_fxx": 40,
-      "peak_end_fxx": 42,
-      "source_fxx": 42,
-      "peak_valid_utc": "2026-05-31T00:00:00Z",
+      "peak_start_fxx": 37,
+      "peak_end_fxx": 39,
+      "source_fxx": 39,
+      "peak_valid_utc": "2026-05-31T03:00:00Z",
       "driver": "NBM core thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -107,7 +107,7 @@
           "source": "NBM 3-hour thunder probability"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "SNOW": {
       "id": "SNOW",
@@ -127,7 +127,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-29T09:00:00Z",
+      "peak_valid_utc": "2026-05-29T15:00:00Z",
       "driver": "NBM core snow amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -146,14 +146,14 @@
           "source": "NBM 6-hour snow amount/probability"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
       "title": "Visibility",
       "name": "Visibility",
-      "prob": 13.0,
-      "probability": 13.0,
+      "prob": 4.0,
+      "probability": 4.0,
       "risk": 1,
       "risk_level": 1,
       "risk_label": "Little to None",
@@ -161,12 +161,12 @@
       "impact_level": 1,
       "metric": "Lowest visibility",
       "display_label": "Lowest visibility",
-      "display_value": "Visibility 9.0 mi",
+      "display_value": "Visibility 10.0 mi",
       "window": "72 hr",
-      "peak_start_fxx": 10,
-      "peak_end_fxx": 12,
-      "source_fxx": 12,
-      "peak_valid_utc": "2026-05-29T18:00:00Z",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 3,
+      "source_fxx": 3,
+      "peak_valid_utc": "2026-05-29T15:00:00Z",
       "driver": "NBM core visibility at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -185,7 +185,7 @@
           "source": "NBM 3-hour visibility probabilities"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "FZRA": {
       "id": "FZRA",
@@ -205,7 +205,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-29T09:00:00Z",
+      "peak_valid_utc": "2026-05-29T15:00:00Z",
       "driver": "NBM core fzra amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -224,7 +224,7 @@
           "source": "NBM QMD 6-hour freezing rain probabilities"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
@@ -241,10 +241,10 @@
       "display_label": "Lowest temperature",
       "display_value": "Temp 45\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 4,
-      "peak_end_fxx": 6,
-      "source_fxx": 6,
-      "peak_valid_utc": "2026-05-29T12:00:00Z",
+      "peak_start_fxx": 22,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
+      "peak_valid_utc": "2026-05-30T12:00:00Z",
       "driver": "NBM core temperature and precipitation proxy at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -263,14 +263,14 @@
           "source": "NBM 3-hour temperature probabilities + wet-surface proxy"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "RAIN": {
       "id": "RAIN",
       "title": "Rain",
       "name": "Rain",
-      "prob": 13.0,
-      "probability": 13.0,
+      "prob": 10.0,
+      "probability": 10.0,
       "risk": 1,
       "risk_level": 1,
       "risk_label": "Little to None",
@@ -280,9 +280,9 @@
       "display_label": "72-hr total",
       "display_value": "0.02 in",
       "window": "72 hr",
-      "peak_start_fxx": 13,
-      "peak_end_fxx": 15,
-      "source_fxx": 15,
+      "peak_start_fxx": 7,
+      "peak_end_fxx": 9,
+      "source_fxx": 9,
       "peak_valid_utc": "2026-05-29T21:00:00Z",
       "driver": "NBM core rain amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
@@ -302,7 +302,7 @@
           "source": "NBM QMD 6-hour rain probabilities"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "TEMPERATURE": {
       "id": "TEMPERATURE",
@@ -315,13 +315,13 @@
       "risk_label": "None",
       "level": 0,
       "impact_level": 0,
-      "metric": "Max 62\u00b0F / Min 45\u00b0F",
+      "metric": "Max 63\u00b0F / Min 45\u00b0F",
       "display_label": "24-hr max/min",
-      "display_value": "62/45\u00b0F",
+      "display_value": "63/45\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 18,
-      "peak_end_fxx": 18,
-      "source_fxx": 18,
+      "peak_start_fxx": 12,
+      "peak_end_fxx": 12,
+      "source_fxx": 12,
       "peak_valid_utc": "2026-05-30T00:00:00Z",
       "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
       "methodology": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
@@ -341,7 +341,7 @@
           "source": "NBM 3-hour temperature probabilities / QMD max-min"
         }
       ],
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     }
   },
   "hazards": [
@@ -354,7 +354,7 @@
     {
       "id": "LIGHTNING",
       "risk": 2,
-      "probability": 10.0,
+      "probability": 6.0,
       "level": 2
     },
     {
@@ -366,7 +366,7 @@
     {
       "id": "VISIBILITY",
       "risk": 1,
-      "probability": 13.0,
+      "probability": 4.0,
       "level": 1
     },
     {
@@ -384,7 +384,7 @@
     {
       "id": "RAIN",
       "risk": 1,
-      "probability": 13.0,
+      "probability": 10.0,
       "level": 1
     },
     {
