@@ -10,8 +10,8 @@
       --bg: #07111d;
       --panel: #101d2b;
       --panel-2: #132436;
-      --line: rgba(190, 212, 232, 0.2);
-      --line-strong: rgba(230, 240, 250, 0.34);
+      --line: rgba(190, 212, 232, 0.14);
+      --line-strong: rgba(230, 240, 250, 0.24);
       --text: #f4f8fc;
       --soft: #c7d5e2;
       --muted: #8fa1b2;
@@ -68,7 +68,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(16, 29, 43, 0.97), rgba(9, 20, 32, 0.97));
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
       overflow: hidden;
     }
 
@@ -149,14 +149,14 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      min-height: 34px;
-      padding: 6px 10px;
+      min-height: 32px;
+      padding: 5px 10px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(6, 15, 25, 0.72);
+      background: rgba(6, 15, 25, 0.56);
       color: var(--soft);
       font-size: 16px;
-      font-weight: 850;
+      font-weight: 780;
     }
 
     .badge strong {
@@ -170,12 +170,6 @@
       color: #c4f3de;
     }
 
-    .badge.risk {
-      border-color: rgba(238, 138, 51, 0.56);
-      background: rgba(143, 71, 23, 0.36);
-      color: #ffd8b8;
-    }
-
     .badge.beta {
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -183,7 +177,7 @@
 
     .concern {
       display: grid;
-      grid-template-columns: 12px minmax(0, 1fr) auto;
+      grid-template-columns: 12px minmax(0, 1fr);
       align-items: center;
       min-height: 0;
       background: linear-gradient(90deg, rgba(64, 36, 18, 0.98), rgba(17, 31, 45, 0.98) 58%, rgba(11, 24, 38, 0.98));
@@ -211,7 +205,7 @@
     .concern-title {
       margin-top: 4px;
       color: #ffffff;
-      font-size: 52px;
+      font-size: 50px;
       line-height: 0.95;
       font-weight: 950;
       white-space: nowrap;
@@ -222,45 +216,13 @@
       color: var(--soft);
       font-size: 25px;
       line-height: 1.1;
-      font-weight: 820;
+      font-weight: 760;
       white-space: nowrap;
-    }
-
-    .concern-status {
-      display: grid;
-      grid-template-columns: repeat(3, auto);
-      gap: 12px;
-      align-items: center;
-      padding: 0 18px;
-    }
-
-    .concern-chip {
-      min-width: 150px;
-      padding: 10px 12px;
-      border: 1px solid rgba(230, 240, 250, 0.22);
-      border-radius: 7px;
-      background: rgba(6, 15, 25, 0.62);
-    }
-
-    .chip-label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .chip-value {
-      margin-top: 3px;
-      color: var(--text);
-      font-size: 22px;
-      line-height: 1;
-      font-weight: 920;
     }
 
     .timeline-panel {
       display: grid;
-      grid-template-rows: 44px minmax(0, 1fr) 36px;
+      grid-template-rows: 42px minmax(0, 1fr) 30px 34px;
       min-height: 0;
     }
 
@@ -270,14 +232,14 @@
       justify-content: space-between;
       gap: 18px;
       padding: 0 14px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(6, 15, 25, 0.44);
+      border-bottom: 1px solid rgba(190, 212, 232, 0.1);
+      background: rgba(6, 15, 25, 0.32);
       overflow: hidden;
     }
 
     .panel-title {
       color: var(--text);
-      font-size: 23px;
+      font-size: 22px;
       line-height: 1;
       font-weight: 930;
       letter-spacing: 0.08em;
@@ -295,11 +257,11 @@
     .matrix {
       position: relative;
       display: grid;
-      grid-template-columns: 190px repeat(24, minmax(0, 1fr));
-      grid-template-rows: 52px repeat(8, minmax(0, 1fr));
-      gap: 3px;
+      grid-template-columns: 178px repeat(24, minmax(0, 1fr));
+      grid-template-rows: 48px repeat(var(--timeline-rows, 4), minmax(0, 1fr));
+      gap: 2px;
       min-height: 0;
-      padding: 10px 12px 6px;
+      padding: 10px 12px 5px;
       overflow: hidden;
     }
 
@@ -307,8 +269,8 @@
     .time-cell,
     .row-label,
     .impact-cell {
-      border: 1px solid rgba(190, 212, 232, 0.15);
-      background: rgba(8, 19, 31, 0.72);
+      border: 1px solid rgba(190, 212, 232, 0.08);
+      background: rgba(8, 19, 31, 0.58);
     }
 
     .corner {
@@ -317,7 +279,7 @@
       padding: 0 0 8px 10px;
       color: var(--muted);
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 820;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
@@ -329,20 +291,24 @@
       color: var(--soft);
       font-size: 15px;
       line-height: 1.05;
-      font-weight: 850;
+      font-weight: 760;
       text-align: center;
     }
 
     .time-cell strong {
       display: block;
       color: #ffffff;
-      font-size: 17px;
-      font-weight: 950;
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    .time-cell.quiet {
+      color: rgba(199, 213, 226, 0.34);
     }
 
     .time-cell.day-start,
     .impact-cell.day-start {
-      border-left-color: rgba(255, 255, 255, 0.58);
+      border-left-color: rgba(255, 255, 255, 0.34);
       border-left-width: 2px;
     }
 
@@ -356,11 +322,11 @@
       place-items: center start;
       align-items: center;
       padding: 0 12px;
-      border-left: 5px solid rgba(190, 212, 232, 0.38);
+      border-left: 5px solid rgba(190, 212, 232, 0.24);
       color: var(--text);
-      font-size: 20px;
+      font-size: 19px;
       line-height: 1;
-      font-weight: 950;
+      font-weight: 840;
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
@@ -376,7 +342,7 @@
       min-height: 0;
       color: #ffffff;
       font-size: 18px;
-      font-weight: 950;
+      font-weight: 880;
       line-height: 1;
       text-align: center;
       text-transform: uppercase;
@@ -385,10 +351,12 @@
 
     .impact-cell[data-risk="None"] {
       background: var(--none);
+      opacity: 0.58;
     }
 
     .impact-cell[data-risk="Little to None"] {
       background: var(--little);
+      opacity: 0.72;
     }
 
     .impact-cell[data-risk="Minor"] {
@@ -412,7 +380,7 @@
       position: absolute;
       top: 10px;
       bottom: 6px;
-      left: calc(12px + 190px + ((100% - 24px - 190px - 72px) / 24) * 1.15);
+      left: calc(12px + 178px + ((100% - 24px - 178px - 48px) / 24) * 1.15);
       width: 3px;
       background: #ffffff;
       box-shadow: 0 0 0 1px rgba(7, 17, 29, 0.75), 0 0 14px rgba(255, 255, 255, 0.36);
@@ -423,7 +391,7 @@
     .now-tag {
       position: absolute;
       top: 18px;
-      left: calc(12px + 190px + ((100% - 24px - 190px - 72px) / 24) * 1.15);
+      left: calc(12px + 178px + ((100% - 24px - 178px - 48px) / 24) * 1.15);
       z-index: 6;
       translate: -50% 0;
       padding: 3px 8px;
@@ -440,8 +408,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 18px;
-      padding: 0 12px 8px;
+      gap: 14px;
+      padding: 0 12px 2px;
       overflow: hidden;
     }
 
@@ -450,16 +418,35 @@
       align-items: center;
       gap: 7px;
       color: var(--soft);
-      font-size: 16px;
-      font-weight: 830;
+      font-size: 15px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
     .legend-swatch {
       width: 26px;
       height: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 2px;
+    }
+
+    .no-signal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: 0 16px 2px;
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 720;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .no-signal strong {
+      color: var(--soft);
+      font-weight: 800;
     }
 
     .bottom-row {
@@ -537,43 +524,45 @@
 
     .hazard-table {
       display: grid;
-      grid-template-rows: repeat(5, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(0, 1fr));
       height: 100%;
-      gap: 6px;
+      gap: 8px;
     }
 
     .hazard-row {
-      display: grid;
-      grid-template-columns: 140px 148px 170px minmax(0, 1fr);
+      display: flex;
       align-items: center;
       gap: 10px;
       min-height: 0;
-      padding: 0 12px;
-      border: 1px solid rgba(190, 212, 232, 0.14);
-      border-left: 7px solid var(--none);
+      padding: 0 14px;
+      border: 1px solid rgba(190, 212, 232, 0.1);
+      border-left: 6px solid var(--none);
       border-radius: 6px;
-      background: rgba(8, 19, 31, 0.64);
+      background: rgba(8, 19, 31, 0.46);
       overflow: hidden;
     }
 
     .hazard-name {
       color: #ffffff;
       font-size: 22px;
-      font-weight: 940;
+      font-weight: 840;
       white-space: nowrap;
+    }
+
+    .hazard-name::after {
+      content: ":";
     }
 
     .hazard-risk {
       font-size: 21px;
-      font-weight: 950;
+      font-weight: 800;
       white-space: nowrap;
     }
 
-    .hazard-metric,
-    .hazard-impact {
+    .hazard-summary {
       color: var(--soft);
       font-size: 20px;
-      font-weight: 820;
+      font-weight: 680;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -582,7 +571,7 @@
     .alerts-data {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr;
+      grid-template-rows: 1fr auto;
       gap: 10px;
       height: 100%;
     }
@@ -618,6 +607,16 @@
       font-size: 19px;
       font-weight: 780;
       white-space: nowrap;
+    }
+
+    .data-summary {
+      color: var(--soft);
+      font-size: 18px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 4px;
     }
 
     .mono {
@@ -656,10 +655,6 @@
         font-size: 21px;
       }
 
-      .concern-status {
-        display: none;
-      }
-
       .bottom-row {
         grid-template-columns: 1fr 1fr 0.82fr;
       }
@@ -686,7 +681,6 @@
         <div class="badge mono" id="updated-utc">2155Z</div>
         <div class="badge fresh">Obs <strong id="obs-state">Fresh</strong></div>
         <div class="badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
-        <div class="badge risk" id="primary-risk-badge">Primary Risk: <strong id="primary-risk-text">Moderate - Lightning</strong></div>
         <div class="badge beta">Beta / Internal Use</div>
       </div>
     </header>
@@ -696,21 +690,7 @@
       <div class="concern-main">
         <div class="concern-label">Primary Concern</div>
         <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
-        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM | Ramp lightning monitoring | Monitor closely</div>
-      </div>
-      <div class="concern-status">
-        <div class="concern-chip">
-          <div class="chip-label">Data Health</div>
-          <div class="chip-value" id="primary-data-health">Fresh</div>
-        </div>
-        <div class="concern-chip">
-          <div class="chip-label">Impact</div>
-          <div class="chip-value" id="primary-impact-chip">Ramp</div>
-        </div>
-        <div class="concern-chip">
-          <div class="chip-label">Action</div>
-          <div class="chip-value" id="primary-action-chip">Monitor</div>
-        </div>
+        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM | Ramp monitoring | Monitor closely | Data fresh</div>
       </div>
     </section>
 
@@ -723,6 +703,7 @@
         <div class="now-line" aria-hidden="true"></div>
         <div class="now-tag">NOW</div>
       </div>
+      <div class="no-signal" id="no-signal-line"></div>
       <div class="legend" id="legend" aria-label="Impact category legend"></div>
     </section>
 
@@ -770,7 +751,7 @@
 
       <section class="panel bottom-panel" aria-labelledby="hazards-title">
         <div class="panel-head">
-          <div class="panel-title" id="hazards-title">Top Hazards</div>
+          <div class="panel-title" id="hazards-title">Next Concerns</div>
         </div>
         <div class="bottom-body">
           <div class="hazard-table" id="hazard-table"></div>
@@ -779,13 +760,14 @@
 
       <section class="panel bottom-panel" aria-labelledby="alerts-title">
         <div class="panel-head">
-          <div class="panel-title" id="alerts-title">Official Alerts</div>
+          <div class="panel-title" id="alerts-title">Official Alerts / Data</div>
         </div>
         <div class="bottom-body alerts-data">
           <div class="alert-clear" id="alert-box">
             <div class="alert-title">All Clear</div>
             <div class="alert-text">No active WWA/AWW for KRNO</div>
           </div>
+          <div class="data-summary" id="data-summary">Obs Fresh | NBM 18Z | Build --</div>
         </div>
       </section>
     </section>
@@ -801,6 +783,16 @@
       "Major": "#d94e46",
       "Extreme": "#a83acc"
     };
+    const impactCellText = {
+      "None": "",
+      "Little to None": "",
+      "Minor": "MINOR",
+      "Moderate": "MOD",
+      "Major": "MAJOR",
+      "Extreme": "EXTREME"
+    };
+    const coreTimelineSources = new Set(["WIND", "LIGHTNING", "RAIN", "VISIBILITY"]);
+    const timelineOrder = ["WIND", "LTNG", "RAIN", "VIS", "SNOW", "FZRA", "FLASHFZ", "TEMP"];
     const hazards = [
       { id: "WIND", row: "WIND", cell: "WIND", name: "Wind", source: "WIND" },
       { id: "LTNG", row: "LIGHTNING", cell: "LTNG", name: "Lightning", source: "LIGHTNING" },
@@ -811,8 +803,11 @@
       { id: "RAIN", row: "RAIN", cell: "RAIN", name: "Rain", source: "RAIN" },
       { id: "TEMP", row: "TEMPERATURE", cell: "TEMP", name: "Temperature", source: "TEMPERATURE" }
     ];
-    const hazardPriority = ["LIGHTNING", "WIND", "SNOW", "FZRA", "FLASH_FREEZE", "RAIN", "VISIBILITY", "FLASHFZ", "TEMPERATURE"];
+    const hazardPriority = ["LIGHTNING", "WIND", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
+    let latestObsSummary = "Obs Fresh";
+    let latestModelSummary = "NBM 18Z";
+    let latestBuildSummary = "Build --";
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
@@ -907,35 +902,74 @@
       return hour < 6 || hour >= 21;
     }
 
+    function rowRisksFor(hazard, rows) {
+      const source = rows[hazard.id] || mockRows[hazard.id] || [];
+      return Array.from({ length: 24 }, (_, index) => {
+        const value = source[index];
+        return categories.includes(value) ? value : categoryFromRank(value);
+      });
+    }
+
+    function maxRankFor(hazard, rows) {
+      return Math.max(...rowRisksFor(hazard, rows).map(rankFromCategory));
+    }
+
     function renderTimeline(blocks, rows) {
       const matrix = document.getElementById("timeline-matrix");
       matrix.querySelectorAll(".corner,.time-cell,.row-label,.impact-cell").forEach(node => node.remove());
+      const rankedHazards = hazards.map(hazard => ({
+        hazard,
+        maxRank: maxRankFor(hazard, rows)
+      }));
+      const visibleHazards = rankedHazards
+        .filter(item => coreTimelineSources.has(item.hazard.source) || item.maxRank >= 2)
+        .sort((a, b) => timelineOrder.indexOf(a.hazard.id) - timelineOrder.indexOf(b.hazard.id));
+      const hiddenQuietHazards = rankedHazards
+        .filter(item => !coreTimelineSources.has(item.hazard.source) && item.maxRank < 2)
+        .sort((a, b) => timelineOrder.indexOf(a.hazard.id) - timelineOrder.indexOf(b.hazard.id))
+        .map(item => item.hazard.name);
+
+      matrix.style.setProperty("--timeline-rows", String(Math.max(1, visibleHazards.length)));
+
       const corner = document.createElement("div");
       corner.className = "corner";
       corner.textContent = "Hazard";
       matrix.appendChild(corner);
       blocks.forEach(block => {
         const cell = document.createElement("div");
-        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
-        cell.innerHTML = `<div><strong>${block.day}</strong>+${block.offset}h<br>${block.hour}</div>`;
-        if (block.offset === 0) cell.innerHTML = `<div><strong>${block.day}</strong>Now<br>${block.hour}</div>`;
+        const showLabel = block.offset === 0 || block.offset === 72 || block.offset % 6 === 0 || block.dayStart;
+        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}${showLabel ? "" : " quiet"}`;
+        if (showLabel) {
+          cell.innerHTML = `<div><strong>${block.day}</strong>+${block.offset}h<br>${block.hour}</div>`;
+          if (block.offset === 0) cell.innerHTML = `<div><strong>${block.day}</strong>Now<br>${block.hour}</div>`;
+        }
         matrix.appendChild(cell);
       });
-      hazards.forEach(hazard => {
+      visibleHazards.forEach(({ hazard }) => {
         const label = document.createElement("div");
         label.className = "row-label";
         label.textContent = hazard.row;
         matrix.appendChild(label);
-        (rows[hazard.id] || mockRows[hazard.id]).slice(0, 24).forEach((risk, index) => {
+        rowRisksFor(hazard, rows).forEach((risk, index) => {
           const block = blocks[index];
           const cell = document.createElement("div");
           cell.className = `impact-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
           cell.dataset.risk = risk;
-          cell.textContent = rankFromCategory(risk) >= 2 ? hazard.cell : "";
+          cell.textContent = impactCellText[risk] || "";
+          cell.setAttribute("aria-label", `${hazard.name}, ${block.day} ${block.hour}, ${risk}`);
           cell.title = `${hazard.name} | ${block.day} ${block.hour} | Risk: ${risk}`;
           matrix.appendChild(cell);
         });
       });
+
+      const noSignal = document.getElementById("no-signal-line");
+      if (hiddenQuietHazards.length) {
+        noSignal.hidden = false;
+        noSignal.innerHTML = `<strong>No Signal:</strong>&nbsp;${hiddenQuietHazards.join(" | ")}`;
+      } else {
+        noSignal.hidden = true;
+        noSignal.textContent = "";
+      }
     }
 
     function renderLegend() {
@@ -949,18 +983,36 @@
       });
     }
 
+    function compactConcernMetric(item) {
+      const metric = String(item.metric || "").trim();
+      if (!metric || /no signal/i.test(metric)) return "";
+      if (item.source === "WIND") return /^gust/i.test(metric) ? metric : `Gust ${metric}`;
+      if (item.source === "VISIBILITY") return metric.replace(/^Visibility\s+/i, "").replace(/\.0(?=\s)/, "");
+      if (item.source === "RAIN") return metric.replace(/^Rain\s+/i, "");
+      return metric;
+    }
+
     function renderTopHazards(items) {
       const table = document.getElementById("hazard-table");
       table.innerHTML = "";
-      items.slice(0, 5).forEach(item => {
+      items.slice(0, 4).forEach(item => {
         const row = document.createElement("div");
         row.className = "hazard-row";
         row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
+        const details = [
+          rankFromCategory(item.risk) >= 2 ? item.peak : "",
+          compactConcernMetric(item),
+          item.impact
+        ]
+          .filter(Boolean)
+          .map(text => String(text).replace(/^Peak\s+/i, ""))
+          .filter((text, index, all) => all.indexOf(text) === index)
+          .join(" | ");
         row.innerHTML = `
           <div class="hazard-name">${item.name}</div>
-          <div class="hazard-risk" style="color:${riskColors[item.risk] || riskColors.None}">${item.risk}</div>
-          <div class="hazard-metric">${item.metric}</div>
-          <div class="hazard-impact">${item.impact}</div>
+          <div class="hazard-summary">
+            <span class="hazard-risk" style="color:${riskColors[item.risk] || riskColors.None}">${item.risk}</span>${details ? `, ${details}` : ""}
+          </div>
         `;
         table.appendChild(row);
       });
@@ -974,14 +1026,8 @@
       const impact = item.impact || operationalImpact(item.source);
       const action = item.action || operationalAction(risk);
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
-      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action}`;
-      document.getElementById("primary-risk-text").textContent = `${risk} - ${name}`;
+      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action} | Data fresh`;
       document.getElementById("primary-accent").style.background = color;
-      document.getElementById("primary-impact-chip").textContent = impact.split(" ")[0] || "Ops";
-      document.getElementById("primary-action-chip").textContent = action.split(" ")[0] || "Monitor";
-      const badge = document.getElementById("primary-risk-badge");
-      badge.style.borderColor = color;
-      badge.style.background = `color-mix(in srgb, ${color} 28%, rgba(6, 15, 25, 0.72))`;
     }
 
     function threatRowsFromData(threatMap) {
@@ -1042,6 +1088,17 @@
       return String(value).replace(/\b\w/g, char => char.toUpperCase());
     }
 
+    function updateDataSummary({ obs, model, buildUtc } = {}) {
+      if (obs) latestObsSummary = obs;
+      if (model) latestModelSummary = model;
+      if (buildUtc) {
+        const build = formatUtc(buildUtc);
+        latestBuildSummary = build ? `Build ${build}` : `Build ${buildUtc}`;
+      }
+      const summary = document.getElementById("data-summary");
+      if (summary) summary.textContent = `${latestObsSummary} | ${latestModelSummary} | ${latestBuildSummary}`;
+    }
+
     async function loadLocalData() {
       try {
         const [obsResult, timelineResult, threatsResult, alertsResult] = await Promise.allSettled([
@@ -1062,6 +1119,7 @@
               document.getElementById("obs-time").textContent = local.replace(",", "");
             }
             if (utc) document.getElementById("updated-utc").textContent = utc;
+            updateDataSummary({ obs: "Obs Fresh" });
             const dir = Math.round(Number(obs.wind_dir_deg ?? 0));
             const speed = Math.round(Number(obs.wind_speed_mph ?? obs.wind_speed_kt ?? 0));
             document.getElementById("wind-line").innerHTML = `${dir}&deg; at ${speed} mph`;
@@ -1092,6 +1150,10 @@
           if (timeline.cycle) {
             document.getElementById("model-cycle").textContent = timeline.cycle;
           }
+          updateDataSummary({
+            model: timeline.cycle || "NBM",
+            buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
+          });
         }
 
         if (threatsResult.status === "fulfilled" && threatsResult.value.ok) {
@@ -1122,6 +1184,8 @@
     renderTimeline(makeTimeBlocks(), mockRows);
     renderLegend();
     renderTopHazards(topHazards);
+    updatePrimaryConcern(topHazards[0]);
+    updateDataSummary();
     loadLocalData();
   </script>
 </body>
