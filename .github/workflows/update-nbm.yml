@@ -53,5 +53,10 @@ jobs:
           echo "---- git status before commit ----"
           git status --short
 
-          git commit -m "Update KRNO NBM DSS data" || echo "No changes to commit"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update KRNO NBM DSS data"
+            git pull --rebase origin main
+            git push
+          fi

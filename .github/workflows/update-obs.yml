@@ -50,5 +50,10 @@ jobs:
           git add docs/lightning.json || true
           git add data/lightning.json || true
 
-          git commit -m "Update KRNO observations" || echo "No changes to commit"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update KRNO observations"
+            git pull --rebase origin main
+            git push
+          fi
