@@ -7,15 +7,15 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg-page: #1f222b;
-      --bg-panel: #242933;
-      --bg-panel-2: #2a333f;
-      --bg-panel-3: #303b48;
+      --bg-page: #151b25;
+      --bg-panel: #202938;
+      --bg-panel-2: #263244;
+      --bg-panel-3: #2d3a4f;
       --border: #485663;
       --border-soft: #35414e;
-      --text-main: #e7edf5;
-      --text-body: #c7d2df;
-      --text-muted: #94a3b8;
+      --text-main: #edf3fa;
+      --text-body: #cbd7e5;
+      --text-muted: #9aaabe;
       --text-dim: #6f8095;
       --accent-blue: #1976d2;
       --accent-blue-soft: #2196f3;
@@ -26,9 +26,11 @@
       --risk-major: #d25555;
       --risk-extreme: #b44fd4;
       --success: #34c38f;
-      --desi-blue-1: #123a84;
-      --desi-blue-2: #137bd6;
-      --desi-blue-3: #1e9bf0;
+      --desi-blue-1: #17408d;
+      --desi-blue-2: #1266bf;
+      --desi-blue-3: #1684dc;
+      --broadcast-cyan: #4fc3ff;
+      --broadcast-orange: #f26a22;
       --bg: var(--bg-page);
       --panel: var(--bg-panel);
       --panel-2: var(--bg-panel-2);
@@ -44,7 +46,7 @@
       --moderate: var(--risk-moderate);
       --major: var(--risk-major);
       --extreme: var(--risk-extreme);
-      --radius: 10px;
+      --radius: 12px;
       --page-pad: 18px;
       --panel-pad: 18px;
       --gap-main: 14px;
@@ -73,7 +75,8 @@
 
     body {
       background:
-        linear-gradient(180deg, #20252e, #1f222b 42%, #191d25),
+        radial-gradient(circle at 20% -20%, rgba(41, 128, 212, 0.22), transparent 34%),
+        linear-gradient(180deg, #1c2430, #151b25 52%, #121821),
         var(--bg-page);
     }
 
@@ -81,9 +84,9 @@
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 72px 92px minmax(0, 1fr) 238px;
+      grid-template-rows: 72px 90px minmax(0, 1fr) 248px;
       gap: var(--gap-main);
-      padding: var(--page-pad);
+      padding: 0 var(--page-pad) var(--page-pad);
       overflow: hidden;
     }
 
@@ -92,8 +95,10 @@
     .concern {
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(42, 51, 63, 0.97), rgba(36, 41, 51, 0.98));
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+      background:
+        linear-gradient(180deg, rgba(39, 50, 68, 0.98), rgba(28, 37, 51, 0.99)),
+        var(--bg-panel);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
       overflow: hidden;
     }
 
@@ -101,25 +106,27 @@
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: 18px;
-      padding: 9px 18px;
-      border-color: rgba(135, 190, 245, 0.46);
-      background: linear-gradient(90deg, var(--desi-blue-1), var(--desi-blue-2) 68%, var(--desi-blue-3));
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      gap: 17px;
+      margin-inline: calc(-1 * var(--page-pad));
+      padding: 8px 46px;
+      border: 0;
+      border-radius: 0;
+      background: linear-gradient(90deg, var(--desi-blue-1) 0%, var(--desi-blue-2) 56%, var(--desi-blue-3) 100%);
+      box-shadow: none;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
       overflow: hidden;
       white-space: nowrap;
     }
 
     .seal {
       display: block;
-      width: 44px;
-      height: 44px;
+      width: 43px;
+      height: 43px;
       flex: 0 0 auto;
       padding: 0;
       border: 1px solid rgba(231, 237, 245, 0.72);
@@ -131,11 +138,13 @@
 
     .title h1 {
       margin: 0;
-      color: var(--text-main);
+      color: #f2f6fb;
+      font-family: "Roboto", "Segoe UI", Arial, sans-serif;
       font-size: 34px;
       line-height: 1;
-      font-weight: 900;
-      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-shadow: none;
     }
 
     .title div {
@@ -154,19 +163,20 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      min-height: 32px;
-      padding: 5px 10px;
-      border: 1px solid var(--line);
+      min-height: 30px;
+      padding: 4px 9px;
+      border: 1px solid rgba(235, 244, 255, 0.22);
       border-radius: 999px;
-      background: rgba(31, 34, 43, 0.42);
-      color: #e7edf5;
+      background: rgba(20, 41, 72, 0.26);
+      color: rgba(242, 246, 251, 0.9);
       font-size: 16px;
-      font-weight: 780;
+      font-weight: 500;
     }
 
     .badge strong {
       color: #ffffff;
       margin-left: 5px;
+      font-weight: 650;
     }
 
     .badge.fresh {
@@ -192,18 +202,31 @@
       letter-spacing: 0.07em;
     }
 
+    .has-tooltip {
+      cursor: help;
+    }
+
+    .has-tooltip:focus-visible,
+    .impact-cell:focus-visible {
+      outline: 3px solid rgba(139, 184, 245, 0.88);
+      outline-offset: 2px;
+    }
+
     .concern {
       display: grid;
-      grid-template-columns: 12px minmax(0, 1fr);
+      grid-template-columns: 14px minmax(0, 1fr);
       align-items: center;
       min-height: 0;
-      background: linear-gradient(90deg, rgba(42, 51, 63, 0.98), rgba(36, 41, 51, 0.99) 62%, rgba(39, 47, 58, 0.98));
+      background:
+        linear-gradient(90deg, rgba(42, 51, 63, 0.98), rgba(29, 39, 55, 0.99) 60%, rgba(35, 48, 65, 0.98)),
+        var(--bg-panel);
     }
 
     .concern-accent {
       width: 100%;
       height: 100%;
       background: var(--moderate);
+      box-shadow: 0 0 24px rgba(216, 188, 74, 0.24);
     }
 
     .concern-main {
@@ -218,7 +241,7 @@
     .concern-label {
       color: var(--text-muted);
       font-size: 17px;
-      font-weight: 900;
+      font-weight: 650;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -226,25 +249,26 @@
     .concern-title {
       margin-top: 4px;
       color: var(--text-main);
-      font-size: 46px;
+      font-size: 44px;
       line-height: 0.95;
-      font-weight: 950;
+      font-weight: 720;
       white-space: nowrap;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.24);
     }
 
     .concern-detail {
       margin-top: 0;
       color: var(--text-body);
-      font-size: 29px;
+      font-size: 27px;
       line-height: 1.15;
-      font-weight: 760;
+      font-weight: 520;
       white-space: nowrap;
       text-align: right;
     }
 
     .timeline-panel {
       display: grid;
-      grid-template-rows: 44px minmax(0, 1fr) 30px 34px;
+      grid-template-rows: 44px minmax(0, 1fr) 28px 32px;
       min-height: 0;
     }
 
@@ -254,8 +278,8 @@
       justify-content: space-between;
       gap: 18px;
       padding: 0 var(--panel-pad);
-      border-bottom: 1px solid rgba(43, 55, 71, 0.82);
-      background: rgba(31, 35, 44, 0.7);
+      border-bottom: 1px solid rgba(55, 75, 99, 0.66);
+      background: linear-gradient(90deg, rgba(30, 41, 57, 0.94), rgba(38, 50, 68, 0.74));
       overflow: hidden;
     }
 
@@ -263,23 +287,24 @@
       color: var(--text-main);
       font-size: 22px;
       line-height: 1;
-      font-weight: 930;
+      font-weight: 650;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       white-space: nowrap;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
     }
 
     .timeline-note {
       color: var(--text-muted);
       font-size: 18px;
-      font-weight: 760;
+      font-weight: 520;
       white-space: nowrap;
     }
 
     .matrix {
       position: relative;
       display: grid;
-      grid-template-columns: 190px repeat(24, minmax(0, 1fr));
+      grid-template-columns: 198px repeat(24, minmax(0, 1fr));
       grid-template-rows: 50px repeat(var(--timeline-rows, 4), minmax(0, 1fr));
       gap: 2px;
       min-height: 0;
@@ -292,7 +317,7 @@
     .row-label,
     .impact-cell {
       border: 1px solid rgba(51, 66, 85, 0.42);
-      background: rgba(31, 35, 44, 0.68);
+      background: rgba(24, 33, 46, 0.72);
     }
 
     .corner {
@@ -301,7 +326,7 @@
       padding: 0 0 8px 10px;
       color: var(--text-dim);
       font-size: 15px;
-      font-weight: 760;
+      font-weight: 520;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
@@ -313,7 +338,7 @@
       color: var(--text-muted);
       font-size: 15px;
       line-height: 1.05;
-      font-weight: 760;
+      font-weight: 500;
       text-align: center;
     }
 
@@ -321,7 +346,7 @@
       display: block;
       color: var(--text-body);
       font-size: 16px;
-      font-weight: 820;
+      font-weight: 620;
     }
 
     .time-cell.quiet {
@@ -348,7 +373,7 @@
       color: var(--text-main);
       font-size: 20px;
       line-height: 1;
-      font-weight: 830;
+      font-weight: 640;
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
@@ -364,7 +389,7 @@
       min-height: 0;
       color: var(--text-main);
       font-size: 18px;
-      font-weight: 840;
+      font-weight: 620;
       line-height: 1;
       text-align: center;
       text-transform: uppercase;
@@ -407,7 +432,7 @@
       position: absolute;
       top: 12px;
       bottom: 6px;
-      left: calc(14px + 190px + ((100% - 28px - 190px - 48px) / 24) * 1.15);
+      left: calc(14px + 198px);
       width: 3px;
       background: var(--accent-blue-soft);
       box-shadow: 0 0 0 1px rgba(17, 23, 34, 0.78), 0 0 12px rgba(58, 134, 224, 0.35);
@@ -418,7 +443,7 @@
     .now-tag {
       position: absolute;
       top: 20px;
-      left: calc(14px + 190px + ((100% - 28px - 190px - 48px) / 24) * 1.15);
+      left: calc(14px + 198px);
       z-index: 6;
       translate: -50% 0;
       padding: 3px 8px;
@@ -427,7 +452,7 @@
       background: #19375c;
       color: var(--text-main);
       font-size: 13px;
-      font-weight: 950;
+      font-weight: 650;
       letter-spacing: 0.08em;
     }
 
@@ -446,7 +471,7 @@
       gap: 7px;
       color: var(--text-muted);
       font-size: 15px;
-      font-weight: 660;
+      font-weight: 500;
       white-space: nowrap;
     }
 
@@ -465,7 +490,7 @@
       padding: 0 16px 2px;
       color: var(--text-muted);
       font-size: 17px;
-      font-weight: 680;
+      font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -473,12 +498,12 @@
 
     .no-signal strong {
       color: var(--text-body);
-      font-weight: 760;
+      font-weight: 580;
     }
 
     .bottom-row {
       display: grid;
-      grid-template-columns: 1.18fr 1.28fr 0.98fr;
+      grid-template-columns: 1.18fr 1.42fr 0.9fr;
       gap: var(--gap-main);
       min-height: 0;
       overflow: hidden;
@@ -498,14 +523,14 @@
 
     .obs-body {
       display: grid;
-      grid-template-columns: 184px minmax(0, 1fr);
-      gap: 14px;
+      grid-template-columns: 188px minmax(0, 1fr);
+      gap: 16px;
       align-items: center;
     }
 
     .wind-rose {
-      width: 178px;
-      height: 178px;
+      width: 184px;
+      height: 184px;
       display: block;
     }
 
@@ -519,9 +544,9 @@
     .wind-big {
       grid-column: 1 / -1;
       color: var(--text-main);
-      font-size: 39px;
+      font-size: 36px;
       line-height: 1;
-      font-weight: 950;
+      font-weight: 660;
       white-space: nowrap;
     }
 
@@ -532,14 +557,14 @@
       color: var(--text-muted);
       font-size: 20px;
       line-height: 1.05;
-      font-weight: 740;
+      font-weight: 500;
       white-space: nowrap;
     }
 
     .obs-line strong {
       color: var(--text-body);
-      font-size: 23px;
-      font-weight: 860;
+      font-size: 22px;
+      font-weight: 600;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -551,28 +576,42 @@
 
     .hazard-table {
       display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-template-rows: repeat(4, minmax(0, 1fr));
       height: 100%;
       gap: 9px;
     }
 
     .hazard-row {
-      display: flex;
-      align-items: center;
-      gap: 11px;
+      display: grid;
+      align-content: center;
+      gap: 3px;
       min-height: 0;
-      padding: 0 16px;
-      border: 1px solid rgba(51, 66, 85, 0.48);
+      padding: 6px 10px;
+      border: 1px solid rgba(51, 66, 85, 0.5);
       border-left: 6px solid var(--none);
       border-radius: 8px;
-      background: rgba(38, 50, 65, 0.46);
+      background: linear-gradient(180deg, rgba(42, 55, 73, 0.72), rgba(31, 42, 58, 0.68));
+      overflow: hidden;
+    }
+
+    .hazard-row[data-active="true"] {
+      background: linear-gradient(180deg, rgba(52, 66, 83, 0.86), rgba(35, 45, 60, 0.78));
+      box-shadow: inset 0 0 0 1px rgba(237, 243, 250, 0.05);
+    }
+
+    .hazard-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
       overflow: hidden;
     }
 
     .hazard-name {
       color: var(--text-main);
-      font-size: 23px;
-      font-weight: 820;
+      font-size: 17px;
+      font-weight: 600;
       white-space: nowrap;
     }
 
@@ -581,15 +620,17 @@
     }
 
     .hazard-risk {
-      font-size: 22px;
-      font-weight: 820;
+      font-size: 17px;
+      font-weight: 600;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .hazard-summary {
       color: var(--text-body);
-      font-size: 21px;
-      font-weight: 660;
+      font-size: 15px;
+      font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -597,8 +638,8 @@
 
     .hazard-dash {
       color: var(--text-dim);
-      font-size: 21px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 480;
     }
 
     .alerts-data {
@@ -614,7 +655,7 @@
       border: 1px solid rgba(93, 211, 158, 0.34);
       border-left: 7px solid var(--fresh);
       border-radius: 8px;
-      background: rgba(36, 74, 64, 0.2);
+      background: linear-gradient(180deg, rgba(48, 100, 82, 0.22), rgba(31, 48, 54, 0.72));
       display: grid;
       align-content: center;
       height: 100%;
@@ -631,21 +672,21 @@
       color: #d8f5e7;
       font-size: 27px;
       line-height: 1;
-      font-weight: 950;
+      font-weight: 650;
     }
 
     .alert-text {
       margin-top: 5px;
       color: var(--text-body);
       font-size: 19px;
-      font-weight: 720;
+      font-weight: 520;
       white-space: nowrap;
     }
 
     .data-summary {
       color: var(--text-muted);
       font-size: 18px;
-      font-weight: 660;
+      font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -675,7 +716,7 @@
     .tooltip-title {
       color: var(--text-main);
       font-size: 20px;
-      font-weight: 930;
+      font-weight: 650;
       text-transform: uppercase;
     }
 
@@ -683,7 +724,7 @@
       margin-top: 5px;
       color: var(--text-muted);
       font-size: 15px;
-      font-weight: 760;
+      font-weight: 500;
     }
 
     .tooltip-lines {
@@ -702,14 +743,16 @@
 
     .tooltip-line span {
       color: var(--text-muted);
-      font-weight: 760;
+      font-weight: 500;
       white-space: nowrap;
+      flex: 0 0 auto;
     }
 
     .tooltip-line strong {
       color: var(--text-main);
-      font-weight: 880;
+      font-weight: 600;
       text-align: right;
+      overflow-wrap: anywhere;
     }
 
     .mono {
@@ -766,11 +809,11 @@
         <h1>Weather Decision Support Dashboard</h1>
       </div>
       <div class="badges">
-        <div class="badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
+        <div class="badge" id="updated-badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
         <div class="badge mono" id="updated-utc">2155Z</div>
         <div class="badge fresh" id="obs-badge">Obs <strong id="obs-state">Fresh</strong></div>
-        <div class="badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
-        <div class="badge beta">Beta / Internal Use</div>
+        <div class="badge" id="model-badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
+        <div class="badge beta" id="beta-badge">Beta / Internal Use</div>
       </div>
     </header>
 
@@ -804,7 +847,7 @@
           <div class="panel-title" id="obs-title">Current Obs</div>
         </div>
         <div class="bottom-body obs-body">
-          <svg class="wind-rose" viewBox="0 0 220 220" role="img" aria-label="Wind rose">
+          <svg class="wind-rose" id="wind-rose" viewBox="0 0 220 220" role="img" aria-label="Wind rose">
             <defs>
               <filter id="windShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
@@ -817,10 +860,10 @@
             <line x1="18" y1="110" x2="202" y2="110" stroke="rgba(148,163,184,0.2)" stroke-width="1"></line>
             <line x1="45" y1="45" x2="175" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
             <line x1="175" y1="45" x2="45" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
-            <text x="110" y="17" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">N</text>
-            <text x="205" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">E</text>
-            <text x="110" y="216" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">S</text>
-            <text x="15" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="850">W</text>
+            <text x="110" y="17" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">N</text>
+            <text x="205" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">E</text>
+            <text x="110" y="216" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">S</text>
+            <text x="15" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">W</text>
             <g id="wind-arrow" transform="rotate(100 110 110)" filter="url(#windShadow)">
               <line x1="110" y1="110" x2="110" y2="35" stroke="#d7bc4a" stroke-width="8" stroke-linecap="round"></line>
               <polygon points="110,20 98,46 122,46" fill="#d7bc4a"></polygon>
@@ -829,20 +872,20 @@
           </svg>
           <div class="obs-lines">
             <div class="wind-big" id="wind-line">280&deg; at 6 mph</div>
-            <div class="obs-line">Gust:<strong id="gust-line">--</strong></div>
-            <div class="obs-line">VIS:<strong id="vis-line">10+ SM</strong></div>
-            <div class="obs-line wide">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
-            <div class="obs-line">TEMP/DP:<strong id="temp-line">46 / 37&deg;F</strong></div>
-            <div class="obs-line">WX:<strong id="wx-line">None</strong></div>
-            <div class="obs-line">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
-            <div class="obs-line">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
+            <div class="obs-line" id="gust-item">Gust:<strong id="gust-line">--</strong></div>
+            <div class="obs-line" id="vis-item">VIS:<strong id="vis-line">10+ SM</strong></div>
+            <div class="obs-line wide" id="sky-item">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
+            <div class="obs-line" id="temp-item">T/TD:<strong id="temp-line">46 / 37&deg;F</strong></div>
+            <div class="obs-line" id="wx-item">WX:<strong id="wx-line">None</strong></div>
+            <div class="obs-line" id="rain-item">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
+            <div class="obs-line" id="obs-time-item">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
           </div>
         </div>
       </section>
 
       <section class="panel bottom-panel" aria-labelledby="hazards-title">
         <div class="panel-head">
-          <div class="panel-title" id="hazards-title">Next Concerns</div>
+          <div class="panel-title" id="hazards-title">Hazard Status</div>
         </div>
         <div class="bottom-body">
           <div class="hazard-table" id="hazard-table"></div>
@@ -851,12 +894,12 @@
 
       <section class="panel bottom-panel" aria-labelledby="alerts-title">
         <div class="panel-head">
-          <div class="panel-title" id="alerts-title">Official Alerts / Data</div>
+          <div class="panel-title" id="alerts-title">Official Alerts</div>
         </div>
         <div class="bottom-body alerts-data">
           <div class="alert-clear" id="alert-box">
             <div class="alert-title">All Clear</div>
-            <div class="alert-text">No active WWA/AWW for KRNO</div>
+            <div class="alert-text">No active official alerts for KRNO</div>
           </div>
         </div>
       </section>
@@ -896,12 +939,16 @@
     ];
     const hazardPriority = ["LIGHTNING", "WIND", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
-    const metricLineLabels = new Set(["Forecast", "Probability", "Peak Gust", "Thunder", "Rain", "Snow", "Freezing Rain", "Visibility", "Temperature", "Values"]);
+    const metricLineLabels = new Set([
+      "Block Value", "3-hr Max Gust", "3-hr Chance", "Block Rain", "Block Snow",
+      "Block FZRA", "3-hr Min Vis", "3-hr Min Temp", "Block Temp"
+    ]);
     let latestObsSummary = "Obs Fresh";
     let latestModelSummary = "NBM 18Z";
     let latestBuildSummary = "Build --";
     let currentPrimaryItem = null;
     let latestObsMs = 0;
+    let latestTimelineBlocks = [];
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
@@ -913,11 +960,14 @@
       TEMP: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"]
     };
     const topHazards = [
-      { name: "Lightning", risk: "Moderate", metric: "Peak Thu 5 PM", impact: "Ramp monitoring" },
-      { name: "Rain", risk: "Little to None", metric: "0.02 in total", impact: "Drainage unlikely" },
-      { name: "Wind", risk: "Little to None", metric: "Gusts 26 mph", impact: "No restrictions" },
-      { name: "Visibility", risk: "Little to None", metric: "6+ mi", impact: "Low-vis unlikely" },
-      { name: "Snow", risk: "None", metric: "0.00 in", impact: "No snow action" }
+      { source: "LIGHTNING", name: "Lightning", risk: "Moderate", metric: "Thunder 17%", peak: "Peak Thu 3 PM-6 PM", impact: "Ramp lightning", action: "Monitor" },
+      { source: "WIND", name: "Wind", risk: "Little to None", metric: "Gust 26 mph", peak: "Peak Fri 8 PM-11 PM", impact: "Ramp wind", action: "Awareness" },
+      { source: "RAIN", name: "Rain", risk: "Little to None", metric: "0.02 in", peak: "Peak Thu 2 PM-5 PM", impact: "Drainage", action: "Awareness" },
+      { source: "VISIBILITY", name: "Visibility", risk: "Little to None", metric: "6+ mi", peak: "Min Fri 8 AM-11 AM", impact: "Visibility", action: "Awareness" },
+      { source: "SNOW", name: "Snow", risk: "None", metric: "0.00 in", peak: "No signal", impact: "Snow crew", action: "No action" },
+      { source: "FZRA", name: "Freezing Rain", risk: "None", metric: "0.00 in", peak: "No signal", impact: "Icing", action: "No action" },
+      { source: "FLASH_FREEZE", name: "Flash Freeze", risk: "None", metric: "No freeze signal", peak: "No signal", impact: "Pavement freeze", action: "No action" },
+      { source: "TEMPERATURE", name: "Temperature", risk: "None", metric: "No temp signal", peak: "No signal", impact: "Heat/cold", action: "No action" }
     ];
 
     function categoryFromRank(value) {
@@ -1025,12 +1075,12 @@
     function metricColorFor(source, value, label = "") {
       const numeric = numberFromText(value);
       if (source === "WIND" || /gust|wind/i.test(label)) return windColor(numeric);
-      if (source === "LIGHTNING" || /thunder|probability/i.test(label)) return lightningColor(numeric);
+      if (source === "LIGHTNING" || /thunder|probability|chance/i.test(label)) return lightningColor(numeric);
       if (source === "VISIBILITY" || /visibility/i.test(label)) return visibilityColor(numeric);
-      if (source === "RAIN" || /^rain$/i.test(label)) return precipColor(numeric);
-      if (source === "SNOW" || /^snow$/i.test(label)) return snowColor(numeric);
-      if (source === "FZRA" || /freezing rain/i.test(label)) return fzraColor(numeric);
-      if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature/i.test(label)) return tempColor(numeric);
+      if (source === "RAIN" || /rain/i.test(label)) return precipColor(numeric);
+      if (source === "SNOW" || /snow/i.test(label)) return snowColor(numeric);
+      if (source === "FZRA" || /freezing rain|fzra/i.test(label)) return fzraColor(numeric);
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return tempColor(numeric);
       return null;
     }
 
@@ -1113,36 +1163,36 @@
     function operationalImpact(source, category = "None") {
       if (rankFromCategory(category) <= 1) {
         const lowImpacts = {
-          LIGHTNING: "Routine awareness",
-          WIND: "No restrictions",
-          SNOW: "No snow action",
-          FZRA: "No icing action",
-          FLASH_FREEZE: "No freeze signal",
-          RAIN: "Drainage unlikely",
-          VISIBILITY: "Low-vis unlikely",
-          TEMPERATURE: "No temp action"
+          LIGHTNING: "Storm watch",
+          WIND: "Ramp wind",
+          SNOW: "Snow crew",
+          FZRA: "Icing",
+          FLASH_FREEZE: "Pavement freeze",
+          RAIN: "Drainage",
+          VISIBILITY: "Visibility",
+          TEMPERATURE: "Heat/cold"
         };
         return lowImpacts[source] || "No action";
       }
       const impacts = {
-        LIGHTNING: "Ramp monitoring",
-        WIND: "Ramp handling",
-        SNOW: "Snow crew watch",
-        FZRA: "Icing watch",
-        FLASH_FREEZE: "Pavement freeze watch",
-        RAIN: "Drainage watch",
-        VISIBILITY: "Low-vis watch",
-        TEMPERATURE: "Temperature watch"
+        LIGHTNING: "Ramp lightning",
+        WIND: "Ramp wind",
+        SNOW: "Snow crew",
+        FZRA: "Icing",
+        FLASH_FREEZE: "Pavement freeze",
+        RAIN: "Drainage",
+        VISIBILITY: "Low visibility",
+        TEMPERATURE: "Heat/cold"
       };
       return impacts[source] || "Ops awareness";
     }
 
     function operationalAction(category) {
       const rank = rankFromCategory(category);
-      if (rank >= 4) return "Act now";
+      if (rank >= 4) return "Act";
       if (rank >= 3) return "Monitor closely";
-      if (rank >= 2) return "Monitor trend";
-      if (rank >= 1) return "Routine awareness";
+      if (rank >= 2) return "Monitor";
+      if (rank >= 1) return "Awareness";
       return "No action";
     }
 
@@ -1150,8 +1200,9 @@
       const start = startDate ? new Date(startDate) : new Date("2026-05-28T21:00:00Z");
       const blocks = [];
       for (let i = 0; i < 24; i += 1) {
-        const displayOffset = i === 23 ? 72 : i * 3;
-        const date = new Date(start.getTime() + displayOffset * 60 * 60 * 1000);
+        const hourOffset = i * 3;
+        const displayOffset = i === 23 ? 72 : hourOffset;
+        const date = new Date(start.getTime() + hourOffset * 60 * 60 * 1000);
         blocks.push({
           offset: displayOffset,
           day: date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
@@ -1163,6 +1214,29 @@
         });
       }
       return blocks;
+    }
+
+    function timeBlocksFromTimeline(sourceBlocks, fallbackStart) {
+      if (!Array.isArray(sourceBlocks) || !sourceBlocks.length) return makeTimeBlocks(fallbackStart);
+      const selected = sourceBlocks.slice(0, 24);
+      const firstStart = new Date(selected[0]?.valid_start_utc || fallbackStart).getTime();
+      return selected.map((block, index) => {
+        const start = new Date(block.valid_start_utc);
+        const end = new Date(block.valid_end_utc);
+        const hourOffset = Number.isFinite(firstStart) && Number.isFinite(start.getTime())
+          ? Math.max(0, Math.round((start.getTime() - firstStart) / 3600000))
+          : index * 3;
+        const displayOffset = index === selected.length - 1 ? 72 : hourOffset;
+        return {
+          offset: displayOffset,
+          day: start.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
+          hour: start.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", ""),
+          validStartUtc: Number.isFinite(start.getTime()) ? start.toISOString() : block.valid_start_utc,
+          validEndUtc: Number.isFinite(end.getTime()) ? end.toISOString() : block.valid_end_utc,
+          night: isNightHour(start),
+          dayStart: index === 0 || start.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }) === "00"
+        };
+      });
     }
 
     function isNightHour(date) {
@@ -1180,6 +1254,27 @@
 
     function maxRankFor(hazard, rows) {
       return Math.max(...rowRisksFor(hazard, rows).map(rankFromCategory));
+    }
+
+    function updateNowMarker(blocks = latestTimelineBlocks) {
+      const matrix = document.getElementById("timeline-matrix");
+      const line = matrix?.querySelector(".now-line");
+      const tag = matrix?.querySelector(".now-tag");
+      if (!matrix || !line || !tag || !Array.isArray(blocks) || !blocks.length) return;
+      const start = new Date(blocks[0].validStartUtc).getTime();
+      const end = new Date(blocks[blocks.length - 1].validEndUtc).getTime();
+      const now = Date.now();
+      if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) return;
+      const visible = now >= start && now <= end;
+      line.hidden = !visible;
+      tag.hidden = !visible;
+      if (!visible) return;
+      const labelWidth = 198;
+      const padX = 14;
+      const fraction = clamp((now - start) / (end - start), 0, 1);
+      const left = padX + labelWidth + (matrix.clientWidth - padX * 2 - labelWidth) * fraction;
+      line.style.left = `${left}px`;
+      tag.style.left = `${left}px`;
     }
 
     function escapeHtml(value) {
@@ -1209,59 +1304,28 @@
       return `${String(date.getUTCHours()).padStart(2, "0")}${String(date.getUTCMinutes()).padStart(2, "0")}Z`;
     }
 
-    function formatHourlyValue(value, source) {
-      if (!value) return null;
-      const valid = value.valid_utc ? formatTooltipLocal(value.valid_utc).replace(/\s[A-Z]{3,4}$/, "") : "";
-      let metric = null;
-      if (source === "WIND") {
-        metric = value.gust_mph != null ? `Gust ${Math.round(value.gust_mph)} mph` : null;
-        if (value.wind_mph != null) metric = `${Math.round(value.wind_mph)} mph${metric ? `, ${metric}` : ""}`;
-        if (value.direction_deg != null) metric = `${Math.round(value.direction_deg)} deg ${metric || ""}`.trim();
-      } else if (source === "LIGHTNING") {
-        metric = value.prob != null ? `${Math.round(value.prob)}%` : null;
-      } else if (source === "RAIN") {
-        metric = value.rain_in != null ? `${Number(value.rain_in).toFixed(2)} in` : null;
-      } else if (source === "SNOW") {
-        metric = value.snow_in != null ? `${Number(value.snow_in).toFixed(2)} in` : null;
-      } else if (source === "FZRA") {
-        metric = value.fzra_in != null ? `${Number(value.fzra_in).toFixed(2)} in` : null;
-      } else if (source === "VISIBILITY") {
-        metric = value.visibility_mi != null ? `${Number(value.visibility_mi).toFixed(1)} mi` : null;
-      } else if (source === "FLASH_FREEZE") {
-        metric = value.temp_f != null ? `${Math.round(value.temp_f)} degF` : null;
-        if (value.rain_in != null && Number(value.rain_in) > 0) metric = `${metric || ""}, Rain ${Number(value.rain_in).toFixed(2)} in`;
-      } else if (source === "TEMPERATURE") {
-        metric = value.temp_f != null ? `${Math.round(value.temp_f)} degF` : null;
-      }
-      if (!metric && value.value != null) metric = `${value.value}${value.unit || ""}`;
-      return metric ? `${valid}: ${metric}` : null;
-    }
-
     function tooltipLinesFor(hazard, block, risk, detail) {
       const lines = [
-        ["Risk", risk],
+        ["Risk", risk]
+      ];
+      const values = detail?.values || {};
+      const valueLineCount = lines.length;
+      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["3-hr Max Gust", `${Math.round(values.gust_max_mph)} mph`]);
+      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["3-hr Chance", `${Math.round(values.prob)}%`]);
+      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Block Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Block Snow", `${Number(values.snow_in).toFixed(2)} in`]);
+      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Block FZRA", `${Number(values.fzra_in).toFixed(2)} in`]);
+      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["3-hr Min Vis", `${Number(values.visibility_mi).toFixed(1)} mi`]);
+      if (hazard.source === "FLASH_FREEZE") {
+        if (values.temp_f != null) lines.push(["3-hr Min Temp", `${Math.round(values.temp_f)} degF`]);
+        if (values.rain_in != null) lines.push(["Block Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      }
+      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Block Temp", `${Math.round(values.temp_f)} degF`]);
+      if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
+      lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
         ["Action", operationalAction(risk)]
-      ];
-      if (detail?.metric) lines.push(["Forecast", detail.metric]);
-      if (detail?.probability != null) lines.push(["Probability", `${Math.round(Number(detail.probability))}%`]);
-      const values = detail?.values || {};
-      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["Peak Gust", `${Math.round(values.gust_max_mph)} mph`]);
-      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["Thunder", `${Math.round(values.prob)}%`]);
-      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
-      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Snow", `${Number(values.snow_in).toFixed(2)} in`]);
-      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Freezing Rain", `${Number(values.fzra_in).toFixed(2)} in`]);
-      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["Visibility", `${Number(values.visibility_mi).toFixed(1)} mi`]);
-      if (hazard.source === "FLASH_FREEZE") {
-        if (values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} degF`]);
-        if (values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
-      }
-      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} degF`]);
-      const hourly = (detail?.hourly_values || [])
-        .map(value => formatHourlyValue(value, hazard.source))
-        .filter(Boolean)
-        .slice(0, 4);
-      if (hourly.length) lines.push(["Values", hourly.join(" | ")]);
+      );
       if (detail?.source) lines.push(["Source", detail.source.replace(/^NOAA\s+/i, "")]);
       return lines;
     }
@@ -1320,8 +1384,50 @@
       tooltip.hidden = true;
     }
 
+    function tooltipCardHtml(title, subtitle, lines = []) {
+      return `
+        <div class="tooltip-title">${escapeHtml(title)}</div>
+        ${subtitle ? `<div class="tooltip-time">${escapeHtml(subtitle)}</div>` : ""}
+        <div class="tooltip-lines">
+          ${lines.filter(line => line && line[1] != null && line[1] !== "").map(([label, value, color]) => `
+            <div class="tooltip-line">
+              <span>${escapeHtml(label)}</span>
+              <strong${color ? ` style="color:${color}"` : ""}>${escapeHtml(value)}</strong>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function attachTooltip(element, { title, subtitle = "", lines = [], risk = "Little to None" } = {}) {
+      if (!element) return;
+      element.classList.add("has-tooltip");
+      if (!element.hasAttribute("tabindex")) element.tabIndex = 0;
+      element.tooltipPayload = {
+        risk,
+        html: tooltipCardHtml(title, subtitle, lines)
+      };
+      if (element.dataset.tooltipBound === "true") return;
+      element.dataset.tooltipBound = "true";
+      element.addEventListener("mouseover", event => showTimelineTooltip(element, event.clientX, event.clientY));
+      element.addEventListener("mouseenter", event => showTimelineTooltip(element, event.clientX, event.clientY));
+      element.addEventListener("mousemove", event => {
+        const tooltip = document.getElementById("timeline-tooltip");
+        if (tooltip.hidden) showTimelineTooltip(element, event.clientX, event.clientY);
+        else positionTooltip(event.clientX, event.clientY);
+      });
+      element.addEventListener("mouseout", hideTimelineTooltip);
+      element.addEventListener("mouseleave", hideTimelineTooltip);
+      element.addEventListener("focus", () => {
+        const rect = element.getBoundingClientRect();
+        showTimelineTooltip(element, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      });
+      element.addEventListener("blur", hideTimelineTooltip);
+    }
+
     function renderTimeline(blocks, rows, details = {}) {
       const matrix = document.getElementById("timeline-matrix");
+      latestTimelineBlocks = blocks;
       matrix.querySelectorAll(".corner,.time-cell,.row-label,.impact-cell").forEach(node => node.remove());
       const rankedHazards = hazards.map(hazard => ({
         hazard,
@@ -1356,7 +1462,7 @@
         label.className = "row-label";
         label.textContent = hazard.row;
         matrix.appendChild(label);
-        rowRisksFor(hazard, rows).forEach((risk, index) => {
+        rowRisksFor(hazard, rows).slice(0, blocks.length).forEach((risk, index) => {
           const block = blocks[index];
           const detail = details[hazard.id]?.[index] || null;
           const cell = document.createElement("div");
@@ -1393,11 +1499,12 @@
       const noSignal = document.getElementById("no-signal-line");
       if (hiddenQuietHazards.length) {
         noSignal.hidden = false;
-        noSignal.innerHTML = `<strong>No Signal:</strong>&nbsp;${hiddenQuietHazards.join(" | ")}`;
+        noSignal.innerHTML = `<strong>Low / No Signal:</strong>&nbsp;${hiddenQuietHazards.map(escapeHtml).join(" | ")}`;
       } else {
         noSignal.hidden = true;
         noSignal.textContent = "";
       }
+      requestAnimationFrame(() => updateNowMarker(blocks));
     }
 
     function renderLegend() {
@@ -1407,6 +1514,12 @@
         const item = document.createElement("div");
         item.className = "legend-item";
         item.innerHTML = `<span class="legend-swatch" style="background:${riskColors[category]}"></span>${category}`;
+        attachTooltip(item, {
+          title: `${category} Risk`,
+          subtitle: "Impact category",
+          lines: [["Meaning", operationalAction(category)], ["Used By", "Timeline and hazards"]],
+          risk: category
+        });
         legend.appendChild(item);
       });
     }
@@ -1417,17 +1530,35 @@
       if (item.source === "WIND") return /^gust/i.test(metric) ? metric : `Gust ${metric}`;
       if (item.source === "VISIBILITY") return metric.replace(/^Visibility\s+/i, "").replace(/\.0(?=\s)/, "");
       if (item.source === "RAIN") return metric.replace(/^Rain\s+/i, "");
+      if (item.source === "LIGHTNING") return metric.replace(/^Thunder\s+/i, "Thunder ");
+      if (item.source === "TEMPERATURE") return metric.replace(/^Temp\s+/i, "");
       return metric;
+    }
+
+    function concernTooltipLines(item, details) {
+      const metric = compactConcernMetric(item) || item.metric || "No signal";
+      const sourceText = String(item.dataSource || "").replace(/^NOAA\s+/i, "");
+      return [
+        ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
+        ["Timing", item.peak || "No signal"],
+        ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
+        ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
+        ["Action", item.action || operationalAction(item.risk)],
+        ["Summary", "72-hr hazard status"],
+        ["Timeline", "3-hour block risk"],
+        ["Source", sourceText]
+      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) === 0));
     }
 
     function renderTopHazards(items) {
       const table = document.getElementById("hazard-table");
       table.innerHTML = "";
-      items.slice(0, 4).forEach(item => {
+      items.slice(0, 8).forEach(item => {
         const row = document.createElement("div");
         row.className = "hazard-row";
         row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
         const rank = rankFromCategory(item.risk);
+        row.dataset.active = String(rank >= 2);
         const riskTextColor = rank <= 1 ? "#c7d2df" : (riskColors[item.risk] || riskColors.None);
         const detailLimit = rank >= 2 ? 2 : 1;
         const metric = compactConcernMetric(item);
@@ -1443,12 +1574,19 @@
           .slice(0, detailLimit)
           .join(", ");
         row.innerHTML = `
-          <div class="hazard-name">${item.name}</div>
-          <div class="hazard-dash">-</div>
-          <div class="hazard-summary">
-            <span class="hazard-risk" style="color:${riskTextColor}">${item.risk}</span>${details ? `, <span style="color:${metricColor || "var(--text-body)"}">${details}</span>` : ""}
+          <div class="hazard-top">
+            <div class="hazard-name">${escapeHtml(item.name)}</div>
+            <div class="hazard-dash">-</div>
+            <div class="hazard-risk" style="color:${riskTextColor}">${escapeHtml(item.risk)}</div>
           </div>
+          <div class="hazard-summary"${metricColor && details ? ` style="color:${metricColor}"` : ""}>${escapeHtml(details || metric || item.impact || "No signal")}</div>
         `;
+        attachTooltip(row, {
+          title: `${item.name} - ${item.risk}`,
+          subtitle: details || item.peak || "",
+          lines: concernTooltipLines(item, details),
+          risk: item.risk
+        });
         table.appendChild(row);
       });
     }
@@ -1464,10 +1602,17 @@
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
       document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action}`;
       document.getElementById("primary-accent").style.background = color;
+      attachTooltip(document.getElementById("primary-concern"), {
+        title: `${name} - ${risk}`,
+        subtitle: item.peak || "Peak window TBD",
+        lines: concernTooltipLines({ ...item, impact, action }, ""),
+        risk
+      });
     }
 
     function threatRowsFromData(threatMap, blocks = []) {
-      return Object.entries(threatMap || {}).map(([source, item]) => {
+      return hazardPriority.map(source => {
+        const item = threatMap?.[source] || {};
         const risk = item.risk_label || categoryFromRank(item.risk_level ?? item.risk);
         const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
         const windowText = impactWindowFromBlocks(source, risk, blocks);
@@ -1478,7 +1623,9 @@
           metric: item.display_value || item.metric || "No signal",
           peak: windowText || shortPeak(item.peak_valid_utc),
           impact: operationalImpact(source, risk),
-          action: operationalAction(risk)
+          action: operationalAction(risk),
+          methodology: item.methodology || item.driver || "",
+          dataSource: item.source || ""
         };
       }).sort((a, b) => {
         const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
@@ -1519,13 +1666,33 @@
 
     function updateHeaderClock() {
       const now = new Date();
-      document.getElementById("updated-local").textContent = now.toLocaleTimeString("en-US", {
+      const localText = now.toLocaleTimeString("en-US", {
         timeZone: "America/Los_Angeles",
         hour: "numeric",
         minute: "2-digit",
         timeZoneName: "short"
       });
-      document.getElementById("updated-utc").textContent = `${String(now.getUTCHours()).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}Z`;
+      const utcText = `${String(now.getUTCHours()).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}Z`;
+      document.getElementById("updated-local").textContent = localText;
+      document.getElementById("updated-utc").textContent = utcText;
+      attachTooltip(document.getElementById("updated-badge"), {
+        title: "Dashboard Clock",
+        subtitle: `${localText} / ${utcText}`,
+        lines: [
+          ["Meaning", "Page check time"],
+          ["Refresh", "Clock every minute"],
+          ["Forecast", "Reloads every 2 min"],
+          ["Obs", "Reloads every 1 min"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("updated-utc"), {
+        title: "UTC Time",
+        subtitle: utcText,
+        lines: [["Meaning", "Current Z time"]],
+        risk: "Little to None"
+      });
+      updateNowMarker();
     }
 
     function cloudFromMetar(raw) {
@@ -1563,12 +1730,53 @@
       if (arrow && Number.isFinite(Number(deg))) {
         const windToDirection = (Math.round(Number(deg)) + 180) % 360;
         arrow.setAttribute("transform", `rotate(${windToDirection} 110 110)`);
+        arrow.style.opacity = "1";
+      } else if (arrow) {
+        arrow.style.opacity = "0.22";
       }
     }
 
     function displayWeatherText(value) {
       if (!value) return "None";
       return String(value).replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function wetBulbF(tempF, rh) {
+      const tempC = (Number(tempF) - 32) * 5 / 9;
+      const humidity = Number(rh);
+      if (!Number.isFinite(tempC) || !Number.isFinite(humidity)) return null;
+      const wbC = tempC * Math.atan(0.151977 * Math.sqrt(humidity + 8.313659))
+        + Math.atan(tempC + humidity)
+        - Math.atan(humidity - 1.676331)
+        + 0.00391838 * Math.pow(humidity, 1.5) * Math.atan(0.023101 * humidity)
+        - 4.686035;
+      return wbC * 9 / 5 + 32;
+    }
+
+    function formatWindValue(directionText, speed, gust) {
+      if (speed <= 1 && (!Number.isFinite(gust) || gust <= 1)) return "CALM";
+      if (Number.isFinite(gust) && gust > speed) return `${directionText} ${speed}G${Math.round(gust)} mph`;
+      return `${directionText} ${speed} mph`;
+    }
+
+    function rawObservationMap(obs) {
+      return obs.raw?.OBSERVATIONS || obs.raw?.synoptic?.OBSERVATIONS || {};
+    }
+
+    function rawObservationEntry(obs, prefixes) {
+      const observations = rawObservationMap(obs);
+      for (const prefix of prefixes) {
+        const match = Object.entries(observations).find(([key]) => key.startsWith(prefix));
+        if (match) return match[1];
+      }
+      return null;
+    }
+
+    function staleRawObservation(obs, prefixes, referenceIso, maxAgeMinutes) {
+      const entry = rawObservationEntry(obs, prefixes);
+      if (!entry?.date_time || !referenceIso) return false;
+      const ageMinutes = (new Date(referenceIso).getTime() - new Date(entry.date_time).getTime()) / 60000;
+      return Number.isFinite(ageMinutes) && ageMinutes > maxAgeMinutes;
     }
 
     function updateDataSummary({ obs, model, buildUtc } = {}) {
@@ -1578,6 +1786,26 @@
         const build = formatUtc(buildUtc);
         latestBuildSummary = build ? `Build ${build}` : `Build ${buildUtc}`;
       }
+      attachTooltip(document.getElementById("model-badge"), {
+        title: "Forecast Data",
+        subtitle: latestModelSummary,
+        lines: [
+          ["Model", latestModelSummary],
+          ["Build", latestBuildSummary],
+          ["Timeline", "3-hour block risk"],
+          ["Hazards", "72-hr summary"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("beta-badge"), {
+        title: "Internal Use",
+        subtitle: "KRNO ground operations DSS",
+        lines: [
+          ["Purpose", "Situational awareness"],
+          ["Display", "Quick-look TV view"]
+        ],
+        risk: "Little to None"
+      });
       const summary = document.getElementById("data-summary");
       if (summary) summary.textContent = `${latestObsSummary} | ${latestModelSummary} | ${latestBuildSummary}`;
     }
@@ -1599,6 +1827,17 @@
       const label = document.getElementById("obs-state");
       if (badge) badge.className = `badge ${className}`;
       if (label) label.textContent = state;
+      attachTooltip(badge, {
+        title: "Observation Status",
+        subtitle: `Obs ${state}`,
+        lines: [
+          ["Age", Number.isFinite(ageMinutes) ? `${Math.round(ageMinutes)} min` : "Unknown"],
+          ["Fresh", "<= 15 min"],
+          ["Aging", "16-30 min"],
+          ["Stale", "> 30 min"]
+        ],
+        risk: state === "Stale" ? "Major" : state === "Aging" ? "Minor" : "Little to None"
+      });
       updateDataSummary({ obs: `Obs ${state}` });
       if (currentPrimaryItem) updatePrimaryConcern(currentPrimaryItem);
     }
@@ -1610,29 +1849,113 @@
       return response.json();
     }
 
+    function updateObsTooltips(obs, values) {
+      const rh = Number(obs.relative_humidity ?? obs.raw?.OBSERVATIONS?.relative_humidity_value_1?.value);
+      const wb = wetBulbF(obs.temperature_f, rh);
+      const observed = values.obsIso ? `${formatTooltipLocal(values.obsIso)} / ${formatTooltipUtc(values.obsIso)}` : "Observation time unknown";
+      attachTooltip(document.getElementById("wind-rose"), {
+        title: "Wind Rose",
+        subtitle: values.windText,
+        lines: [
+          ["Direction", values.dirText],
+          ["Speed", `${values.speed} mph`, windColor(values.speed)],
+          ["Gust", values.gustText, windColor(values.gust)],
+          ["Meaning", "Arrow shows wind flow"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("wind-line"), {
+        title: "Surface Wind",
+        subtitle: values.windText,
+        lines: [
+          ["Direction", values.dirText],
+          ["Speed", `${values.speed} mph`, windColor(values.speed)],
+          ["Gust", values.gustText, windColor(values.gust)],
+          ["Ops", values.gust > 25 ? "Ramp wind watch" : "Routine wind watch"]
+        ],
+        risk: values.gust > 35 ? "Moderate" : values.gust > 25 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("gust-item"), {
+        title: "Wind Gust",
+        subtitle: values.gustText,
+        lines: [["Current Gust", values.gustText, windColor(values.gust)], ["Ops", values.gust > 25 ? "Secure loose equipment" : "Routine watch"]],
+        risk: values.gust > 35 ? "Moderate" : values.gust > 25 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("vis-item"), {
+        title: "Visibility",
+        subtitle: values.visText,
+        lines: [["Observed", values.visText, visibilityColor(values.vis)], ["Ops", values.vis < 5 ? "Low-vis watch" : "Routine visibility"]],
+        risk: values.vis < 3 ? "Moderate" : values.vis < 5 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("sky-item"), {
+        title: "Sky Condition",
+        subtitle: values.sky,
+        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", "Latest METAR"]],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("temp-item"), {
+        title: "Temperature / Moisture",
+        subtitle: values.tempText,
+        lines: [
+          ["Temp / Dew Point", values.tempText, tempColor(obs.temperature_f)],
+          ["RH", Number.isFinite(rh) ? `${Math.round(rh)}%` : "Not reported"],
+          ["Wet Bulb", wb == null ? "Not calculated" : `${Math.round(wb)} degF`, wb == null ? "" : tempColor(wb)]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("wx-item"), {
+        title: "Present Weather",
+        subtitle: values.wx,
+        lines: [["Observed", values.wx], ["Ops", values.wx === "None" ? "No active weather" : "Monitor field impacts"]],
+        risk: values.wx === "None" ? "None" : "Minor"
+      });
+      attachTooltip(document.getElementById("rain-item"), {
+        title: "1-Hour Rain",
+        subtitle: values.rainText,
+        lines: [["Observed", values.rainText, precipColor(values.rain)], ["Ops", values.rain >= 0.1 ? "Drainage watch" : "Routine drainage"]],
+        risk: values.rain >= 0.3 ? "Moderate" : values.rain >= 0.1 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("obs-time-item"), {
+        title: "Observation Time",
+        subtitle: observed,
+        lines: [["Source", obs.source || "Observation feed"], ["METAR", obs.metar || "Not available"]],
+        risk: "Little to None"
+      });
+    }
+
     function updateObsDisplay(obs) {
       const obsIso = obs.observed_utc || obs.generated_utc;
       const local = formatObsClock(obsIso);
       if (local) document.getElementById("obs-time").textContent = local;
       updateObsFreshness(obsIso);
-      const dir = Math.round(Number(obs.wind_dir_deg ?? 0));
+      const rawDir = obs.wind_dir_deg;
+      const numericDir = Number(rawDir);
+      const dir = Number.isFinite(numericDir) ? Math.round(numericDir) : null;
+      const dirText = dir == null ? (String(rawDir || "").toUpperCase() === "VRB" ? "VRB" : "--") : `${dir}&deg;`;
       const speed = Math.round(Number(obs.wind_speed_mph ?? obs.wind_speed_kt ?? 0));
-      const gust = Number(obs.wind_gust_mph ?? obs.wind_gust_kt);
-      setValueColor("wind-line", `${dir}&deg; at ${speed} mph`, windColor(speed));
+      let gust = Number(obs.wind_gust_mph ?? (obs.wind_gust_kt != null ? Number(obs.wind_gust_kt) * 1.15078 : NaN));
+      if (staleRawObservation(obs, ["wind_gust"], obsIso, 15)) gust = NaN;
+      const windText = formatWindValue(dirText, speed, gust);
+      setValueColor("wind-line", windText, windColor(speed));
       updateWindRose(dir);
-      setValueColor("gust-line", Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--", windColor(gust));
+      const gustText = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
+      setValueColor("gust-line", gustText, windColor(gust));
       const vis = Number(obs.visibility_sm);
       const visText = Number.isFinite(vis) ? (vis >= 10 ? "10+ SM" : `${vis.toFixed(1)} SM`) : "--";
       setValueColor("vis-line", visText, visibilityColor(vis));
       const sky = cloudFromMetar(obs.metar);
       setValueColor("sky-line", sky, cloudColor(sky));
+      let tempText = "--";
       if (obs.temperature_f != null && obs.dewpoint_f != null) {
-        setValueColor("temp-line", `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`, tempColor(obs.temperature_f));
+        tempText = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
+        setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
       }
       const wx = parsePresentWeatherFromMetar(obs.metar) || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value);
       setValueColor("wx-line", wx, wx === "None" ? "var(--text-body)" : precipColor(0.1));
       const rain = Number(obs.precip_1hr_in || 0);
-      setValueColor("rain-line", rain.toFixed(2) + " in", precipColor(rain));
+      const rainText = rain.toFixed(2) + " in";
+      setValueColor("rain-line", rainText, precipColor(rain));
+      updateObsTooltips(obs, { obsIso, dir, dirText: dirText.replace("&deg;", " deg"), speed, gust, windText, gustText, vis, visText, sky, tempText, wx, rain, rainText });
     }
 
     function awcMetarToObs(record) {
@@ -1662,6 +1985,63 @@
       };
     }
 
+    function signedMetarTemp(token) {
+      if (!token || token === "//") return null;
+      return Number(token.replace("M", "-"));
+    }
+
+    function tgftpMetarToObs(text) {
+      const lines = String(text || "").trim().split(/\n+/).map(line => line.trim()).filter(Boolean);
+      if (lines.length < 2) return null;
+      const timeLine = lines[0];
+      const rawOb = lines.slice(1).join(" ");
+      const timeMatch = timeLine.match(/^(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);
+      if (!timeMatch || !rawOb.includes("KRNO")) return null;
+      const [, year, month, day, hour, minute] = timeMatch;
+      const obsIso = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))).toISOString();
+      const windMatch = rawOb.match(/\b(00000|(?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?)KT\b/);
+      let windDir = null;
+      let windSpeedKt = null;
+      let windGustKt = null;
+      if (windMatch) {
+        const token = windMatch[1];
+        if (token === "00000") {
+          windDir = 0;
+          windSpeedKt = 0;
+        } else {
+          const parsed = token.match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?$/);
+          if (parsed) {
+            windDir = parsed[1] === "VRB" ? "VRB" : Number(parsed[1]);
+            windSpeedKt = Number(parsed[2]);
+            windGustKt = parsed[3] ? Number(parsed[3]) : null;
+          }
+        }
+      }
+      const tempMatch = rawOb.match(/\b(M?\d{2})\/(M?\d{2}|\/\/)\b/);
+      const tempC = tempMatch ? signedMetarTemp(tempMatch[1]) : null;
+      const dewC = tempMatch ? signedMetarTemp(tempMatch[2]) : null;
+      const visMatch = rawOb.match(/\b(P?\d{1,2})(?:SM)\b/);
+      const visibility = visMatch ? Number(visMatch[1].replace("P", "")) : null;
+      return {
+        site: "KRNO",
+        source: "NWS TGFTP METAR",
+        status: "ok",
+        observed_utc: obsIso,
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: windDir,
+        wind_speed_kt: windSpeedKt,
+        wind_gust_kt: windGustKt,
+        wind_speed_mph: windSpeedKt == null ? null : windSpeedKt * 1.15078,
+        wind_gust_mph: windGustKt == null ? null : windGustKt * 1.15078,
+        visibility_sm: visibility,
+        temperature_f: tempC == null ? null : tempC * 9 / 5 + 32,
+        dewpoint_f: dewC == null ? null : dewC * 9 / 5 + 32,
+        precip_1hr_in: 0,
+        metar: rawOb,
+        raw: { tgftp: text }
+      };
+    }
+
     async function fetchAwcMetarFallback() {
       const url = "https://aviationweather.gov/api/data/metar?ids=KRNO&format=json&hours=2";
       const response = await fetch(`${url}&t=${Date.now()}`, { cache: "no-store" });
@@ -1669,6 +2049,20 @@
       const records = await response.json();
       const latest = Array.isArray(records) ? records[0] : null;
       const obs = awcMetarToObs(latest);
+      if (!obs) return false;
+      const obsMs = new Date(obs.observed_utc).getTime();
+      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+        updateObsDisplay(obs);
+        return true;
+      }
+      return false;
+    }
+
+    async function fetchTgftpMetarFallback() {
+      const url = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
+      const response = await fetch(`${url}?t=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) throw new Error("NWS TGFTP METAR unavailable");
+      const obs = tgftpMetarToObs(await response.text());
       if (!obs) return false;
       const obsMs = new Date(obs.observed_utc).getTime();
       if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
@@ -1691,6 +2085,11 @@
       } catch (error) {
         console.info("Unable to refresh AWC METAR fallback.", error);
       }
+      try {
+        await fetchTgftpMetarFallback();
+      } catch (error) {
+        console.info("Unable to refresh NWS TGFTP METAR fallback.", error);
+      }
     }
 
     async function loadForecastData() {
@@ -1700,12 +2099,13 @@
           fetchJson("../nbm_threats.json")
         ]);
         const start = timeline?.valid_period?.start_utc || timeline?.blocks?.[0]?.valid_start_utc;
-        const blocks = makeTimeBlocks(start);
+        const sourceBlocks = (timeline.blocks || []).slice(0, 24);
+        const blocks = timeBlocksFromTimeline(sourceBlocks, start);
         const rows = {};
         const details = {};
         hazards.forEach(hazard => {
           const source = hazard.source;
-          rows[hazard.id] = (timeline.blocks || []).slice(0, 24).map(block => categoryFromRank(block[source]));
+          rows[hazard.id] = sourceBlocks.map(block => categoryFromRank(block[source]));
           details[hazard.id] = (timeline.block_hazards || []).slice(0, 24).map(block => block?.[source] || null);
         });
         renderTimeline(blocks, rows, details);
@@ -1737,12 +2137,32 @@
             <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
             <div class="alert-text">Review official products for KRNO</div>
           `;
+          attachTooltip(alertBox, {
+            title: "Official Alerts",
+            subtitle: `${alerts.alerts.length} active`,
+            lines: [
+              ["Status", "Active alerts"],
+              ["Action", "Review official products"],
+              ["Scope", "KRNO area"]
+            ],
+            risk: "Moderate"
+          });
         } else {
           alertBox.classList.remove("active");
           alertBox.innerHTML = `
             <div class="alert-title">All Clear</div>
-            <div class="alert-text">No active WWA/AWW for KRNO</div>
+            <div class="alert-text">No active official alerts for KRNO</div>
           `;
+          attachTooltip(alertBox, {
+            title: "Official Alerts",
+            subtitle: "All Clear",
+            lines: [
+              ["Status", "No active official alerts"],
+              ["Scope", "KRNO area"],
+              ["Action", "Routine monitoring"]
+            ],
+            risk: "None"
+          });
         }
       } catch (error) {
         console.info("Unable to refresh alerts.", error);
@@ -1766,8 +2186,12 @@
     loadLocalData();
     setInterval(updateHeaderClock, 60 * 1000);
     setInterval(loadObsData, 60 * 1000);
-    setInterval(loadForecastData, 5 * 60 * 1000);
+    setInterval(loadForecastData, 2 * 60 * 1000);
     setInterval(loadAlertsData, 5 * 60 * 1000);
+    window.addEventListener("resize", () => updateNowMarker());
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) loadLocalData();
+    });
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") hideTimelineTooltip();
     });

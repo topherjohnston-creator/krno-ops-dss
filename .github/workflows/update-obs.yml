@@ -48,6 +48,7 @@ jobs:
           git pull --rebase --autostash origin main
 
           git add docs/observations.json || true
+          git add docs/obs.json || true
           git add data/observations.json || true
           git add docs/lightning.json || true
           git add data/lightning.json || true
