@@ -170,6 +170,18 @@
       color: #c4f3de;
     }
 
+    .badge.aging {
+      border-color: rgba(231, 198, 77, 0.46);
+      background: rgba(118, 91, 18, 0.32);
+      color: #ffe9a3;
+    }
+
+    .badge.stale {
+      border-color: rgba(217, 78, 70, 0.52);
+      background: rgba(112, 31, 31, 0.34);
+      color: #ffd0cc;
+    }
+
     .badge.beta {
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -619,6 +631,66 @@
       padding: 0 4px;
     }
 
+    .timeline-tooltip {
+      position: fixed;
+      z-index: 40;
+      width: min(430px, calc(100vw - 32px));
+      padding: 13px 14px 14px;
+      border: 1px solid var(--line-strong);
+      border-left: 7px solid var(--little);
+      border-radius: 8px;
+      background: rgba(7, 17, 29, 0.96);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+      color: var(--soft);
+      font-size: 16px;
+      line-height: 1.25;
+      pointer-events: none;
+    }
+
+    .timeline-tooltip[hidden] {
+      display: none;
+    }
+
+    .tooltip-title {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 930;
+      text-transform: uppercase;
+    }
+
+    .tooltip-time {
+      margin-top: 5px;
+      color: var(--soft);
+      font-size: 15px;
+      font-weight: 760;
+    }
+
+    .tooltip-lines {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .tooltip-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border-top: 1px solid rgba(190, 212, 232, 0.1);
+      padding-top: 5px;
+    }
+
+    .tooltip-line span {
+      color: var(--muted);
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .tooltip-line strong {
+      color: var(--text);
+      font-weight: 880;
+      text-align: right;
+    }
+
     .mono {
       font-family: var(--mono);
     }
@@ -679,7 +751,7 @@
       <div class="badges">
         <div class="badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
         <div class="badge mono" id="updated-utc">2155Z</div>
-        <div class="badge fresh">Obs <strong id="obs-state">Fresh</strong></div>
+        <div class="badge fresh" id="obs-badge">Obs <strong id="obs-state">Fresh</strong></div>
         <div class="badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
         <div class="badge beta">Beta / Internal Use</div>
       </div>
@@ -730,7 +802,7 @@
             <text x="205" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">E</text>
             <text x="110" y="216" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">S</text>
             <text x="15" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">W</text>
-            <g id="wind-arrow" transform="rotate(280 110 110)" filter="url(#windShadow)">
+            <g id="wind-arrow" transform="rotate(100 110 110)" filter="url(#windShadow)">
               <line x1="110" y1="110" x2="110" y2="35" stroke="#f1c84b" stroke-width="8" stroke-linecap="round"></line>
               <polygon points="110,20 98,46 122,46" fill="#f1c84b"></polygon>
               <circle cx="110" cy="110" r="8" fill="#f1c84b" stroke="#07111d" stroke-width="3"></circle>
@@ -772,6 +844,7 @@
       </section>
     </section>
   </div>
+  <div class="timeline-tooltip" id="timeline-tooltip" role="tooltip" hidden></div>
 
   <script>
     const categories = ["None", "Little to None", "Minor", "Moderate", "Major", "Extreme"];
@@ -808,6 +881,8 @@
     let latestObsSummary = "Obs Fresh";
     let latestModelSummary = "NBM 18Z";
     let latestBuildSummary = "Build --";
+    let latestDataHealthPhrase = "Data fresh";
+    let currentPrimaryItem = null;
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
@@ -890,6 +965,8 @@
           offset: displayOffset,
           day: date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
           hour: date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", ""),
+          validStartUtc: date.toISOString(),
+          validEndUtc: new Date(date.getTime() + 3 * 60 * 60 * 1000).toISOString(),
           night: isNightHour(date),
           dayStart: i === 0 || date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }) === "00"
         });
@@ -914,7 +991,138 @@
       return Math.max(...rowRisksFor(hazard, rows).map(rankFromCategory));
     }
 
-    function renderTimeline(blocks, rows) {
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatTooltipLocal(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "TBD";
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        weekday: "short",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      }).replace(":00", "");
+    }
+
+    function formatTooltipUtc(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "TBD";
+      return `${String(date.getUTCHours()).padStart(2, "0")}${String(date.getUTCMinutes()).padStart(2, "0")}Z`;
+    }
+
+    function formatHourlyValue(value, source) {
+      if (!value) return null;
+      const valid = value.valid_utc ? formatTooltipLocal(value.valid_utc).replace(/\s[A-Z]{3,4}$/, "") : "";
+      let metric = null;
+      if (source === "WIND") {
+        metric = value.gust_mph != null ? `Gust ${Math.round(value.gust_mph)} mph` : null;
+        if (value.wind_mph != null) metric = `${Math.round(value.wind_mph)} mph${metric ? `, ${metric}` : ""}`;
+        if (value.direction_deg != null) metric = `${Math.round(value.direction_deg)} deg ${metric || ""}`.trim();
+      } else if (source === "LIGHTNING") {
+        metric = value.prob != null ? `${Math.round(value.prob)}%` : null;
+      } else if (source === "RAIN") {
+        metric = value.rain_in != null ? `${Number(value.rain_in).toFixed(2)} in` : null;
+      } else if (source === "SNOW") {
+        metric = value.snow_in != null ? `${Number(value.snow_in).toFixed(2)} in` : null;
+      } else if (source === "FZRA") {
+        metric = value.fzra_in != null ? `${Number(value.fzra_in).toFixed(2)} in` : null;
+      } else if (source === "VISIBILITY") {
+        metric = value.visibility_mi != null ? `${Number(value.visibility_mi).toFixed(1)} mi` : null;
+      } else if (source === "FLASH_FREEZE") {
+        metric = value.temp_f != null ? `${Math.round(value.temp_f)} degF` : null;
+        if (value.rain_in != null && Number(value.rain_in) > 0) metric = `${metric || ""}, Rain ${Number(value.rain_in).toFixed(2)} in`;
+      } else if (source === "TEMPERATURE") {
+        metric = value.temp_f != null ? `${Math.round(value.temp_f)} degF` : null;
+      }
+      if (!metric && value.value != null) metric = `${value.value}${value.unit || ""}`;
+      return metric ? `${valid}: ${metric}` : null;
+    }
+
+    function tooltipLinesFor(hazard, block, risk, detail) {
+      const lines = [
+        ["Risk", risk],
+        ["Airport Impact", operationalImpact(hazard.source, risk)],
+        ["Action", operationalAction(risk)]
+      ];
+      if (detail?.metric) lines.push(["Forecast", detail.metric]);
+      if (detail?.probability != null) lines.push(["Probability", `${Math.round(Number(detail.probability))}%`]);
+      const values = detail?.values || {};
+      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["Peak Gust", `${Math.round(values.gust_max_mph)} mph`]);
+      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["Thunder", `${Math.round(values.prob)}%`]);
+      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Snow", `${Number(values.snow_in).toFixed(2)} in`]);
+      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Freezing Rain", `${Number(values.fzra_in).toFixed(2)} in`]);
+      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["Visibility", `${Number(values.visibility_mi).toFixed(1)} mi`]);
+      if (hazard.source === "FLASH_FREEZE") {
+        if (values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} degF`]);
+        if (values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      }
+      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} degF`]);
+      const hourly = (detail?.hourly_values || [])
+        .map(value => formatHourlyValue(value, hazard.source))
+        .filter(Boolean)
+        .slice(0, 4);
+      if (hourly.length) lines.push(["Values", hourly.join(" | ")]);
+      if (detail?.source) lines.push(["Source", detail.source.replace(/^NOAA\s+/i, "")]);
+      return lines;
+    }
+
+    function tooltipHtml(hazard, block, risk, detail) {
+      const validStart = detail?.valid_start_utc || block.validStartUtc;
+      const validEnd = detail?.valid_end_utc || block.validEndUtc;
+      const localWindow = `${formatTooltipLocal(validStart)} - ${formatTooltipLocal(validEnd)}`;
+      const utcWindow = `${formatTooltipUtc(validStart)}-${formatTooltipUtc(validEnd)}`;
+      const peak = detail?.peak_valid_utc ? shortPeak(detail.peak_valid_utc) : "Peak window TBD";
+      const lines = tooltipLinesFor(hazard, block, risk, detail);
+      return `
+        <div class="tooltip-title">${escapeHtml(hazard.name)} - ${escapeHtml(risk)}</div>
+        <div class="tooltip-time">${escapeHtml(localWindow)} / ${escapeHtml(utcWindow)}<br>${escapeHtml(peak)}</div>
+        <div class="tooltip-lines">
+          ${lines.map(([label, value]) => `
+            <div class="tooltip-line">
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(value)}</strong>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function positionTooltip(x, y) {
+      const tooltip = document.getElementById("timeline-tooltip");
+      const margin = 14;
+      const rect = tooltip.getBoundingClientRect();
+      let left = x + 18;
+      let top = y + 18;
+      if (left + rect.width + margin > window.innerWidth) left = x - rect.width - 18;
+      if (top + rect.height + margin > window.innerHeight) top = y - rect.height - 18;
+      tooltip.style.left = `${Math.max(margin, left)}px`;
+      tooltip.style.top = `${Math.max(margin, top)}px`;
+    }
+
+    function showTimelineTooltip(cell, x, y) {
+      const tooltip = document.getElementById("timeline-tooltip");
+      if (!cell.tooltipPayload) return;
+      tooltip.innerHTML = cell.tooltipPayload.html;
+      tooltip.style.borderLeftColor = riskColors[cell.tooltipPayload.risk] || riskColors.None;
+      tooltip.hidden = false;
+      positionTooltip(x, y);
+    }
+
+    function hideTimelineTooltip() {
+      const tooltip = document.getElementById("timeline-tooltip");
+      tooltip.hidden = true;
+    }
+
+    function renderTimeline(blocks, rows, details = {}) {
       const matrix = document.getElementById("timeline-matrix");
       matrix.querySelectorAll(".corner,.time-cell,.row-label,.impact-cell").forEach(node => node.remove());
       const rankedHazards = hazards.map(hazard => ({
@@ -952,12 +1160,34 @@
         matrix.appendChild(label);
         rowRisksFor(hazard, rows).forEach((risk, index) => {
           const block = blocks[index];
+          const detail = details[hazard.id]?.[index] || null;
           const cell = document.createElement("div");
           cell.className = `impact-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
           cell.dataset.risk = risk;
           cell.textContent = impactCellText[risk] || "";
+          cell.tabIndex = 0;
           cell.setAttribute("aria-label", `${hazard.name}, ${block.day} ${block.hour}, ${risk}`);
-          cell.title = `${hazard.name} | ${block.day} ${block.hour} | Risk: ${risk}`;
+          cell.tooltipPayload = {
+            risk,
+            html: tooltipHtml(hazard, block, risk, detail)
+          };
+          cell.addEventListener("mouseover", event => showTimelineTooltip(cell, event.clientX, event.clientY));
+          cell.addEventListener("mouseenter", event => showTimelineTooltip(cell, event.clientX, event.clientY));
+          cell.addEventListener("mousemove", event => {
+            const tooltip = document.getElementById("timeline-tooltip");
+            if (tooltip.hidden) {
+              showTimelineTooltip(cell, event.clientX, event.clientY);
+            } else {
+              positionTooltip(event.clientX, event.clientY);
+            }
+          });
+          cell.addEventListener("mouseout", hideTimelineTooltip);
+          cell.addEventListener("mouseleave", hideTimelineTooltip);
+          cell.addEventListener("focus", () => {
+            const rect = cell.getBoundingClientRect();
+            showTimelineTooltip(cell, rect.left + rect.width / 2, rect.top + rect.height / 2);
+          });
+          cell.addEventListener("blur", hideTimelineTooltip);
           matrix.appendChild(cell);
         });
       });
@@ -1020,13 +1250,14 @@
 
     function updatePrimaryConcern(item) {
       if (!item) return;
+      currentPrimaryItem = item;
       const risk = item.risk || "None";
       const name = item.name || "Weather";
       const color = riskColors[risk] || riskColors.None;
       const impact = item.impact || operationalImpact(item.source);
       const action = item.action || operationalAction(risk);
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
-      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action} | Data fresh`;
+      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action} | ${latestDataHealthPhrase}`;
       document.getElementById("primary-accent").style.background = color;
     }
 
@@ -1079,7 +1310,8 @@
     function updateWindRose(deg) {
       const arrow = document.getElementById("wind-arrow");
       if (arrow && Number.isFinite(Number(deg))) {
-        arrow.setAttribute("transform", `rotate(${Math.round(Number(deg))} 110 110)`);
+        const windToDirection = (Math.round(Number(deg)) + 180) % 360;
+        arrow.setAttribute("transform", `rotate(${windToDirection} 110 110)`);
       }
     }
 
@@ -1099,86 +1331,131 @@
       if (summary) summary.textContent = `${latestObsSummary} | ${latestModelSummary} | ${latestBuildSummary}`;
     }
 
-    async function loadLocalData() {
+    function updateObsFreshness(obsIso) {
+      const obsDate = new Date(obsIso);
+      const ageMinutes = Number.isFinite(obsDate.getTime()) ? (Date.now() - obsDate.getTime()) / 60000 : Infinity;
+      let state = "Fresh";
+      let className = "fresh";
+      if (ageMinutes > 30) {
+        state = "Stale";
+        className = "stale";
+      } else if (ageMinutes > 10) {
+        state = "Aging";
+        className = "aging";
+      }
+      const badge = document.getElementById("obs-badge");
+      const label = document.getElementById("obs-state");
+      if (badge) badge.className = `badge ${className}`;
+      if (label) label.textContent = state;
+      latestDataHealthPhrase = `Data ${state.toLowerCase()}`;
+      updateDataSummary({ obs: `Obs ${state}` });
+      if (currentPrimaryItem) updatePrimaryConcern(currentPrimaryItem);
+    }
+
+    async function fetchJson(path) {
+      const separator = path.includes("?") ? "&" : "?";
+      const response = await fetch(`${path}${separator}t=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Unable to load ${path}`);
+      return response.json();
+    }
+
+    function updateObsDisplay(obs) {
+      const obsIso = obs.observed_utc || obs.generated_utc;
+      const local = formatLocal(obsIso);
+      const utc = formatUtc(obsIso);
+      if (local) {
+        document.getElementById("updated-local").textContent = local;
+        document.getElementById("obs-time").textContent = local.replace(",", "");
+      }
+      if (utc) document.getElementById("updated-utc").textContent = utc;
+      updateObsFreshness(obsIso);
+      const dir = Math.round(Number(obs.wind_dir_deg ?? 0));
+      const speed = Math.round(Number(obs.wind_speed_mph ?? obs.wind_speed_kt ?? 0));
+      document.getElementById("wind-line").innerHTML = `${dir}&deg; at ${speed} mph`;
+      updateWindRose(dir);
+      const gust = Number(obs.wind_gust_mph ?? obs.wind_gust_kt);
+      document.getElementById("gust-line").textContent = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
+      document.getElementById("vis-line").textContent = Number(obs.visibility_sm) >= 10 ? "10+ SM" : `${Number(obs.visibility_sm).toFixed(1)} SM`;
+      document.getElementById("sky-line").textContent = cloudFromMetar(obs.metar);
+      if (obs.temperature_f != null && obs.dewpoint_f != null) {
+        document.getElementById("temp-line").innerHTML = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
+      }
+      const wx = obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
+      document.getElementById("wx-line").textContent = displayWeatherText(wx);
+      document.getElementById("rain-line").textContent = Number(obs.precip_1hr_in || 0).toFixed(2) + " in";
+    }
+
+    async function loadObsData() {
       try {
-        const [obsResult, timelineResult, threatsResult, alertsResult] = await Promise.allSettled([
-          fetch("../observations.json", { cache: "no-store" }),
-          fetch("../nbm_timeline.json", { cache: "no-store" }),
-          fetch("../nbm_threats.json", { cache: "no-store" }),
-          fetch("../alerts.json", { cache: "no-store" })
+        const obs = await fetchJson("../observations.json");
+        if (obs.status === "ok") updateObsDisplay(obs);
+      } catch (error) {
+        console.info("Unable to refresh observations.", error);
+      }
+    }
+
+    async function loadForecastData() {
+      try {
+        const [timeline, threats] = await Promise.all([
+          fetchJson("../nbm_timeline.json"),
+          fetchJson("../nbm_threats.json")
         ]);
-
-        if (obsResult.status === "fulfilled" && obsResult.value.ok) {
-          const obs = await obsResult.value.json();
-          if (obs.status === "ok") {
-            const obsIso = obs.observed_utc || obs.generated_utc;
-            const local = formatLocal(obsIso);
-            const utc = formatUtc(obsIso);
-            if (local) {
-              document.getElementById("updated-local").textContent = local;
-              document.getElementById("obs-time").textContent = local.replace(",", "");
-            }
-            if (utc) document.getElementById("updated-utc").textContent = utc;
-            updateDataSummary({ obs: "Obs Fresh" });
-            const dir = Math.round(Number(obs.wind_dir_deg ?? 0));
-            const speed = Math.round(Number(obs.wind_speed_mph ?? obs.wind_speed_kt ?? 0));
-            document.getElementById("wind-line").innerHTML = `${dir}&deg; at ${speed} mph`;
-            updateWindRose(dir);
-            const gust = Number(obs.wind_gust_mph ?? obs.wind_gust_kt);
-            document.getElementById("gust-line").textContent = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
-            document.getElementById("vis-line").textContent = Number(obs.visibility_sm) >= 10 ? "10+ SM" : `${Number(obs.visibility_sm).toFixed(1)} SM`;
-            document.getElementById("sky-line").textContent = cloudFromMetar(obs.metar);
-            if (obs.temperature_f != null && obs.dewpoint_f != null) {
-              document.getElementById("temp-line").innerHTML = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
-            }
-            const wx = obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
-            document.getElementById("wx-line").textContent = displayWeatherText(wx);
-            document.getElementById("rain-line").textContent = Number(obs.precip_1hr_in || 0).toFixed(2) + " in";
-          }
+        const start = timeline?.valid_period?.start_utc || timeline?.blocks?.[0]?.valid_start_utc;
+        const blocks = makeTimeBlocks(start);
+        const rows = {};
+        const details = {};
+        hazards.forEach(hazard => {
+          const source = hazard.source;
+          rows[hazard.id] = (timeline.blocks || []).slice(0, 24).map(block => categoryFromRank(block[source]));
+          details[hazard.id] = (timeline.block_hazards || []).slice(0, 24).map(block => block?.[source] || null);
+        });
+        renderTimeline(blocks, rows, details);
+        if (timeline.cycle) {
+          document.getElementById("model-cycle").textContent = timeline.cycle;
         }
+        updateDataSummary({
+          model: timeline.cycle || "NBM",
+          buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
+        });
 
-        if (timelineResult.status === "fulfilled" && timelineResult.value.ok) {
-          const timeline = await timelineResult.value.json();
-          const start = timeline?.valid_period?.start_utc || timeline?.blocks?.[0]?.valid_start_utc;
-          const blocks = makeTimeBlocks(start);
-          const rows = {};
-          hazards.forEach(hazard => {
-            const source = hazard.source;
-            rows[hazard.id] = (timeline.blocks || []).slice(0, 24).map(block => categoryFromRank(block[source]));
-          });
-          renderTimeline(blocks, rows);
-          if (timeline.cycle) {
-            document.getElementById("model-cycle").textContent = timeline.cycle;
-          }
-          updateDataSummary({
-            model: timeline.cycle || "NBM",
-            buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
-          });
-        }
-
-        if (threatsResult.status === "fulfilled" && threatsResult.value.ok) {
-          const threats = await threatsResult.value.json();
-          const rows = threatRowsFromData(threats.threats || {});
-          if (rows.length) {
-            renderTopHazards(rows);
-            updatePrimaryConcern(rows[0]);
-          }
-        }
-
-        if (alertsResult.status === "fulfilled" && alertsResult.value.ok) {
-          const alerts = await alertsResult.value.json();
-          if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
-            const alertBox = document.getElementById("alert-box");
-            alertBox.classList.add("active");
-            alertBox.innerHTML = `
-              <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
-              <div class="alert-text">Review official products for KRNO</div>
-            `;
-          }
+        const threatRows = threatRowsFromData(threats.threats || {});
+        if (threatRows.length) {
+          renderTopHazards(threatRows);
+          updatePrimaryConcern(threatRows[0]);
         }
       } catch (error) {
-        console.info("Using inline quick-look mock data.", error);
+        console.info("Unable to refresh forecast data.", error);
       }
+    }
+
+    async function loadAlertsData() {
+      try {
+        const alerts = await fetchJson("../alerts.json");
+        const alertBox = document.getElementById("alert-box");
+        if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
+          alertBox.classList.add("active");
+          alertBox.innerHTML = `
+            <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
+            <div class="alert-text">Review official products for KRNO</div>
+          `;
+        } else {
+          alertBox.classList.remove("active");
+          alertBox.innerHTML = `
+            <div class="alert-title">All Clear</div>
+            <div class="alert-text">No active WWA/AWW for KRNO</div>
+          `;
+        }
+      } catch (error) {
+        console.info("Unable to refresh alerts.", error);
+      }
+    }
+
+    async function loadLocalData() {
+      await Promise.allSettled([
+        loadObsData(),
+        loadForecastData(),
+        loadAlertsData()
+      ]);
     }
 
     renderTimeline(makeTimeBlocks(), mockRows);
@@ -1187,6 +1464,12 @@
     updatePrimaryConcern(topHazards[0]);
     updateDataSummary();
     loadLocalData();
+    setInterval(loadObsData, 60 * 1000);
+    setInterval(loadForecastData, 5 * 60 * 1000);
+    setInterval(loadAlertsData, 5 * 60 * 1000);
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") hideTimelineTooltip();
+    });
   </script>
 </body>
 </html>
