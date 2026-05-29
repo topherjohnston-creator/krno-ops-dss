@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRNO Airport Weather DSS Quick Look</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111d;
+      --panel: #101d2b;
+      --panel-2: #132436;
+      --line: rgba(190, 212, 232, 0.2);
+      --line-strong: rgba(230, 240, 250, 0.34);
+      --text: #f4f8fc;
+      --soft: #c7d5e2;
+      --muted: #8fa1b2;
+      --fresh: #5dd39e;
+      --none: #1a2632;
+      --little: #446174;
+      --minor: #e7c64d;
+      --moderate: #ee8a33;
+      --major: #d94e46;
+      --extreme: #a83acc;
+      --radius: 8px;
+      --font: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    body {
+      background:
+        linear-gradient(180deg, rgba(19, 48, 75, 0.82), rgba(7, 17, 29, 0.98) 42%),
+        radial-gradient(circle at 88% 4%, rgba(47, 119, 181, 0.22), transparent 33rem),
+        var(--bg);
+    }
+
+    .app {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 72px 116px minmax(0, 1fr) 240px;
+      gap: 12px;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .panel,
+    .header,
+    .concern {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(16, 29, 43, 0.97), rgba(9, 20, 32, 0.97));
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 350px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .seal {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border: 2px solid rgba(255, 255, 255, 0.76);
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1f5d8f, #143d62);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 1px;
+      color: var(--soft);
+      font-size: 16px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .title div {
+      margin-top: 4px;
+      color: var(--soft);
+      font-size: 15px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(6, 15, 25, 0.72);
+      color: var(--soft);
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    .badge strong {
+      color: var(--text);
+      margin-left: 5px;
+    }
+
+    .badge.fresh {
+      border-color: rgba(93, 211, 158, 0.44);
+      background: rgba(33, 92, 68, 0.32);
+      color: #c4f3de;
+    }
+
+    .badge.risk {
+      border-color: rgba(238, 138, 51, 0.56);
+      background: rgba(143, 71, 23, 0.36);
+      color: #ffd8b8;
+    }
+
+    .badge.beta {
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .concern {
+      display: grid;
+      grid-template-columns: 12px minmax(0, 1fr) auto;
+      align-items: center;
+      min-height: 0;
+      background: linear-gradient(90deg, rgba(64, 36, 18, 0.98), rgba(17, 31, 45, 0.98) 58%, rgba(11, 24, 38, 0.98));
+    }
+
+    .concern-accent {
+      width: 100%;
+      height: 100%;
+      background: var(--moderate);
+    }
+
+    .concern-main {
+      padding: 12px 22px;
+      overflow: hidden;
+    }
+
+    .concern-label {
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .concern-title {
+      margin-top: 4px;
+      color: #ffffff;
+      font-size: 52px;
+      line-height: 0.95;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .concern-detail {
+      margin-top: 8px;
+      color: var(--soft);
+      font-size: 25px;
+      line-height: 1.1;
+      font-weight: 820;
+      white-space: nowrap;
+    }
+
+    .concern-status {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 12px;
+      align-items: center;
+      padding: 0 18px;
+    }
+
+    .concern-chip {
+      min-width: 150px;
+      padding: 10px 12px;
+      border: 1px solid rgba(230, 240, 250, 0.22);
+      border-radius: 7px;
+      background: rgba(6, 15, 25, 0.62);
+    }
+
+    .chip-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .chip-value {
+      margin-top: 3px;
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 920;
+    }
+
+    .timeline-panel {
+      display: grid;
+      grid-template-rows: 44px minmax(0, 1fr) 36px;
+      min-height: 0;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(6, 15, 25, 0.44);
+      overflow: hidden;
+    }
+
+    .panel-title {
+      color: var(--text);
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 930;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .timeline-note {
+      color: var(--soft);
+      font-size: 18px;
+      font-weight: 820;
+      white-space: nowrap;
+    }
+
+    .matrix {
+      position: relative;
+      display: grid;
+      grid-template-columns: 124px repeat(24, minmax(0, 1fr));
+      grid-template-rows: 52px repeat(8, minmax(0, 1fr));
+      gap: 3px;
+      min-height: 0;
+      padding: 10px 12px 6px;
+      overflow: hidden;
+    }
+
+    .corner,
+    .time-cell,
+    .row-label,
+    .impact-cell {
+      border: 1px solid rgba(190, 212, 232, 0.15);
+      background: rgba(8, 19, 31, 0.72);
+    }
+
+    .corner {
+      display: flex;
+      align-items: end;
+      padding: 0 0 8px 10px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .time-cell {
+      display: grid;
+      place-items: center;
+      padding: 4px 2px;
+      color: var(--soft);
+      font-size: 15px;
+      line-height: 1.05;
+      font-weight: 850;
+      text-align: center;
+    }
+
+    .time-cell strong {
+      display: block;
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 950;
+    }
+
+    .time-cell.day-start,
+    .impact-cell.day-start {
+      border-left-color: rgba(255, 255, 255, 0.58);
+      border-left-width: 2px;
+    }
+
+    .time-cell.night,
+    .impact-cell.night {
+      box-shadow: inset 0 0 0 999px rgba(0, 0, 0, 0.12);
+    }
+
+    .row-label {
+      display: grid;
+      place-items: center start;
+      align-items: center;
+      padding: 0 12px;
+      border-left: 5px solid rgba(190, 212, 232, 0.38);
+      color: var(--text);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .row-label span {
+      display: none;
+    }
+
+    .impact-cell {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 0;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 950;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+
+    .impact-cell[data-risk="None"] {
+      background: var(--none);
+    }
+
+    .impact-cell[data-risk="Little to None"] {
+      background: var(--little);
+    }
+
+    .impact-cell[data-risk="Minor"] {
+      background: var(--minor);
+      color: #231d07;
+    }
+
+    .impact-cell[data-risk="Moderate"] {
+      background: var(--moderate);
+    }
+
+    .impact-cell[data-risk="Major"] {
+      background: var(--major);
+    }
+
+    .impact-cell[data-risk="Extreme"] {
+      background: var(--extreme);
+    }
+
+    .now-line {
+      position: absolute;
+      top: 10px;
+      bottom: 6px;
+      left: calc(12px + 124px + ((100% - 24px - 124px - 69px) / 24) * 1.15);
+      width: 3px;
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(7, 17, 29, 0.75), 0 0 14px rgba(255, 255, 255, 0.36);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .now-tag {
+      position: absolute;
+      top: 18px;
+      left: calc(12px + 124px + ((100% - 24px - 124px - 69px) / 24) * 1.15);
+      z-index: 6;
+      translate: -50% 0;
+      padding: 3px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 999px;
+      background: #ffffff;
+      color: #0b1725;
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      padding: 0 12px 8px;
+      overflow: hidden;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--soft);
+      font-size: 16px;
+      font-weight: 830;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 26px;
+      height: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 2px;
+    }
+
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1.35fr 0.95fr;
+      gap: 12px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .bottom-panel {
+      display: grid;
+      grid-template-rows: 39px minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .bottom-body {
+      min-height: 0;
+      overflow: hidden;
+      padding: 10px 12px 12px;
+    }
+
+    .obs-body {
+      display: grid;
+      grid-template-columns: 182px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .wind-rose {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+
+    .obs-lines {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 12px;
+      align-content: center;
+    }
+
+    .wind-big {
+      grid-column: 1 / -1;
+      color: #ffffff;
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .obs-line {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      color: var(--soft);
+      font-size: 20px;
+      line-height: 1.05;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .obs-line strong {
+      color: var(--text);
+      font-size: 23px;
+      font-weight: 940;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .obs-line.wide {
+      grid-column: 1 / -1;
+    }
+
+    .hazard-table {
+      display: grid;
+      grid-template-rows: repeat(5, minmax(0, 1fr));
+      height: 100%;
+      gap: 6px;
+    }
+
+    .hazard-row {
+      display: grid;
+      grid-template-columns: 140px 148px 170px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 0;
+      padding: 0 12px;
+      border: 1px solid rgba(190, 212, 232, 0.14);
+      border-left: 7px solid var(--none);
+      border-radius: 6px;
+      background: rgba(8, 19, 31, 0.64);
+      overflow: hidden;
+    }
+
+    .hazard-name {
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 940;
+      white-space: nowrap;
+    }
+
+    .hazard-risk {
+      font-size: 21px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .hazard-metric,
+    .hazard-impact {
+      color: var(--soft);
+      font-size: 20px;
+      font-weight: 820;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .alerts-data {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .alert-clear {
+      padding: 10px 12px;
+      border: 1px solid rgba(93, 211, 158, 0.34);
+      border-left: 7px solid var(--fresh);
+      border-radius: 7px;
+      background: rgba(27, 74, 58, 0.18);
+    }
+
+    .alert-title {
+      color: #d9fce9;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .alert-text {
+      margin-top: 5px;
+      color: var(--soft);
+      font-size: 19px;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .data-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      min-height: 0;
+    }
+
+    .data-item {
+      display: grid;
+      align-content: center;
+      min-height: 0;
+      padding: 8px 9px;
+      border: 1px solid rgba(190, 212, 232, 0.14);
+      border-radius: 6px;
+      background: rgba(8, 19, 31, 0.64);
+    }
+
+    .data-label {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .data-value {
+      margin-top: 5px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1;
+      font-weight: 930;
+      white-space: nowrap;
+    }
+
+    .mono {
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1500px) {
+      .app {
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .header {
+        grid-template-columns: 1fr auto;
+      }
+
+      .brand {
+        display: none;
+      }
+
+      .title h1 {
+        font-size: 29px;
+      }
+
+      .badge {
+        font-size: 14px;
+        min-height: 30px;
+        padding: 5px 8px;
+      }
+
+      .concern-title {
+        font-size: 42px;
+      }
+
+      .concern-detail {
+        font-size: 21px;
+      }
+
+      .concern-status {
+        display: none;
+      }
+
+      .bottom-row {
+        grid-template-columns: 1fr 1fr 0.82fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header" aria-label="Airport weather DSS header">
+      <div class="brand" aria-label="NOAA NWS Aviation Weather branding">
+        <div class="seal">NOAA</div>
+        <div class="seal">NWS</div>
+        <div class="brand-text">
+          <strong>Aviation Weather</strong>
+          <span>Ground Operations</span>
+        </div>
+      </div>
+      <div class="title">
+        <h1>KRNO Airport Weather DSS</h1>
+        <div>Reno-Tahoe International Airport Ground Operations</div>
+      </div>
+      <div class="badges">
+        <div class="badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
+        <div class="badge mono" id="updated-utc">2155Z</div>
+        <div class="badge fresh">Obs <strong id="obs-state">Fresh</strong></div>
+        <div class="badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
+        <div class="badge risk">Primary Risk: <strong>Moderate - Lightning</strong></div>
+        <div class="badge beta">Beta / Internal Use</div>
+      </div>
+    </header>
+
+    <section class="concern" aria-label="Primary operational concern">
+      <div class="concern-accent"></div>
+      <div class="concern-main">
+        <div class="concern-label">Primary Concern</div>
+        <div class="concern-title">MODERATE - LIGHTNING</div>
+        <div class="concern-detail">Peak Thu 5 PM | Ramp lightning monitoring | Monitor closely</div>
+      </div>
+      <div class="concern-status">
+        <div class="concern-chip">
+          <div class="chip-label">Data Health</div>
+          <div class="chip-value">Fresh</div>
+        </div>
+        <div class="concern-chip">
+          <div class="chip-label">Impact</div>
+          <div class="chip-value">Ramp</div>
+        </div>
+        <div class="concern-chip">
+          <div class="chip-label">Action</div>
+          <div class="chip-value">Monitor</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="72-hour impact timeline">
+      <div class="panel-head">
+        <div class="panel-title">72-Hour Weather Risk Timeline</div>
+        <div class="timeline-note">3-hour blocks</div>
+      </div>
+      <div class="matrix" id="timeline-matrix">
+        <div class="now-line" aria-hidden="true"></div>
+        <div class="now-tag">NOW</div>
+      </div>
+      <div class="legend" id="legend" aria-label="Impact category legend"></div>
+    </section>
+
+    <section class="bottom-row" aria-label="Quick-look bottom row">
+      <section class="panel bottom-panel" aria-labelledby="obs-title">
+        <div class="panel-head">
+          <div class="panel-title" id="obs-title">Current Obs</div>
+        </div>
+        <div class="bottom-body obs-body">
+          <svg class="wind-rose" viewBox="0 0 220 220" role="img" aria-label="Wind rose">
+            <defs>
+              <filter id="windShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
+              </filter>
+            </defs>
+            <circle cx="110" cy="110" r="96" fill="#101d2b" stroke="rgba(199,213,226,0.3)" stroke-width="2"></circle>
+            <circle cx="110" cy="110" r="67" fill="none" stroke="rgba(199,213,226,0.17)" stroke-width="1" stroke-dasharray="4 5"></circle>
+            <circle cx="110" cy="110" r="36" fill="none" stroke="rgba(199,213,226,0.12)" stroke-width="1"></circle>
+            <line x1="110" y1="18" x2="110" y2="202" stroke="rgba(199,213,226,0.2)" stroke-width="1"></line>
+            <line x1="18" y1="110" x2="202" y2="110" stroke="rgba(199,213,226,0.2)" stroke-width="1"></line>
+            <line x1="45" y1="45" x2="175" y2="175" stroke="rgba(199,213,226,0.12)" stroke-width="1"></line>
+            <line x1="175" y1="45" x2="45" y2="175" stroke="rgba(199,213,226,0.12)" stroke-width="1"></line>
+            <text x="110" y="17" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">N</text>
+            <text x="205" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">E</text>
+            <text x="110" y="216" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">S</text>
+            <text x="15" y="115" text-anchor="middle" fill="#c7d5e2" font-size="14" font-weight="900">W</text>
+            <g id="wind-arrow" transform="rotate(280 110 110)" filter="url(#windShadow)">
+              <line x1="110" y1="110" x2="110" y2="35" stroke="#f1c84b" stroke-width="8" stroke-linecap="round"></line>
+              <polygon points="110,20 98,46 122,46" fill="#f1c84b"></polygon>
+              <circle cx="110" cy="110" r="8" fill="#f1c84b" stroke="#07111d" stroke-width="3"></circle>
+            </g>
+          </svg>
+          <div class="obs-lines">
+            <div class="wind-big" id="wind-line">280&deg; at 6 mph</div>
+            <div class="obs-line">Gust:<strong id="gust-line">--</strong></div>
+            <div class="obs-line">VIS:<strong id="vis-line">10+ SM</strong></div>
+            <div class="obs-line wide">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
+            <div class="obs-line">TEMP/DP:<strong id="temp-line">46 / 37&deg;F</strong></div>
+            <div class="obs-line">WX:<strong id="wx-line">None</strong></div>
+            <div class="obs-line">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
+            <div class="obs-line">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel bottom-panel" aria-labelledby="hazards-title">
+        <div class="panel-head">
+          <div class="panel-title" id="hazards-title">Top Hazards</div>
+        </div>
+        <div class="bottom-body">
+          <div class="hazard-table" id="hazard-table"></div>
+        </div>
+      </section>
+
+      <section class="panel bottom-panel" aria-labelledby="alerts-title">
+        <div class="panel-head">
+          <div class="panel-title" id="alerts-title">Alerts / Data</div>
+        </div>
+        <div class="bottom-body alerts-data">
+          <div class="alert-clear" id="alert-box">
+            <div class="alert-title">All Clear</div>
+            <div class="alert-text">No active WWA/AWW for KRNO</div>
+          </div>
+          <div class="data-list">
+            <div class="data-item">
+              <div class="data-label">Obs</div>
+              <div class="data-value" id="data-obs">Fresh</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Forecast</div>
+              <div class="data-value" id="data-model">NBM 18Z</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Build</div>
+              <div class="data-value mono" id="data-build">2220Z</div>
+            </div>
+            <div class="data-item">
+              <div class="data-label">Timeline</div>
+              <div class="data-value">Good</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    const categories = ["None", "Little to None", "Minor", "Moderate", "Major", "Extreme"];
+    const riskColors = {
+      "None": "#1a2632",
+      "Little to None": "#446174",
+      "Minor": "#e7c64d",
+      "Moderate": "#ee8a33",
+      "Major": "#d94e46",
+      "Extreme": "#a83acc"
+    };
+    const riskText = {
+      "None": "",
+      "Little to None": "",
+      "Minor": "MINOR",
+      "Moderate": "MOD",
+      "Major": "MAJOR",
+      "Extreme": "EXTREME"
+    };
+    const hazards = [
+      { id: "WIND", label: "WIND", sub: "Wind", source: "WIND" },
+      { id: "LTNG", label: "LTNG", sub: "Lightning", source: "LIGHTNING" },
+      { id: "SNOW", label: "SNOW", sub: "Snow", source: "SNOW" },
+      { id: "VIS", label: "VIS", sub: "Visibility", source: "VISIBILITY" },
+      { id: "FZRA", label: "FZRA", sub: "Freezing Rain", source: "FZRA" },
+      { id: "FLASHFZ", label: "FLASH FZ", sub: "Flash Freeze", source: "FLASH_FREEZE" },
+      { id: "RAIN", label: "RAIN", sub: "Rain", source: "RAIN" },
+      { id: "TEMP", label: "TEMP", sub: "Temperature", source: "TEMPERATURE" }
+    ];
+    const mockRows = {
+      WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
+      LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
+      SNOW: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      VIS: ["Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None"],
+      FZRA: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      FLASHFZ: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
+      RAIN: ["Little to None","Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None"],
+      TEMP: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"]
+    };
+    const topHazards = [
+      { name: "Lightning", risk: "Moderate", metric: "Peak Thu 5 PM", impact: "Ramp monitoring" },
+      { name: "Rain", risk: "Little to None", metric: "0.02 in total", impact: "Drainage unlikely" },
+      { name: "Wind", risk: "Little to None", metric: "Gusts 26 mph", impact: "No restrictions" },
+      { name: "Visibility", risk: "Little to None", metric: "6+ mi", impact: "Low-vis unlikely" },
+      { name: "Snow", risk: "None", metric: "0.00 in", impact: "No snow action" }
+    ];
+
+    function categoryFromRank(value) {
+      const index = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
+      return categories[index];
+    }
+
+    function makeTimeBlocks(startDate) {
+      const start = startDate ? new Date(startDate) : new Date("2026-05-28T21:00:00Z");
+      const blocks = [];
+      for (let i = 0; i < 24; i += 1) {
+        const displayOffset = i === 23 ? 72 : i * 3;
+        const date = new Date(start.getTime() + displayOffset * 60 * 60 * 1000);
+        blocks.push({
+          offset: displayOffset,
+          day: date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
+          hour: date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", ""),
+          night: isNightHour(date),
+          dayStart: i === 0 || date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }) === "00"
+        });
+      }
+      return blocks;
+    }
+
+    function isNightHour(date) {
+      const hour = Number(date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }));
+      return hour < 6 || hour >= 21;
+    }
+
+    function renderTimeline(blocks, rows) {
+      const matrix = document.getElementById("timeline-matrix");
+      matrix.querySelectorAll(".corner,.time-cell,.row-label,.impact-cell").forEach(node => node.remove());
+      const corner = document.createElement("div");
+      corner.className = "corner";
+      corner.textContent = "Hazard";
+      matrix.appendChild(corner);
+      blocks.forEach(block => {
+        const cell = document.createElement("div");
+        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
+        cell.innerHTML = `<div><strong>${block.day}</strong>+${block.offset}h<br>${block.hour}</div>`;
+        if (block.offset === 0) cell.innerHTML = `<div><strong>${block.day}</strong>Now<br>${block.hour}</div>`;
+        matrix.appendChild(cell);
+      });
+      hazards.forEach(hazard => {
+        const label = document.createElement("div");
+        label.className = "row-label";
+        label.textContent = hazard.label;
+        matrix.appendChild(label);
+        (rows[hazard.id] || mockRows[hazard.id]).slice(0, 24).forEach((risk, index) => {
+          const block = blocks[index];
+          const cell = document.createElement("div");
+          cell.className = `impact-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
+          cell.dataset.risk = risk;
+          cell.textContent = riskText[risk] || "";
+          cell.title = `${hazard.sub} | ${block.day} ${block.hour} | Risk: ${risk}`;
+          matrix.appendChild(cell);
+        });
+      });
+    }
+
+    function renderLegend() {
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      categories.forEach(category => {
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        item.innerHTML = `<span class="legend-swatch" style="background:${riskColors[category]}"></span>${category}`;
+        legend.appendChild(item);
+      });
+    }
+
+    function renderTopHazards(items) {
+      const table = document.getElementById("hazard-table");
+      table.innerHTML = "";
+      items.slice(0, 5).forEach(item => {
+        const row = document.createElement("div");
+        row.className = "hazard-row";
+        row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
+        row.innerHTML = `
+          <div class="hazard-name">${item.name}</div>
+          <div class="hazard-risk" style="color:${riskColors[item.risk] || riskColors.None}">${item.risk}</div>
+          <div class="hazard-metric">${item.metric}</div>
+          <div class="hazard-impact">${item.impact}</div>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    function formatLocal(iso, options = {}) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
+        ...options
+      });
+    }
+
+    function formatUtc(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return `${String(date.getUTCHours()).padStart(2, "0")}${String(date.getUTCMinutes()).padStart(2, "0")}Z`;
+    }
+
+    function cloudFromMetar(raw) {
+      if (!raw) return "BKN023 / BKN055";
+      const clouds = raw.split(/\s+/).filter(part => /^(FEW|SCT|BKN|OVC|VV)\d{3}/.test(part));
+      return clouds.length ? clouds.join(" / ") : "Not reported";
+    }
+
+    function updateWindRose(deg) {
+      const arrow = document.getElementById("wind-arrow");
+      if (arrow && Number.isFinite(Number(deg))) {
+        arrow.setAttribute("transform", `rotate(${Math.round(Number(deg))} 110 110)`);
+      }
+    }
+
+    function displayWeatherText(value) {
+      if (!value) return "None";
+      return String(value).replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    async function loadLocalData() {
+      try {
+        const [obsResult, timelineResult, alertsResult] = await Promise.allSettled([
+          fetch("../observations.json", { cache: "no-store" }),
+          fetch("../nbm_timeline.json", { cache: "no-store" }),
+          fetch("../alerts.json", { cache: "no-store" })
+        ]);
+
+        if (obsResult.status === "fulfilled" && obsResult.value.ok) {
+          const obs = await obsResult.value.json();
+          if (obs.status === "ok") {
+            const obsIso = obs.observed_utc || obs.generated_utc;
+            const local = formatLocal(obsIso);
+            const utc = formatUtc(obsIso);
+            if (local) {
+              document.getElementById("updated-local").textContent = local;
+              document.getElementById("obs-time").textContent = local.replace(",", "");
+            }
+            if (utc) document.getElementById("updated-utc").textContent = utc;
+            const dir = Math.round(Number(obs.wind_dir_deg ?? 0));
+            const speed = Math.round(Number(obs.wind_speed_mph ?? obs.wind_speed_kt ?? 0));
+            document.getElementById("wind-line").innerHTML = `${dir}&deg; at ${speed} mph`;
+            updateWindRose(dir);
+            const gust = Number(obs.wind_gust_mph ?? obs.wind_gust_kt);
+            document.getElementById("gust-line").textContent = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
+            document.getElementById("vis-line").textContent = Number(obs.visibility_sm) >= 10 ? "10+ SM" : `${Number(obs.visibility_sm).toFixed(1)} SM`;
+            document.getElementById("sky-line").textContent = cloudFromMetar(obs.metar);
+            if (obs.temperature_f != null && obs.dewpoint_f != null) {
+              document.getElementById("temp-line").innerHTML = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
+            }
+            const wx = obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
+            document.getElementById("wx-line").textContent = displayWeatherText(wx);
+            document.getElementById("rain-line").textContent = Number(obs.precip_1hr_in || 0).toFixed(2) + " in";
+          }
+        }
+
+        if (timelineResult.status === "fulfilled" && timelineResult.value.ok) {
+          const timeline = await timelineResult.value.json();
+          if (timeline.cycle) {
+            document.getElementById("model-cycle").textContent = timeline.cycle;
+            document.getElementById("data-model").textContent = timeline.cycle;
+          }
+          if (timeline.generated_utc) {
+            const build = formatUtc(timeline.generated_utc);
+            if (build) document.getElementById("data-build").textContent = build;
+          }
+        }
+
+        if (alertsResult.status === "fulfilled" && alertsResult.value.ok) {
+          const alerts = await alertsResult.value.json();
+          if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
+            document.getElementById("alert-box").innerHTML = `
+              <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
+              <div class="alert-text">Review official products for KRNO</div>
+            `;
+          }
+        }
+      } catch (error) {
+        console.info("Using inline quick-look mock data.", error);
+      }
+    }
+
+    renderTimeline(makeTimeBlocks(), mockRows);
+    renderLegend();
+    renderTopHazards(topHazards);
+    loadLocalData();
+  </script>
+</body>
+</html>
