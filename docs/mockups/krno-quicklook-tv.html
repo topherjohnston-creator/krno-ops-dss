@@ -295,7 +295,7 @@
     .matrix {
       position: relative;
       display: grid;
-      grid-template-columns: 124px repeat(24, minmax(0, 1fr));
+      grid-template-columns: 190px repeat(24, minmax(0, 1fr));
       grid-template-rows: 52px repeat(8, minmax(0, 1fr));
       gap: 3px;
       min-height: 0;
@@ -358,7 +358,7 @@
       padding: 0 12px;
       border-left: 5px solid rgba(190, 212, 232, 0.38);
       color: var(--text);
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
       font-weight: 950;
       letter-spacing: 0.03em;
@@ -412,7 +412,7 @@
       position: absolute;
       top: 10px;
       bottom: 6px;
-      left: calc(12px + 124px + ((100% - 24px - 124px - 69px) / 24) * 1.15);
+      left: calc(12px + 190px + ((100% - 24px - 190px - 72px) / 24) * 1.15);
       width: 3px;
       background: #ffffff;
       box-shadow: 0 0 0 1px rgba(7, 17, 29, 0.75), 0 0 14px rgba(255, 255, 255, 0.36);
@@ -423,7 +423,7 @@
     .now-tag {
       position: absolute;
       top: 18px;
-      left: calc(12px + 124px + ((100% - 24px - 124px - 69px) / 24) * 1.15);
+      left: calc(12px + 190px + ((100% - 24px - 190px - 72px) / 24) * 1.15);
       z-index: 6;
       translate: -50% 0;
       padding: 3px 8px;
@@ -582,7 +582,7 @@
     .alerts-data {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: 1fr;
       gap: 10px;
       height: 100%;
     }
@@ -593,6 +593,16 @@
       border-left: 7px solid var(--fresh);
       border-radius: 7px;
       background: rgba(27, 74, 58, 0.18);
+      display: grid;
+      align-content: center;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .alert-clear.active {
+      border-color: rgba(238, 138, 51, 0.45);
+      border-left-color: var(--moderate);
+      background: rgba(102, 55, 21, 0.22);
     }
 
     .alert-title {
@@ -607,41 +617,6 @@
       color: var(--soft);
       font-size: 19px;
       font-weight: 780;
-      white-space: nowrap;
-    }
-
-    .data-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      min-height: 0;
-    }
-
-    .data-item {
-      display: grid;
-      align-content: center;
-      min-height: 0;
-      padding: 8px 9px;
-      border: 1px solid rgba(190, 212, 232, 0.14);
-      border-radius: 6px;
-      background: rgba(8, 19, 31, 0.64);
-    }
-
-    .data-label {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .data-value {
-      margin-top: 5px;
-      color: var(--text);
-      font-size: 21px;
-      line-height: 1;
-      font-weight: 930;
       white-space: nowrap;
     }
 
@@ -711,30 +686,30 @@
         <div class="badge mono" id="updated-utc">2155Z</div>
         <div class="badge fresh">Obs <strong id="obs-state">Fresh</strong></div>
         <div class="badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
-        <div class="badge risk">Primary Risk: <strong>Moderate - Lightning</strong></div>
+        <div class="badge risk" id="primary-risk-badge">Primary Risk: <strong id="primary-risk-text">Moderate - Lightning</strong></div>
         <div class="badge beta">Beta / Internal Use</div>
       </div>
     </header>
 
-    <section class="concern" aria-label="Primary operational concern">
-      <div class="concern-accent"></div>
+    <section class="concern" id="primary-concern" aria-label="Primary operational concern">
+      <div class="concern-accent" id="primary-accent"></div>
       <div class="concern-main">
         <div class="concern-label">Primary Concern</div>
-        <div class="concern-title">MODERATE - LIGHTNING</div>
-        <div class="concern-detail">Peak Thu 5 PM | Ramp lightning monitoring | Monitor closely</div>
+        <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
+        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM | Ramp lightning monitoring | Monitor closely</div>
       </div>
       <div class="concern-status">
         <div class="concern-chip">
           <div class="chip-label">Data Health</div>
-          <div class="chip-value">Fresh</div>
+          <div class="chip-value" id="primary-data-health">Fresh</div>
         </div>
         <div class="concern-chip">
           <div class="chip-label">Impact</div>
-          <div class="chip-value">Ramp</div>
+          <div class="chip-value" id="primary-impact-chip">Ramp</div>
         </div>
         <div class="concern-chip">
           <div class="chip-label">Action</div>
-          <div class="chip-value">Monitor</div>
+          <div class="chip-value" id="primary-action-chip">Monitor</div>
         </div>
       </div>
     </section>
@@ -804,30 +779,12 @@
 
       <section class="panel bottom-panel" aria-labelledby="alerts-title">
         <div class="panel-head">
-          <div class="panel-title" id="alerts-title">Alerts / Data</div>
+          <div class="panel-title" id="alerts-title">Official Alerts</div>
         </div>
         <div class="bottom-body alerts-data">
           <div class="alert-clear" id="alert-box">
             <div class="alert-title">All Clear</div>
             <div class="alert-text">No active WWA/AWW for KRNO</div>
-          </div>
-          <div class="data-list">
-            <div class="data-item">
-              <div class="data-label">Obs</div>
-              <div class="data-value" id="data-obs">Fresh</div>
-            </div>
-            <div class="data-item">
-              <div class="data-label">Forecast</div>
-              <div class="data-value" id="data-model">NBM 18Z</div>
-            </div>
-            <div class="data-item">
-              <div class="data-label">Build</div>
-              <div class="data-value mono" id="data-build">2220Z</div>
-            </div>
-            <div class="data-item">
-              <div class="data-label">Timeline</div>
-              <div class="data-value">Good</div>
-            </div>
           </div>
         </div>
       </section>
@@ -844,24 +801,18 @@
       "Major": "#d94e46",
       "Extreme": "#a83acc"
     };
-    const riskText = {
-      "None": "",
-      "Little to None": "",
-      "Minor": "MINOR",
-      "Moderate": "MOD",
-      "Major": "MAJOR",
-      "Extreme": "EXTREME"
-    };
     const hazards = [
-      { id: "WIND", label: "WIND", sub: "Wind", source: "WIND" },
-      { id: "LTNG", label: "LTNG", sub: "Lightning", source: "LIGHTNING" },
-      { id: "SNOW", label: "SNOW", sub: "Snow", source: "SNOW" },
-      { id: "VIS", label: "VIS", sub: "Visibility", source: "VISIBILITY" },
-      { id: "FZRA", label: "FZRA", sub: "Freezing Rain", source: "FZRA" },
-      { id: "FLASHFZ", label: "FLASH FZ", sub: "Flash Freeze", source: "FLASH_FREEZE" },
-      { id: "RAIN", label: "RAIN", sub: "Rain", source: "RAIN" },
-      { id: "TEMP", label: "TEMP", sub: "Temperature", source: "TEMPERATURE" }
+      { id: "WIND", row: "WIND", cell: "WIND", name: "Wind", source: "WIND" },
+      { id: "LTNG", row: "LIGHTNING", cell: "LTNG", name: "Lightning", source: "LIGHTNING" },
+      { id: "SNOW", row: "SNOW", cell: "SNOW", name: "Snow", source: "SNOW" },
+      { id: "VIS", row: "VISIBILITY", cell: "VIS", name: "Visibility", source: "VISIBILITY" },
+      { id: "FZRA", row: "FREEZING RAIN", cell: "FZRA", name: "Freezing Rain", source: "FZRA" },
+      { id: "FLASHFZ", row: "FLASH FREEZE", cell: "FL FZ", name: "Flash Freeze", source: "FLASH_FREEZE" },
+      { id: "RAIN", row: "RAIN", cell: "RAIN", name: "Rain", source: "RAIN" },
+      { id: "TEMP", row: "TEMPERATURE", cell: "TEMP", name: "Temperature", source: "TEMPERATURE" }
     ];
+    const hazardPriority = ["LIGHTNING", "WIND", "SNOW", "FZRA", "FLASH_FREEZE", "RAIN", "VISIBILITY", "FLASHFZ", "TEMPERATURE"];
+    const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
@@ -883,6 +834,55 @@
     function categoryFromRank(value) {
       const index = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
       return categories[index];
+    }
+
+    function rankFromCategory(category) {
+      return Math.max(0, categories.indexOf(category));
+    }
+
+    function shortPeak(iso) {
+      if (!iso) return "Peak window TBD";
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "Peak window TBD";
+      const day = date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" });
+      const time = date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", "");
+      return `Peak ${day} ${time}`;
+    }
+
+    function operationalImpact(source, category = "None") {
+      if (rankFromCategory(category) <= 1) {
+        const lowImpacts = {
+          LIGHTNING: "Routine awareness",
+          WIND: "No restrictions",
+          SNOW: "No snow action",
+          FZRA: "No icing action",
+          FLASH_FREEZE: "No freeze signal",
+          RAIN: "Drainage unlikely",
+          VISIBILITY: "Low-vis unlikely",
+          TEMPERATURE: "No temp action"
+        };
+        return lowImpacts[source] || "No action";
+      }
+      const impacts = {
+        LIGHTNING: "Ramp monitoring",
+        WIND: "Ramp handling",
+        SNOW: "Snow crew watch",
+        FZRA: "Icing watch",
+        FLASH_FREEZE: "Pavement freeze watch",
+        RAIN: "Drainage watch",
+        VISIBILITY: "Low-vis watch",
+        TEMPERATURE: "Temperature watch"
+      };
+      return impacts[source] || "Ops awareness";
+    }
+
+    function operationalAction(category) {
+      const rank = rankFromCategory(category);
+      if (rank >= 4) return "Act now";
+      if (rank >= 3) return "Monitor closely";
+      if (rank >= 2) return "Monitor trend";
+      if (rank >= 1) return "Routine awareness";
+      return "No action";
     }
 
     function makeTimeBlocks(startDate) {
@@ -924,15 +924,15 @@
       hazards.forEach(hazard => {
         const label = document.createElement("div");
         label.className = "row-label";
-        label.textContent = hazard.label;
+        label.textContent = hazard.row;
         matrix.appendChild(label);
         (rows[hazard.id] || mockRows[hazard.id]).slice(0, 24).forEach((risk, index) => {
           const block = blocks[index];
           const cell = document.createElement("div");
           cell.className = `impact-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
           cell.dataset.risk = risk;
-          cell.textContent = riskText[risk] || "";
-          cell.title = `${hazard.sub} | ${block.day} ${block.hour} | Risk: ${risk}`;
+          cell.textContent = rankFromCategory(risk) >= 2 ? hazard.cell : "";
+          cell.title = `${hazard.name} | ${block.day} ${block.hour} | Risk: ${risk}`;
           matrix.appendChild(cell);
         });
       });
@@ -963,6 +963,46 @@
           <div class="hazard-impact">${item.impact}</div>
         `;
         table.appendChild(row);
+      });
+    }
+
+    function updatePrimaryConcern(item) {
+      if (!item) return;
+      const risk = item.risk || "None";
+      const name = item.name || "Weather";
+      const color = riskColors[risk] || riskColors.None;
+      const impact = item.impact || operationalImpact(item.source);
+      const action = item.action || operationalAction(risk);
+      document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
+      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action}`;
+      document.getElementById("primary-risk-text").textContent = `${risk} - ${name}`;
+      document.getElementById("primary-accent").style.background = color;
+      document.getElementById("primary-impact-chip").textContent = impact.split(" ")[0] || "Ops";
+      document.getElementById("primary-action-chip").textContent = action.split(" ")[0] || "Monitor";
+      const badge = document.getElementById("primary-risk-badge");
+      badge.style.borderColor = color;
+      badge.style.background = `color-mix(in srgb, ${color} 28%, rgba(6, 15, 25, 0.72))`;
+    }
+
+    function threatRowsFromData(threatMap) {
+      return Object.entries(threatMap || {}).map(([source, item]) => {
+        const risk = item.risk_label || categoryFromRank(item.risk_level ?? item.risk);
+        const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
+        return {
+          source,
+          name,
+          risk,
+          metric: item.display_value || item.metric || "No signal",
+          peak: shortPeak(item.peak_valid_utc),
+          impact: operationalImpact(source, risk),
+          action: operationalAction(risk)
+        };
+      }).sort((a, b) => {
+        const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
+        if (riskDelta) return riskDelta;
+        const aPriority = hazardPriority.includes(a.source) ? hazardPriority.indexOf(a.source) : 99;
+        const bPriority = hazardPriority.includes(b.source) ? hazardPriority.indexOf(b.source) : 99;
+        return aPriority - bPriority;
       });
     }
 
@@ -1004,9 +1044,10 @@
 
     async function loadLocalData() {
       try {
-        const [obsResult, timelineResult, alertsResult] = await Promise.allSettled([
+        const [obsResult, timelineResult, threatsResult, alertsResult] = await Promise.allSettled([
           fetch("../observations.json", { cache: "no-store" }),
           fetch("../nbm_timeline.json", { cache: "no-store" }),
+          fetch("../nbm_threats.json", { cache: "no-store" }),
           fetch("../alerts.json", { cache: "no-store" })
         ]);
 
@@ -1040,20 +1081,34 @@
 
         if (timelineResult.status === "fulfilled" && timelineResult.value.ok) {
           const timeline = await timelineResult.value.json();
+          const start = timeline?.valid_period?.start_utc || timeline?.blocks?.[0]?.valid_start_utc;
+          const blocks = makeTimeBlocks(start);
+          const rows = {};
+          hazards.forEach(hazard => {
+            const source = hazard.source;
+            rows[hazard.id] = (timeline.blocks || []).slice(0, 24).map(block => categoryFromRank(block[source]));
+          });
+          renderTimeline(blocks, rows);
           if (timeline.cycle) {
             document.getElementById("model-cycle").textContent = timeline.cycle;
-            document.getElementById("data-model").textContent = timeline.cycle;
           }
-          if (timeline.generated_utc) {
-            const build = formatUtc(timeline.generated_utc);
-            if (build) document.getElementById("data-build").textContent = build;
+        }
+
+        if (threatsResult.status === "fulfilled" && threatsResult.value.ok) {
+          const threats = await threatsResult.value.json();
+          const rows = threatRowsFromData(threats.threats || {});
+          if (rows.length) {
+            renderTopHazards(rows);
+            updatePrimaryConcern(rows[0]);
           }
         }
 
         if (alertsResult.status === "fulfilled" && alertsResult.value.ok) {
           const alerts = await alertsResult.value.json();
           if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
-            document.getElementById("alert-box").innerHTML = `
+            const alertBox = document.getElementById("alert-box");
+            alertBox.classList.add("active");
+            alertBox.innerHTML = `
               <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
               <div class="alert-text">Review official products for KRNO</div>
             `;
