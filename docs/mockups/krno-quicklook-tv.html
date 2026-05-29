@@ -84,7 +84,7 @@
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 72px 90px minmax(0, 1fr) 248px;
+      grid-template-rows: 72px 90px minmax(0, 1fr) 260px;
       gap: var(--gap-main);
       padding: 0 var(--page-pad) var(--page-pad);
       overflow: hidden;
@@ -565,8 +565,8 @@
       color: var(--text-body);
       font-size: 22px;
       font-weight: 600;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       white-space: nowrap;
     }
 
@@ -611,8 +611,10 @@
     .hazard-name {
       color: var(--text-main);
       font-size: 17px;
+      line-height: 1.05;
       font-weight: 600;
       white-space: nowrap;
+      flex: 0 0 auto;
     }
 
     .hazard-name::after {
@@ -621,15 +623,18 @@
 
     .hazard-risk {
       font-size: 17px;
+      line-height: 1.05;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      min-width: 0;
     }
 
     .hazard-summary {
       color: var(--text-body);
       font-size: 15px;
+      line-height: 1.08;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -793,7 +798,70 @@
       }
 
       .bottom-row {
-        grid-template-columns: 1fr 1fr 0.82fr;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr) minmax(0, 0.82fr);
+      }
+
+      .bottom-body {
+        padding: 10px 12px 12px;
+      }
+
+      .obs-body {
+        grid-template-columns: 168px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .wind-rose {
+        width: 166px;
+        height: 166px;
+      }
+
+      .obs-lines {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .wind-big {
+        font-size: 32px;
+      }
+
+      .obs-line,
+      .obs-line strong {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .obs-line {
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .hazard-table {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .hazard-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 8px;
+      }
+
+      .hazard-top {
+        min-width: 0;
+      }
+
+      .hazard-name,
+      .hazard-risk {
+        font-size: 15px;
+      }
+
+      .hazard-summary {
+        justify-self: end;
+        max-width: none;
+        font-size: 14px;
+        text-align: right;
       }
     }
   </style>
@@ -817,7 +885,7 @@
       </div>
     </header>
 
-    <section class="concern" id="primary-concern" aria-label="Primary operational concern">
+    <section class="concern" id="primary-concern" data-primary-concern aria-label="Primary operational concern">
       <div class="concern-accent" id="primary-accent"></div>
       <div class="concern-main">
         <div>
@@ -842,7 +910,7 @@
     </section>
 
     <section class="bottom-row" aria-label="Quick-look bottom row">
-      <section class="panel bottom-panel" aria-labelledby="obs-title">
+      <section class="panel bottom-panel" data-current-obs aria-labelledby="obs-title">
         <div class="panel-head">
           <div class="panel-title" id="obs-title">Current Obs</div>
         </div>
@@ -871,7 +939,7 @@
             </g>
           </svg>
           <div class="obs-lines">
-            <div class="wind-big" id="wind-line">280&deg; at 6 mph</div>
+            <div class="wind-big" id="wind-line" data-wind-value>280&deg; at 6 mph</div>
             <div class="obs-line" id="gust-item">Gust:<strong id="gust-line">--</strong></div>
             <div class="obs-line" id="vis-item">VIS:<strong id="vis-line">10+ SM</strong></div>
             <div class="obs-line wide" id="sky-item">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
@@ -1556,30 +1624,22 @@
       items.slice(0, 8).forEach(item => {
         const row = document.createElement("div");
         row.className = "hazard-row";
+        row.dataset.hazardStatus = item.source || item.name || "";
         row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
         const rank = rankFromCategory(item.risk);
         row.dataset.active = String(rank >= 2);
         const riskTextColor = rank <= 1 ? "#c7d2df" : (riskColors[item.risk] || riskColors.None);
-        const detailLimit = rank >= 2 ? 2 : 1;
         const metric = compactConcernMetric(item);
         const metricColor = metricColorFor(item.source, metric || item.metric, item.name);
-        const details = [
-          rank >= 2 ? item.peak : "",
-          metric,
-          rank >= 2 ? item.impact : ""
-        ]
-          .filter(Boolean)
-          .map(text => String(text).replace(/^Peak\s+/i, ""))
-          .filter((text, index, all) => all.indexOf(text) === index)
-          .slice(0, detailLimit)
-          .join(", ");
+        const details = String((rank >= 2 ? item.peak : metric) || metric || item.impact || "No signal").replace(/^Peak\s+/i, "");
+        const summaryColor = details === metric ? metricColor : "";
         row.innerHTML = `
           <div class="hazard-top">
             <div class="hazard-name">${escapeHtml(item.name)}</div>
             <div class="hazard-dash">-</div>
             <div class="hazard-risk" style="color:${riskTextColor}">${escapeHtml(item.risk)}</div>
           </div>
-          <div class="hazard-summary"${metricColor && details ? ` style="color:${metricColor}"` : ""}>${escapeHtml(details || metric || item.impact || "No signal")}</div>
+          <div class="hazard-summary"${summaryColor ? ` style="color:${summaryColor}"` : ""}>${escapeHtml(details)}</div>
         `;
         attachTooltip(row, {
           title: `${item.name} - ${item.risk}`,
