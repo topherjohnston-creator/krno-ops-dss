@@ -45,6 +45,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          git pull --rebase --autostash origin main
+
           git add docs/observations.json || true
           git add data/observations.json || true
           git add docs/lightning.json || true
@@ -54,6 +56,5 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update KRNO observations"
-            git pull --rebase origin main
             git push
           fi
