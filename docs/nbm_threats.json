@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 00Z",
-  "generated_utc": "2026-05-30T01:48:29Z",
+  "generated_utc": "2026-05-30T01:52:59Z",
   "cycle_utc_iso": "2026-05-30T00:00:00Z",
   "cycle": "NBM 00Z",
   "valid_period": {
@@ -74,34 +74,28 @@
       "id": "LIGHTNING",
       "title": "Lightning",
       "name": "Lightning",
-      "prob": 5.0,
-      "probability": 5.0,
+      "prob": 7.0,
+      "probability": 7.0,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
       "level": 2,
       "impact_level": 2,
-      "metric": "Peak thunder probability",
-      "display_label": "Peak thunder probability",
-      "display_value": "Thunder 5%",
+      "metric": "Peak 3-hour thunder probability",
+      "display_label": "Peak 3-hour thunder probability",
+      "display_value": "Thunder 7%",
       "window": "72 hr",
-      "peak_start_fxx": 46,
-      "peak_end_fxx": 48,
-      "source_fxx": 48,
-      "peak_valid_utc": "2026-06-01T00:00:00Z",
-      "driver": "NBM core thunder probability at KRNO",
+      "peak_start_fxx": 22,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
+      "peak_valid_utc": "2026-05-31T00:00:00Z",
+      "driver": "NBM core 3-hour thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
       "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
-          "end_fxx": 36,
-          "window_hours": 1,
-          "source": "NBM 1-hour thunder probability"
-        },
-        {
-          "start_fxx": 39,
           "end_fxx": 72,
           "window_hours": 3,
           "source": "NBM 3-hour thunder probability"
@@ -354,7 +348,7 @@
     {
       "id": "LIGHTNING",
       "risk": 2,
-      "probability": 5.0,
+      "probability": 7.0,
       "level": 2
     },
     {
@@ -467,12 +461,6 @@
       "LIGHTNING": [
         {
           "start_fxx": 1,
-          "end_fxx": 36,
-          "window_hours": 1,
-          "source": "NBM 1-hour thunder probability"
-        },
-        {
-          "start_fxx": 39,
           "end_fxx": 72,
           "window_hours": 3,
           "source": "NBM 3-hour thunder probability"
