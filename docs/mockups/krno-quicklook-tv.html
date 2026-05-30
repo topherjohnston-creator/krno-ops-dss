@@ -84,7 +84,7 @@
       width: 100vw;
       height: 100vh;
       display: grid;
-      grid-template-rows: 72px 88px minmax(0, 1fr) 250px;
+      grid-template-rows: 72px 88px 86px minmax(0, 1fr) 250px;
       gap: var(--gap-main);
       padding: 0 var(--page-pad) var(--page-pad);
       overflow: hidden;
@@ -264,6 +264,81 @@
       font-weight: 520;
       white-space: nowrap;
       text-align: right;
+    }
+
+    .hazard-strip {
+      display: grid;
+      grid-template-columns: 176px repeat(8, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 8px;
+      min-height: 0;
+      padding: 10px 12px;
+      background:
+        linear-gradient(180deg, rgba(38, 50, 68, 0.94), rgba(28, 37, 51, 0.98)),
+        var(--bg-panel);
+    }
+
+    .strip-label {
+      display: grid;
+      align-content: center;
+      padding: 0 12px;
+      border-right: 1px solid rgba(72, 86, 99, 0.55);
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.08;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .summary-chip {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      align-content: center;
+      gap: 3px;
+      min-height: 0;
+      padding: 6px 8px 6px 10px;
+      border: 1px solid rgba(65, 82, 105, 0.66);
+      border-left: 6px solid var(--none);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(44, 57, 75, 0.74), rgba(31, 41, 56, 0.76));
+      overflow: hidden;
+    }
+
+    .summary-chip[data-active="true"] {
+      background: linear-gradient(180deg, rgba(55, 68, 87, 0.86), rgba(36, 47, 64, 0.8));
+    }
+
+    .summary-hazard {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-risk {
+      color: var(--text-body);
+      font-size: 17px;
+      line-height: 1.02;
+      font-weight: 620;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-value {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.05;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .timeline-panel {
@@ -726,10 +801,9 @@
     .range-spoke.s315 { rotate: 315deg; }
 
     .airport-dot,
+    .radar-site-dot,
     .lightning-dot {
       position: absolute;
-      left: 50%;
-      top: 50%;
       width: 11px;
       height: 11px;
       translate: -50% -50%;
@@ -739,7 +813,18 @@
     }
 
     .airport-dot {
+      left: 50%;
+      top: 50%;
       background: var(--broadcast-cyan);
+    }
+
+    .radar-site-dot {
+      left: 62%;
+      top: 37%;
+      width: 9px;
+      height: 9px;
+      background: #f8d54a;
+      box-shadow: 0 0 0 3px rgba(14, 20, 29, 0.72), 0 0 16px rgba(248, 213, 74, 0.72);
     }
 
     .lightning-dot {
@@ -769,6 +854,12 @@
       top: calc(50% - 27px);
     }
 
+    .map-label.krgx {
+      left: calc(62% + 9px);
+      top: calc(37% - 25px);
+      color: #f6e28a;
+    }
+
     .map-label.source {
       left: 8px;
       bottom: 8px;
@@ -777,6 +868,20 @@
     .map-label.range {
       right: 8px;
       bottom: 8px;
+    }
+
+    .map-label.radar-time {
+      left: 8px;
+      top: 8px;
+      color: var(--text-main);
+    }
+
+    .map-label.lightning-clear {
+      right: 8px;
+      top: 8px;
+      max-width: 52%;
+      color: var(--text-body);
+      text-align: right;
     }
 
     .lightning-status {
@@ -999,6 +1104,33 @@
         font-size: 21px;
       }
 
+      .hazard-strip {
+        grid-template-columns: 142px repeat(8, minmax(0, 1fr));
+        gap: 5px;
+        padding: 8px;
+      }
+
+      .strip-label {
+        padding: 0 8px;
+        font-size: 13px;
+      }
+
+      .summary-chip {
+        padding: 5px 6px 5px 8px;
+      }
+
+      .summary-hazard {
+        font-size: 11px;
+      }
+
+      .summary-risk {
+        font-size: 15px;
+      }
+
+      .summary-value {
+        font-size: 12px;
+      }
+
       .bottom-row {
         grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr) minmax(0, 0.82fr);
       }
@@ -1098,6 +1230,50 @@
       </div>
     </section>
 
+    <section class="panel hazard-strip" aria-label="72-hour hazard summary">
+      <div class="strip-label">72-Hr Hazard Summary</div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Lightning</div>
+        <div class="summary-risk">Moderate</div>
+        <div class="summary-value">Peak Thu 3 PM-6 PM</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Wind</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">Gust 26 mph</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Rain</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">0.02 in</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Visibility</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">6+ mi</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Snow</div>
+        <div class="summary-risk">None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Freezing Rain</div>
+        <div class="summary-risk">None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Flash Freeze</div>
+        <div class="summary-risk">None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Temperature</div>
+        <div class="summary-risk">None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+    </section>
+
     <section class="panel timeline-panel" aria-label="72-hour impact timeline">
       <div class="panel-head">
         <div class="panel-title">72-Hour Weather Risk Timeline</div>
@@ -1158,7 +1334,7 @@
         </div>
         <div class="bottom-body radar-body">
           <div class="radar-map" id="radar-map">
-            <img id="radar-img" alt="KRGX base reflectivity near KRNO">
+            <img id="radar-img" alt="Animated reflectivity loop near KRNO">
             <div class="range-ring r10"></div>
             <div class="range-ring r15"></div>
             <div class="range-ring r20"></div>
@@ -1172,9 +1348,13 @@
             <div class="range-spoke s270"></div>
             <div class="range-spoke s315"></div>
             <div class="airport-dot"></div>
+            <div class="radar-site-dot"></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
             <div class="map-label krno">KRNO</div>
-            <div class="map-label source">KRGX 0.5&deg; BR</div>
+            <div class="map-label krgx">KRGX</div>
+            <div class="map-label radar-time" id="radar-time">Scan --</div>
+            <div class="map-label lightning-clear" id="map-lightning-status">No lightning within 25 nm</div>
+            <div class="map-label source">IEM N0Q Loop</div>
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
@@ -1250,6 +1430,15 @@
     let currentPrimaryItem = null;
     let latestObsMs = 0;
     let latestTimelineBlocks = [];
+    let radarCacheBust = Date.now();
+    let radarFrameIndex = 0;
+    const radarFrames = [
+      { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
+      { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
+      { ageMinutes: 10, layer: "nexrad-n0q-900913-m10m" },
+      { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
+      { ageMinutes: 0, layer: "nexrad-n0q-900913" }
+    ];
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
@@ -1875,6 +2064,52 @@
       });
     }
 
+    function orderedHazardItems(items = []) {
+      const bySource = new Map(items.map(item => [item.source, item]));
+      const fallback = new Map(topHazards.map(item => [item.source, item]));
+      return hazards
+        .map(hazard => bySource.get(hazard.source) || fallback.get(hazard.source))
+        .filter(Boolean);
+    }
+
+    function stripValueFor(item) {
+      const metric = compactConcernMetric(item) || item.metric || "";
+      const peak = item.peak || "";
+      const rank = rankFromCategory(item.risk);
+      if (rank >= 2 && peak && !/no signal|tbd/i.test(peak)) {
+        return peak.replace(/^Peak\s+/i, "Peak ").replace(/^Min\s+/i, "Min ");
+      }
+      return metric && !/no signal/i.test(metric) ? metric : "No signal";
+    }
+
+    function renderHazardSummaryStrip(items) {
+      const strip = document.querySelector(".hazard-strip");
+      if (!strip) return;
+      strip.querySelectorAll(".summary-chip").forEach(node => node.remove());
+      orderedHazardItems(items).forEach(item => {
+        const chip = document.createElement("div");
+        const rank = rankFromCategory(item.risk);
+        const value = stripValueFor(item);
+        const riskColor = riskColors[item.risk] || riskColors.None;
+        const valueColor = metricColorFor(item.source, value, item.name);
+        chip.className = "summary-chip";
+        chip.dataset.active = String(rank >= 2);
+        chip.style.borderLeftColor = riskColor;
+        chip.innerHTML = `
+          <div class="summary-hazard">${escapeHtml(item.name)}</div>
+          <div class="summary-risk" style="color:${rank >= 2 ? riskColor : "var(--text-body)"}">${escapeHtml(item.risk)}</div>
+          <div class="summary-value"${valueColor ? ` style="color:${valueColor}"` : ""}>${escapeHtml(value)}</div>
+        `;
+        attachTooltip(chip, {
+          title: `${item.name} - ${item.risk}`,
+          subtitle: value,
+          lines: concernTooltipLines(item, value),
+          risk: item.risk
+        });
+        strip.appendChild(chip);
+      });
+    }
+
     function updatePrimaryConcern(item) {
       if (!item) return;
       currentPrimaryItem = item;
@@ -2377,14 +2612,12 @@
       }
     }
 
-    function radarImageUrl() {
+    function radarImageUrl(frame = radarFrames[radarFrameIndex]) {
       const params = new URLSearchParams({
-        sector: "RGX",
-        prod: "N0Q",
         SERVICE: "WMS",
         VERSION: "1.1.1",
         REQUEST: "GetMap",
-        LAYERS: "single",
+        LAYERS: frame.layer,
         STYLES: "",
         SRS: "EPSG:4326",
         BBOX: "-121.064,38.499,-118.472,40.499",
@@ -2392,26 +2625,65 @@
         HEIGHT: "430",
         FORMAT: "image/png",
         TRANSPARENT: "TRUE",
-        t: String(Date.now())
+        t: String(radarCacheBust)
       });
-      return `https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/ridge.cgi?${params.toString()}`;
+      return `https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi?${params.toString()}`;
     }
 
-    function refreshRadarImage() {
-      const image = document.getElementById("radar-img");
-      if (!image) return;
-      image.src = radarImageUrl();
+    function formatRadarClock(frame) {
+      const scanTime = new Date(Date.now() - Number(frame.ageMinutes || 0) * 60000);
+      const local = scanTime.toLocaleTimeString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      });
+      return frame.ageMinutes ? `Scan ~${local} (-${frame.ageMinutes}m)` : `Scan ~${local}`;
+    }
+
+    function updateRadarFrameInfo(frame) {
+      const label = document.getElementById("radar-time");
+      if (label) label.textContent = formatRadarClock(frame);
       attachTooltip(document.getElementById("radar-map"), {
         title: "Radar / Lightning Map",
-        subtitle: "KRGX lowest-tilt reflectivity",
+        subtitle: formatRadarClock(frame),
         lines: [
-          ["Radar", "IEM KRGX N0Q"],
-          ["Rings", "10/15/20/25 nm"],
+          ["Radar", "IEM N0Q reflectivity loop"],
+          ["Loop", "Last 20 minutes"],
+          ["Rings", "10/15/20/25 nm from KRNO"],
+          ["KRGX", "Nearest NEXRAD reference"],
           ["Lightning", "NOAA GOES-18 GLM"],
           ["Use", "Ops awareness"]
         ],
         risk: "Little to None"
       });
+    }
+
+    function preloadRadarFrames() {
+      radarFrames.forEach(frame => {
+        const image = new Image();
+        image.src = radarImageUrl(frame);
+      });
+    }
+
+    function renderRadarFrame() {
+      const image = document.getElementById("radar-img");
+      if (!image) return;
+      const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
+      image.src = radarImageUrl(frame);
+      image.dataset.ageMinutes = String(frame.ageMinutes);
+      updateRadarFrameInfo(frame);
+    }
+
+    function advanceRadarFrame() {
+      radarFrameIndex = (radarFrameIndex + 1) % radarFrames.length;
+      renderRadarFrame();
+    }
+
+    function refreshRadarImage() {
+      radarCacheBust = Date.now();
+      preloadRadarFrames();
+      renderRadarFrame();
     }
 
     function lightningRisk(level) {
@@ -2457,17 +2729,24 @@
       const meta = document.getElementById("lightning-meta");
       const main = document.getElementById("lightning-main");
       const ringGrid = document.getElementById("ring-grid");
+      const mapStatus = document.getElementById("map-lightning-status");
       const label = lightning?.alert_label || "No GLM lightning detected";
       if (status) {
         status.textContent = nearest
           ? `${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
           : "No Lightning";
-        status.style.color = riskColors[risk] || "var(--text-main)";
+        status.style.color = risk === "None" ? "var(--text-body)" : (riskColors[risk] || "var(--text-main)");
       }
       if (meta) {
         meta.textContent = nearest
           ? `${formatStrikeAge(nearest)} | ${total} GLM groups`
-          : "10/15/20/25 nm clear";
+          : "No lightning within 25 nm";
+      }
+      if (mapStatus) {
+        mapStatus.textContent = nearest
+          ? `GLM ${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
+          : "No lightning within 25 nm";
+        mapStatus.style.color = nearest ? (riskColors[risk] || "var(--text-main)") : "var(--text-body)";
       }
       if (main) {
         main.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
@@ -2549,6 +2828,7 @@
         const threatRows = threatRowsFromData(threats.threats || {}, timeline.blocks || []);
         if (threatRows.length) {
           renderTopHazards(threatRows);
+          renderHazardSummaryStrip(threatRows);
           updatePrimaryConcern(threatRows[0]);
         }
       } catch (error) {
@@ -2610,6 +2890,7 @@
     renderTimeline(makeTimeBlocks(), mockRows);
     renderLegend();
     renderTopHazards(topHazards);
+    renderHazardSummaryStrip(topHazards);
     updatePrimaryConcern(topHazards[0]);
     updateHeaderClock();
     updateDataSummary();
@@ -2620,6 +2901,7 @@
     setInterval(loadForecastData, 2 * 60 * 1000);
     setInterval(loadAlertsData, 5 * 60 * 1000);
     setInterval(loadLightningData, 60 * 1000);
+    setInterval(advanceRadarFrame, 1200);
     setInterval(refreshRadarImage, 5 * 60 * 1000);
     window.addEventListener("resize", () => updateNowMarker());
     document.addEventListener("visibilitychange", () => {
