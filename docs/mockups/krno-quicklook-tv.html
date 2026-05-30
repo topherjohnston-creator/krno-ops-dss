@@ -2688,12 +2688,17 @@
 
     async function loadObsData() {
       updateHeaderClock();
+      let loadedPrimaryObs = false;
       try {
         const obs = await fetchJson("../observations.json");
-        if (obs.status === "ok") updateObsDisplay(obs);
+        if (obs.status === "ok") {
+          updateObsDisplay(obs);
+          loadedPrimaryObs = true;
+        }
       } catch (error) {
         console.info("Unable to refresh observations.", error);
       }
+      if (loadedPrimaryObs) return;
       try {
         await fetchNwsObservationFallback();
       } catch (error) {
