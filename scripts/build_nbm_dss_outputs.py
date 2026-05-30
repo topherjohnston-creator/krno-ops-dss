@@ -1434,7 +1434,7 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
 
     for block_index, start_fxx in enumerate(range(1, 73, 3)):
         end_fxx = min(start_fxx + 2, 72)
-        start = cycle + timedelta(hours=start_fxx)
+        start = cycle + timedelta(hours=start_fxx - 1)
         end = cycle + timedelta(hours=end_fxx)
         block: dict[str, Any] = {
             "block_index": block_index,
@@ -1489,7 +1489,7 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
         "generated_utc": generated,
         "cycle_utc_iso": cycle_iso,
         "cycle": cycle_label,
-        "valid_period": {"hours": 72, "start_utc": iso(cycle + timedelta(hours=1)), "end_utc": iso(cycle + timedelta(hours=72))},
+        "valid_period": {"hours": 72, "start_utc": iso(cycle), "end_utc": iso(cycle + timedelta(hours=72))},
     }
 
     timeline = {

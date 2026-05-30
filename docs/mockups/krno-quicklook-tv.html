@@ -750,7 +750,7 @@
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover;
+      object-fit: fill;
     }
 
     .radar-basemap {
@@ -1161,6 +1161,45 @@
         text-align: right;
       }
     }
+
+    @media (max-height: 850px) {
+      .app {
+        grid-template-rows: 70px 82px 76px minmax(0, 1fr) 220px;
+        gap: 8px;
+        padding-bottom: 10px;
+      }
+
+      .timeline-panel {
+        grid-template-rows: 38px minmax(0, 1fr) 24px;
+      }
+
+      .matrix {
+        grid-template-rows: 34px repeat(var(--timeline-rows, 8), minmax(14px, 1fr));
+        gap: 1px;
+        padding: 7px 14px 4px;
+      }
+
+      .time-cell {
+        font-size: 12px;
+      }
+
+      .time-cell strong {
+        font-size: 13px;
+      }
+
+      .row-label {
+        font-size: 12px;
+      }
+
+      .impact-cell {
+        font-size: 12px;
+      }
+
+      .legend {
+        min-height: 24px;
+        padding-top: 3px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1304,11 +1343,11 @@
             <div class="range-ring r20"></div>
             <div class="range-ring r25"></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
-            <div class="city-marker" style="left:31.87%;top:67.11%">Truckee</div>
-            <div class="city-marker" style="left:50.03%;top:83.53%">Carson City</div>
-            <div class="city-marker" style="left:72.54%;top:39.11%">Fernley</div>
-            <div class="city-marker" style="left:41.94%;top:74.94%">Incline Village</div>
-            <div class="city-marker" style="left:93.25%;top:52.56%">Fallon</div>
+            <div class="city-marker" data-lat="39.32796" data-lon="-120.18325">Truckee</div>
+            <div class="city-marker" data-lat="39.16380" data-lon="-119.76740">Carson City</div>
+            <div class="city-marker" data-lat="39.60797" data-lon="-119.25183">Fernley</div>
+            <div class="city-marker" data-lat="39.24970" data-lon="-119.95270">Incline Village</div>
+            <div class="city-marker" data-lat="39.47353" data-lon="-118.77737">Fallon</div>
             <div class="map-label radar-time" id="radar-time">Scan --</div>
             <div class="map-label range">25 NM</div>
           </div>
@@ -1378,8 +1417,8 @@
     const hazardPriority = ["LIGHTNING", "WIND", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
     const metricLineLabels = new Set([
-      "Block Value", "3-hr Max Gust", "3-hr Chance", "Block Rain", "Block Snow",
-      "Block FZRA", "3-hr Min Vis", "3-hr Min Temp", "Block Temp"
+      "Block Value", "Max Gust", "Chance", "Rain", "Snow",
+      "Freezing Rain", "Visibility", "Temperature", "Wet Surface"
     ]);
     let latestObsSummary = "Obs Fresh";
     let latestModelSummary = "NBM 18Z";
@@ -1389,16 +1428,20 @@
     let latestTimelineBlocks = [];
     let radarCacheBust = Date.now();
     let radarFrameIndex = 0;
+    let radarBbox = "";
+    let radarWidth = 760;
+    let radarHeight = 430;
+    let radarAspect = radarWidth / radarHeight;
+    let radarBounds = null;
+    const krnoPoint = { lat: 39.4991, lon: -119.7681 };
+    const radarHalfSpanNm = 30;
     const radarFrames = [
-      { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
-      { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
-      { ageMinutes: 10, layer: "nexrad-n0q-900913-m10m" },
-      { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
-      { ageMinutes: 0, layer: "nexrad-n0q-900913" }
+      { ageMinutes: 20, layer: "nexrad-n0q-m20m" },
+      { ageMinutes: 15, layer: "nexrad-n0q-m15m" },
+      { ageMinutes: 10, layer: "nexrad-n0q-m10m" },
+      { ageMinutes: 5, layer: "nexrad-n0q-m05m" },
+      { ageMinutes: 0, layer: "nexrad-n0q" }
     ];
-    const radarBbox = "-120.913358,38.9991,-118.622842,39.9991";
-    const radarWidth = "760";
-    const radarHeight = "430";
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
       LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Minor","Minor","Little to None","Little to None","Little to None","Little to None","Little to None"],
@@ -1613,16 +1656,17 @@
       blocks.forEach((block, index) => {
         const isTarget = Number(block?.[source]) === target;
         if (isTarget) {
+          const window = normalizedBlockWindow(block, blocks[0]?.valid_start_utc, index);
           if (!current) {
             current = {
               startIndex: index,
               endIndex: index,
-              start: block.valid_start_utc,
-              end: block.valid_end_utc
+              start: Number.isFinite(window.start.getTime()) ? window.start.toISOString() : block.valid_start_utc,
+              end: Number.isFinite(window.end.getTime()) ? window.end.toISOString() : block.valid_end_utc
             };
           } else {
             current.endIndex = index;
-            current.end = block.valid_end_utc;
+            current.end = Number.isFinite(window.end.getTime()) ? window.end.toISOString() : block.valid_end_utc;
           }
         } else if (current) {
           if (!best || current.endIndex - current.startIndex > best.endIndex - best.startIndex) best = current;
@@ -1689,13 +1733,36 @@
       return blocks;
     }
 
+    function normalizedBlockWindow(block, fallbackStart, index) {
+      const startFxx = Number(block?.start_fxx);
+      const endFxx = Number(block?.end_fxx);
+      const expectedHours = Number.isFinite(startFxx) && Number.isFinite(endFxx)
+        ? Math.max(1, endFxx - startFxx + 1)
+        : 3;
+      let start = new Date(block?.valid_start_utc || fallbackStart);
+      let end = new Date(block?.valid_end_utc || "");
+      if (!Number.isFinite(start.getTime()) && fallbackStart) {
+        start = new Date(new Date(fallbackStart).getTime() + index * 3 * 3600000);
+      }
+      if (!Number.isFinite(end.getTime()) && Number.isFinite(start.getTime())) {
+        end = new Date(start.getTime() + expectedHours * 3600000);
+      }
+      const durationHours = Number.isFinite(start.getTime()) && Number.isFinite(end.getTime())
+        ? (end.getTime() - start.getTime()) / 3600000
+        : expectedHours;
+      if (Number.isFinite(end.getTime()) && durationHours > 0 && durationHours < expectedHours - 0.25) {
+        start = new Date(end.getTime() - expectedHours * 3600000);
+      }
+      return { start, end };
+    }
+
     function timeBlocksFromTimeline(sourceBlocks, fallbackStart) {
       if (!Array.isArray(sourceBlocks) || !sourceBlocks.length) return makeTimeBlocks(fallbackStart);
       const selected = sourceBlocks.slice(0, 24);
-      const firstStart = new Date(selected[0]?.valid_start_utc || fallbackStart).getTime();
+      const firstWindow = normalizedBlockWindow(selected[0], fallbackStart, 0);
+      const firstStart = firstWindow.start.getTime();
       return selected.map((block, index) => {
-        const start = new Date(block.valid_start_utc);
-        const end = new Date(block.valid_end_utc);
+        const { start, end } = normalizedBlockWindow(block, fallbackStart, index);
         const hourOffset = Number.isFinite(firstStart) && Number.isFinite(start.getTime())
           ? Math.max(0, Math.round((start.getTime() - firstStart) / 3600000))
           : index * 3;
@@ -1783,29 +1850,28 @@
       ];
       const values = detail?.values || {};
       const valueLineCount = lines.length;
-      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["3-hr Max Gust", `${Math.round(values.gust_max_mph)} mph`]);
-      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["3-hr Chance", `${Math.round(values.prob)}%`]);
-      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Block Rain", `${Number(values.rain_in).toFixed(2)} in`]);
-      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Block Snow", `${Number(values.snow_in).toFixed(2)} in`]);
-      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Block FZRA", `${Number(values.fzra_in).toFixed(2)} in`]);
-      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["3-hr Min Vis", `${Number(values.visibility_mi).toFixed(1)} mi`]);
+      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["Max Gust", `${Math.round(values.gust_max_mph)} mph`]);
+      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["Chance", `${Math.round(values.prob)}%`]);
+      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Snow", `${Number(values.snow_in).toFixed(2)} in`]);
+      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Freezing Rain", `${Number(values.fzra_in).toFixed(2)} in`]);
+      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["Visibility", `${Number(values.visibility_mi).toFixed(1)} mi`]);
       if (hazard.source === "FLASH_FREEZE") {
-        if (values.temp_f != null) lines.push(["3-hr Min Temp", `${Math.round(values.temp_f)} °F`]);
-        if (values.rain_in != null) lines.push(["Block Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+        if (values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} °F`]);
+        if (values.rain_in != null) lines.push(["Wet Surface", `${Number(values.rain_in).toFixed(2)} in rain`]);
       }
-      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Block Temp", `${Math.round(values.temp_f)} °F`]);
+      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} °F`]);
       if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
         ["Action", operationalAction(risk)]
       );
-      if (detail?.source) lines.push(["Source", detail.source.replace(/^NOAA\s+/i, "")]);
       return lines;
     }
 
     function tooltipHtml(hazard, block, risk, detail) {
-      const validStart = detail?.valid_start_utc || block.validStartUtc;
-      const validEnd = detail?.valid_end_utc || block.validEndUtc;
+      const validStart = block.validStartUtc || detail?.valid_start_utc;
+      const validEnd = block.validEndUtc || detail?.valid_end_utc;
       const localWindow = `${formatTooltipLocal(validStart)} - ${formatTooltipLocal(validEnd)}`;
       const utcWindow = `${formatTooltipUtc(validStart)}-${formatTooltipUtc(validEnd)}`;
       const peak = detail?.peak_valid_utc ? shortPeak(detail.peak_valid_utc) : "Peak window TBD";
@@ -1885,9 +1951,7 @@
       element.addEventListener("mouseover", event => showTimelineTooltip(element, event.clientX, event.clientY));
       element.addEventListener("mouseenter", event => showTimelineTooltip(element, event.clientX, event.clientY));
       element.addEventListener("mousemove", event => {
-        const tooltip = document.getElementById("timeline-tooltip");
-        if (tooltip.hidden) showTimelineTooltip(element, event.clientX, event.clientY);
-        else positionTooltip(event.clientX, event.clientY);
+        showTimelineTooltip(element, event.clientX, event.clientY);
       });
       element.addEventListener("mouseout", hideTimelineTooltip);
       element.addEventListener("mouseleave", hideTimelineTooltip);
@@ -1946,12 +2010,7 @@
           cell.addEventListener("mouseover", event => showTimelineTooltip(cell, event.clientX, event.clientY));
           cell.addEventListener("mouseenter", event => showTimelineTooltip(cell, event.clientX, event.clientY));
           cell.addEventListener("mousemove", event => {
-            const tooltip = document.getElementById("timeline-tooltip");
-            if (tooltip.hidden) {
-              showTimelineTooltip(cell, event.clientX, event.clientY);
-            } else {
-              positionTooltip(event.clientX, event.clientY);
-            }
+            showTimelineTooltip(cell, event.clientX, event.clientY);
           });
           cell.addEventListener("mouseout", hideTimelineTooltip);
           cell.addEventListener("mouseleave", hideTimelineTooltip);
@@ -2003,29 +2062,27 @@
 
     function riskWindowLabel(item) {
       const method = String(item.riskMethod || item.methodology || "");
-      if (item.source === "RAIN" && /qmd_6hr/i.test(method)) return "QMD 6-hour rain windows";
-      if (item.source === "SNOW") return "Core hourly to 48h, 6-hour to 72h";
-      if (item.source === "FZRA") return "Core hourly to 48h";
-      if (item.source === "WIND" && /24hr_max_gust/i.test(method)) return "QMD 24-hour max gust";
-      if (item.source === "TEMPERATURE" && /qmd_max_min/i.test(method)) return "QMD daily max/min";
-      if (item.source === "LIGHTNING") return "Core 3-hour thunder probability";
-      if (item.source === "VISIBILITY") return "Core 3-hour visibility probabilities";
-      if (item.source === "FLASH_FREEZE") return "Core temperature and wet-surface proxy";
-      return "72-hour hazard summary";
+      if (item.source === "RAIN" && /qmd_6hr/i.test(method)) return "Highest rain window";
+      if (item.source === "SNOW") return "Highest snow window";
+      if (item.source === "FZRA") return "Freezing rain window";
+      if (item.source === "WIND" && /24hr_max_gust/i.test(method)) return "Highest forecast gust";
+      if (item.source === "TEMPERATURE" && /qmd_max_min/i.test(method)) return "Forecast high/low";
+      if (item.source === "LIGHTNING") return "3-hour lightning chance";
+      if (item.source === "VISIBILITY") return "Lowest visibility window";
+      if (item.source === "FLASH_FREEZE") return "Wet pavement freeze signal";
+      return "72-hour summary";
     }
 
     function concernTooltipLines(item, details) {
       const metric = compactConcernMetric(item) || item.metric || "No signal";
-      const sourceText = String(item.dataSource || "").replace(/^NOAA\s+/i, "");
       return [
         ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
         ["Timing", item.peak || "No signal"],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)],
-        ["Summary Window", riskWindowLabel(item)],
-        ["Timeline", "3-hour block risk"],
-        ["Source", sourceText]
+        ["Basis", riskWindowLabel(item)],
+        ["Timeline", "3-hour blocks"]
       ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) <= 1));
     }
 
@@ -2360,9 +2417,14 @@
       if (summary) summary.textContent = `${latestObsSummary} | ${latestModelSummary} | ${latestBuildSummary}`;
     }
 
+    function obsAgeMinutes(obsIso) {
+      const obsDate = new Date(obsIso);
+      return Number.isFinite(obsDate.getTime()) ? (Date.now() - obsDate.getTime()) / 60000 : Infinity;
+    }
+
     function updateObsFreshness(obsIso) {
       const obsDate = new Date(obsIso);
-      const ageMinutes = Number.isFinite(obsDate.getTime()) ? (Date.now() - obsDate.getTime()) / 60000 : Infinity;
+      const ageMinutes = obsAgeMinutes(obsIso);
       if (Number.isFinite(obsDate.getTime())) latestObsMs = Math.max(latestObsMs, obsDate.getTime());
       let state = "Fresh";
       let className = "fresh";
@@ -2421,7 +2483,6 @@
           ["Direction", values.dirText],
           ["Speed", `${values.speed} mph`, windColor(values.speed)],
           ["Gust", values.gustText, windColor(values.gust)],
-          ["Display", "Direction speedGgust mph"],
           ["Ops", values.gust > 25 ? "Ramp wind watch" : "Routine wind watch"]
         ],
         risk: values.gust > 35 ? "Moderate" : values.gust > 25 ? "Minor" : "Little to None"
@@ -2463,7 +2524,7 @@
       attachTooltip(document.getElementById("obs-time-item"), {
         title: "Observation Time",
         subtitle: observed,
-        lines: [["Source", obs.source || "Observation feed"], ["METAR", obs.metar || "Not available"]],
+        lines: [["Source", obs.source || "Observation feed"]],
         risk: "Little to None"
       });
     }
@@ -2481,6 +2542,7 @@
       let gust = mphValue(obs.wind_gust_mph, obs.wind_gust_kt);
       if (staleRawObservation(obs, ["wind_gust"], obsIso, 15)) gust = NaN;
       const windText = formatWindValue(dirText, speed, gust);
+      const windTooltipText = windText.replaceAll("&deg;", "°");
       setValueColor("wind-line", windText, windColor(speed));
       updateWindRose(dir);
       const gustText = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
@@ -2490,8 +2552,10 @@
       const sky = obs.sky_condition || cloudFromMetar(obs.metar);
       setValueColor("sky-line", sky, cloudColor(sky));
       let tempText = "--";
+      let tempTooltipText = "--";
       if (obs.temperature_f != null && obs.dewpoint_f != null) {
         tempText = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
+        tempTooltipText = tempText.replaceAll("&deg;", "°");
         setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
       }
       const wx = obs.present_weather || parsePresentWeatherFromMetar(obs.metar) || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value);
@@ -2499,7 +2563,7 @@
       const rain = Number(obs.precip_1hr_in || 0);
       const rainText = rain.toFixed(2) + " in";
       setValueColor("rain-line", rainText, precipColor(rain));
-      updateObsTooltips(obs, { obsIso, dir, dirText: dirText.replace("&deg;", " deg"), speed, gust, windText, gustText, vis, visText, sky, tempText, wx, rain, rainText });
+      updateObsTooltips(obs, { obsIso, dir, dirText: dirText.replace("&deg;", "°"), speed, gust, windText: windTooltipText, gustText, vis, visText, sky, tempText: tempTooltipText, wx, rain, rainText });
     }
 
     function awcMetarToObs(record) {
@@ -2533,9 +2597,10 @@
       if (!Array.isArray(layers) || !layers.length) return "Not reported";
       return layers
         .map(layer => {
-          const amount = layer?.amount || "";
+          const amount = String(layer?.amount || "").toUpperCase();
+          if (amount === "CLR" || amount === "SKC") return amount;
           const baseFt = Number(layer?.base?.value) * 3.28084;
-          if (!amount || !Number.isFinite(baseFt)) return "";
+          if (!amount || !Number.isFinite(baseFt)) return amount;
           return `${amount}${String(Math.round(baseFt / 100)).padStart(3, "0")}`;
         })
         .filter(Boolean)
@@ -2683,25 +2748,102 @@
 
     async function loadObsData() {
       updateHeaderClock();
+      let primaryObs = null;
       let loadedPrimaryObs = false;
       try {
         const obs = await fetchJson("../observations.json");
         if (obs.status === "ok") {
-          updateObsDisplay(obs);
+          primaryObs = obs;
           loadedPrimaryObs = true;
+          const obsMs = new Date(obs.observed_utc || obs.generated_utc).getTime();
+          if (!latestObsMs || !Number.isFinite(obsMs) || obsMs >= latestObsMs) {
+            updateObsDisplay(obs);
+          }
         }
       } catch (error) {
         console.info("Unable to refresh observations.", error);
       }
-      if (loadedPrimaryObs) return;
-      try {
-        await fetchNwsObservationFallback();
-      } catch (error) {
-        console.info("Unable to refresh NWS API observation fallback.", error);
+      if (loadedPrimaryObs && obsAgeMinutes(primaryObs?.observed_utc || primaryObs?.generated_utc) <= 8) return;
+
+      const fallbackLoaders = [
+        ["NWS API observation fallback", fetchNwsObservationFallback],
+        ["AWC METAR fallback", fetchAwcMetarFallback],
+        ["NWS TGFTP METAR fallback", fetchTgftpMetarFallback]
+      ];
+      for (const [label, loader] of fallbackLoaders) {
+        try {
+          const updated = await loader();
+          if (updated) return;
+        } catch (error) {
+          console.info(`Unable to refresh ${label}.`, error);
+        }
       }
     }
 
+    function radarMapDimensions() {
+      const map = document.getElementById("radar-map");
+      return {
+        width: Math.max(320, Math.round(map?.clientWidth || radarWidth || 760)),
+        height: Math.max(180, Math.round(map?.clientHeight || radarHeight || 430))
+      };
+    }
+
+    function radarBoundsForElement(width, height) {
+      const aspect = Math.max(1, width / Math.max(1, height));
+      const latHalfDeg = radarHalfSpanNm / 60;
+      const lonHalfDeg = (radarHalfSpanNm * aspect) / (60 * Math.cos(krnoPoint.lat * Math.PI / 180));
+      return {
+        minLon: krnoPoint.lon - lonHalfDeg,
+        minLat: krnoPoint.lat - latHalfDeg,
+        maxLon: krnoPoint.lon + lonHalfDeg,
+        maxLat: krnoPoint.lat + latHalfDeg
+      };
+    }
+
+    function coordinateToRadarPct(lat, lon) {
+      if (!radarBounds) return null;
+      const latitude = Number(lat);
+      const longitude = Number(lon);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+      const left = ((longitude - radarBounds.minLon) / (radarBounds.maxLon - radarBounds.minLon)) * 100;
+      const top = ((radarBounds.maxLat - latitude) / (radarBounds.maxLat - radarBounds.minLat)) * 100;
+      return { left, top };
+    }
+
+    function positionCityMarkers() {
+      document.querySelectorAll(".city-marker").forEach(marker => {
+        const point = coordinateToRadarPct(marker.dataset.lat, marker.dataset.lon);
+        if (!point || point.left < -4 || point.left > 104 || point.top < -4 || point.top > 104) {
+          marker.hidden = true;
+          return;
+        }
+        marker.hidden = false;
+        marker.style.left = `${point.left}%`;
+        marker.style.top = `${point.top}%`;
+      });
+    }
+
+    function syncRadarGeometry() {
+      const { width, height } = radarMapDimensions();
+      radarWidth = width;
+      radarHeight = height;
+      radarAspect = Math.max(1, width / Math.max(1, height));
+      radarBounds = radarBoundsForElement(width, height);
+      radarBbox = [
+        radarBounds.minLon.toFixed(6),
+        radarBounds.minLat.toFixed(6),
+        radarBounds.maxLon.toFixed(6),
+        radarBounds.maxLat.toFixed(6)
+      ].join(",");
+      [10, 15, 20, 25].forEach(limit => {
+        const ring = document.querySelector(`.range-ring.r${limit}`);
+        if (ring) ring.style.height = `${(limit / radarHalfSpanNm) * 100}%`;
+      });
+      positionCityMarkers();
+    }
+
     function radarImageUrl(frame = radarFrames[radarFrameIndex]) {
+      if (!radarBbox) syncRadarGeometry();
       const params = new URLSearchParams({
         SERVICE: "WMS",
         VERSION: "1.1.1",
@@ -2710,8 +2852,8 @@
         STYLES: "",
         SRS: "EPSG:4326",
         BBOX: radarBbox,
-        WIDTH: radarWidth,
-        HEIGHT: radarHeight,
+        WIDTH: String(radarWidth),
+        HEIGHT: String(radarHeight),
         FORMAT: "image/png",
         TRANSPARENT: "TRUE",
         t: String(radarCacheBust)
@@ -2720,6 +2862,7 @@
     }
 
     function radarBasemapUrl() {
+      if (!radarBbox) syncRadarGeometry();
       const params = new URLSearchParams({
         bbox: radarBbox,
         bboxSR: "4326",
@@ -2751,10 +2894,10 @@
         title: "Radar / Lightning Map",
         subtitle: formatRadarClock(frame),
         lines: [
-          ["Radar", "IEM N0Q reflectivity loop"],
+          ["Radar", "Reflectivity loop"],
           ["Loop", "Last 20 minutes"],
           ["Rings", "10/15/20/25 nm from KRNO"],
-          ["Lightning", "NOAA GOES-18 GLM"],
+          ["Lightning", "GOES GLM proximity"],
           ["Use", "Ops awareness"]
         ],
         risk: "Little to None"
@@ -2784,6 +2927,7 @@
 
     function refreshRadarImage() {
       radarCacheBust = Date.now();
+      syncRadarGeometry();
       const basemap = document.getElementById("radar-basemap");
       if (basemap) basemap.src = radarBasemapUrl();
       preloadRadarFrames();
@@ -2817,9 +2961,10 @@
       }
       const distance = Math.min(25, Math.max(0, Number(strike.distance_nm)));
       const bearing = Number(strike.bearing_degrees) * Math.PI / 180;
-      const radiusPct = 41.666 * (distance / 25);
-      const left = 50 + Math.sin(bearing) * radiusPct;
-      const top = 50 - Math.cos(bearing) * radiusPct;
+      const eastNm = Math.sin(bearing) * distance;
+      const northNm = Math.cos(bearing) * distance;
+      const left = 50 + (eastNm / (radarHalfSpanNm * radarAspect)) * 50;
+      const top = 50 - (northNm / radarHalfSpanNm) * 50;
       dot.style.left = `${left}%`;
       dot.style.top = `${top}%`;
       dot.hidden = false;
@@ -2970,7 +3115,10 @@
     setInterval(loadLightningData, 60 * 1000);
     setInterval(advanceRadarFrame, 1200);
     setInterval(refreshRadarImage, 5 * 60 * 1000);
-    window.addEventListener("resize", () => updateNowMarker());
+    window.addEventListener("resize", () => {
+      updateNowMarker();
+      refreshRadarImage();
+    });
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) loadLocalData();
     });

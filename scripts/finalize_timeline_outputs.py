@@ -724,7 +724,7 @@ def build_final_timeline() -> None:
 
     for i in range(BLOCK_COUNT):
         start_fxx, end_fxx = block_range(i)
-        start_utc = valid_time_from_cycle(cycle_iso, start_fxx)
+        start_utc = valid_time_from_cycle(cycle_iso, start_fxx - 1)
         end_utc = valid_time_from_cycle(cycle_iso, end_fxx)
 
         old_block = old_blocks[i] if i < len(old_blocks) and isinstance(old_blocks[i], dict) else {}
