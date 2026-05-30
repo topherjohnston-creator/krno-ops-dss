@@ -27,15 +27,8 @@ SITE = {
     "lon": -119.7681,
 }
 
-WIND_THRESHOLDS_MPH = [
-    (65, 5),
-    (58, 4),
-    (45, 3),
-    (30, 2),
-    (20, 1),
-]
-
 CORE_SOURCE_METHOD = "nbm_core_aws_gridpoint"
+QMD_SOURCE_METHOD = "nbm_qmd_aws_gridpoint"
 
 HAZARDS = ["WIND", "LIGHTNING", "SNOW", "VISIBILITY", "FZRA", "FLASH_FREEZE", "RAIN", "TEMPERATURE"]
 
@@ -85,13 +78,20 @@ NATIVE_WINDOWS = {
 METHODOLOGY = {
     "version": "nbm_dss_schema_v1",
     "horizon_hours": 72,
-    "risk_matrix": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
+    "risk_matrix": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
+    "likelihood_bins": [
+        {"id": "extremely_unlikely", "label": "Extremely Unlikely", "probability": "<10%"},
+        {"id": "unlikely", "label": "Unlikely", "probability": "10-32%"},
+        {"id": "about_as_likely_as_not", "label": "About as Likely as Not", "probability": "33-66%"},
+        {"id": "likely", "label": "Likely", "probability": "67-90%"},
+        {"id": "very_likely", "label": "Very Likely", "probability": ">90%"},
+    ],
     "risk_labels": RISK_LABELS,
     "native_windows": NATIVE_WINDOWS,
     "snow": {
-        "basis": "Timeline uses NBM snowfall amount/probability thresholds by native window. Risk cards summarize the highest 72-hour snow signal.",
+        "basis": "Core NBM snow amount/probability fields are mapped to the KRNO snow impact table, then probability thresholds are passed through the likelihood-vs-impact matrix.",
         "impact_thresholds": [
-            {"level": 0, "label": "None", "threshold": "0 inches"},
+            {"level": 1, "label": "Little to None", "threshold": "0 inches"},
             {"level": 2, "label": "Minor", "threshold": "Trace to 0.5 inches per native window"},
             {"level": 3, "label": "Moderate", "threshold": "0.5 to 1 inch per native window"},
             {"level": 4, "label": "Major", "threshold": "1 to 2 inches per native window"},
@@ -99,23 +99,23 @@ METHODOLOGY = {
         ],
     },
     "rain": {
-        "basis": "Timeline uses hourly deterministic rain rates with NBM probability of measurable rain where available; QMD probability thresholds can be layered for 6-hour decision windows.",
+        "basis": "Core NBM 1-hour precipitation drives the timeline. QMD precipitation probabilities are used where available for accumulation summary products. All rain values are mapped to the KRNO rain/flooding impact table.",
         "impact_thresholds": [
             {"level": 1, "label": "Little to None", "threshold": "Less than 0.10 inches per hour"},
-            {"level": 2, "label": "Minor", "threshold": "0.10 to 0.29 inches per hour"},
-            {"level": 3, "label": "Moderate", "threshold": "0.30 to 0.69 inches per hour"},
-            {"level": 4, "label": "Major", "threshold": "0.70 to 0.99 inches per hour"},
-            {"level": 5, "label": "Extreme", "threshold": "At least 1 inch per hour"},
+            {"level": 2, "label": "Minor", "threshold": "0.10 to 0.25 inches per hour"},
+            {"level": 3, "label": "Moderate", "threshold": "0.25 to 0.50 inches per hour"},
+            {"level": 4, "label": "Major", "threshold": "0.50 to 1.00 inches per hour"},
+            {"level": 5, "label": "Extreme", "threshold": "Greater than 1 inch per hour"},
         ],
     },
     "fzra": {
-        "basis": "Timeline uses freezing-rain/ice amount plus NBM probability-of-threshold exceedance where available.",
+        "basis": "Core NBM freezing-rain/ice fields are mapped to the KRNO freezing rain impact table, then probability thresholds are passed through the likelihood-vs-impact matrix where available.",
         "impact_thresholds": [
-            {"level": 0, "label": "None", "threshold": "None"},
+            {"level": 1, "label": "Little to None", "threshold": "None"},
             {"level": 2, "label": "Minor", "threshold": "Trace"},
-            {"level": 3, "label": "Moderate", "threshold": "Greater than trace"},
-            {"level": 4, "label": "Major", "threshold": "Greater than 0.10 inches"},
-            {"level": 5, "label": "Extreme", "threshold": "Greater than 0.20 inches"},
+            {"level": 3, "label": "Moderate", "threshold": "Trace to 0.01 inches"},
+            {"level": 4, "label": "Major", "threshold": "0.01 to 0.10 inches"},
+            {"level": 5, "label": "Extreme", "threshold": "Greater than 0.10 inches"},
         ],
     },
     "precip_type_conflict": [
@@ -306,6 +306,38 @@ def value_risk(value: float, thresholds: list[tuple[float, int]], reverse: bool 
     return 0
 
 
+RISK_MATRIX_BY_LIKELIHOOD = {
+    "very_likely": {1: 1, 2: 2, 3: 3, 4: 4, 5: 5},
+    "likely": {1: 1, 2: 2, 3: 3, 4: 4, 5: 4},
+    "about_as_likely_as_not": {1: 1, 2: 2, 3: 2, 4: 3, 5: 4},
+    "unlikely": {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
+    "extremely_unlikely": {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
+}
+
+
+def likelihood_bin(probability: float | None) -> str | None:
+    if probability is None:
+        return None
+    prob = float(probability)
+    if prob > 90:
+        return "very_likely"
+    if prob > 66:
+        return "likely"
+    if prob >= 33:
+        return "about_as_likely_as_not"
+    if prob >= 10:
+        return "unlikely"
+    return "extremely_unlikely"
+
+
+def risk_from_matrix(impact_level: int, probability: float | None = None) -> int:
+    impact = max(1, min(5, int(impact_level or 1)))
+    likelihood = likelihood_bin(probability)
+    if likelihood is None:
+        return impact
+    return RISK_MATRIX_BY_LIKELIHOOD[likelihood][impact]
+
+
 def prob_risk(prob: float, thresholds: list[tuple[float, int]]) -> int:
     return value_risk(prob, thresholds)
 
@@ -316,6 +348,122 @@ def threshold_probability_risk(values: dict[str, float], thresholds: list[tuple[
         if prob >= trigger_prob:
             return level
     return 0
+
+
+def matrix_probability_risk(values: dict[str, float], thresholds: list[tuple[str, int]]) -> int:
+    risk = 1
+    for key, impact_level in thresholds:
+        prob = float(values.get(key, 0.0) or 0.0)
+        risk = max(risk, risk_from_matrix(impact_level, prob))
+    return risk
+
+
+def rain_impact_level(rain_in_per_hour: float) -> int:
+    if rain_in_per_hour > 1.0:
+        return 5
+    if rain_in_per_hour >= 0.50:
+        return 4
+    if rain_in_per_hour >= 0.25:
+        return 3
+    if rain_in_per_hour >= 0.10:
+        return 2
+    return 1
+
+
+def snow_impact_level(snow_in_per_hour: float) -> int:
+    if snow_in_per_hour > 2.0:
+        return 5
+    if snow_in_per_hour >= 1.0:
+        return 4
+    if snow_in_per_hour >= 0.5:
+        return 3
+    if snow_in_per_hour > 0.0:
+        return 2
+    return 1
+
+
+def fzra_impact_level(fzra_in: float) -> int:
+    if fzra_in > 0.10:
+        return 5
+    if fzra_in >= 0.01:
+        return 4
+    if fzra_in > 0.0:
+        return 3 if fzra_in >= 0.005 else 2
+    return 1
+
+
+def lightning_impact_level(probability: float) -> int:
+    if probability > 75:
+        return 5
+    if probability >= 50:
+        return 4
+    if probability >= 25:
+        return 3
+    if probability >= 5:
+        return 2
+    return 1
+
+
+def wind_impact_level(gust_mph: float) -> int:
+    if gust_mph > 65:
+        return 5
+    if gust_mph >= 58:
+        return 4
+    if gust_mph >= 45:
+        return 3
+    if gust_mph >= 30:
+        return 2
+    return 1
+
+
+def visibility_impact_level(visibility_mi: float) -> int:
+    if visibility_mi < 0.50:
+        return 5
+    if visibility_mi <= 1.0:
+        return 4
+    if visibility_mi <= 3.0:
+        return 3
+    if visibility_mi <= 5.0:
+        return 2
+    return 1
+
+
+def temperature_impact_level(temp_f: float) -> int:
+    cold = 1
+    if temp_f < 10:
+        cold = 5
+    elif temp_f < 20:
+        cold = 4
+    elif temp_f < 32:
+        cold = 3
+    elif temp_f < 40:
+        cold = 2
+
+    heat = 1
+    if temp_f > 105:
+        heat = 5
+    elif temp_f >= 100:
+        heat = 4
+    elif temp_f >= 95:
+        heat = 3
+    elif temp_f >= 90:
+        heat = 2
+
+    return max(cold, heat)
+
+
+def flash_freeze_impact_level(temp_f: float, wet_surface: bool) -> int:
+    if not wet_surface:
+        return 1
+    if temp_f <= 25:
+        return 5
+    if temp_f <= 28:
+        return 4
+    if temp_f <= 32:
+        return 3
+    if temp_f <= 36:
+        return 2
+    return 1
 
 
 def k_to_f(value_k: float) -> float:
@@ -343,7 +491,9 @@ def set_hazard_live(
             "risk": risk,
             "risk_label": RISK_LABELS[risk],
             "level": risk,
-            "impact_level": risk,
+            "impact_level": values.get("impact_level", risk),
+            "likelihood_category": values.get("likelihood_category"),
+            "risk_method": values.get("risk_method", "krno_impact_threshold"),
             "prob": values.get("probability"),
             "probability": values.get("probability"),
             "metric": metric,
@@ -402,7 +552,9 @@ def update_threat_from_blocks(
             "risk_level": risk,
             "risk_label": RISK_LABELS[risk],
             "level": risk,
-            "impact_level": risk,
+            "impact_level": hdata.get("impact_level", risk),
+            "likelihood_category": hdata.get("likelihood_category"),
+            "risk_method": hdata.get("risk_method", "krno_impact_threshold"),
             "metric": metric,
             "display_label": display_label,
             "display_value": display_value or hdata.get("metric") or metric,
@@ -456,10 +608,7 @@ def extract_core_wind_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[str, An
 
 
 def wind_risk_from_gust(gust_mph: float) -> int:
-    for threshold, level in WIND_THRESHOLDS_MPH:
-        if gust_mph >= threshold:
-            return level
-    return 0
+    return risk_from_matrix(wind_impact_level(gust_mph))
 
 
 def block_label_for_wind(hourly_values: list[dict[str, Any]]) -> str:
@@ -515,7 +664,8 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
 
         peak = max(block_hours, key=lambda row: row.get("gust_mph") or 0)
         gust = float(peak.get("gust_mph") or 0.0)
-        risk = wind_risk_from_gust(gust)
+        impact = wind_impact_level(gust)
+        risk = risk_from_matrix(impact)
 
         max_gust = max(max_gust, gust)
         max_risk = max(max_risk, risk)
@@ -529,7 +679,9 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
                 "risk": risk,
                 "risk_label": RISK_LABELS[risk],
                 "level": risk,
-                "impact_level": risk,
+                "impact_level": impact,
+                "likelihood_category": None,
+                "risk_method": "krno_threshold_deterministic_core",
                 "prob": None,
                 "probability": None,
                 "metric": block_label_for_wind(block_hours),
@@ -552,6 +704,8 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
                     for hour in block_hours
                 ],
                 "values": {
+                    "impact_level": impact,
+                    "risk_method": "krno_threshold_deterministic_core",
                     "peak_gust_mph": round(gust, 1),
                     "gust_max_mph": round(gust, 1),
                     "wind_mph": peak.get("wind_mph"),
@@ -577,7 +731,9 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
             "risk_level": max_risk,
             "risk_label": RISK_LABELS[max_risk],
             "level": max_risk,
-            "impact_level": max_risk,
+            "impact_level": best_hazard.get("impact_level") if best_hazard else wind_impact_level(max_gust),
+            "likelihood_category": None,
+            "risk_method": "krno_threshold_deterministic_core",
             "metric": f"Peak gust {max_gust:.0f} mph",
             "display_label": "72-hr peak gust",
             "display_value": f"{max_gust:.0f} mph",
@@ -587,7 +743,7 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
             "source_fxx": best_hazard.get("source_fxx") if best_hazard else None,
             "peak_valid_utc": best_hazard.get("peak_valid_utc") if best_hazard else None,
             "driver": "NBM core deterministic wind/gust at KRNO",
-            "methodology": "Initial NBM AWS implementation uses live core wind/gust for the timeline. QMD probabilities will be layered into risk cards next.",
+            "methodology": "Core NBM wind/gust is mapped to the KRNO wind impact table for the timeline; QMD 24-hour max gust is used for the summary card when available.",
             "data_status": "live",
             "method": "nbm_core_aws_gridpoint",
             "source": f"NOAA NBM core AWS {cycle:%HZ}",
@@ -692,15 +848,18 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         rain_in = row_rain_in(row)
         rain6_in = float(row.get("rain6", 0.0) or 0.0) * MM_TO_IN
         rain_prob_trace = float(row.get("rain_prob_trace", 0.0) or 0.0)
+        rain_impact = rain_impact_level(rain_in)
         rain_risk = max(
-            value_risk(rain_in, [(1.0, 5), (0.70, 4), (0.30, 3), (0.10, 2), (0.001, 1)]),
-            prob_risk(rain_prob_trace, [(10, 1)]),
+            risk_from_matrix(rain_impact),
+            risk_from_matrix(1, rain_prob_trace),
         )
         rain_hourly_values = [
             {
                 "fxx": int(src["fxx"]),
                 "valid_utc": src["valid_utc"],
                 "rain_in": round(row_rain_in(src), 3),
+                "rain_rate_in_hr": round(row_rain_in(src), 3),
+                "impact_level": rain_impact_level(row_rain_in(src)),
                 "prob_gt_trace": round(float(src.get("rain_prob_trace", 0.0) or 0.0), 1),
                 "value": round(row_rain_in(src), 3),
                 "unit": "in",
@@ -716,7 +875,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "RAIN",
             rain_risk,
             f"Rain {rain_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "rain_in": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "probability": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": rain_impact, "risk_method": "krno_threshold_core_with_measurable_probability", "likelihood_category": likelihood_bin(rain_prob_trace), "rain_in": round(rain_in, 3), "rain_rate_in_hr": round(rain_in, 3), "rain_6hr_in": round(rain6_in, 3), "prob_gt_trace": round(rain_prob_trace, 1), "probability": round(rain_prob_trace, 1), "value": round(rain_in, 3), "unit": "in"},
             rain_hourly_values,
             source,
             "NBM core precipitation amount and probability of measurable rain at KRNO",
@@ -729,15 +888,20 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "1": float(row.get("snow_prob_1", 0.0) or 0.0),
             "2": float(row.get("snow_prob_2", 0.0) or 0.0),
         }
+        snow_window_hours = 1 if fxx <= 48 else 6
+        snow_rate_in_hr = snow_in / snow_window_hours if snow_window_hours else snow_in
+        snow_impact = snow_impact_level(snow_rate_in_hr)
         snow_risk = max(
-            threshold_probability_risk(snow_probs, [("2", 5), ("1", 4), ("0p5", 3), ("trace", 2)]),
-            value_risk(snow_in, [(2.0, 5), (1.0, 4), (0.50, 3), (0.001, 2)]),
+            matrix_probability_risk(snow_probs, [("2", 5), ("1", 4), ("0p5", 3), ("trace", 2)]),
+            risk_from_matrix(snow_impact),
         )
         snow_hourly_values = [
             {
                 "fxx": int(src["fxx"]),
                 "valid_utc": src["valid_utc"],
                 "snow_in": round(row_snow_in(src), 3),
+                "snow_rate_in_hr": round(row_snow_in(src) / (1 if int(src["fxx"]) <= 48 else 6), 3),
+                "impact_level": snow_impact_level(row_snow_in(src) / (1 if int(src["fxx"]) <= 48 else 6)),
                 "prob_gt_trace": round(float(src.get("snow_prob_trace", 0.0) or 0.0), 1),
                 "prob_gt_0p5_in": round(float(src.get("snow_prob_0p5", 0.0) or 0.0), 1),
                 "prob_gt_1_in": round(float(src.get("snow_prob_1", 0.0) or 0.0), 1),
@@ -756,7 +920,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "SNOW",
             snow_risk,
             "Snow Trace" if 0 < snow_in < 0.01 else f"Snow {snow_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "snow_in": round(snow_in, 3), "prob_gt_trace": round(snow_probs["trace"], 1), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "prob_gt_1_in": round(snow_probs["1"], 1), "prob_gt_2_in": round(snow_probs["2"], 1), "probability": round(max(snow_probs.values()), 1), "value": round(snow_in, 3), "unit": "in"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": snow_impact, "risk_method": "krno_threshold_probability_matrix_core", "likelihood_category": likelihood_bin(max(snow_probs.values())), "snow_in": round(snow_in, 3), "snow_rate_in_hr": round(snow_rate_in_hr, 3), "prob_gt_trace": round(snow_probs["trace"], 1), "prob_gt_0p5_in": round(snow_probs["0p5"], 1), "prob_gt_1_in": round(snow_probs["1"], 1), "prob_gt_2_in": round(snow_probs["2"], 1), "probability": round(max(snow_probs.values()), 1), "value": round(snow_in, 3), "unit": "in"},
             snow_hourly_values,
             source,
             "NBM core snowfall amount and probability-of-threshold exceedance at KRNO",
@@ -768,15 +932,17 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "0p1": float(row.get("fzra_prob_0p1", 0.0) or 0.0),
             "0p2": float(row.get("fzra_prob_0p2", 0.0) or 0.0),
         }
+        fzra_impact = fzra_impact_level(fzra_in)
         fzra_risk = max(
-            threshold_probability_risk(fzra_probs, [("0p2", 5), ("0p1", 4), ("trace", 3)]),
-            value_risk(fzra_in, [(0.20, 5), (0.10, 4), (0.001, 2)]),
+            matrix_probability_risk(fzra_probs, [("0p2", 5), ("0p1", 5), ("trace", 4)]),
+            risk_from_matrix(fzra_impact),
         )
         fzra_hourly_values = [
             {
                 "fxx": int(src["fxx"]),
                 "valid_utc": src["valid_utc"],
                 "fzra_in": round(row_fzra_in(src), 3),
+                "impact_level": fzra_impact_level(row_fzra_in(src)),
                 "prob_gt_trace": round(float(src.get("fzra_prob_trace", 0.0) or 0.0), 1),
                 "prob_gt_0p1_in": round(float(src.get("fzra_prob_0p1", 0.0) or 0.0), 1),
                 "prob_gt_0p2_in": round(float(src.get("fzra_prob_0p2", 0.0) or 0.0), 1),
@@ -794,21 +960,22 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "FZRA",
             fzra_risk,
             "Freezing rain Trace" if 0 < fzra_in < 0.01 else f"Freezing rain {fzra_in:.2f} in",
-            {"fxx": fxx, "valid_utc": valid_utc, "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "prob_gt_0p1_in": round(fzra_probs["0p1"], 1), "prob_gt_0p2_in": round(fzra_probs["0p2"], 1), "probability": round(max(fzra_probs.values()), 1), "value": round(fzra_in, 3), "unit": "in"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": fzra_impact, "risk_method": "krno_threshold_probability_matrix_core", "likelihood_category": likelihood_bin(max(fzra_probs.values())), "fzra_in": round(fzra_in, 3), "prob_gt_trace": round(fzra_probs["trace"], 1), "prob_gt_0p01_in": round(fzra_probs["trace"], 1), "prob_gt_0p1_in": round(fzra_probs["0p1"], 1), "prob_gt_0p2_in": round(fzra_probs["0p2"], 1), "probability": round(max(fzra_probs.values()), 1), "value": round(fzra_in, 3), "unit": "in"},
             fzra_hourly_values,
             source,
             "NBM core freezing rain/ice accretion amount and probability-of-threshold exceedance at KRNO",
         )
 
         tstm_prob = float(row.get("tstm", 0.0) or 0.0)
-        ltg_risk = prob_risk(tstm_prob, [(60, 5), (40, 4), (15, 3), (5, 2), (1, 1)])
+        ltg_impact = lightning_impact_level(tstm_prob)
+        ltg_risk = risk_from_matrix(ltg_impact)
         set_hazard_live(
             timeline,
             bi,
             "LIGHTNING",
             ltg_risk,
             f"Thunder {tstm_prob:.0f}%",
-            {"fxx": fxx, "valid_utc": valid_utc, "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": ltg_impact, "risk_method": "krno_lightning_probability_threshold_core", "likelihood_category": likelihood_bin(tstm_prob), "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
             [
                 {
                     "fxx": int(src["fxx"]),
@@ -830,10 +997,10 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         vis_lt1 = float(row.get("vis_lt1", 0.0) or 0.0)
         vis_lt3 = float(row.get("vis_lt3", 0.0) or 0.0)
         vis_lt5 = float(row.get("vis_lt5", 0.0) or 0.0)
+        vis_impact = visibility_impact_level(vis_mi)
         vis_risk = max(
-            value_risk(vis_mi, [(0.5, 5), (1.0, 4), (3.0, 3), (5.0, 2)], reverse=True),
-            prob_risk(vis_lt1, [(40, 4), (15, 3), (5, 2), (1, 1)]),
-            prob_risk(vis_lt3, [(50, 3), (15, 2), (1, 1)]),
+            risk_from_matrix(vis_impact),
+            matrix_probability_risk({"lt1": vis_lt1, "lt3": vis_lt3, "lt5": vis_lt5}, [("lt1", 4), ("lt3", 3), ("lt5", 2)]),
         )
         set_hazard_live(
             timeline,
@@ -844,6 +1011,9 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             {
                 "fxx": fxx,
                 "valid_utc": valid_utc,
+                "impact_level": vis_impact,
+                "risk_method": "krno_threshold_probability_matrix_core",
+                "likelihood_category": likelihood_bin(max(vis_lt1, vis_lt3, vis_lt5)),
                 "visibility_mi": round(min(vis_mi, 10.0), 2),
                 "prob_lt_1mi": round(vis_lt1, 1),
                 "prob_lt_3mi": round(vis_lt3, 1),
@@ -857,6 +1027,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                     "fxx": int(src["fxx"]),
                     "valid_utc": src["valid_utc"],
                     "visibility_mi": round(min(float(src.get("vis", 16093.4) or 16093.4) * M_TO_MI, 10.0), 2),
+                    "impact_level": visibility_impact_level(float(src.get("vis", 16093.4) or 16093.4) * M_TO_MI),
                     "prob_lt_1mi": round(float(src.get("vis_lt1", 0.0) or 0.0), 1),
                     "prob_lt_3mi": round(float(src.get("vis_lt3", 0.0) or 0.0), 1),
                     "prob_lt_5mi": round(float(src.get("vis_lt5", 0.0) or 0.0), 1),
@@ -872,22 +1043,22 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         )
 
         temp_f = row_temp_f(row)
-        temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f})
-        cold_risk = value_risk(temp_f, [(10, 4), (20, 3), (32, 2)], reverse=True)
-        heat_risk = value_risk(temp_f, [(105, 5), (100, 4), (95, 3), (90, 2)])
-        temp_risk = max(cold_risk, heat_risk)
+        temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f, "impact_level": temperature_impact_level(temp_f)})
+        temp_impact = temperature_impact_level(temp_f)
+        temp_risk = risk_from_matrix(temp_impact)
         set_hazard_live(
             timeline,
             bi,
             "TEMPERATURE",
             temp_risk,
             f"Temp {temp_f:.0f}°F",
-            {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": temp_impact, "risk_method": "krno_threshold_deterministic_core", "temp_f": round(temp_f, 1), "value": round(temp_f, 1), "unit": "°F"},
             [
                 {
                     "fxx": int(src["fxx"]),
                     "valid_utc": src["valid_utc"],
                     "temp_f": round(row_temp_f(src), 1),
+                    "impact_level": temperature_impact_level(row_temp_f(src)),
                     "value": round(row_temp_f(src), 1),
                     "unit": "°F",
                     "label": "temp",
@@ -900,20 +1071,15 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         )
 
         wet_surface = rain_in >= 0.01 or fzra_in >= 0.001
-        flash_risk = 0
-        if temp_f <= 28 and wet_surface:
-            flash_risk = 4
-        elif temp_f <= 32 and wet_surface:
-            flash_risk = 3
-        elif temp_f <= 32:
-            flash_risk = 1
+        flash_impact = flash_freeze_impact_level(temp_f, wet_surface)
+        flash_risk = risk_from_matrix(flash_impact)
         set_hazard_live(
             timeline,
             bi,
             "FLASH_FREEZE",
             flash_risk,
             f"Temp {temp_f:.0f}°F",
-            {"fxx": fxx, "valid_utc": valid_utc, "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": flash_impact, "risk_method": "krno_threshold_deterministic_core_wet_surface_proxy", "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
             [
                 {
                     "fxx": int(src["fxx"]),
@@ -922,6 +1088,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                     "rain_in": round(row_rain_in(src), 3),
                     "fzra_in": round(row_fzra_in(src), 3),
                     "wet_surface": row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001,
+                    "impact_level": flash_freeze_impact_level(row_temp_f(src), row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001),
                     "value": round(row_temp_f(src), 1),
                     "unit": "°F",
                     "label": "temp",
@@ -955,10 +1122,11 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         card_temp_values = [row for row in temp_values if int(row.get("fxx", 999)) <= 24] or temp_values
         max_temp = max(card_temp_values, key=lambda row: row["temp_f"])
         min_temp = min(card_temp_values, key=lambda row: row["temp_f"])
-        risk = max(
-            value_risk(float(max_temp["temp_f"]), [(105, 5), (100, 4), (95, 3), (90, 2)]),
-            value_risk(float(min_temp["temp_f"]), [(10, 4), (20, 3), (32, 2)], reverse=True),
-        )
+        max_impact = temperature_impact_level(float(max_temp["temp_f"]))
+        min_impact = temperature_impact_level(float(min_temp["temp_f"]))
+        impact = max(max_impact, min_impact)
+        risk = risk_from_matrix(impact)
+        driver_row = min_temp if min_impact >= max_impact else max_temp
         threat = threats_payload["threats"]["TEMPERATURE"]
         threat.update(
             {
@@ -966,14 +1134,16 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                 "risk_level": risk,
                 "risk_label": RISK_LABELS[risk],
                 "level": risk,
-                "impact_level": risk,
+                "impact_level": impact,
+                "likelihood_category": None,
+                "risk_method": "krno_threshold_deterministic_core_24hr_max_min",
                 "metric": f"Max {max_temp['temp_f']:.0f}°F / Min {min_temp['temp_f']:.0f}°F",
                 "display_label": "24-hr max/min",
                 "display_value": f"{max_temp['temp_f']:.0f}/{min_temp['temp_f']:.0f}°F",
-                "peak_start_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
-                "peak_end_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
-                "source_fxx": min_temp["fxx"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["fxx"],
-                "peak_valid_utc": min_temp["valid_utc"] if risk and min_temp["temp_f"] <= max_temp["temp_f"] else max_temp["valid_utc"],
+                "peak_start_fxx": driver_row["fxx"],
+                "peak_end_fxx": driver_row["fxx"],
+                "source_fxx": driver_row["fxx"],
+                "peak_valid_utc": driver_row["valid_utc"],
                 "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
                 "data_status": "live",
                 "method": CORE_SOURCE_METHOD,
@@ -986,8 +1156,29 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
 
 
 def select_qmd_daymax_gust_row(rows: list[dict[str, Any]], day_index: int) -> dict[str, Any] | None:
-    label = f"{day_index}-{day_index + 1} day max fcst"
-    return select_first_row(rows, lambda line: ":GUST:10 m above ground:" in line and label in line and is_deterministic(line))
+    return select_first_row(rows, lambda line: ":GUST:10 m above ground:" in line and "ens mean" in line)
+
+
+def select_qmd_temp_rows(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    selected: dict[str, dict[str, Any]] = {}
+    max_row = select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and "hour fcst:ens mean" in line)
+    min_row = select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and "min fcst:" in line and is_deterministic(line))
+    if max_row:
+        selected["max"] = max_row
+    if min_row:
+        selected["min"] = min_row
+    return selected
+
+
+def select_qmd_rain_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dict[str, Any]]:
+    six_hr = six_hour_accum_window(fxx)
+    return {
+        "amount": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and is_deterministic(line)),
+        "prob_0p5_6hr": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and "prob >12.7" in line),
+        "prob_1p5_6hr": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and "prob >38.1" in line),
+        "prob_3p0_6hr": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and "prob >76.2" in line),
+        "prob_5p0_6hr": select_first_row(rows, lambda line: ":APCP:surface:" in line and six_hr in line and "prob >127" in line),
+    }
 
 
 def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
@@ -1022,7 +1213,8 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
         return
 
     peak = max(day_rows, key=lambda row: row["gust_mph"])
-    risk = wind_risk_from_gust(float(peak["gust_mph"]))
+    impact = wind_impact_level(float(peak["gust_mph"]))
+    risk = risk_from_matrix(impact)
     threat = threats_payload["threats"]["WIND"]
     threat.update(
         {
@@ -1030,7 +1222,9 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "risk_level": risk,
             "risk_label": RISK_LABELS[risk],
             "level": risk,
-            "impact_level": risk,
+            "impact_level": impact,
+            "likelihood_category": None,
+            "risk_method": "krno_threshold_deterministic_qmd_24hr_max_gust",
             "metric": f"Max gust {peak['gust_mph']:.0f} mph",
             "display_label": "Max gust",
             "display_value": f"{peak['gust_mph']:.0f} mph",
@@ -1039,15 +1233,164 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "source_fxx": peak["fxx"],
             "peak_valid_utc": peak["valid_utc"],
             "driver": "NBM QMD 24-hour maximum gust at KRNO",
-            "methodology": "Wind risk card uses the mean 24-hour maximum gust from the newest available QMD cycle with day-max fields.",
+            "methodology": "Wind risk card uses QMD 24-hour maximum gust at KRNO mapped to the KRNO wind impact table.",
             "data_status": "live",
-            "method": "nbm_qmd_aws_gridpoint",
+            "method": QMD_SOURCE_METHOD,
             "source": f"NOAA NBM QMD AWS {qmd_cycle:%HZ}",
             "daily_values": [{"fxx": row["fxx"], "gust_mph": round(row["gust_mph"], 1), "valid_utc": row["valid_utc"]} for row in day_rows],
         }
     )
     for hazard in threats_payload["hazards"]:
         if hazard["id"] == "WIND":
+            hazard.update({"risk": risk, "probability": None, "level": risk})
+
+
+def apply_qmd_rain_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    qmd_cycle = find_latest_available_cycle("qmd", [6, 72])
+    source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
+    six_hour_rows: list[dict[str, Any]] = []
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in range(6, 73, 6):
+            grib_url = aws_grib_url(qmd_cycle, "qmd", fxx)
+            rows = parse_idx(fetch_text(grib_url + ".idx"))
+            selected = select_qmd_rain_rows(rows, fxx)
+            amount_row = selected.get("amount")
+            if not amount_row:
+                continue
+            amount_in = extract_row_value(grib_url, amount_row, tmp, f"qmd_rain_f{fxx:03d}") * MM_TO_IN
+            probs: dict[str, float] = {}
+            for key in ["prob_0p5_6hr", "prob_1p5_6hr", "prob_3p0_6hr", "prob_5p0_6hr"]:
+                row = selected.get(key)
+                if row:
+                    probs[key] = extract_row_value(grib_url, row, tmp, f"qmd_rain_{key}_f{fxx:03d}")
+            impact = rain_impact_level(amount_in / 6.0)
+            risk = max(
+                risk_from_matrix(impact),
+                matrix_probability_risk(probs, [("prob_5p0_6hr", 5), ("prob_3p0_6hr", 4), ("prob_1p5_6hr", 3), ("prob_0p5_6hr", 2)]),
+            )
+            six_hour_rows.append(
+                {
+                    "fxx": fxx,
+                    "valid_utc": iso(qmd_cycle + timedelta(hours=fxx)),
+                    "start_fxx": max(1, fxx - 5),
+                    "end_fxx": fxx,
+                    "amount_in": round(amount_in, 3),
+                    "rate_in_hr": round(amount_in / 6.0, 3),
+                    "impact_level": impact,
+                    "risk": risk,
+                    "probabilities": {key: round(value, 1) for key, value in probs.items()},
+                }
+            )
+
+    if not six_hour_rows:
+        return
+
+    total_in = sum(row["amount_in"] for row in six_hour_rows)
+    best = max(six_hour_rows, key=lambda row: (row["risk"], row["rate_in_hr"]))
+    probability = max(best.get("probabilities", {}).values() or [0.0])
+    threat = threats_payload["threats"]["RAIN"]
+    threat.update(
+        {
+            "prob": probability,
+            "probability": probability,
+            "risk": best["risk"],
+            "risk_level": best["risk"],
+            "risk_label": RISK_LABELS[best["risk"]],
+            "level": best["risk"],
+            "impact_level": best["impact_level"],
+            "likelihood_category": likelihood_bin(probability),
+            "risk_method": "krno_threshold_probability_matrix_qmd_6hr_precip",
+            "metric": "Trace" if 0 < total_in < 0.01 else f"72-hr total {total_in:.2f} in",
+            "display_label": "QMD 72-hr total",
+            "display_value": "Trace" if 0 < total_in < 0.01 else f"{total_in:.2f} in",
+            "window": "72 hr",
+            "peak_start_fxx": best["start_fxx"],
+            "peak_end_fxx": best["end_fxx"],
+            "source_fxx": best["fxx"],
+            "peak_valid_utc": best["valid_utc"],
+            "driver": "NBM QMD 6-hour precipitation probabilities and deterministic precipitation at KRNO",
+            "methodology": "Rain summary uses QMD 6-hour precipitation windows mapped to the KRNO rain/flooding impact table and likelihood-vs-impact matrix.",
+            "data_status": "live",
+            "method": QMD_SOURCE_METHOD,
+            "source": source,
+            "six_hour_values": six_hour_rows,
+        }
+    )
+    for hazard in threats_payload["hazards"]:
+        if hazard["id"] == "RAIN":
+            hazard.update({"risk": best["risk"], "probability": probability, "level": best["risk"]})
+
+
+def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    qmd_cycle = find_latest_available_cycle("qmd", [24, 48, 72])
+    source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
+    daily_values: list[dict[str, Any]] = []
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in [24, 48, 72]:
+            grib_url = aws_grib_url(qmd_cycle, "qmd", fxx)
+            rows = parse_idx(fetch_text(grib_url + ".idx"))
+            selected = select_qmd_temp_rows(rows)
+            if "max" not in selected or "min" not in selected:
+                continue
+            max_f = k_to_f(extract_row_value(grib_url, selected["max"], tmp, f"qmd_temp_max_f{fxx:03d}"))
+            min_f = k_to_f(extract_row_value(grib_url, selected["min"], tmp, f"qmd_temp_min_f{fxx:03d}"))
+            max_impact = temperature_impact_level(max_f)
+            min_impact = temperature_impact_level(min_f)
+            impact = max(max_impact, min_impact)
+            daily_values.append(
+                {
+                    "fxx": fxx,
+                    "valid_utc": iso(qmd_cycle + timedelta(hours=fxx)),
+                    "max_f": round(max_f, 1),
+                    "min_f": round(min_f, 1),
+                    "impact_level": impact,
+                    "risk": risk_from_matrix(impact),
+                }
+            )
+
+    if not daily_values:
+        return
+
+    max_temp = max(daily_values, key=lambda row: row["max_f"])
+    min_temp = min(daily_values, key=lambda row: row["min_f"])
+    hot_impact = temperature_impact_level(float(max_temp["max_f"]))
+    cold_impact = temperature_impact_level(float(min_temp["min_f"]))
+    impact = max(hot_impact, cold_impact)
+    risk = risk_from_matrix(impact)
+    driver_row = min_temp if cold_impact >= hot_impact else max_temp
+    threat = threats_payload["threats"]["TEMPERATURE"]
+    threat.update(
+        {
+            "prob": None,
+            "probability": None,
+            "risk": risk,
+            "risk_level": risk,
+            "risk_label": RISK_LABELS[risk],
+            "level": risk,
+            "impact_level": impact,
+            "likelihood_category": None,
+            "risk_method": "krno_threshold_deterministic_qmd_max_min_temperature",
+            "metric": f"Max {max_temp['max_f']:.0f}°F / Min {min_temp['min_f']:.0f}°F",
+            "display_label": "QMD max/min",
+            "display_value": f"{max_temp['max_f']:.0f}/{min_temp['min_f']:.0f}°F",
+            "peak_start_fxx": driver_row["fxx"],
+            "peak_end_fxx": driver_row["fxx"],
+            "source_fxx": driver_row["fxx"],
+            "peak_valid_utc": driver_row["valid_utc"],
+            "driver": "NBM QMD max/min temperature at KRNO",
+            "methodology": "Temperature summary uses QMD max/min temperature mapped to the KRNO cold/heat impact table.",
+            "data_status": "live",
+            "method": QMD_SOURCE_METHOD,
+            "source": source,
+            "daily_values": daily_values,
+        }
+    )
+    for hazard in threats_payload["hazards"]:
+        if hazard["id"] == "TEMPERATURE":
             hazard.update({"risk": risk, "probability": None, "level": risk})
 
 
@@ -1180,6 +1523,18 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["QMD_WIND"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["QMD_WIND"] = str(exc)
+
+    try:
+        apply_qmd_rain_card(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_RAIN"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_RAIN"] = str(exc)
+
+    try:
+        apply_qmd_temperature_card(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_TEMPERATURE"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_TEMPERATURE"] = str(exc)
 
     return timeline, threats_payload
 
