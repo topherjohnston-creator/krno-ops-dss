@@ -1420,9 +1420,18 @@
       "Block Value", "Max Gust", "Chance", "Rain", "Snow",
       "Freezing Rain", "Visibility", "Temperature", "Wet Surface"
     ]);
+    const confidenceColors = {
+      High: "#34c38f",
+      Medium: "#d7bc4a",
+      Low: "#d25555"
+    };
     let latestObsSummary = "Obs Fresh";
     let latestModelSummary = "NBM 18Z";
     let latestBuildSummary = "Build --";
+    let latestForecastConfidence = {
+      label: "Medium",
+      reason: "Live NBM data are loading"
+    };
     let currentPrimaryItem = null;
     let latestObsMs = 0;
     let latestTimelineBlocks = [];
@@ -1435,12 +1444,14 @@
     let radarBounds = null;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
     const radarHalfSpanNm = 30;
+    const metersPerNm = 1852;
+    const mercatorLimit = 20037508.342789244;
     const radarFrames = [
-      { ageMinutes: 20, layer: "nexrad-n0q-m20m" },
-      { ageMinutes: 15, layer: "nexrad-n0q-m15m" },
-      { ageMinutes: 10, layer: "nexrad-n0q-m10m" },
-      { ageMinutes: 5, layer: "nexrad-n0q-m05m" },
-      { ageMinutes: 0, layer: "nexrad-n0q" }
+      { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
+      { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
+      { ageMinutes: 10, layer: "nexrad-n0q-900913-m10m" },
+      { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
+      { ageMinutes: 0, layer: "nexrad-n0q-900913" }
     ];
     const mockRows = {
       WIND: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
@@ -1598,6 +1609,112 @@
       if (source === "FZRA" || /freezing rain|fzra/i.test(label)) return fzraColor(numeric);
       if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return tempColor(numeric);
       return null;
+    }
+
+    function confidenceFromScore(score) {
+      if (score >= 3) return "High";
+      if (score >= 2) return "Medium";
+      return "Low";
+    }
+
+    function confidenceRank(label) {
+      return ({ Low: 1, Medium: 2, High: 3 })[label] || 2;
+    }
+
+    function lowestConfidence(...labels) {
+      return labels
+        .filter(Boolean)
+        .reduce((lowest, label) => confidenceRank(label) < confidenceRank(lowest) ? label : lowest, "High");
+    }
+
+    function buildAgeHours(iso) {
+      const date = new Date(iso);
+      return Number.isFinite(date.getTime()) ? (Date.now() - date.getTime()) / 3600000 : Infinity;
+    }
+
+    function obsConfidence() {
+      const age = latestObsMs ? (Date.now() - latestObsMs) / 60000 : Infinity;
+      if (age <= 10) return { label: "High", reason: "observations are fresh" };
+      if (age <= 30) return { label: "Medium", reason: "observations are aging" };
+      return { label: "Low", reason: "observations are stale" };
+    }
+
+    function forecastConfidence(timeline) {
+      const buildIso = timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
+      const age = buildAgeHours(buildIso);
+      let score = 3;
+      const reasons = [];
+      if (!buildIso || !Number.isFinite(age)) {
+        score -= 2;
+        reasons.push("forecast build time is missing");
+      } else if (age > 10) {
+        score -= 2;
+        reasons.push("forecast build is stale");
+      } else if (age > 6) {
+        score -= 1;
+        reasons.push("forecast build is aging");
+      } else {
+        reasons.push("forecast build is fresh");
+      }
+
+      const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks.slice(0, 24) : [];
+      const blockHazards = Array.isArray(timeline?.block_hazards) ? timeline.block_hazards.slice(0, 24) : [];
+      if (blocks.length < 24 || blockHazards.length < 24) {
+        score -= 1;
+        reasons.push("72-hour coverage is incomplete");
+      } else {
+        reasons.push("72-hour coverage is complete");
+      }
+
+      const obs = obsConfidence();
+      if (obs.label === "Low") score -= 1;
+
+      const label = confidenceFromScore(score);
+      return {
+        label,
+        reason: `${reasons.slice(0, 2).join("; ")}; ${obs.reason}`
+      };
+    }
+
+    function hazardConfidence(item = {}, detail = null) {
+      const source = item.source || item;
+      let label = latestForecastConfidence.label || "Medium";
+      const method = String(item.riskMethod || item.methodology || detail?.risk_method || detail?.method || "");
+      const risk = item.risk || "Little to None";
+      let reason = latestForecastConfidence.reason || "NBM guidance mapped to local thresholds";
+
+      if (detail === null && item.detailMissing) {
+        label = "Low";
+        reason = "block detail is missing";
+      } else if (source === "LIGHTNING") {
+        reason = "NBM thunder probability; GLM is observational context only";
+      } else if (source === "RAIN" || source === "SNOW" || source === "FZRA") {
+        reason = /qmd/i.test(method)
+          ? "NBM probability window mapped to impact thresholds"
+          : "NBM hourly/core guidance mapped to impact thresholds";
+      } else if (source === "FLASH_FREEZE") {
+        reason = "temperature plus wet-surface signal; not a pavement sensor";
+        if (label === "High") label = "Medium";
+      } else if (source === "VISIBILITY") {
+        reason = "NBM visibility threshold probabilities mapped to lowest expected visibility";
+      } else if (source === "WIND") {
+        reason = /qmd/i.test(method)
+          ? "NBM QMD 24-hour gust guidance supports the summary"
+          : "NBM wind gust guidance mapped to KRNO thresholds";
+      } else if (source === "TEMPERATURE") {
+        reason = /qmd/i.test(method)
+          ? "NBM QMD max/min temperature guidance supports the summary"
+          : "NBM temperature guidance mapped to heat/cold thresholds";
+      }
+
+      if (rankFromCategory(risk) <= 1 && /near|threshold/i.test(String(item.driver || ""))) {
+        label = lowestConfidence(label, "Medium");
+      }
+      return { label, reason };
+    }
+
+    function confidenceLine(confidence) {
+      return ["Confidence", confidence?.label || "Medium", confidenceColors[confidence?.label] || confidenceColors.Medium];
     }
 
     function setValueColor(id, html, color) {
@@ -1845,8 +1962,10 @@
     }
 
     function tooltipLinesFor(hazard, block, risk, detail) {
+      const confidence = hazardConfidence({ source: hazard.source, risk }, detail);
       const lines = [
-        ["Risk", risk]
+        ["Risk", risk],
+        confidenceLine(confidence)
       ];
       const values = detail?.values || {};
       const valueLineCount = lines.length;
@@ -1864,7 +1983,8 @@
       if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
-        ["Action", operationalAction(risk)]
+        ["Action", operationalAction(risk)],
+        ["Confidence Basis", confidence.reason]
       );
       return lines;
     }
@@ -2075,13 +2195,16 @@
 
     function concernTooltipLines(item, details) {
       const metric = compactConcernMetric(item) || item.metric || "No signal";
+      const confidence = hazardConfidence(item);
       return [
         ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
+        confidenceLine(confidence),
         ["Timing", item.peak || "No signal"],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)],
         ["Basis", riskWindowLabel(item)],
+        ["Confidence Basis", confidence.reason],
         ["Timeline", "3-hour blocks"]
       ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) <= 1));
     }
@@ -2174,8 +2297,9 @@
       const color = riskColors[risk] || riskColors.None;
       const impact = item.impact || operationalImpact(item.source);
       const action = item.action || operationalAction(risk);
+      const confidence = hazardConfidence({ ...item, risk });
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
-      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} · ${impact} · ${action}`;
+      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} · ${impact} · ${action} · Confidence ${confidence.label}`;
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
         title: `${name} - ${risk}`,
@@ -2401,6 +2525,8 @@
         lines: [
           ["Model", latestModelSummary],
           ["Build", latestBuildSummary],
+          ["Confidence", latestForecastConfidence.label, confidenceColors[latestForecastConfidence.label] || confidenceColors.Medium],
+          ["Basis", latestForecastConfidence.reason],
           ["Timeline", "3-hour block risk"],
           ["Hazards", "72-hr summary"]
         ],
@@ -2461,6 +2587,72 @@
       const response = await fetch(`${path}${separator}t=${Date.now()}`, { cache: "no-store" });
       if (!response.ok) throw new Error(`Unable to load ${path}`);
       return response.json();
+    }
+
+    let configPromise = null;
+
+    async function appConfig() {
+      if (!configPromise) {
+        configPromise = fetchJson("../config.json").catch(() => ({}));
+      }
+      return configPromise;
+    }
+
+    function synopticEntry(observations, prefixes) {
+      if (!observations) return null;
+      for (const prefix of prefixes) {
+        const entry = Object.entries(observations).find(([key]) => key.startsWith(prefix));
+        if (entry) return entry[1];
+      }
+      return null;
+    }
+
+    function synopticValue(observations, prefixes) {
+      const entry = synopticEntry(observations, prefixes);
+      return entry && entry.value != null ? entry.value : null;
+    }
+
+    function synopticObservedTime(observations) {
+      const entries = Object.values(observations || {}).filter(entry => entry?.date_time);
+      if (!entries.length) return null;
+      return entries
+        .map(entry => entry.date_time)
+        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+    }
+
+    function synopticPayloadToObs(payload) {
+      const stations = Array.isArray(payload?.STATION) ? payload.STATION : [];
+      const station = stations.find(item => item?.STID === "KRNO") || stations[0];
+      if (!station) return null;
+      const observations = station.OBSERVATIONS || {};
+      const obsIso = synopticObservedTime(observations);
+      if (!obsIso) return null;
+      const windSpeed = Number(synopticValue(observations, ["wind_speed"]));
+      const windGust = Number(synopticValue(observations, ["wind_gust"]));
+      return {
+        site: "KRNO",
+        source: "Synoptic API live browser refresh",
+        status: "ok",
+        station: station.STID || "KRNO",
+        name: station.NAME,
+        latitude: station.LATITUDE,
+        longitude: station.LONGITUDE,
+        elevation_ft: station.ELEVATION,
+        observed_utc: new Date(obsIso).toISOString(),
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: synopticValue(observations, ["wind_direction"]),
+        wind_speed_mph: Number.isFinite(windSpeed) ? windSpeed : null,
+        wind_gust_mph: Number.isFinite(windGust) ? windGust : null,
+        wind_speed_kt: Number.isFinite(windSpeed) ? windSpeed / 1.15078 : null,
+        wind_gust_kt: Number.isFinite(windGust) ? windGust / 1.15078 : null,
+        visibility_sm: synopticValue(observations, ["visibility"]),
+        temperature_f: synopticValue(observations, ["air_temp"]),
+        dewpoint_f: synopticValue(observations, ["dew_point_temperature"]),
+        relative_humidity: synopticValue(observations, ["relative_humidity"]),
+        precip_1hr_in: synopticValue(observations, ["precip_accum_one_hour", "precip_accum"]),
+        metar: synopticValue(observations, ["metar"]),
+        raw: { synoptic: station }
+      };
     }
 
     function updateObsTooltips(obs, values) {
@@ -2735,10 +2927,67 @@
     }
 
     async function fetchTgftpMetarFallback() {
-      const url = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
-      const response = await fetch(`${url}?t=${Date.now()}`, { cache: "no-store" });
-      if (!response.ok) throw new Error("NWS TGFTP METAR unavailable");
-      const obs = tgftpMetarToObs(await response.text());
+      const baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
+      const urls = [
+        `${baseUrl}?t=${Date.now()}`,
+        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
+      ];
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+          if (!response.ok) continue;
+          const obs = tgftpMetarToObs(await response.text());
+          if (!obs) continue;
+          const obsMs = new Date(obs.observed_utc).getTime();
+          if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+            updateObsDisplay(obs);
+            return true;
+          }
+        } catch (error) {
+          console.info("Unable to refresh one TGFTP METAR endpoint.", error);
+        }
+      }
+      return false;
+    }
+
+    async function fetchSynopticLiveFallback() {
+      const config = await appConfig();
+      const proxyUrl = String(config.synoptic_proxy_url || "").trim();
+      const token = String(config.synoptic_token || "").trim();
+      let url = "";
+      if (proxyUrl) {
+        url = `${proxyUrl}${proxyUrl.includes("?") ? "&" : "?"}stid=KRNO&t=${Date.now()}`;
+      } else if (token) {
+        const params = new URLSearchParams({
+          stid: "KRNO",
+          token,
+          units: "english",
+          output: "json",
+          vars: [
+            "air_temp",
+            "dew_point_temperature",
+            "relative_humidity",
+            "wind_speed",
+            "wind_direction",
+            "wind_gust",
+            "visibility",
+            "metar",
+            "weather_condition",
+            "weather_summary",
+            "precip_accum_one_hour"
+          ].join(","),
+          t: String(Date.now())
+        });
+        url = `https://api.synopticdata.com/v2/stations/latest?${params.toString()}`;
+      } else {
+        return false;
+      }
+
+      const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error("Synoptic live observation unavailable");
+      const obs = synopticPayloadToObs(await response.json());
       if (!obs) return false;
       const obsMs = new Date(obs.observed_utc).getTime();
       if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
@@ -2765,12 +3014,11 @@
       } catch (error) {
         console.info("Unable to refresh observations.", error);
       }
-      if (loadedPrimaryObs && obsAgeMinutes(primaryObs?.observed_utc || primaryObs?.generated_utc) <= 8) return;
-
       const fallbackLoaders = [
-        ["NWS API observation fallback", fetchNwsObservationFallback],
+        ["Synoptic live observation fallback", fetchSynopticLiveFallback],
+        ["NWS TGFTP METAR fallback", fetchTgftpMetarFallback],
         ["AWC METAR fallback", fetchAwcMetarFallback],
-        ["NWS TGFTP METAR fallback", fetchTgftpMetarFallback]
+        ["NWS API observation fallback", fetchNwsObservationFallback]
       ];
       for (const [label, loader] of fallbackLoaders) {
         try {
@@ -2780,6 +3028,7 @@
           console.info(`Unable to refresh ${label}.`, error);
         }
       }
+      if (loadedPrimaryObs && obsAgeMinutes(primaryObs?.observed_utc || primaryObs?.generated_utc) <= 8) return;
     }
 
     function radarMapDimensions() {
@@ -2790,16 +3039,36 @@
       };
     }
 
+    function mercatorProject(lat, lon) {
+      const latitude = clamp(Number(lat), -85.05112878, 85.05112878);
+      const longitude = clamp(Number(lon), -180, 180);
+      const x = longitude * mercatorLimit / 180;
+      const y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) * mercatorLimit / Math.PI;
+      return { x, y };
+    }
+
     function radarBoundsForElement(width, height) {
       const aspect = Math.max(1, width / Math.max(1, height));
-      const latHalfDeg = radarHalfSpanNm / 60;
-      const lonHalfDeg = (radarHalfSpanNm * aspect) / (60 * Math.cos(krnoPoint.lat * Math.PI / 180));
+      const center = mercatorProject(krnoPoint.lat, krnoPoint.lon);
+      const localScale = 1 / Math.cos(krnoPoint.lat * Math.PI / 180);
+      const halfY = radarHalfSpanNm * metersPerNm * localScale;
+      const halfX = halfY * aspect;
       return {
-        minLon: krnoPoint.lon - lonHalfDeg,
-        minLat: krnoPoint.lat - latHalfDeg,
-        maxLon: krnoPoint.lon + lonHalfDeg,
-        maxLat: krnoPoint.lat + latHalfDeg
+        minX: center.x - halfX,
+        minY: center.y - halfY,
+        maxX: center.x + halfX,
+        maxY: center.y + halfY,
+        centerX: center.x,
+        centerY: center.y,
+        localScale
       };
+    }
+
+    function projectedToRadarPct(point) {
+      if (!radarBounds || !point) return null;
+      const left = ((point.x - radarBounds.minX) / (radarBounds.maxX - radarBounds.minX)) * 100;
+      const top = ((radarBounds.maxY - point.y) / (radarBounds.maxY - radarBounds.minY)) * 100;
+      return { left, top };
     }
 
     function coordinateToRadarPct(lat, lon) {
@@ -2807,9 +3076,7 @@
       const latitude = Number(lat);
       const longitude = Number(lon);
       if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-      const left = ((longitude - radarBounds.minLon) / (radarBounds.maxLon - radarBounds.minLon)) * 100;
-      const top = ((radarBounds.maxLat - latitude) / (radarBounds.maxLat - radarBounds.minLat)) * 100;
-      return { left, top };
+      return projectedToRadarPct(mercatorProject(latitude, longitude));
     }
 
     function positionCityMarkers() {
@@ -2832,10 +3099,10 @@
       radarAspect = Math.max(1, width / Math.max(1, height));
       radarBounds = radarBoundsForElement(width, height);
       radarBbox = [
-        radarBounds.minLon.toFixed(6),
-        radarBounds.minLat.toFixed(6),
-        radarBounds.maxLon.toFixed(6),
-        radarBounds.maxLat.toFixed(6)
+        radarBounds.minX.toFixed(2),
+        radarBounds.minY.toFixed(2),
+        radarBounds.maxX.toFixed(2),
+        radarBounds.maxY.toFixed(2)
       ].join(",");
       [10, 15, 20, 25].forEach(limit => {
         const ring = document.querySelector(`.range-ring.r${limit}`);
@@ -2852,7 +3119,7 @@
         REQUEST: "GetMap",
         LAYERS: frame.layer,
         STYLES: "",
-        SRS: "EPSG:4326",
+        SRS: "EPSG:3857",
         BBOX: radarBbox,
         WIDTH: String(radarWidth),
         HEIGHT: String(radarHeight),
@@ -2867,8 +3134,8 @@
       if (!radarBbox) syncRadarGeometry();
       const params = new URLSearchParams({
         bbox: radarBbox,
-        bboxSR: "4326",
-        imageSR: "4326",
+        bboxSR: "3857",
+        imageSR: "3857",
         size: `${radarWidth},${radarHeight}`,
         format: "png32",
         transparent: "false",
@@ -2899,8 +3166,9 @@
           ["Radar", "Reflectivity loop"],
           ["Loop", "Last 20 minutes"],
           ["Rings", "10/15/20/25 nm from KRNO"],
-          ["Lightning", "GOES GLM proximity"],
-          ["Use", "Ops awareness"]
+          ["Map", "Projected lat/lon overlay"],
+          ["Lightning", "Closest GOES GLM group"],
+          ["Use", "Situational awareness"]
         ],
         risk: "Little to None"
       });
@@ -2957,18 +3225,29 @@
     function placeLightningDot(strike) {
       const dot = document.getElementById("lightning-dot");
       if (!dot) return;
-      if (!strike || !Number.isFinite(Number(strike.distance_nm)) || !Number.isFinite(Number(strike.bearing_degrees))) {
+      if (!strike) {
         dot.hidden = true;
         return;
       }
-      const distance = Math.min(25, Math.max(0, Number(strike.distance_nm)));
-      const bearing = Number(strike.bearing_degrees) * Math.PI / 180;
-      const eastNm = Math.sin(bearing) * distance;
-      const northNm = Math.cos(bearing) * distance;
-      const left = 50 + (eastNm / (radarHalfSpanNm * radarAspect)) * 50;
-      const top = 50 - (northNm / radarHalfSpanNm) * 50;
-      dot.style.left = `${left}%`;
-      dot.style.top = `${top}%`;
+      let point = null;
+      if (Number.isFinite(Number(strike.lat)) && Number.isFinite(Number(strike.lon))) {
+        point = coordinateToRadarPct(strike.lat, strike.lon);
+      } else if (Number.isFinite(Number(strike.distance_nm)) && Number.isFinite(Number(strike.bearing_degrees))) {
+        const distance = Math.min(25, Math.max(0, Number(strike.distance_nm)));
+        const bearing = Number(strike.bearing_degrees) * Math.PI / 180;
+        const eastMeters = Math.sin(bearing) * distance * metersPerNm * (radarBounds?.localScale || 1);
+        const northMeters = Math.cos(bearing) * distance * metersPerNm * (radarBounds?.localScale || 1);
+        point = projectedToRadarPct({
+          x: (radarBounds?.centerX || 0) + eastMeters,
+          y: (radarBounds?.centerY || 0) + northMeters
+        });
+      }
+      if (!point || point.left < -2 || point.left > 102 || point.top < -2 || point.top > 102) {
+        dot.hidden = true;
+        return;
+      }
+      dot.style.left = `${point.left}%`;
+      dot.style.top = `${point.top}%`;
       dot.hidden = false;
     }
 
@@ -2996,7 +3275,9 @@
           lines: [
             ["Nearest", nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : "None within 25 nm"],
             ["Last", lightning?.last_strike ? formatStrikeAge(lightning.last_strike) : "None"],
-            ["Source", "GOES-18 GLM"]
+            ["Source", "GOES-18 GLM"],
+            ["Confidence", nearest ? "Medium" : "Medium", confidenceColors.Medium],
+            ["Note", "Total lightning proxy, not exact CG strike"]
           ],
           risk
         });
@@ -3034,6 +3315,7 @@
         if (timeline.cycle) {
           document.getElementById("model-cycle").textContent = timeline.cycle;
         }
+        latestForecastConfidence = forecastConfidence(timeline);
         updateDataSummary({
           model: timeline.cycle || "NBM",
           buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
