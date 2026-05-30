@@ -1,7 +1,34 @@
 {
   "version": "nbm_dss_schema_v1",
   "horizon_hours": 72,
-  "risk_matrix": "Risk is probability-first. Timeline blocks represent windowed probability of exceeding operational thresholds. Risk cards summarize 72-hour probabilistic risk.",
+  "risk_matrix": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
+  "likelihood_bins": [
+    {
+      "id": "extremely_unlikely",
+      "label": "Extremely Unlikely",
+      "probability": "<10%"
+    },
+    {
+      "id": "unlikely",
+      "label": "Unlikely",
+      "probability": "10-32%"
+    },
+    {
+      "id": "about_as_likely_as_not",
+      "label": "About as Likely as Not",
+      "probability": "33-66%"
+    },
+    {
+      "id": "likely",
+      "label": "Likely",
+      "probability": "67-90%"
+    },
+    {
+      "id": "very_likely",
+      "label": "Very Likely",
+      "probability": ">90%"
+    }
+  ],
   "risk_labels": {
     "0": "None",
     "1": "Little to None",
@@ -119,11 +146,11 @@
     ]
   },
   "snow": {
-    "basis": "Timeline uses NBM snowfall amount/probability thresholds by native window. Risk cards summarize the highest 72-hour snow signal.",
+    "basis": "Core NBM snow amount/probability fields are mapped to the KRNO snow impact table, then probability thresholds are passed through the likelihood-vs-impact matrix.",
     "impact_thresholds": [
       {
-        "level": 0,
-        "label": "None",
+        "level": 1,
+        "label": "Little to None",
         "threshold": "0 inches"
       },
       {
@@ -149,7 +176,7 @@
     ]
   },
   "rain": {
-    "basis": "Timeline uses hourly deterministic rain rates with NBM probability of measurable rain where available; QMD probability thresholds can be layered for 6-hour decision windows.",
+    "basis": "Core NBM 1-hour precipitation drives the timeline. QMD precipitation probabilities are used where available for accumulation summary products. All rain values are mapped to the KRNO rain/flooding impact table.",
     "impact_thresholds": [
       {
         "level": 1,
@@ -159,31 +186,31 @@
       {
         "level": 2,
         "label": "Minor",
-        "threshold": "0.10 to 0.29 inches per hour"
+        "threshold": "0.10 to 0.25 inches per hour"
       },
       {
         "level": 3,
         "label": "Moderate",
-        "threshold": "0.30 to 0.69 inches per hour"
+        "threshold": "0.25 to 0.50 inches per hour"
       },
       {
         "level": 4,
         "label": "Major",
-        "threshold": "0.70 to 0.99 inches per hour"
+        "threshold": "0.50 to 1.00 inches per hour"
       },
       {
         "level": 5,
         "label": "Extreme",
-        "threshold": "At least 1 inch per hour"
+        "threshold": "Greater than 1 inch per hour"
       }
     ]
   },
   "fzra": {
-    "basis": "Timeline uses freezing-rain/ice amount plus NBM probability-of-threshold exceedance where available.",
+    "basis": "Core NBM freezing-rain/ice fields are mapped to the KRNO freezing rain impact table, then probability thresholds are passed through the likelihood-vs-impact matrix where available.",
     "impact_thresholds": [
       {
-        "level": 0,
-        "label": "None",
+        "level": 1,
+        "label": "Little to None",
         "threshold": "None"
       },
       {
@@ -194,17 +221,17 @@
       {
         "level": 3,
         "label": "Moderate",
-        "threshold": "Greater than trace"
+        "threshold": "Trace to 0.01 inches"
       },
       {
         "level": 4,
         "label": "Major",
-        "threshold": "Greater than 0.10 inches"
+        "threshold": "0.01 to 0.10 inches"
       },
       {
         "level": 5,
         "label": "Extreme",
-        "threshold": "Greater than 0.20 inches"
+        "threshold": "Greater than 0.10 inches"
       }
     ]
   },
