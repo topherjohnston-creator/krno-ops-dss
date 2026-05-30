@@ -835,6 +835,34 @@
       bottom: 8px;
     }
 
+    .city-marker {
+      position: absolute;
+      z-index: 4;
+      translate: -50% -50%;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(18, 27, 39, 0.66);
+      color: rgba(231, 237, 245, 0.82);
+      font-size: 11px;
+      font-weight: 620;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+    }
+
+    .city-marker::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(231, 237, 245, 0.88);
+      box-shadow: 0 0 0 2px rgba(10, 16, 24, 0.62);
+    }
+
     .map-label.radar-time {
       left: 8px;
       top: 8px;
@@ -851,7 +879,7 @@
 
     .lightning-status {
       display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-rows: 1fr;
       gap: 9px;
       min-height: 0;
     }
@@ -876,7 +904,7 @@
 
     .lightning-value {
       color: var(--text-main);
-      font-size: 25px;
+      font-size: 29px;
       line-height: 1.05;
       font-weight: 650;
     }
@@ -886,36 +914,6 @@
       font-size: 16px;
       line-height: 1.15;
       font-weight: 500;
-    }
-
-    .ring-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 7px;
-      min-height: 0;
-    }
-
-    .ring-card {
-      display: grid;
-      place-items: center;
-      gap: 2px;
-      min-height: 0;
-      border: 1px solid rgba(68, 84, 106, 0.72);
-      border-radius: 7px;
-      background: rgba(24, 33, 46, 0.76);
-    }
-
-    .ring-card span {
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 620;
-    }
-
-    .ring-card strong {
-      color: var(--text-main);
-      font-size: 23px;
-      line-height: 1;
-      font-weight: 650;
     }
 
     .alerts-data {
@@ -1191,7 +1189,7 @@
           <div class="concern-label">Primary Concern</div>
           <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
         </div>
-        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM | Ramp monitoring | Monitor closely</div>
+        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM · Ramp monitoring · Monitor closely</div>
       </div>
     </section>
 
@@ -1306,22 +1304,19 @@
             <div class="range-ring r20"></div>
             <div class="range-ring r25"></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
+            <div class="city-marker" style="left:31.87%;top:67.11%">Truckee</div>
+            <div class="city-marker" style="left:50.03%;top:83.53%">Carson City</div>
+            <div class="city-marker" style="left:72.54%;top:39.11%">Fernley</div>
+            <div class="city-marker" style="left:41.94%;top:74.94%">Incline Village</div>
+            <div class="city-marker" style="left:93.25%;top:52.56%">Fallon</div>
             <div class="map-label radar-time" id="radar-time">Scan --</div>
-            <div class="map-label lightning-clear" id="map-lightning-status">No lightning within 25 nm</div>
-            <div class="map-label source">IEM N0Q Loop</div>
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
             <div class="lightning-main" id="lightning-main">
-              <div class="lightning-label">GLM Lightning</div>
-              <div class="lightning-value" id="lightning-value">No Lightning</div>
-              <div class="lightning-meta" id="lightning-meta">10/15/20/25 nm clear</div>
-            </div>
-            <div class="ring-grid" id="ring-grid">
-              <div class="ring-card"><span>10 NM</span><strong id="ring-10">0</strong></div>
-              <div class="ring-card"><span>15 NM</span><strong id="ring-15">0</strong></div>
-              <div class="ring-card"><span>20 NM</span><strong id="ring-20">0</strong></div>
-              <div class="ring-card"><span>25 NM</span><strong id="ring-25">0</strong></div>
+              <div class="lightning-label">Closest Lightning</div>
+              <div class="lightning-value" id="lightning-value">None &lt;25 nm</div>
+              <div class="lightning-meta" id="lightning-meta"></div>
             </div>
           </div>
         </div>
@@ -1329,7 +1324,7 @@
 
       <section class="panel bottom-panel" aria-labelledby="alerts-title">
         <div class="panel-head">
-          <div class="panel-title" id="alerts-title">Official Alerts</div>
+          <div class="panel-title" id="alerts-title">NWS Alerts</div>
         </div>
         <div class="bottom-body alerts-data">
           <div class="alert-clear" id="alert-box">
@@ -1539,7 +1534,7 @@
       const wind = text.match(/(-?\d+(?:\.\d+)?)\s*mph\b/i);
       const lightning = text.match(/(-?\d+(?:\.\d+)?)\s*%/);
       const visibility = text.match(/(-?\d+(?:\.\d+)?)\s*(?:mi|sm)\b/i);
-      const temp = text.match(/(-?\d+(?:\.\d+)?)\s*(?:degF|°F|F)\b/i);
+      const temp = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°F|°F|F)\b/i);
       if (source === "RAIN" || source === "SNOW" || source === "FZRA" || /rain|snow|freezing rain|fzra/i.test(label)) {
         return precip ? Number(precip[1]) : numberFromText(text);
       }
@@ -1795,10 +1790,10 @@
       if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Block FZRA", `${Number(values.fzra_in).toFixed(2)} in`]);
       if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["3-hr Min Vis", `${Number(values.visibility_mi).toFixed(1)} mi`]);
       if (hazard.source === "FLASH_FREEZE") {
-        if (values.temp_f != null) lines.push(["3-hr Min Temp", `${Math.round(values.temp_f)} degF`]);
+        if (values.temp_f != null) lines.push(["3-hr Min Temp", `${Math.round(values.temp_f)} °F`]);
         if (values.rain_in != null) lines.push(["Block Rain", `${Number(values.rain_in).toFixed(2)} in`]);
       }
-      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Block Temp", `${Math.round(values.temp_f)} degF`]);
+      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Block Temp", `${Math.round(values.temp_f)} °F`]);
       if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
@@ -2123,7 +2118,7 @@
       const impact = item.impact || operationalImpact(item.source);
       const action = item.action || operationalAction(risk);
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
-      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} | ${impact} | ${action}`;
+      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} · ${impact} · ${action}`;
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
         title: `${name} - ${risk}`,
@@ -2449,7 +2444,7 @@
         lines: [
           ["Temp / Dew Point", values.tempText, tempColor(obs.temperature_f)],
           ["RH", Number.isFinite(rh) ? `${Math.round(rh)}%` : "Not reported"],
-          ["Wet Bulb", wb == null ? "Not calculated" : `${Math.round(wb)} degF`, wb == null ? "" : tempColor(wb)]
+          ["Wet Bulb", wb == null ? "Not calculated" : `${Math.round(wb)} °F`, wb == null ? "" : tempColor(wb)]
         ],
         risk: "Little to None"
       });
@@ -2833,65 +2828,28 @@
     function updateLightningDisplay(lightning) {
       const risk = lightningRisk(lightning?.alert_level);
       const nearest = lightning?.nearest_strike || null;
-      const total = Number(lightning?.total_count || 0);
       const status = document.getElementById("lightning-value");
       const meta = document.getElementById("lightning-meta");
       const main = document.getElementById("lightning-main");
-      const ringGrid = document.getElementById("ring-grid");
-      const mapStatus = document.getElementById("map-lightning-status");
       const label = lightning?.alert_label || "No GLM lightning detected";
       if (status) {
         status.textContent = nearest
           ? `${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
-          : "No Lightning";
+          : "None <25 nm";
         status.style.color = risk === "None" ? "var(--text-body)" : (riskColors[risk] || "var(--text-main)");
       }
       if (meta) {
-        meta.textContent = nearest
-          ? `${formatStrikeAge(nearest)} | ${total} GLM groups`
-          : "No lightning within 25 nm";
-      }
-      if (mapStatus) {
-        mapStatus.textContent = nearest
-          ? `GLM ${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
-          : "No lightning within 25 nm";
-        mapStatus.style.color = nearest ? (riskColors[risk] || "var(--text-main)") : "var(--text-body)";
+        meta.textContent = nearest ? formatStrikeAge(nearest) : "";
       }
       if (main) {
         main.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
         attachTooltip(main, {
-          title: "GLM Lightning",
+          title: "Closest Lightning",
           subtitle: label,
           lines: [
             ["Nearest", nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : "None within 25 nm"],
             ["Last", lightning?.last_strike ? formatStrikeAge(lightning.last_strike) : "None"],
-            ["10 nm", `${ringCount(lightning, 10)}`],
-            ["15 nm", `${ringCount(lightning, 15)}`],
-            ["20 nm", `${ringCount(lightning, 20)}`],
-            ["25 nm", `${ringCount(lightning, 25)}`],
             ["Source", "GOES-18 GLM"]
-          ],
-          risk
-        });
-      }
-      [10, 15, 20, 25].forEach(limit => {
-        const el = document.getElementById(`ring-${limit}`);
-        const count = ringCount(lightning, limit);
-        if (el) {
-          el.textContent = String(count);
-          el.style.color = count > 0 ? (riskColors[limit <= 10 ? "Major" : limit <= 15 ? "Moderate" : "Minor"]) : "var(--text-main)";
-        }
-      });
-      if (ringGrid) {
-        attachTooltip(ringGrid, {
-          title: "Lightning Rings",
-          subtitle: "GLM group counts",
-          lines: [
-            ["10 nm", `${ringCount(lightning, 10)}`],
-            ["15 nm", `${ringCount(lightning, 15)}`],
-            ["20 nm", `${ringCount(lightning, 20)}`],
-            ["25 nm", `${ringCount(lightning, 25)}`],
-            ["Window", `${lightning?.window_minutes || 15} min`]
           ],
           risk
         });
@@ -2956,7 +2914,7 @@
             <div class="alert-text">Review official products for KRNO</div>
           `;
           attachTooltip(alertBox, {
-            title: "Official Alerts",
+            title: "NWS Alerts",
             subtitle: `${alerts.alerts.length} active`,
             lines: [
               ["Status", "Active alerts"],
@@ -2972,7 +2930,7 @@
             <div class="alert-text">No active official alerts for KRNO</div>
           `;
           attachTooltip(alertBox, {
-            title: "Official Alerts",
+            title: "NWS Alerts",
             subtitle: "All Clear",
             lines: [
               ["Status", "No active official alerts"],
