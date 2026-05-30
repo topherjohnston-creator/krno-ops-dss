@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-05-30T14:14:29Z",
+  "generated_utc": "2026-05-30T17:38:48Z",
   "cycle_utc_iso": "2026-05-30T06:00:00Z",
   "cycle": "REFS 06Z",
   "valid_period": "next_60_hours",
@@ -77,12 +77,12 @@
       "valid_start_utc": "2026-05-30T19:00:00Z",
       "valid_end_utc": "2026-05-30T21:00:00Z",
       "WIND": 0,
-      "LIGHTNING": 0,
+      "LIGHTNING": 1,
       "SNOW": 0,
       "VISIBILITY": 0,
       "FZRA": 0,
       "FLASH_FREEZE": 0,
-      "RAIN": 0,
+      "RAIN": 1,
       "TEMPERATURE": 0
     },
     {
@@ -92,12 +92,12 @@
       "valid_start_utc": "2026-05-30T22:00:00Z",
       "valid_end_utc": "2026-05-31T00:00:00Z",
       "WIND": 0,
-      "LIGHTNING": 0,
+      "LIGHTNING": 1,
       "SNOW": 0,
-      "VISIBILITY": 0,
+      "VISIBILITY": 3,
       "FZRA": 0,
       "FLASH_FREEZE": 0,
-      "RAIN": 0,
+      "RAIN": 1,
       "TEMPERATURE": 0
     },
     {
@@ -107,12 +107,12 @@
       "valid_start_utc": "2026-05-31T01:00:00Z",
       "valid_end_utc": "2026-05-31T03:00:00Z",
       "WIND": 0,
-      "LIGHTNING": 0,
+      "LIGHTNING": 1,
       "SNOW": 0,
       "VISIBILITY": 0,
       "FZRA": 0,
       "FLASH_FREEZE": 0,
-      "RAIN": 0,
+      "RAIN": 1,
       "TEMPERATURE": 0
     },
     {
@@ -2682,9 +2682,9 @@
         "end_fxx": 15,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 11.6,
+        "gust_mean_mph": 10.8,
         "gust_max_mph": 19.2,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -2711,12 +2711,28 @@
             "idx_line": "10:10479319:d=2026053006:GUST:surface:15 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 13.4,
+            "idx_line": "11:15379635:d=2026053006:GUST:surface:15 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 21,
             "lag_hours": 6,
             "gust_mph": 19.2,
             "idx_line": "11:15310593:d=2026053000:GUST:surface:21 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 6.9,
+            "idx_line": "11:15508157:d=2026053006:GUST:surface:15 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -2727,6 +2743,14 @@
             "idx_line": "11:14928370:d=2026053000:GUST:surface:21 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 11.6,
+            "idx_line": "11:13917843:d=2026053006:GUST:surface:15 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 21,
@@ -2735,12 +2759,28 @@
             "idx_line": "11:14312194:d=2026053000:GUST:surface:21 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 3.1,
+            "idx_line": "11:14700496:d=2026053006:GUST:surface:15 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 21,
             "lag_hours": 6,
             "gust_mph": 8.7,
             "idx_line": "11:14597912:d=2026053000:GUST:surface:21 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 15,
+            "lag_hours": 0,
+            "gust_mph": 12.1,
+            "idx_line": "11:14630264:d=2026053006:GUST:surface:15 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -2780,8 +2820,8 @@
             "value": 11.6,
             "unit": "mph",
             "gust_max_mph": 11.6,
-            "gust_mean_mph": 10.3,
-            "member_count": 9,
+            "gust_mean_mph": 9.7,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -2793,8 +2833,8 @@
             "value": 19.2,
             "unit": "mph",
             "gust_max_mph": 19.2,
-            "gust_mean_mph": 11.6,
-            "member_count": 9,
+            "gust_mean_mph": 10.8,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -2806,16 +2846,16 @@
         "id": "LIGHTNING",
         "label": "LIGHTNING",
         "name": "LIGHTNING",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No threshold-level signal in this 3-hour block",
-        "source_fxx": 13,
-        "peak_valid_utc": "2026-05-30T19:00:00Z",
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 2.5,
+        "probability": 2.5,
+        "metric": "thunder probability",
+        "driver": "Block peak thunder probability at 2%",
+        "source_fxx": 15,
+        "peak_valid_utc": "2026-05-30T21:00:00Z",
         "valid_start_utc": "2026-05-30T19:00:00Z",
         "valid_end_utc": "2026-05-30T21:00:00Z",
         "start_fxx": 13,
@@ -2830,6 +2870,26 @@
             "metric": "No signal",
             "label": "prob",
             "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
+            "prob": 2.5,
+            "risk": 1,
+            "metric": "thunder probability",
+            "label": "prob",
+            "value": 2.5,
             "unit": "%"
           }
         ],
@@ -2858,6 +2918,28 @@
           {
             "fxx": 13,
             "valid_utc": "2026-05-30T19:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal",
@@ -2899,6 +2981,28 @@
             "value": 14.98,
             "unit": "mi",
             "visibility_mi": 14.98
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
@@ -2927,6 +3031,28 @@
           {
             "fxx": 13,
             "valid_utc": "2026-05-30T19:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal",
@@ -2970,6 +3096,32 @@
             "wet_bulb_f": 54.8,
             "cold_prob": 0.0,
             "wet_prob": 0.0
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 56.2,
+            "unit": "F",
+            "wet_bulb_f": 56.2,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 57.1,
+            "unit": "F",
+            "wet_bulb_f": 57.1,
+            "cold_prob": 0.0,
+            "wet_prob": 7.0
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
@@ -2980,16 +3132,16 @@
         "id": "RAIN",
         "label": "RAIN",
         "name": "RAIN",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "No threshold-level signal in this 3-hour block",
-        "source_fxx": 13,
-        "peak_valid_utc": "2026-05-30T19:00:00Z",
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "impact_level": 1,
+        "prob": 7.0,
+        "probability": 7.0,
+        "metric": "rain type",
+        "driver": "Block peak rain type at 7%",
+        "source_fxx": 15,
+        "peak_valid_utc": "2026-05-30T21:00:00Z",
         "valid_start_utc": "2026-05-30T19:00:00Z",
         "valid_end_utc": "2026-05-30T21:00:00Z",
         "start_fxx": 13,
@@ -3006,6 +3158,28 @@
             "value": 0.0,
             "unit": "in",
             "rain_in": 0.0
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
+            "prob": 7.0,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.003,
+            "unit": "in",
+            "rain_in": 0.003
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards"
@@ -3022,8 +3196,8 @@
         "probability": 0.0,
         "metric": "No signal",
         "driver": "No threshold-level signal in this 3-hour block",
-        "source_fxx": 13,
-        "peak_valid_utc": "2026-05-30T19:00:00Z",
+        "source_fxx": 15,
+        "peak_valid_utc": "2026-05-30T21:00:00Z",
         "valid_start_utc": "2026-05-30T19:00:00Z",
         "valid_end_utc": "2026-05-30T21:00:00Z",
         "start_fxx": 13,
@@ -3040,10 +3214,32 @@
             "value": 62.3,
             "unit": "F",
             "temp_f": 62.3
+          },
+          {
+            "fxx": 14,
+            "valid_utc": "2026-05-30T20:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 64.9,
+            "unit": "F",
+            "temp_f": 64.9
+          },
+          {
+            "fxx": 15,
+            "valid_utc": "2026-05-30T21:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 66.8,
+            "unit": "F",
+            "temp_f": 66.8
           }
         ],
         "method": "refs_idx_byte_range_secondary_hazards",
-        "temp_f": 62.3
+        "temp_f": 66.8
       }
     },
     {
@@ -3072,9 +3268,9 @@
         "end_fxx": 18,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 12.6,
+        "gust_mean_mph": 13.3,
         "gust_max_mph": 28.2,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -3101,12 +3297,28 @@
             "idx_line": "10:10488581:d=2026053006:GUST:surface:16 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 0,
+            "gust_mph": 14.3,
+            "idx_line": "11:15358781:d=2026053006:GUST:surface:16 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 22,
             "lag_hours": 6,
             "gust_mph": 19.7,
             "idx_line": "11:15316888:d=2026053000:GUST:surface:22 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 0,
+            "gust_mph": 6.9,
+            "idx_line": "11:15399726:d=2026053006:GUST:surface:16 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -3117,6 +3329,14 @@
             "idx_line": "11:15345618:d=2026053000:GUST:surface:22 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 0,
+            "gust_mph": 10.3,
+            "idx_line": "11:14436096:d=2026053006:GUST:surface:16 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 22,
@@ -3125,12 +3345,28 @@
             "idx_line": "11:14357849:d=2026053000:GUST:surface:22 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 0,
+            "gust_mph": 27.7,
+            "idx_line": "11:14653370:d=2026053006:GUST:surface:16 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 22,
             "lag_hours": 6,
             "gust_mph": 28.2,
             "idx_line": "11:14610577:d=2026053000:GUST:surface:22 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 16,
+            "lag_hours": 0,
+            "gust_mph": 14.5,
+            "idx_line": "11:14634574:d=2026053006:GUST:surface:16 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -3157,8 +3393,8 @@
             "value": 28.2,
             "unit": "mph",
             "gust_max_mph": 28.2,
-            "gust_mean_mph": 12.6,
-            "member_count": 9,
+            "gust_mean_mph": 13.3,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3167,11 +3403,11 @@
             "fxx": 17,
             "valid_utc": "2026-05-30T23:00:00Z",
             "label": "gust",
-            "value": 19.7,
+            "value": 27.7,
             "unit": "mph",
-            "gust_max_mph": 19.7,
-            "gust_mean_mph": 12.0,
-            "member_count": 9,
+            "gust_max_mph": 27.7,
+            "gust_mean_mph": 13.4,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3180,11 +3416,11 @@
             "fxx": 18,
             "valid_utc": "2026-05-31T00:00:00Z",
             "label": "gust",
-            "value": 21.7,
+            "value": 22.8,
             "unit": "mph",
-            "gust_max_mph": 21.7,
-            "gust_mean_mph": 15.8,
-            "member_count": 9,
+            "gust_max_mph": 22.8,
+            "gust_mean_mph": 15.7,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3196,21 +3432,54 @@
         "id": "LIGHTNING",
         "label": "LIGHTNING",
         "name": "LIGHTNING",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 9.5,
+        "probability": 9.5,
+        "metric": "thunder probability",
+        "driver": "Block peak thunder probability at 10%",
+        "source_fxx": 16,
+        "peak_valid_utc": "2026-05-30T22:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 9.5,
+            "risk": 1,
+            "metric": "thunder probability",
+            "label": "prob",
+            "value": 9.5,
+            "unit": "%"
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 8.5,
+            "risk": 1,
+            "metric": "thunder probability",
+            "label": "prob",
+            "value": 8.5,
+            "unit": "%"
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 5.0,
+            "risk": 1,
+            "metric": "thunder probability",
+            "label": "prob",
+            "value": 5.0,
+            "unit": "%"
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "SNOW": {
         "id": "SNOW",
@@ -3223,34 +3492,107 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 16,
+        "peak_valid_utc": "2026-05-30T22:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "VISIBILITY": {
         "id": "VISIBILITY",
         "label": "VISIBILITY",
         "name": "VISIBILITY",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 3,
+        "risk_label": "Moderate",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 100.0,
+        "probability": 100.0,
+        "metric": "<=3 mi",
+        "driver": "Block peak <=3 mi at 100%",
+        "source_fxx": 17,
+        "peak_valid_utc": "2026-05-30T23:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 7.0,
+            "risk": 1,
+            "metric": "<3 mi",
+            "label": "visibility",
+            "value": 7.33,
+            "unit": "mi",
+            "visibility_mi": 7.33
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 100.0,
+            "risk": 3,
+            "metric": "<=3 mi",
+            "label": "visibility",
+            "value": 1.99,
+            "unit": "mi",
+            "visibility_mi": 1.99
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 8.64,
+            "unit": "mi",
+            "visibility_mi": 8.64
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "visibility_mi": 1.99
       },
       "FZRA": {
         "id": "FZRA",
@@ -3263,14 +3605,50 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 16,
+        "peak_valid_utc": "2026-05-30T22:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "FLASH_FREEZE": {
         "id": "FLASH_FREEZE",
@@ -3283,34 +3661,114 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 16,
+        "peak_valid_utc": "2026-05-30T22:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 56.8,
+            "unit": "F",
+            "wet_bulb_f": 56.8,
+            "cold_prob": 0.0,
+            "wet_prob": 21.5
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 56.4,
+            "unit": "F",
+            "wet_bulb_f": 56.4,
+            "cold_prob": 0.0,
+            "wet_prob": 21.5
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 56.5,
+            "unit": "F",
+            "wet_bulb_f": 56.5,
+            "cold_prob": 0.0,
+            "wet_prob": 28.5
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "cold_prob": 0.0,
+        "wet_prob": 21.5
       },
       "RAIN": {
         "id": "RAIN",
         "label": "RAIN",
         "name": "RAIN",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "impact_level": 1,
+        "prob": 28.5,
+        "probability": 28.5,
+        "metric": "rain type",
+        "driver": "Block peak rain type at 28%",
+        "source_fxx": 18,
+        "peak_valid_utc": "2026-05-31T00:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 21.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.006,
+            "unit": "in",
+            "rain_in": 0.006
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 21.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.02,
+            "unit": "in",
+            "rain_in": 0.02
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 28.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.041,
+            "unit": "in",
+            "rain_in": 0.041
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "TEMPERATURE": {
         "id": "TEMPERATURE",
@@ -3323,14 +3781,51 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 17,
+        "peak_valid_utc": "2026-05-30T23:00:00Z",
         "valid_start_utc": "2026-05-30T22:00:00Z",
         "valid_end_utc": "2026-05-31T00:00:00Z",
         "start_fxx": 16,
         "end_fxx": 18,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 16,
+            "valid_utc": "2026-05-30T22:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 66.8,
+            "unit": "F",
+            "temp_f": 66.8
+          },
+          {
+            "fxx": 17,
+            "valid_utc": "2026-05-30T23:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 67.6,
+            "unit": "F",
+            "temp_f": 67.6
+          },
+          {
+            "fxx": 18,
+            "valid_utc": "2026-05-31T00:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 67.2,
+            "unit": "F",
+            "temp_f": 67.2
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "temp_f": 67.6
       }
     },
     {
@@ -3359,9 +3854,9 @@
         "end_fxx": 21,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 16.9,
+        "gust_mean_mph": 17.3,
         "gust_max_mph": 28.0,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -3388,12 +3883,28 @@
             "idx_line": "10:10341395:d=2026053006:GUST:surface:21 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 24.4,
+            "idx_line": "11:14591229:d=2026053006:GUST:surface:21 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 27,
             "lag_hours": 6,
             "gust_mph": 28.0,
             "idx_line": "11:14758983:d=2026053000:GUST:surface:27 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 17.4,
+            "idx_line": "11:15073524:d=2026053006:GUST:surface:21 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -3404,6 +3915,14 @@
             "idx_line": "11:14922849:d=2026053000:GUST:surface:27 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 13.9,
+            "idx_line": "11:14038777:d=2026053006:GUST:surface:21 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 27,
@@ -3412,12 +3931,28 @@
             "idx_line": "11:14011220:d=2026053000:GUST:surface:27 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 19.5,
+            "idx_line": "11:14015963:d=2026053006:GUST:surface:21 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 27,
             "lag_hours": 6,
             "gust_mph": 13.6,
             "idx_line": "11:14089487:d=2026053000:GUST:surface:27 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 21,
+            "lag_hours": 0,
+            "gust_mph": 15.2,
+            "idx_line": "11:14286592:d=2026053006:GUST:surface:21 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -3441,11 +3976,11 @@
             "fxx": 19,
             "valid_utc": "2026-05-31T01:00:00Z",
             "label": "gust",
-            "value": 24.8,
+            "value": 25.3,
             "unit": "mph",
-            "gust_max_mph": 24.8,
-            "gust_mean_mph": 14.8,
-            "member_count": 9,
+            "gust_max_mph": 25.3,
+            "gust_mean_mph": 15.7,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3457,8 +3992,8 @@
             "value": 27.7,
             "unit": "mph",
             "gust_max_mph": 27.7,
-            "gust_mean_mph": 15.4,
-            "member_count": 9,
+            "gust_mean_mph": 16.4,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3470,8 +4005,8 @@
             "value": 28.0,
             "unit": "mph",
             "gust_max_mph": 28.0,
-            "gust_mean_mph": 16.9,
-            "member_count": 9,
+            "gust_mean_mph": 17.3,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3483,21 +4018,54 @@
         "id": "LIGHTNING",
         "label": "LIGHTNING",
         "name": "LIGHTNING",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 2.5,
+        "probability": 2.5,
+        "metric": "thunder probability",
+        "driver": "Block peak thunder probability at 2%",
+        "source_fxx": 20,
+        "peak_valid_utc": "2026-05-31T02:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 2.5,
+            "risk": 1,
+            "metric": "thunder probability",
+            "label": "prob",
+            "value": 2.5,
+            "unit": "%"
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "SNOW": {
         "id": "SNOW",
@@ -3510,14 +4078,50 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "VISIBILITY": {
         "id": "VISIBILITY",
@@ -3530,14 +4134,51 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "visibility_mi": 14.98
       },
       "FZRA": {
         "id": "FZRA",
@@ -3550,14 +4191,50 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "FLASH_FREEZE": {
         "id": "FLASH_FREEZE",
@@ -3570,34 +4247,114 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 56.2,
+            "unit": "F",
+            "wet_bulb_f": 56.2,
+            "cold_prob": 0.0,
+            "wet_prob": 21.5
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 55.1,
+            "unit": "F",
+            "wet_bulb_f": 55.1,
+            "cold_prob": 0.0,
+            "wet_prob": 14.5
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 52.8,
+            "unit": "F",
+            "wet_bulb_f": 52.8,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "cold_prob": 0.0,
+        "wet_prob": 21.5
       },
       "RAIN": {
         "id": "RAIN",
         "label": "RAIN",
         "name": "RAIN",
-        "risk": 0,
-        "risk_label": "None",
-        "level": 0,
-        "impact_level": 0,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "impact_level": 1,
+        "prob": 21.5,
+        "probability": 21.5,
+        "metric": "rain type",
+        "driver": "Block peak rain type at 22%",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 21.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.004,
+            "unit": "in",
+            "rain_in": 0.004
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 14.5,
+            "risk": 1,
+            "metric": "rain type",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.043,
+            "unit": "in",
+            "rain_in": 0.043
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "TEMPERATURE": {
         "id": "TEMPERATURE",
@@ -3610,14 +4367,51 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 19,
+        "peak_valid_utc": "2026-05-31T01:00:00Z",
         "valid_start_utc": "2026-05-31T01:00:00Z",
         "valid_end_utc": "2026-05-31T03:00:00Z",
         "start_fxx": 19,
         "end_fxx": 21,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 19,
+            "valid_utc": "2026-05-31T01:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 66.1,
+            "unit": "F",
+            "temp_f": 66.1
+          },
+          {
+            "fxx": 20,
+            "valid_utc": "2026-05-31T02:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 63.8,
+            "unit": "F",
+            "temp_f": 63.8
+          },
+          {
+            "fxx": 21,
+            "valid_utc": "2026-05-31T03:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 59.9,
+            "unit": "F",
+            "temp_f": 59.9
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "temp_f": 66.1
       }
     },
     {
@@ -3646,9 +4440,9 @@
         "end_fxx": 24,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 14.8,
+        "gust_mean_mph": 15.3,
         "gust_max_mph": 26.4,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -3675,12 +4469,28 @@
             "idx_line": "10:10217131:d=2026053006:GUST:surface:22 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 22,
+            "lag_hours": 0,
+            "gust_mph": 23.5,
+            "idx_line": "11:14400129:d=2026053006:GUST:surface:22 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 28,
             "lag_hours": 6,
             "gust_mph": 26.4,
             "idx_line": "11:14512701:d=2026053000:GUST:surface:28 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 22,
+            "lag_hours": 0,
+            "gust_mph": 16.8,
+            "idx_line": "11:14576699:d=2026053006:GUST:surface:22 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -3691,6 +4501,14 @@
             "idx_line": "11:14581110:d=2026053000:GUST:surface:28 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 22,
+            "lag_hours": 0,
+            "gust_mph": 14.5,
+            "idx_line": "11:13871871:d=2026053006:GUST:surface:22 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 28,
@@ -3699,12 +4517,28 @@
             "idx_line": "11:14078717:d=2026053000:GUST:surface:28 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 22,
+            "lag_hours": 0,
+            "gust_mph": 14.1,
+            "idx_line": "11:13887218:d=2026053006:GUST:surface:22 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 28,
             "lag_hours": 6,
             "gust_mph": 10.7,
             "idx_line": "11:13986278:d=2026053000:GUST:surface:28 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 22,
+            "lag_hours": 0,
+            "gust_mph": 12.3,
+            "idx_line": "11:14111105:d=2026053006:GUST:surface:22 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -3731,8 +4565,8 @@
             "value": 26.4,
             "unit": "mph",
             "gust_max_mph": 26.4,
-            "gust_mean_mph": 14.8,
-            "member_count": 9,
+            "gust_mean_mph": 15.3,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3741,11 +4575,11 @@
             "fxx": 23,
             "valid_utc": "2026-05-31T05:00:00Z",
             "label": "gust",
-            "value": 22.1,
+            "value": 23.7,
             "unit": "mph",
-            "gust_max_mph": 22.1,
-            "gust_mean_mph": 12.4,
-            "member_count": 9,
+            "gust_max_mph": 23.7,
+            "gust_mean_mph": 13.2,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3757,8 +4591,8 @@
             "value": 19.0,
             "unit": "mph",
             "gust_max_mph": 19.0,
-            "gust_mean_mph": 10.5,
-            "member_count": 9,
+            "gust_mean_mph": 10.2,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -3777,14 +4611,37 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 22,
+        "peak_valid_utc": "2026-05-31T04:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "SNOW": {
         "id": "SNOW",
@@ -3797,14 +4654,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 22,
+        "peak_valid_utc": "2026-05-31T04:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "VISIBILITY": {
         "id": "VISIBILITY",
@@ -3817,14 +4699,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 23,
+        "peak_valid_utc": "2026-05-31T05:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.98,
+            "unit": "mi",
+            "visibility_mi": 14.98
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 13.79,
+            "unit": "mi",
+            "visibility_mi": 13.79
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "visibility_mi": 13.79
       },
       "FZRA": {
         "id": "FZRA",
@@ -3837,14 +4745,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 22,
+        "peak_valid_utc": "2026-05-31T04:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "FLASH_FREEZE": {
         "id": "FLASH_FREEZE",
@@ -3857,14 +4790,45 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 22,
+        "peak_valid_utc": "2026-05-31T04:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 51.1,
+            "unit": "F",
+            "wet_bulb_f": 51.1,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 50.2,
+            "unit": "F",
+            "wet_bulb_f": 50.2,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "cold_prob": 0.0,
+        "wet_prob": 0.0
       },
       "RAIN": {
         "id": "RAIN",
@@ -3877,14 +4841,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 22,
+        "peak_valid_utc": "2026-05-31T04:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "TEMPERATURE": {
         "id": "TEMPERATURE",
@@ -3897,14 +4886,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 23,
+        "peak_valid_utc": "2026-05-31T05:00:00Z",
         "valid_start_utc": "2026-05-31T04:00:00Z",
         "valid_end_utc": "2026-05-31T06:00:00Z",
         "start_fxx": 22,
         "end_fxx": 24,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 22,
+            "valid_utc": "2026-05-31T04:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 56.7,
+            "unit": "F",
+            "temp_f": 56.7
+          },
+          {
+            "fxx": 23,
+            "valid_utc": "2026-05-31T05:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 54.9,
+            "unit": "F",
+            "temp_f": 54.9
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "temp_f": 54.9
       }
     },
     {
@@ -3935,7 +4950,7 @@
         "mean_wind_mph": null,
         "gust_mean_mph": 7.5,
         "gust_max_mph": 15.9,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -3962,12 +4977,28 @@
             "idx_line": "10:10222674:d=2026053006:GUST:surface:25 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 11.2,
+            "idx_line": "11:14029279:d=2026053006:GUST:surface:25 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 31,
             "lag_hours": 6,
             "gust_mph": 15.9,
             "idx_line": "11:14155196:d=2026053000:GUST:surface:31 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 4.9,
+            "idx_line": "11:14571807:d=2026053006:GUST:surface:25 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -3978,6 +5009,14 @@
             "idx_line": "11:14544795:d=2026053000:GUST:surface:31 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 12.5,
+            "idx_line": "11:13931821:d=2026053006:GUST:surface:25 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 31,
@@ -3986,12 +5025,28 @@
             "idx_line": "11:14042094:d=2026053000:GUST:surface:31 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 4.3,
+            "idx_line": "11:13792417:d=2026053006:GUST:surface:25 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 31,
             "lag_hours": 6,
             "gust_mph": 5.8,
             "idx_line": "11:13706620:d=2026053000:GUST:surface:31 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 25,
+            "lag_hours": 0,
+            "gust_mph": 4.9,
+            "idx_line": "11:14371222:d=2026053006:GUST:surface:25 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -4019,7 +5074,7 @@
             "unit": "mph",
             "gust_max_mph": 15.9,
             "gust_mean_mph": 7.5,
-            "member_count": 9,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4031,8 +5086,8 @@
             "value": 9.8,
             "unit": "mph",
             "gust_max_mph": 9.8,
-            "gust_mean_mph": 4.6,
-            "member_count": 9,
+            "gust_mean_mph": 5.0,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4041,11 +5096,11 @@
             "fxx": 27,
             "valid_utc": "2026-05-31T09:00:00Z",
             "label": "gust",
-            "value": 4.3,
+            "value": 5.4,
             "unit": "mph",
-            "gust_max_mph": 4.3,
-            "gust_mean_mph": 3.3,
-            "member_count": 9,
+            "gust_max_mph": 5.4,
+            "gust_mean_mph": 3.0,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4064,14 +5119,37 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "SNOW": {
         "id": "SNOW",
@@ -4084,14 +5162,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "VISIBILITY": {
         "id": "VISIBILITY",
@@ -4104,14 +5207,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.54,
+            "unit": "mi",
+            "visibility_mi": 14.54
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.6,
+            "unit": "mi",
+            "visibility_mi": 14.6
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "visibility_mi": 14.54
       },
       "FZRA": {
         "id": "FZRA",
@@ -4124,14 +5253,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "FLASH_FREEZE": {
         "id": "FLASH_FREEZE",
@@ -4144,14 +5298,45 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 48.1,
+            "unit": "F",
+            "wet_bulb_f": 48.1,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 47.2,
+            "unit": "F",
+            "wet_bulb_f": 47.2,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "cold_prob": 0.0,
+        "wet_prob": 0.0
       },
       "RAIN": {
         "id": "RAIN",
@@ -4164,14 +5349,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 25,
+        "peak_valid_utc": "2026-05-31T07:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "TEMPERATURE": {
         "id": "TEMPERATURE",
@@ -4184,14 +5394,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 26,
+        "peak_valid_utc": "2026-05-31T08:00:00Z",
         "valid_start_utc": "2026-05-31T07:00:00Z",
         "valid_end_utc": "2026-05-31T09:00:00Z",
         "start_fxx": 25,
         "end_fxx": 27,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 25,
+            "valid_utc": "2026-05-31T07:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 51.9,
+            "unit": "F",
+            "temp_f": 51.9
+          },
+          {
+            "fxx": 26,
+            "valid_utc": "2026-05-31T08:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 50.6,
+            "unit": "F",
+            "temp_f": 50.6
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "temp_f": 50.6
       }
     },
     {
@@ -4212,89 +5448,129 @@
         "probability": 0.0,
         "metric": "No signal",
         "driver": "No meaningful wind signal in this 3-hour block",
-        "source_fxx": 30,
-        "peak_valid_utc": "2026-05-31T12:00:00Z",
+        "source_fxx": 29,
+        "peak_valid_utc": "2026-05-31T11:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 2.3,
+        "gust_mean_mph": 2.5,
         "gust_max_mph": 4.0,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
             "model": "hrrr",
-            "source_fxx": 30,
+            "source_fxx": 29,
             "lag_hours": 0,
-            "gust_mph": 2.1,
-            "idx_line": "9:4067117:d=2026053006:GUST:surface:30 hour fcst:"
+            "gust_mph": 2.2,
+            "idx_line": "9:4116610:d=2026053006:GUST:surface:29 hour fcst:"
           },
           {
             "member": "HRRR-6",
             "model": "hrrr",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
-            "gust_mph": 1.8,
-            "idx_line": "9:4062396:d=2026053000:GUST:surface:36 hour fcst:"
+            "gust_mph": 2.2,
+            "idx_line": "9:4097313:d=2026053000:GUST:surface:35 hour fcst:"
           },
           {
             "member": "RRFS",
             "model": "rrfs",
-            "source_fxx": 30,
+            "source_fxx": 29,
             "lag_hours": 0,
-            "gust_mph": 4.0,
-            "idx_line": "10:9929528:d=2026053006:GUST:surface:30 hour fcst:"
+            "gust_mph": 3.8,
+            "idx_line": "10:9995926:d=2026053006:GUST:surface:29 hour fcst:"
+          },
+          {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 29,
+            "lag_hours": 0,
+            "gust_mph": 2.2,
+            "idx_line": "11:13825758:d=2026053006:GUST:surface:29 hour fcst:ENS=+1"
           },
           {
             "member": "RRFS-1-6",
             "model": "rrfsens",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
             "gust_mph": 2.0,
-            "idx_line": "11:13838017:d=2026053000:GUST:surface:36 hour fcst:ENS=+1"
+            "idx_line": "11:13839965:d=2026053000:GUST:surface:35 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 29,
+            "lag_hours": 0,
+            "gust_mph": 2.9,
+            "idx_line": "11:14426764:d=2026053006:GUST:surface:29 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
             "model": "rrfsens",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
-            "gust_mph": 1.6,
-            "idx_line": "11:14422466:d=2026053000:GUST:surface:36 hour fcst:ENS=+2"
+            "gust_mph": 1.3,
+            "idx_line": "11:14299293:d=2026053000:GUST:surface:35 hour fcst:ENS=+2"
+          },
+          {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 29,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "11:14050253:d=2026053006:GUST:surface:29 hour fcst:ENS=+3"
           },
           {
             "member": "RRFS-3-6",
             "model": "rrfsens",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
+            "gust_mph": 2.2,
+            "idx_line": "11:14064330:d=2026053000:GUST:surface:35 hour fcst:ENS=+3"
+          },
+          {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 29,
+            "lag_hours": 0,
             "gust_mph": 1.6,
-            "idx_line": "11:14050054:d=2026053000:GUST:surface:36 hour fcst:ENS=+3"
+            "idx_line": "11:13491658:d=2026053006:GUST:surface:29 hour fcst:ENS=+4"
           },
           {
             "member": "RRFS-4-6",
             "model": "rrfsens",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
-            "gust_mph": 1.1,
-            "idx_line": "11:13425422:d=2026053000:GUST:surface:36 hour fcst:ENS=+4"
+            "gust_mph": 2.0,
+            "idx_line": "11:13566170:d=2026053000:GUST:surface:35 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 29,
+            "lag_hours": 0,
+            "gust_mph": 4.0,
+            "idx_line": "11:14249038:d=2026053006:GUST:surface:29 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
             "model": "rrfsens",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
-            "gust_mph": 3.4,
-            "idx_line": "11:14206379:d=2026053000:GUST:surface:36 hour fcst:ENS=+5"
+            "gust_mph": 3.6,
+            "idx_line": "11:13876114:d=2026053000:GUST:surface:35 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-6",
             "model": "rrfs",
-            "source_fxx": 36,
+            "source_fxx": 35,
             "lag_hours": 6,
-            "gust_mph": 2.9,
-            "idx_line": "10:9894524:d=2026053000:GUST:surface:36 hour fcst:"
+            "gust_mph": 2.5,
+            "idx_line": "10:10048543:d=2026053000:GUST:surface:35 hour fcst:"
           }
         ],
         "hourly_values": [
@@ -4302,11 +5578,11 @@
             "fxx": 28,
             "valid_utc": "2026-05-31T10:00:00Z",
             "label": "gust",
-            "value": 3.1,
+            "value": 3.8,
             "unit": "mph",
-            "gust_max_mph": 3.1,
-            "gust_mean_mph": 2.3,
-            "member_count": 9,
+            "gust_max_mph": 3.8,
+            "gust_mean_mph": 2.5,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4315,11 +5591,11 @@
             "fxx": 29,
             "valid_utc": "2026-05-31T11:00:00Z",
             "label": "gust",
-            "value": 3.8,
+            "value": 4.0,
             "unit": "mph",
-            "gust_max_mph": 3.8,
-            "gust_mean_mph": 2.4,
-            "member_count": 9,
+            "gust_max_mph": 4.0,
+            "gust_mean_mph": 2.5,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4331,8 +5607,8 @@
             "value": 4.0,
             "unit": "mph",
             "gust_max_mph": 4.0,
-            "gust_mean_mph": 2.3,
-            "member_count": 9,
+            "gust_mean_mph": 2.2,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4351,14 +5627,37 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "prob",
+            "value": 0.0,
+            "unit": "%"
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "SNOW": {
         "id": "SNOW",
@@ -4371,14 +5670,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "snow",
+            "value": 0.0,
+            "unit": "in",
+            "snow_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "VISIBILITY": {
         "id": "VISIBILITY",
@@ -4391,14 +5715,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 13.55,
+            "unit": "mi",
+            "visibility_mi": 13.55
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "visibility",
+            "value": 14.73,
+            "unit": "mi",
+            "visibility_mi": 14.73
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "visibility_mi": 13.55
       },
       "FZRA": {
         "id": "FZRA",
@@ -4411,14 +5761,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "freezing rain",
+            "value": 0.0,
+            "unit": "in",
+            "fzra_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "FLASH_FREEZE": {
         "id": "FLASH_FREEZE",
@@ -4431,14 +5806,45 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 45.3,
+            "unit": "F",
+            "wet_bulb_f": 45.3,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "wet bulb",
+            "value": 44.6,
+            "unit": "F",
+            "wet_bulb_f": 44.6,
+            "cold_prob": 0.0,
+            "wet_prob": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "cold_prob": 0.0,
+        "wet_prob": 0.0
       },
       "RAIN": {
         "id": "RAIN",
@@ -4451,14 +5857,39 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 28,
+        "peak_valid_utc": "2026-05-31T10:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "rain",
+            "value": 0.0,
+            "unit": "in",
+            "rain_in": 0.0
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards"
       },
       "TEMPERATURE": {
         "id": "TEMPERATURE",
@@ -4471,14 +5902,40 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
-        "source_fxx": null,
-        "peak_valid_utc": null,
+        "driver": "No threshold-level signal in this 3-hour block",
+        "source_fxx": 29,
+        "peak_valid_utc": "2026-05-31T11:00:00Z",
         "valid_start_utc": "2026-05-31T10:00:00Z",
         "valid_end_utc": "2026-05-31T12:00:00Z",
         "start_fxx": 28,
         "end_fxx": 30,
-        "data_status": "not_extracted"
+        "data_status": "ok",
+        "hourly_values": [
+          {
+            "fxx": 28,
+            "valid_utc": "2026-05-31T10:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 48.4,
+            "unit": "F",
+            "temp_f": 48.4
+          },
+          {
+            "fxx": 29,
+            "valid_utc": "2026-05-31T11:00:00Z",
+            "prob": 0.0,
+            "risk": 0,
+            "metric": "No signal",
+            "label": "temp",
+            "value": 47.5,
+            "unit": "F",
+            "temp_f": 47.5
+          }
+        ],
+        "method": "refs_idx_byte_range_secondary_hazards",
+        "temp_f": 47.5
       }
     },
     {
@@ -4507,9 +5964,9 @@
         "end_fxx": 33,
         "data_status": "ok",
         "mean_wind_mph": null,
-        "gust_mean_mph": 2.9,
+        "gust_mean_mph": 3.0,
         "gust_max_mph": 6.5,
-        "member_count": 9,
+        "member_count": 14,
         "members": [
           {
             "member": "HRRR",
@@ -4536,12 +5993,28 @@
             "idx_line": "10:9575400:d=2026053006:GUST:surface:33 hour fcst:"
           },
           {
+            "member": "RRFS-1",
+            "model": "rrfsens",
+            "source_fxx": 33,
+            "lag_hours": 0,
+            "gust_mph": 2.0,
+            "idx_line": "11:14293606:d=2026053006:GUST:surface:33 hour fcst:ENS=+1"
+          },
+          {
             "member": "RRFS-1-6",
             "model": "rrfsens",
             "source_fxx": 39,
             "lag_hours": 6,
             "gust_mph": 1.8,
             "idx_line": "11:14226661:d=2026053000:GUST:surface:39 hour fcst:ENS=+1"
+          },
+          {
+            "member": "RRFS-2",
+            "model": "rrfsens",
+            "source_fxx": 33,
+            "lag_hours": 0,
+            "gust_mph": 3.8,
+            "idx_line": "11:14039382:d=2026053006:GUST:surface:33 hour fcst:ENS=+2"
           },
           {
             "member": "RRFS-2-6",
@@ -4552,6 +6025,14 @@
             "idx_line": "11:14037577:d=2026053000:GUST:surface:39 hour fcst:ENS=+2"
           },
           {
+            "member": "RRFS-3",
+            "model": "rrfsens",
+            "source_fxx": 33,
+            "lag_hours": 0,
+            "gust_mph": 2.5,
+            "idx_line": "11:13741770:d=2026053006:GUST:surface:33 hour fcst:ENS=+3"
+          },
+          {
             "member": "RRFS-3-6",
             "model": "rrfsens",
             "source_fxx": 39,
@@ -4560,12 +6041,28 @@
             "idx_line": "11:14264406:d=2026053000:GUST:surface:39 hour fcst:ENS=+3"
           },
           {
+            "member": "RRFS-4",
+            "model": "rrfsens",
+            "source_fxx": 33,
+            "lag_hours": 0,
+            "gust_mph": 2.0,
+            "idx_line": "11:13654313:d=2026053006:GUST:surface:33 hour fcst:ENS=+4"
+          },
+          {
             "member": "RRFS-4-6",
             "model": "rrfsens",
             "source_fxx": 39,
             "lag_hours": 6,
             "gust_mph": 3.1,
             "idx_line": "11:13660371:d=2026053000:GUST:surface:39 hour fcst:ENS=+4"
+          },
+          {
+            "member": "RRFS-5",
+            "model": "rrfsens",
+            "source_fxx": 33,
+            "lag_hours": 0,
+            "gust_mph": 5.4,
+            "idx_line": "11:13850914:d=2026053006:GUST:surface:33 hour fcst:ENS=+5"
           },
           {
             "member": "RRFS-5-6",
@@ -4589,11 +6086,11 @@
             "fxx": 31,
             "valid_utc": "2026-05-31T13:00:00Z",
             "label": "gust",
-            "value": 3.1,
+            "value": 3.6,
             "unit": "mph",
-            "gust_max_mph": 3.1,
-            "gust_mean_mph": 2.3,
-            "member_count": 9,
+            "gust_max_mph": 3.6,
+            "gust_mean_mph": 2.2,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4605,8 +6102,8 @@
             "value": 3.4,
             "unit": "mph",
             "gust_max_mph": 3.4,
-            "gust_mean_mph": 1.8,
-            "member_count": 9,
+            "gust_mean_mph": 1.6,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4618,8 +6115,8 @@
             "value": 6.5,
             "unit": "mph",
             "gust_max_mph": 6.5,
-            "gust_mean_mph": 2.9,
-            "member_count": 9,
+            "gust_mean_mph": 3.0,
+            "member_count": 14,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4638,7 +6135,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4658,7 +6155,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4678,7 +6175,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4698,7 +6195,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4718,7 +6215,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4738,7 +6235,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4758,7 +6255,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T13:00:00Z",
@@ -4879,8 +6376,8 @@
             "value": 7.0,
             "unit": "mph",
             "gust_max_mph": 7.0,
-            "gust_mean_mph": 4.5,
-            "member_count": 9,
+            "gust_mean_mph": 4.7,
+            "member_count": 12,
             "prob": 0.0,
             "risk": 0,
             "metric": "No signal"
@@ -4925,7 +6422,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -4945,7 +6442,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -4965,7 +6462,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -4985,7 +6482,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -5005,7 +6502,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -5025,7 +6522,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -5045,7 +6542,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T16:00:00Z",
@@ -5212,7 +6709,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5232,7 +6729,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5252,7 +6749,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5272,7 +6769,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5292,7 +6789,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5312,7 +6809,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5332,7 +6829,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T19:00:00Z",
@@ -5499,7 +6996,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5519,7 +7016,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5539,7 +7036,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5559,7 +7056,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5579,7 +7076,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5599,7 +7096,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5619,7 +7116,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-05-31T22:00:00Z",
@@ -5778,7 +7275,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5798,7 +7295,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5818,7 +7315,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5838,7 +7335,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5858,7 +7355,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5878,7 +7375,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -5898,7 +7395,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T01:00:00Z",
@@ -6057,7 +7554,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6077,7 +7574,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6097,7 +7594,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6117,7 +7614,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6137,7 +7634,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6157,7 +7654,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6177,7 +7674,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T04:00:00Z",
@@ -6328,7 +7825,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6348,7 +7845,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6368,7 +7865,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6388,7 +7885,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6408,7 +7905,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6428,7 +7925,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6448,7 +7945,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T07:00:00Z",
@@ -6599,7 +8096,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6619,7 +8116,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6639,7 +8136,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6659,7 +8156,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6679,7 +8176,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6699,7 +8196,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6719,7 +8216,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T10:00:00Z",
@@ -6830,7 +8327,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6850,7 +8347,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6870,7 +8367,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6890,7 +8387,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6910,7 +8407,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6930,7 +8427,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -6950,7 +8447,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T13:00:00Z",
@@ -7061,7 +8558,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 120 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 144 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7081,7 +8578,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 61 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 83 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7101,7 +8598,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 40 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 48 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7121,7 +8618,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 20 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 24 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7141,7 +8638,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 250 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 321 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7161,7 +8658,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 79 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 106 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
@@ -7181,7 +8678,7 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "No signal",
-        "driver": "REFS field-map found 90 candidate IDX lines; no exact extracted point value was available",
+        "driver": "REFS field-map found 108 candidate IDX lines; no exact extracted point value was available",
         "source_fxx": null,
         "peak_valid_utc": null,
         "valid_start_utc": "2026-06-01T16:00:00Z",
