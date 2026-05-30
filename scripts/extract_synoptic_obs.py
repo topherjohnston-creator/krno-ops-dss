@@ -61,21 +61,25 @@ def recent_ob_value(
 
 
 def get_ob_time(observations: dict[str, Any]) -> str | None:
-    """Return a reliable timestamp from the most relevant current observations."""
+    """Return the newest timestamp from the live Synoptic observation fields."""
     preferred_keys = [
-        "air_temp_value_1",
         "wind_speed_value_1",
         "wind_direction_value_1",
+        "air_temp_value_1",
+        "dew_point_temperature_value_1d",
+        "relative_humidity_value_1",
         "visibility_value_1",
         "metar_value_1",
-        "relative_humidity_value_1",
-        "dew_point_temperature_value_1d",
     ]
 
+    times: list[str] = []
     for key in preferred_keys:
         value = observations.get(key)
         if isinstance(value, dict) and "date_time" in value:
-            return value["date_time"]
+            times.append(value["date_time"])
+
+    if times:
+        return max(times, key=iso_timestamp)
 
     for value in observations.values():
         if isinstance(value, dict) and "date_time" in value:
@@ -179,10 +183,25 @@ def build_error_obs(message: str, raw: dict[str, Any] | None = None) -> dict[str
 
 def fetch_synoptic_latest(token: str) -> dict[str, Any]:
     params = {
-        "radius": f"{KRNO_LAT},{KRNO_LON},10",
+        "stid": SITE,
         "token": token,
         "units": "english",
         "output": "json",
+        "vars": ",".join(
+            [
+                "air_temp",
+                "dew_point_temperature",
+                "relative_humidity",
+                "wind_speed",
+                "wind_direction",
+                "wind_gust",
+                "visibility",
+                "metar",
+                "weather_condition",
+                "weather_summary",
+                "precip_accum_one_hour",
+            ]
+        ),
     }
 
     response = requests.get(API_URL, params=params, timeout=30)
@@ -250,38 +269,21 @@ def merge_awc_if_newer(synoptic_obs: dict[str, Any], awc_obs: dict[str, Any] | N
         return synoptic_obs
     if synoptic_obs.get("status") != "ok":
         return awc_obs
-    if iso_timestamp(awc_obs.get("observed_utc")) <= iso_timestamp(synoptic_obs.get("observed_utc")):
-        return synoptic_obs
 
     merged = dict(synoptic_obs)
     synoptic_raw = synoptic_obs.get("raw", {})
     merged.update({
-        "source": "Synoptic API + Aviation Weather Center METAR API",
+        "source": "Synoptic API",
         "generated_utc": utc_now(),
-        "status": "ok",
-        "station": awc_obs.get("station") or synoptic_obs.get("station"),
-        "name": awc_obs.get("name") or synoptic_obs.get("name"),
-        "latitude": awc_obs.get("latitude") or synoptic_obs.get("latitude"),
-        "longitude": awc_obs.get("longitude") or synoptic_obs.get("longitude"),
-        "elevation_ft": awc_obs.get("elevation_ft") or synoptic_obs.get("elevation_ft"),
-        "observed_utc": awc_obs.get("observed_utc"),
-        "wind_dir_deg": awc_obs.get("wind_dir_deg"),
-        "wind_speed_kt": awc_obs.get("wind_speed_kt"),
-        "wind_gust_kt": awc_obs.get("wind_gust_kt"),
-        "wind_speed_mph": awc_obs.get("wind_speed_mph"),
-        "wind_gust_mph": awc_obs.get("wind_gust_mph"),
-        "visibility_sm": awc_obs.get("visibility_sm"),
-        "temperature_f": awc_obs.get("temperature_f"),
-        "dewpoint_f": awc_obs.get("dewpoint_f"),
-        "relative_humidity": awc_obs.get("relative_humidity"),
-        "metar": awc_obs.get("metar"),
+        "awc_metar": awc_obs.get("metar"),
+        "awc_observed_utc": awc_obs.get("observed_utc"),
         "raw": {
             "synoptic": synoptic_raw,
             "awc": awc_obs.get("raw", {}).get("awc"),
         },
     })
-    if awc_obs.get("precip_1hr_in") is not None:
-        merged["precip_1hr_in"] = awc_obs.get("precip_1hr_in")
+    if not merged.get("metar") and awc_obs.get("metar"):
+        merged["metar"] = awc_obs.get("metar")
     return merged
 
 
@@ -303,7 +305,7 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
 
     observations = station.get("OBSERVATIONS", {})
     observed_utc = get_ob_time(observations)
-    wind_speed_mph = get_ob_value(observations, ["wind_speed"])
+    wind_speed_mph = recent_ob_value(observations, ["wind_speed"], observed_utc, 20)
     wind_gust_mph = recent_ob_value(observations, ["wind_gust"], observed_utc, 15)
 
     obs = {
@@ -317,15 +319,15 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         "longitude": station.get("LONGITUDE"),
         "elevation_ft": station.get("ELEVATION"),
         "observed_utc": observed_utc,
-        "wind_dir_deg": get_ob_value(observations, ["wind_direction"]),
+        "wind_dir_deg": recent_ob_value(observations, ["wind_direction"], observed_utc, 20),
         "wind_speed_kt": mph_to_kt(wind_speed_mph),
         "wind_gust_kt": mph_to_kt(wind_gust_mph),
         "wind_speed_mph": wind_speed_mph,
         "wind_gust_mph": wind_gust_mph,
-        "visibility_sm": get_ob_value(observations, ["visibility"]),
-        "temperature_f": get_ob_value(observations, ["air_temp"]),
-        "dewpoint_f": get_ob_value(observations, ["dew_point_temperature"]),
-        "relative_humidity": get_ob_value(observations, ["relative_humidity"]),
+        "visibility_sm": recent_ob_value(observations, ["visibility"], observed_utc, 20),
+        "temperature_f": recent_ob_value(observations, ["air_temp"], observed_utc, 20),
+        "dewpoint_f": recent_ob_value(observations, ["dew_point_temperature"], observed_utc, 20),
+        "relative_humidity": recent_ob_value(observations, ["relative_humidity"], observed_utc, 20),
         "precip_1hr_in": recent_ob_value(
             observations,
             [

@@ -788,30 +788,10 @@
       z-index: 2;
     }
 
-    .range-ring.r10 { height: 30%; aspect-ratio: 1; }
-    .range-ring.r15 { height: 45%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.42); }
-    .range-ring.r20 { height: 60%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.35); }
-    .range-ring.r25 { height: 75%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.28); }
-
-    .range-spoke {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 1px;
-      height: 31%;
-      transform-origin: 50% 0;
-      background: rgba(235, 244, 255, 0.24);
-      z-index: 2;
-    }
-
-    .range-spoke.s0 { rotate: 0deg; }
-    .range-spoke.s45 { rotate: 45deg; }
-    .range-spoke.s90 { rotate: 90deg; }
-    .range-spoke.s135 { rotate: 135deg; }
-    .range-spoke.s180 { rotate: 180deg; }
-    .range-spoke.s225 { rotate: 225deg; }
-    .range-spoke.s270 { rotate: 270deg; }
-    .range-spoke.s315 { rotate: 315deg; }
+    .range-ring.r10 { height: 33.333%; aspect-ratio: 1; }
+    .range-ring.r15 { height: 50%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.42); }
+    .range-ring.r20 { height: 66.667%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.35); }
+    .range-ring.r25 { height: 83.333%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.28); }
 
     .lightning-dot {
       position: absolute;
@@ -1325,14 +1305,6 @@
             <div class="range-ring r15"></div>
             <div class="range-ring r20"></div>
             <div class="range-ring r25"></div>
-            <div class="range-spoke s0"></div>
-            <div class="range-spoke s45"></div>
-            <div class="range-spoke s90"></div>
-            <div class="range-spoke s135"></div>
-            <div class="range-spoke s180"></div>
-            <div class="range-spoke s225"></div>
-            <div class="range-spoke s270"></div>
-            <div class="range-spoke s315"></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
             <div class="map-label radar-time" id="radar-time">Scan --</div>
             <div class="map-label lightning-clear" id="map-lightning-status">No lightning within 25 nm</div>
@@ -1429,7 +1401,7 @@
       { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
       { ageMinutes: 0, layer: "nexrad-n0q-900913" }
     ];
-    const radarBbox = "-120.55,38.95,-118.99,40.05";
+    const radarBbox = "-120.913358,38.9991,-118.622842,39.9991";
     const radarWidth = "760";
     const radarHeight = "430";
     const mockRows = {
@@ -2845,7 +2817,7 @@
       }
       const distance = Math.min(25, Math.max(0, Number(strike.distance_nm)));
       const bearing = Number(strike.bearing_degrees) * Math.PI / 180;
-      const radiusPct = 30 * (distance / 25);
+      const radiusPct = 41.666 * (distance / 25);
       const left = 50 + Math.sin(bearing) * radiusPct;
       const top = 50 - Math.cos(bearing) * radiusPct;
       dot.style.left = `${left}%`;
