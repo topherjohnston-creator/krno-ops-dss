@@ -66,8 +66,7 @@ NATIVE_WINDOWS = {
         {"start_fxx": 54, "end_fxx": 72, "window_hours": 6, "source": "NBM 6-hour snow amount/probability"},
     ],
     "LIGHTNING": [
-        {"start_fxx": 1, "end_fxx": 36, "window_hours": 1, "source": "NBM 1-hour thunder probability"},
-        {"start_fxx": 39, "end_fxx": 72, "window_hours": 3, "source": "NBM 3-hour thunder probability"},
+        {"start_fxx": 1, "end_fxx": 72, "window_hours": 3, "source": "NBM 3-hour thunder probability"},
     ],
     "VISIBILITY": [
         {"start_fxx": 1, "end_fxx": 36, "window_hours": 1, "source": "NBM hourly visibility probabilities"},
@@ -222,6 +221,12 @@ def select_core_wind_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dic
 
 def one_hour_accum_window(fxx: int) -> str:
     return f":{max(0, fxx - 1)}-{fxx} hour acc fcst:"
+
+
+def three_hour_accum_window(fxx: int) -> str | None:
+    if fxx < 3 or fxx % 3 != 0:
+        return None
+    return f":{fxx - 3}-{fxx} hour acc fcst:"
 
 
 def six_hour_accum_window(fxx: int) -> str:
@@ -606,9 +611,8 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
     grib_url = aws_grib_url(cycle, "core", fxx)
     rows = get_core_rows(cycle, fxx)
     one_hr = one_hour_accum_window(fxx)
-    three_hr = f":{max(0, fxx - 3)}-{fxx} hour acc fcst:"
+    three_hr = three_hour_accum_window(fxx)
     six_hr = six_hour_accum_window(fxx)
-    tstm_window = one_hr if fxx <= 36 else three_hr
 
     selectors = {
         "rain": select_first_row(rows, lambda line: ":APCP:surface:" in line and one_hr in line and is_deterministic(line)),
@@ -623,7 +627,7 @@ def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str,
         "fzra_prob_trace": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >0.254" in line),
         "fzra_prob_0p1": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and "prob >2.54" in line),
         "fzra_prob_0p2": select_first_row(rows, lambda line: ":FICEAC:surface:" in line and (one_hr in line or six_hr in line) and ("prob >5.08" in line or "prob >6.35" in line)),
-        "tstm": select_first_row(rows, lambda line: ":TSTM:surface:" in line and tstm_window in line and "probability forecast" in line),
+        "tstm": select_first_row(rows, lambda line: bool(three_hr) and ":TSTM:surface:" in line and three_hr in line and "probability forecast" in line),
         "temp": select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
         "vis": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and is_deterministic(line)),
         "vis_lt1": select_first_row(rows, lambda line: ":VIS:surface:" in line and f":{fxx} hour fcst:" in line and "prob <1609.34" in line),
@@ -813,12 +817,13 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                     "value": round(float(src.get("tstm", 0.0) or 0.0), 1),
                     "unit": "%",
                     "label": "prob",
-                    "window_hours": 1 if int(src["fxx"]) <= 36 else 3,
+                    "window_hours": 3,
                 }
                 for src in block_rows
+                if "tstm" in src
             ],
             source,
-            "NBM core thunder probability at KRNO",
+            "NBM core 3-hour thunder probability at KRNO",
         )
 
         vis_mi = float(row.get("vis", 16093.4) or 16093.4) * M_TO_MI
@@ -942,7 +947,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             key,
         )
 
-    update_threat_from_blocks(threats_payload, timeline, "LIGHTNING", "Peak thunder probability", "", "Peak thunder probability", "NBM core thunder probability at KRNO", source, "probability")
+    update_threat_from_blocks(threats_payload, timeline, "LIGHTNING", "Peak 3-hour thunder probability", "", "Peak 3-hour thunder probability", "NBM core 3-hour thunder probability at KRNO", source, "probability")
     update_threat_from_blocks(threats_payload, timeline, "VISIBILITY", "Lowest visibility", "", "Lowest visibility", "NBM core visibility at KRNO", source, "visibility_mi", lower_is_worse=True)
     update_threat_from_blocks(threats_payload, timeline, "FLASH_FREEZE", "Lowest temperature", "", "Temperature/wet-surface freeze risk", "NBM core temperature and precipitation proxy at KRNO", source, "temp_f", lower_is_worse=True)
 
