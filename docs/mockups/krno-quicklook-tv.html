@@ -2277,6 +2277,8 @@
 
     function cloudFromMetar(raw) {
       if (!raw) return "Not reported";
+      if (/\bCLR\b/.test(raw)) return "CLR";
+      if (/\bSKC\b/.test(raw)) return "SKC";
       const clouds = raw.split(/\s+/).filter(part => /^(FEW|SCT|BKN|OVC|VV)\d{3}/.test(part));
       return clouds.length ? clouds.join(" / ") : "Not reported";
     }
