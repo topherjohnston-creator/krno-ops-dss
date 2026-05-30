@@ -1494,6 +1494,7 @@
     };
     let currentPrimaryItem = null;
     let latestObsMs = 0;
+    let latestForecastTimeline = null;
     let latestTimelineBlocks = [];
     let radarCacheBust = Date.now();
     let radarFrameIndex = 0;
@@ -1787,6 +1788,14 @@
 
     function confidenceLine(confidence) {
       return ["Confidence", confidence?.label || "Medium", confidenceColors[confidence?.label] || confidenceColors.Medium];
+    }
+
+    function refreshConfidenceDisplays() {
+      if (latestForecastTimeline) {
+        latestForecastConfidence = forecastConfidence(latestForecastTimeline);
+      }
+      updateDataSummary();
+      if (currentPrimaryItem) updatePrimaryConcern(currentPrimaryItem);
     }
 
     function setValueColor(id, html, color) {
@@ -2597,7 +2606,7 @@
         lines: [
           ["Model", latestModelSummary],
           ["Build", latestBuildSummary],
-          ["Confidence", latestForecastConfidence.label, confidenceColors[latestForecastConfidence.label] || confidenceColors.Medium],
+          ["Data Confidence", latestForecastConfidence.label, confidenceColors[latestForecastConfidence.label] || confidenceColors.Medium],
           ["Basis", latestForecastConfidence.reason],
           ["Timeline", "3-hour block risk"],
           ["Hazards", "72-hr summary"]
@@ -2650,8 +2659,8 @@
         ],
         risk: state === "Stale" ? "Major" : state === "Aging" ? "Minor" : "Little to None"
       });
-      updateDataSummary({ obs: `Obs ${state}` });
-      if (currentPrimaryItem) updatePrimaryConcern(currentPrimaryItem);
+      latestObsSummary = `Obs ${state}`;
+      refreshConfidenceDisplays();
     }
 
     async function fetchJson(path) {
@@ -3508,6 +3517,7 @@
         if (timeline.cycle) {
           document.getElementById("model-cycle").textContent = timeline.cycle;
         }
+        latestForecastTimeline = timeline;
         latestForecastConfidence = forecastConfidence(timeline);
         updateDataSummary({
           model: timeline.cycle || "NBM",
