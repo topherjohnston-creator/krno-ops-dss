@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RNO Wx DSS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     :root {
       color-scheme: dark;
@@ -744,13 +745,35 @@
         #182536;
     }
 
-    .radar-map img {
+    .radar-basemap,
+    .radar-reflectivity {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       display: block;
       object-fit: fill;
+    }
+
+    .radar-map.leaflet-container {
+      background: #121a25;
+      font-family: var(--font);
+    }
+
+    .radar-map.leaflet-ready > .radar-basemap,
+    .radar-map.leaflet-ready > .radar-reflectivity,
+    .radar-map.leaflet-ready > .range-ring,
+    .radar-map.leaflet-ready > .city-marker,
+    .radar-map.leaflet-ready > .map-label.range {
+      display: none;
+    }
+
+    .radar-map .leaflet-control-container {
+      display: none;
+    }
+
+    .radar-map .leaflet-tile {
+      filter: saturate(0.86) contrast(1.08) brightness(0.82);
     }
 
     .radar-basemap {
@@ -814,7 +837,7 @@
 
     .map-label {
       position: absolute;
-      z-index: 5;
+      z-index: 800;
       padding: 3px 7px;
       border-radius: 999px;
       background: rgba(18, 27, 39, 0.78);
@@ -861,6 +884,42 @@
       border-radius: 50%;
       background: rgba(231, 237, 245, 0.88);
       box-shadow: 0 0 0 2px rgba(10, 16, 24, 0.62);
+    }
+
+    .quicklook-city-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: max-content !important;
+      height: auto !important;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(18, 27, 39, 0.72);
+      color: rgba(231, 237, 245, 0.88);
+      font-size: 11px;
+      font-weight: 620;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+    }
+
+    .quicklook-city-label::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(231, 237, 245, 0.88);
+      box-shadow: 0 0 0 2px rgba(10, 16, 24, 0.62);
+    }
+
+    .quicklook-lightning-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #ff4b22;
+      box-shadow: 0 0 0 4px rgba(14, 20, 29, 0.72), 0 0 19px rgba(255, 75, 34, 0.9);
     }
 
     .map-label.radar-time {
@@ -1376,6 +1435,7 @@
   </div>
   <div class="timeline-tooltip" id="timeline-tooltip" role="tooltip" hidden></div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const forecastCategories = ["Little to None", "Minor", "Moderate", "Major", "Extreme"];
     const riskRank = {
@@ -1442,10 +1502,22 @@
     let radarHeight = 430;
     let radarAspect = radarWidth / radarHeight;
     let radarBounds = null;
+    let quicklookMap = null;
+    let quicklookRadarLayer = null;
+    let quicklookLightningLayer = null;
+    let quicklookMapReady = false;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
     const radarHalfSpanNm = 30;
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
+    const decisionRadiiNm = [10, 15, 20, 25];
+    const mapCityMarkers = [
+      { name: "Truckee", lat: 39.32796, lon: -120.18325 },
+      { name: "Carson City", lat: 39.16380, lon: -119.76740 },
+      { name: "Fernley", lat: 39.60797, lon: -119.25183 },
+      { name: "Incline Village", lat: 39.24970, lon: -119.95270 },
+      { name: "Fallon", lat: 39.47353, lon: -118.77737 }
+    ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
       { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
@@ -3031,6 +3103,84 @@
       if (loadedPrimaryObs && obsAgeMinutes(primaryObs?.observed_utc || primaryObs?.generated_utc) <= 8) return;
     }
 
+    function destinationPoint(lat, lon, distanceNm, bearingDegrees) {
+      const radiusMeters = 6371008.8;
+      const distance = Number(distanceNm) * metersPerNm;
+      const bearing = Number(bearingDegrees) * Math.PI / 180;
+      const phi1 = Number(lat) * Math.PI / 180;
+      const lambda1 = Number(lon) * Math.PI / 180;
+      const angular = distance / radiusMeters;
+      const phi2 = Math.asin(Math.sin(phi1) * Math.cos(angular) + Math.cos(phi1) * Math.sin(angular) * Math.cos(bearing));
+      const lambda2 = lambda1 + Math.atan2(
+        Math.sin(bearing) * Math.sin(angular) * Math.cos(phi1),
+        Math.cos(angular) - Math.sin(phi1) * Math.sin(phi2)
+      );
+      return {
+        lat: phi2 * 180 / Math.PI,
+        lon: ((lambda2 * 180 / Math.PI + 540) % 360) - 180
+      };
+    }
+
+    function initQuicklookMap() {
+      if (quicklookMapReady || !window.L) return Boolean(quicklookMap);
+      const mapEl = document.getElementById("radar-map");
+      if (!mapEl) return false;
+      mapEl.classList.add("leaflet-ready");
+      quicklookMap = L.map(mapEl, {
+        center: [krnoPoint.lat, krnoPoint.lon],
+        zoom: 9,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        tap: false
+      });
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 16
+      }).addTo(quicklookMap);
+      decisionRadiiNm.forEach(limit => {
+        L.circle([krnoPoint.lat, krnoPoint.lon], {
+          radius: limit * metersPerNm,
+          color: "rgba(235,244,255,0.62)",
+          weight: limit === 10 ? 2 : 1,
+          opacity: 0.78,
+          fill: false,
+          interactive: false
+        }).addTo(quicklookMap);
+      });
+      mapCityMarkers.forEach(city => {
+        L.marker([city.lat, city.lon], {
+          interactive: false,
+          icon: L.divIcon({
+            className: "quicklook-city-label",
+            html: escapeHtml(city.name),
+            iconSize: null
+          })
+        }).addTo(quicklookMap);
+      });
+      quicklookMap.fitBounds([
+        [39.08, -120.24],
+        [39.68, -118.74]
+      ], { padding: [8, 8], animate: false });
+      quicklookMapReady = true;
+      return true;
+    }
+
+    function setQuicklookRadarLayer(frame = radarFrames[radarFrameIndex]) {
+      if (!quicklookMap) return;
+      if (quicklookRadarLayer) quicklookMap.removeLayer(quicklookRadarLayer);
+      quicklookRadarLayer = L.tileLayer.wms("https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi", {
+        layers: frame.layer,
+        format: "image/png",
+        transparent: true,
+        opacity: 0.78,
+        version: "1.1.1"
+      }).addTo(quicklookMap);
+    }
+
     function radarMapDimensions() {
       const map = document.getElementById("radar-map");
       return {
@@ -3175,6 +3325,7 @@
     }
 
     function preloadRadarFrames() {
+      if (quicklookMap) return;
       radarFrames.forEach(frame => {
         const image = new Image();
         image.src = radarImageUrl(frame);
@@ -3182,9 +3333,14 @@
     }
 
     function renderRadarFrame() {
+      const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
+      if (initQuicklookMap()) {
+        setQuicklookRadarLayer(frame);
+        updateRadarFrameInfo(frame);
+        return;
+      }
       const image = document.getElementById("radar-img");
       if (!image) return;
-      const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
       image.src = radarImageUrl(frame);
       image.dataset.ageMinutes = String(frame.ageMinutes);
       updateRadarFrameInfo(frame);
@@ -3197,6 +3353,13 @@
 
     function refreshRadarImage() {
       radarCacheBust = Date.now();
+      if (initQuicklookMap()) {
+        const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
+        setQuicklookRadarLayer(frame);
+        updateRadarFrameInfo(frame);
+        quicklookMap.invalidateSize();
+        return;
+      }
       syncRadarGeometry();
       const basemap = document.getElementById("radar-basemap");
       if (basemap) basemap.src = radarBasemapUrl();
@@ -3224,6 +3387,36 @@
 
     function placeLightningDot(strike) {
       const dot = document.getElementById("lightning-dot");
+      if (quicklookMap && window.L) {
+        if (quicklookLightningLayer) {
+          quicklookMap.removeLayer(quicklookLightningLayer);
+          quicklookLightningLayer = null;
+        }
+        if (!strike) {
+          if (dot) dot.hidden = true;
+          return;
+        }
+        let lightningPoint = null;
+        if (Number.isFinite(Number(strike.lat)) && Number.isFinite(Number(strike.lon))) {
+          lightningPoint = { lat: Number(strike.lat), lon: Number(strike.lon) };
+        } else if (Number.isFinite(Number(strike.distance_nm)) && Number.isFinite(Number(strike.bearing_degrees))) {
+          lightningPoint = destinationPoint(krnoPoint.lat, krnoPoint.lon, Number(strike.distance_nm), Number(strike.bearing_degrees));
+        }
+        if (!lightningPoint) {
+          if (dot) dot.hidden = true;
+          return;
+        }
+        quicklookLightningLayer = L.marker([lightningPoint.lat, lightningPoint.lon], {
+          interactive: false,
+          icon: L.divIcon({
+            className: "quicklook-lightning-dot",
+            html: "",
+            iconSize: [13, 13]
+          })
+        }).addTo(quicklookMap);
+        if (dot) dot.hidden = true;
+        return;
+      }
       if (!dot) return;
       if (!strike) {
         dot.hidden = true;
