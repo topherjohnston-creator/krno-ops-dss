@@ -3,18 +3,14 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 12Z",
-<<<<<<< Updated upstream
-  "generated_utc": "2026-05-30T17:38:49Z",
-=======
-  "generated_utc": "2026-05-30T17:41:45Z",
->>>>>>> Stashed changes
-  "cycle_utc_iso": "2026-05-30T12:00:00Z",
-  "cycle": "NBM 12Z",
+  "source": "NOAA NBM core AWS 18Z",
+  "generated_utc": "2026-05-30T18:48:08Z",
+  "cycle_utc_iso": "2026-05-30T18:00:00Z",
+  "cycle": "NBM 18Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-05-30T12:00:00Z",
-    "end_utc": "2026-06-02T12:00:00Z"
+    "start_utc": "2026-05-30T18:00:00Z",
+    "end_utc": "2026-06-02T18:00:00Z"
   },
   "threats": {
     "WIND": {
@@ -57,7 +53,7 @@
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-05-30T12:00:00Z",
+      "source_cycle_utc_iso": "2026-05-30T18:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
@@ -80,8 +76,8 @@
       "id": "LIGHTNING",
       "title": "Lightning",
       "name": "Lightning",
-      "prob": 7.0,
-      "probability": 7.0,
+      "prob": 8.0,
+      "probability": 8.0,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
@@ -89,12 +85,12 @@
       "impact_level": 2,
       "metric": "Peak 3-hour thunder probability",
       "display_label": "Peak 3-hour thunder probability",
-      "display_value": "Thunder 7%",
+      "display_value": "Thunder 8%",
       "window": "72 hr",
-      "peak_start_fxx": 10,
-      "peak_end_fxx": 12,
-      "source_fxx": 12,
-      "peak_valid_utc": "2026-05-31T00:00:00Z",
+      "peak_start_fxx": 28,
+      "peak_end_fxx": 30,
+      "source_fxx": 30,
+      "peak_valid_utc": "2026-06-01T00:00:00Z",
       "driver": "NBM core 3-hour thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -109,7 +105,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_lightning_probability_threshold_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "SNOW": {
       "id": "SNOW",
@@ -129,7 +125,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-30T15:00:00Z",
+      "peak_valid_utc": "2026-05-30T21:00:00Z",
       "driver": "NBM core snow amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -150,7 +146,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
@@ -170,7 +166,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-30T15:00:00Z",
+      "peak_valid_utc": "2026-05-30T21:00:00Z",
       "driver": "NBM core visibility at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -191,7 +187,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FZRA": {
       "id": "FZRA",
@@ -211,7 +207,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-30T15:00:00Z",
+      "peak_valid_utc": "2026-05-30T21:00:00Z",
       "driver": "NBM core fzra amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -232,7 +228,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
@@ -249,9 +245,9 @@
       "display_label": "Lowest temperature",
       "display_value": "Temp 48\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 22,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
+      "peak_start_fxx": 16,
+      "peak_end_fxx": 18,
+      "source_fxx": 18,
       "peak_valid_utc": "2026-05-31T12:00:00Z",
       "driver": "NBM core temperature and precipitation proxy at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
@@ -273,7 +269,7 @@
       ],
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_core_wet_surface_proxy",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "RAIN": {
       "id": "RAIN",
@@ -525,9 +521,9 @@
       "display_label": "24-hr max/min",
       "display_value": "71/48\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 24,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
+      "peak_start_fxx": 18,
+      "peak_end_fxx": 18,
+      "source_fxx": 18,
       "peak_valid_utc": "2026-05-31T12:00:00Z",
       "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
       "methodology": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
@@ -549,7 +545,7 @@
       ],
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_core_24hr_max_min",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     }
   },
   "hazards": [
@@ -562,7 +558,7 @@
     {
       "id": "LIGHTNING",
       "risk": 2,
-      "probability": 7.0,
+      "probability": 8.0,
       "level": 2
     },
     {
