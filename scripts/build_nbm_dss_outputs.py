@@ -354,6 +354,8 @@ def matrix_probability_risk(values: dict[str, float], thresholds: list[tuple[str
     risk = 1
     for key, impact_level in thresholds:
         prob = float(values.get(key, 0.0) or 0.0)
+        if prob <= 0:
+            continue
         risk = max(risk, risk_from_matrix(impact_level, prob))
     return risk
 
