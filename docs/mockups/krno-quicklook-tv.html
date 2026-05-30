@@ -1707,7 +1707,7 @@
 
     function obsConfidence() {
       const age = latestObsMs ? (Date.now() - latestObsMs) / 60000 : Infinity;
-      if (age <= 10) return { label: "High", reason: "observations are fresh" };
+      if (age <= 15) return { label: "High", reason: "observations are fresh" };
       if (age <= 30) return { label: "Medium", reason: "observations are aging" };
       return { label: "Low", reason: "observations are stale" };
     }
