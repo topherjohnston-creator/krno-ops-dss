@@ -813,8 +813,6 @@
     .range-spoke.s270 { rotate: 270deg; }
     .range-spoke.s315 { rotate: 315deg; }
 
-    .airport-dot,
-    .radar-site-dot,
     .lightning-dot {
       position: absolute;
       width: 11px;
@@ -823,21 +821,6 @@
       border-radius: 50%;
       z-index: 4;
       box-shadow: 0 0 0 3px rgba(14, 20, 29, 0.7), 0 0 18px rgba(79, 195, 255, 0.58);
-    }
-
-    .airport-dot {
-      left: 50%;
-      top: 50%;
-      background: var(--broadcast-cyan);
-    }
-
-    .radar-site-dot {
-      left: 62%;
-      top: 37%;
-      width: 9px;
-      height: 9px;
-      background: #f8d54a;
-      box-shadow: 0 0 0 3px rgba(14, 20, 29, 0.72), 0 0 16px rgba(248, 213, 74, 0.72);
     }
 
     .lightning-dot {
@@ -860,17 +843,6 @@
       font-weight: 620;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-    }
-
-    .map-label.krno {
-      left: calc(50% + 10px);
-      top: calc(50% - 27px);
-    }
-
-    .map-label.krgx {
-      left: calc(62% + 9px);
-      top: calc(37% - 25px);
-      color: #f6e28a;
     }
 
     .map-label.source {
@@ -1361,11 +1333,7 @@
             <div class="range-spoke s225"></div>
             <div class="range-spoke s270"></div>
             <div class="range-spoke s315"></div>
-            <div class="airport-dot"></div>
-            <div class="radar-site-dot"></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
-            <div class="map-label krno">KRNO</div>
-            <div class="map-label krgx">KRGX</div>
             <div class="map-label radar-time" id="radar-time">Scan --</div>
             <div class="map-label lightning-clear" id="map-lightning-status">No lightning within 25 nm</div>
             <div class="map-label source">IEM N0Q Loop</div>
@@ -1461,7 +1429,7 @@
       { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
       { ageMinutes: 0, layer: "nexrad-n0q-900913" }
     ];
-    const radarBbox = "-121.064,38.499,-118.472,40.499";
+    const radarBbox = "-120.55,38.95,-118.99,40.05";
     const radarWidth = "760";
     const radarHeight = "430";
     const mockRows = {
@@ -1593,8 +1561,25 @@
       return match ? Number(match[0]) : null;
     }
 
+    function metricNumberFor(source, value, label = "") {
+      const text = String(value ?? "");
+      const precip = text.match(/(-?\d+(?:\.\d+)?)\s*(?:"|in\b)/i);
+      const wind = text.match(/(-?\d+(?:\.\d+)?)\s*mph\b/i);
+      const lightning = text.match(/(-?\d+(?:\.\d+)?)\s*%/);
+      const visibility = text.match(/(-?\d+(?:\.\d+)?)\s*(?:mi|sm)\b/i);
+      const temp = text.match(/(-?\d+(?:\.\d+)?)\s*(?:degF|°F|F)\b/i);
+      if (source === "RAIN" || source === "SNOW" || source === "FZRA" || /rain|snow|freezing rain|fzra/i.test(label)) {
+        return precip ? Number(precip[1]) : numberFromText(text);
+      }
+      if (source === "WIND" || /gust|wind/i.test(label)) return wind ? Number(wind[1]) : numberFromText(text);
+      if (source === "LIGHTNING" || /thunder|probability|chance/i.test(label)) return lightning ? Number(lightning[1]) : numberFromText(text);
+      if (source === "VISIBILITY" || /visibility/i.test(label)) return visibility ? Number(visibility[1]) : numberFromText(text);
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return temp ? Number(temp[1]) : numberFromText(text);
+      return numberFromText(text);
+    }
+
     function metricColorFor(source, value, label = "") {
-      const numeric = numberFromText(value);
+      const numeric = metricNumberFor(source, value, label);
       if (source === "WIND" || /gust|wind/i.test(label)) return windColor(numeric);
       if (source === "LIGHTNING" || /thunder|probability|chance/i.test(label)) return lightningColor(numeric);
       if (source === "VISIBILITY" || /visibility/i.test(label)) return visibilityColor(numeric);
@@ -2267,7 +2252,7 @@
     }
 
     function cloudFromMetar(raw) {
-      if (!raw) return "BKN023 / BKN055";
+      if (!raw) return "Not reported";
       const clouds = raw.split(/\s+/).filter(part => /^(FEW|SCT|BKN|OVC|VV)\d{3}/.test(part));
       return clouds.length ? clouds.join(" / ") : "Not reported";
     }
@@ -2335,6 +2320,26 @@
       if (Number.isFinite(mph)) return mph;
       const kt = Number(ktValue);
       return Number.isFinite(kt) ? kt * 1.15078 : 0;
+    }
+
+    function cToF(value) {
+      const c = Number(value);
+      return Number.isFinite(c) ? c * 9 / 5 + 32 : null;
+    }
+
+    function kphToMph(value) {
+      const kph = Number(value);
+      return Number.isFinite(kph) ? kph * 0.621371 : null;
+    }
+
+    function metersToSm(value) {
+      const meters = Number(value);
+      return Number.isFinite(meters) ? meters / 1609.344 : null;
+    }
+
+    function mmToIn(value) {
+      const mm = Number(value);
+      return Number.isFinite(mm) ? mm / 25.4 : null;
     }
 
     function rawObservationMap(obs) {
@@ -2515,14 +2520,14 @@
       const vis = Number(obs.visibility_sm);
       const visText = Number.isFinite(vis) ? (vis >= 10 ? "10+ SM" : `${vis.toFixed(1)} SM`) : "--";
       setValueColor("vis-line", visText, visibilityColor(vis));
-      const sky = cloudFromMetar(obs.metar);
+      const sky = obs.sky_condition || cloudFromMetar(obs.metar);
       setValueColor("sky-line", sky, cloudColor(sky));
       let tempText = "--";
       if (obs.temperature_f != null && obs.dewpoint_f != null) {
         tempText = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
         setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
       }
-      const wx = parsePresentWeatherFromMetar(obs.metar) || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value);
+      const wx = obs.present_weather || parsePresentWeatherFromMetar(obs.metar) || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value);
       setValueColor("wx-line", wx, wx === "None" ? "var(--text-body)" : precipColor(0.1));
       const rain = Number(obs.precip_1hr_in || 0);
       const rainText = rain.toFixed(2) + " in";
@@ -2555,6 +2560,71 @@
         metar: record.rawOb,
         raw: { awc: record }
       };
+    }
+
+    function nwsSkyCondition(layers = []) {
+      if (!Array.isArray(layers) || !layers.length) return "Not reported";
+      return layers
+        .map(layer => {
+          const amount = layer?.amount || "";
+          const baseFt = Number(layer?.base?.value) * 3.28084;
+          if (!amount || !Number.isFinite(baseFt)) return "";
+          return `${amount}${String(Math.round(baseFt / 100)).padStart(3, "0")}`;
+        })
+        .filter(Boolean)
+        .join(" / ") || "Not reported";
+    }
+
+    function nwsPresentWeather(presentWeather = []) {
+      if (!Array.isArray(presentWeather) || !presentWeather.length) return "None";
+      const text = presentWeather
+        .map(item => item?.weather || item?.rawString || item?.intensity || item?.modifier || "")
+        .filter(Boolean)
+        .join(" ");
+      return displayWeatherText(text) || "Weather reported";
+    }
+
+    function nwsApiObservationToObs(payload) {
+      const properties = payload?.properties || {};
+      const obsIso = properties.timestamp;
+      if (!obsIso) return null;
+      return {
+        site: "KRNO",
+        source: "NWS API latest station observation",
+        status: "ok",
+        station: "KRNO",
+        observed_utc: new Date(obsIso).toISOString(),
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: properties.windDirection?.value,
+        wind_speed_mph: kphToMph(properties.windSpeed?.value),
+        wind_gust_mph: kphToMph(properties.windGust?.value),
+        visibility_sm: metersToSm(properties.visibility?.value),
+        temperature_f: cToF(properties.temperature?.value),
+        dewpoint_f: cToF(properties.dewpoint?.value),
+        relative_humidity: properties.relativeHumidity?.value,
+        precip_1hr_in: mmToIn(properties.precipitationLastHour?.value),
+        sky_condition: nwsSkyCondition(properties.cloudLayers),
+        present_weather: nwsPresentWeather(properties.presentWeather),
+        metar: properties.rawMessage || "",
+        raw: { nws: payload }
+      };
+    }
+
+    async function fetchNwsObservationFallback() {
+      const url = "https://api.weather.gov/stations/KRNO/observations/latest?require_qc=false";
+      const response = await fetch(url, {
+        cache: "no-store",
+        headers: { Accept: "application/geo+json" }
+      });
+      if (!response.ok) throw new Error("NWS latest observation API unavailable");
+      const obs = nwsApiObservationToObs(await response.json());
+      if (!obs) return false;
+      const obsMs = new Date(obs.observed_utc).getTime();
+      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+        updateObsDisplay(obs);
+        return true;
+      }
+      return false;
     }
 
     function signedMetarTemp(token) {
@@ -2653,14 +2723,9 @@
         console.info("Unable to refresh observations.", error);
       }
       try {
-        await fetchAwcMetarFallback();
+        await fetchNwsObservationFallback();
       } catch (error) {
-        console.info("Unable to refresh AWC METAR fallback.", error);
-      }
-      try {
-        await fetchTgftpMetarFallback();
-      } catch (error) {
-        console.info("Unable to refresh NWS TGFTP METAR fallback.", error);
+        console.info("Unable to refresh NWS API observation fallback.", error);
       }
     }
 
