@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRNO Airport Ground Operations DSS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./krno-nws-idss-partner-tv.css">
+</head>
+<body>
+  <main class="app" aria-label="KRNO Airport Ground Operations DSS">
+    <header class="header">
+      <div class="brand">
+        <div class="seal-group" aria-label="NOAA and National Weather Service">
+          <img class="seal" src="./assets/noaa-emblem-circle.png" alt="NOAA">
+          <img class="seal" src="./assets/nws-logo-2021.png" alt="National Weather Service">
+        </div>
+        <div class="title">
+          <h1 id="product-title">KRNO Airport Ground Operations DSS</h1>
+          <div class="sub" id="product-subtitle">Reno-Tahoe International Airport | 20 NM Decision Area</div>
+        </div>
+      </div>
+      <div class="status" aria-label="Data status">
+        <span id="updated-time">Updated --</span>
+        <span id="utc-time">----Z</span>
+        <span class="badge" id="obs-badge">Obs --</span>
+        <span class="badge" id="model-badge">NBM --</span>
+        <span class="badge">Beta/Internal Use</span>
+      </div>
+    </header>
+
+    <section class="banner" id="primary-banner" tabindex="0">
+      <div class="banner-accent" id="banner-accent"></div>
+      <div class="banner-main">
+        <div class="banner-kicker">Primary Partner Action</div>
+        <div class="banner-title" id="primary-headline">Loading Weather Decision Support</div>
+        <div class="banner-detail" id="primary-detail">Risk category, timing, trigger, and confidence loading.</div>
+      </div>
+      <div class="banner-action">
+        <div class="action-label">Action</div>
+        <div class="action-text" id="primary-action">Loading latest guidance.</div>
+        <div class="confidence-pill" id="primary-confidence">Confidence --</div>
+      </div>
+    </section>
+
+    <section class="update-strip">
+      <span>Since Last Update</span>
+      <strong id="since-update">Loading latest changes.</strong>
+    </section>
+
+    <section class="messages" aria-label="Key messages">
+      <article class="message-card">
+        <h2 id="msg1-title">Hazard / Impact</h2>
+        <p id="msg1-text">Loading impact message.</p>
+      </article>
+      <article class="message-card">
+        <h2 id="msg2-title">Timing</h2>
+        <p id="msg2-text">Loading timing message.</p>
+      </article>
+      <article class="message-card">
+        <h2 id="msg3-title">Action / Confidence</h2>
+        <p id="msg3-text">Loading action message.</p>
+      </article>
+    </section>
+
+    <section class="panel timeline-panel">
+      <div class="panel-head">
+        <h2 class="panel-title">72-Hour Action Timeline</h2>
+        <div class="legend" id="legend" aria-label="Impact categories"></div>
+      </div>
+      <div class="timeline" id="timeline" aria-label="72-hour operational action timeline"></div>
+      <div class="no-signal" id="no-signal"></div>
+    </section>
+
+    <section class="bottom">
+      <section class="panel obs-panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Current Airfield Conditions</h2>
+        </div>
+        <div class="obs-content">
+          <div class="wind-rose" id="wind-rose" aria-label="Wind rose">
+            <div class="wind-arrow" id="wind-arrow"></div>
+            <div class="wind-calm" id="wind-calm" hidden>CALM</div>
+          </div>
+          <div class="obs-values">
+            <div class="obs-main" id="obs-wind">--</div>
+            <div class="obs-item"><span class="label">Visibility</span><span class="value" id="obs-vis">--</span></div>
+            <div class="obs-item"><span class="label">Sky/Ceiling</span><span class="value" id="obs-sky">--</span></div>
+            <div class="obs-item"><span class="label">Temp / Dew Point</span><span class="value" id="obs-tempdp">--</span></div>
+            <div class="obs-item"><span class="label">Present Weather</span><span class="value" id="obs-wx">--</span></div>
+            <div class="obs-item"><span class="label">1-Hour Rain</span><span class="value" id="obs-rain">--</span></div>
+            <div class="obs-item"><span class="label">Observation Time</span><span class="value" id="obs-time">--</span></div>
+            <div class="obs-stale" id="obs-stale" hidden>OBS STALE</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel map-panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Radar / Lightning Trigger Status</h2>
+        </div>
+        <div class="map-content">
+          <div class="radar-map" id="radar-map">
+            <div class="map-fallback">Radar map loading</div>
+          </div>
+          <div class="trigger-status">
+            <div class="trigger-line"><span class="label">20 NM Ring</span><span class="value" id="ring20">--</span></div>
+            <div class="trigger-line"><span class="label">10 NM Ring</span><span class="value" id="ring10">--</span></div>
+            <div class="trigger-line"><span class="label">Closest Strike</span><span class="value" id="closest-strike">--</span></div>
+            <div class="trigger-line"><span class="label">Strike Age</span><span class="value" id="strike-age">--</span></div>
+            <div class="trigger-line"><span class="label">Last Scan</span><span class="value" id="last-scan">--</span></div>
+            <div class="trigger-action" id="trigger-action">Loading trigger status.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel alerts-panel">
+        <div class="panel-head">
+          <h2 class="panel-title">NWS Alerts / Data</h2>
+        </div>
+        <div class="alerts-content">
+          <div class="alert-status" id="alert-status">
+            <div class="alert-title" id="alert-title">Loading</div>
+            <div class="alert-detail" id="alert-detail">Checking official alerts.</div>
+          </div>
+          <div class="data-list">
+            <div><span class="label">Forecast</span> <span class="value" id="data-model">--</span></div>
+            <div><span class="label">Updated</span> <span class="value" id="data-build">--</span></div>
+            <div><span class="label">Data</span> <span class="value" id="data-status">--</span></div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="./krno-nws-idss-partner-tv.js"></script>
+</body>
+</html>
