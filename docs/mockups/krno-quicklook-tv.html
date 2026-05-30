@@ -745,12 +745,25 @@
     }
 
     .radar-map img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      opacity: 0.78;
-      filter: saturate(1.08) contrast(1.08) brightness(0.84);
+    }
+
+    .radar-basemap {
+      z-index: 0;
+      opacity: 0.9;
+      filter: saturate(0.92) contrast(1.08) brightness(0.78);
+    }
+
+    .radar-reflectivity {
+      z-index: 1;
+      opacity: 0.82;
+      mix-blend-mode: screen;
+      filter: saturate(1.12) contrast(1.12) brightness(0.95);
     }
 
     .radar-map::after {
@@ -1254,22 +1267,22 @@
       </div>
       <div class="summary-chip" data-summary-placeholder>
         <div class="summary-hazard">Snow</div>
-        <div class="summary-risk">None</div>
+        <div class="summary-risk">Little to None</div>
         <div class="summary-value">No signal</div>
       </div>
       <div class="summary-chip" data-summary-placeholder>
         <div class="summary-hazard">Freezing Rain</div>
-        <div class="summary-risk">None</div>
+        <div class="summary-risk">Little to None</div>
         <div class="summary-value">No signal</div>
       </div>
       <div class="summary-chip" data-summary-placeholder>
         <div class="summary-hazard">Flash Freeze</div>
-        <div class="summary-risk">None</div>
+        <div class="summary-risk">Little to None</div>
         <div class="summary-value">No signal</div>
       </div>
       <div class="summary-chip" data-summary-placeholder>
         <div class="summary-hazard">Temperature</div>
-        <div class="summary-risk">None</div>
+        <div class="summary-risk">Little to None</div>
         <div class="summary-value">No signal</div>
       </div>
     </section>
@@ -1334,7 +1347,8 @@
         </div>
         <div class="bottom-body radar-body">
           <div class="radar-map" id="radar-map">
-            <img id="radar-img" alt="Animated reflectivity loop near KRNO">
+            <img id="radar-basemap" class="radar-basemap" alt="" aria-hidden="true">
+            <img id="radar-img" class="radar-reflectivity" alt="Animated reflectivity loop near KRNO">
             <div class="range-ring r10"></div>
             <div class="range-ring r15"></div>
             <div class="range-ring r20"></div>
@@ -1389,7 +1403,15 @@
   <div class="timeline-tooltip" id="timeline-tooltip" role="tooltip" hidden></div>
 
   <script>
-    const categories = ["None", "Little to None", "Minor", "Moderate", "Major", "Extreme"];
+    const forecastCategories = ["Little to None", "Minor", "Moderate", "Major", "Extreme"];
+    const riskRank = {
+      "None": 0,
+      "Little to None": 1,
+      "Minor": 2,
+      "Moderate": 3,
+      "Major": 4,
+      "Extreme": 5
+    };
     const riskColors = {
       "None": "#2d3745",
       "Little to None": "#4f677d",
@@ -1439,34 +1461,43 @@
       { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
       { ageMinutes: 0, layer: "nexrad-n0q-900913" }
     ];
+    const radarBbox = "-121.064,38.499,-118.472,40.499";
+    const radarWidth = "760";
+    const radarHeight = "430";
     const mockRows = {
-      WIND: ["Little to None","Little to None","Little to None","None","None","None","None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None"],
-      LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","Minor","Minor","Little to None","None","None","None","None"],
-      SNOW: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
-      VIS: ["Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","Little to None","Little to None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None"],
-      FZRA: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
-      FLASHFZ: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"],
-      RAIN: ["Little to None","Little to None","Little to None","Little to None","None","None","None","Little to None","Little to None","None","None","None","None","None","None","None","None","Little to None","Little to None","None","None","None","None","None"],
-      TEMP: ["None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None","None"]
+      WIND: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Minor","Minor","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      SNOW: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      VIS: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      FZRA: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      FLASHFZ: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      RAIN: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      TEMP: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"]
     };
     const topHazards = [
       { source: "LIGHTNING", name: "Lightning", risk: "Moderate", metric: "Thunder 17%", peak: "Peak Thu 3 PM-6 PM", impact: "Ramp lightning", action: "Monitor" },
       { source: "WIND", name: "Wind", risk: "Little to None", metric: "Gust 26 mph", peak: "Peak Fri 8 PM-11 PM", impact: "Ramp wind", action: "Awareness" },
       { source: "RAIN", name: "Rain", risk: "Little to None", metric: "0.02 in", peak: "Peak Thu 2 PM-5 PM", impact: "Drainage", action: "Awareness" },
       { source: "VISIBILITY", name: "Visibility", risk: "Little to None", metric: "6+ mi", peak: "Min Fri 8 AM-11 AM", impact: "Visibility", action: "Awareness" },
-      { source: "SNOW", name: "Snow", risk: "None", metric: "0.00 in", peak: "No signal", impact: "Snow crew", action: "No action" },
-      { source: "FZRA", name: "Freezing Rain", risk: "None", metric: "0.00 in", peak: "No signal", impact: "Icing", action: "No action" },
-      { source: "FLASH_FREEZE", name: "Flash Freeze", risk: "None", metric: "No freeze signal", peak: "No signal", impact: "Pavement freeze", action: "No action" },
-      { source: "TEMPERATURE", name: "Temperature", risk: "None", metric: "No temp signal", peak: "No signal", impact: "Heat/cold", action: "No action" }
+      { source: "SNOW", name: "Snow", risk: "Little to None", metric: "0.00 in", peak: "No signal", impact: "Snow crew", action: "Awareness" },
+      { source: "FZRA", name: "Freezing Rain", risk: "Little to None", metric: "0.00 in", peak: "No signal", impact: "Icing", action: "Awareness" },
+      { source: "FLASH_FREEZE", name: "Flash Freeze", risk: "Little to None", metric: "No freeze signal", peak: "No signal", impact: "Pavement freeze", action: "Awareness" },
+      { source: "TEMPERATURE", name: "Temperature", risk: "Little to None", metric: "No temp signal", peak: "No signal", impact: "Heat/cold", action: "Awareness" }
     ];
 
     function categoryFromRank(value) {
-      const index = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
-      return categories[index];
+      const rank = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
+      if (rank <= 1) return "Little to None";
+      return ({ 2: "Minor", 3: "Moderate", 4: "Major", 5: "Extreme" })[rank] || "Little to None";
     }
 
     function rankFromCategory(category) {
-      return Math.max(0, categories.indexOf(category));
+      return riskRank[category] ?? 1;
+    }
+
+    function normalizeForecastRisk(category) {
+      const rank = rankFromCategory(category);
+      return rank <= 1 ? "Little to None" : category;
     }
 
     function clamp(value, min, max) {
@@ -1738,7 +1769,7 @@
       const source = rows[hazard.id] || mockRows[hazard.id] || [];
       return Array.from({ length: 24 }, (_, index) => {
         const value = source[index];
-        return categories.includes(value) ? value : categoryFromRank(value);
+        return value in riskRank ? normalizeForecastRisk(value) : categoryFromRank(value);
       });
     }
 
@@ -1990,7 +2021,7 @@
     function renderLegend() {
       const legend = document.getElementById("legend");
       legend.innerHTML = "";
-      categories.forEach(category => {
+      forecastCategories.forEach(category => {
         const item = document.createElement("div");
         item.className = "legend-item";
         item.innerHTML = `<span class="legend-swatch" style="background:${riskColors[category]}"></span>${category}`;
@@ -2007,12 +2038,28 @@
     function compactConcernMetric(item) {
       const metric = String(item.metric || "").trim();
       if (!metric || /no signal/i.test(metric)) return "";
-      if (item.source === "WIND") return /^gust/i.test(metric) ? metric : `Gust ${metric}`;
+      if (item.source === "WIND") return /gust/i.test(metric) ? metric : `Gust ${metric}`;
       if (item.source === "VISIBILITY") return metric.replace(/^Visibility\s+/i, "").replace(/\.0(?=\s)/, "");
-      if (item.source === "RAIN") return metric.replace(/^Rain\s+/i, "");
+      if (item.source === "RAIN") {
+        const cleaned = metric.replace(/^Rain\s+/i, "");
+        return /^72-hr/i.test(cleaned) ? cleaned : `72-hr ${cleaned}`;
+      }
       if (item.source === "LIGHTNING") return metric.replace(/^Thunder\s+/i, "Thunder ");
       if (item.source === "TEMPERATURE") return metric.replace(/^Temp\s+/i, "");
       return metric;
+    }
+
+    function riskWindowLabel(item) {
+      const method = String(item.riskMethod || item.methodology || "");
+      if (item.source === "RAIN" && /qmd_6hr/i.test(method)) return "QMD 6-hour rain windows";
+      if (item.source === "SNOW") return "Core hourly to 48h, 6-hour to 72h";
+      if (item.source === "FZRA") return "Core hourly to 48h";
+      if (item.source === "WIND" && /24hr_max_gust/i.test(method)) return "QMD 24-hour max gust";
+      if (item.source === "TEMPERATURE" && /qmd_max_min/i.test(method)) return "QMD daily max/min";
+      if (item.source === "LIGHTNING") return "Core 3-hour thunder probability";
+      if (item.source === "VISIBILITY") return "Core 3-hour visibility probabilities";
+      if (item.source === "FLASH_FREEZE") return "Core temperature and wet-surface proxy";
+      return "72-hour hazard summary";
     }
 
     function concernTooltipLines(item, details) {
@@ -2024,10 +2071,10 @@
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)],
-        ["Summary", "72-hr hazard status"],
+        ["Summary Window", riskWindowLabel(item)],
         ["Timeline", "3-hour block risk"],
         ["Source", sourceText]
-      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) === 0));
+      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) <= 1));
     }
 
     function renderTopHazards(items) {
@@ -2113,7 +2160,7 @@
     function updatePrimaryConcern(item) {
       if (!item) return;
       currentPrimaryItem = item;
-      const risk = item.risk || "None";
+      const risk = normalizeForecastRisk(item.risk || "Little to None");
       const name = item.name || "Weather";
       const color = riskColors[risk] || riskColors.None;
       const impact = item.impact || operationalImpact(item.source);
@@ -2132,19 +2179,24 @@
     function threatRowsFromData(threatMap, blocks = []) {
       return hazardPriority.map(source => {
         const item = threatMap?.[source] || {};
-        const risk = item.risk_label || categoryFromRank(item.risk_level ?? item.risk);
+        const risk = normalizeForecastRisk(item.risk_label || categoryFromRank(item.risk_level ?? item.risk));
         const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
         const windowText = impactWindowFromBlocks(source, risk, blocks);
+        const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
+          ? (item.metric || item.display_value || "No signal")
+          : (item.display_value || item.metric || "No signal");
         return {
           source,
           name,
           risk,
-          metric: item.display_value || item.metric || "No signal",
+          metric: displayMetric,
           peak: windowText || shortPeak(item.peak_valid_utc),
           impact: operationalImpact(source, risk),
           action: operationalAction(risk),
           methodology: item.methodology || item.driver || "",
-          dataSource: item.source || ""
+          dataSource: item.source || "",
+          displayLabel: item.display_label || "",
+          riskMethod: item.risk_method || ""
         };
       }).sort((a, b) => {
         const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
@@ -2620,14 +2672,28 @@
         LAYERS: frame.layer,
         STYLES: "",
         SRS: "EPSG:4326",
-        BBOX: "-121.064,38.499,-118.472,40.499",
-        WIDTH: "760",
-        HEIGHT: "430",
+        BBOX: radarBbox,
+        WIDTH: radarWidth,
+        HEIGHT: radarHeight,
         FORMAT: "image/png",
         TRANSPARENT: "TRUE",
         t: String(radarCacheBust)
       });
       return `https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi?${params.toString()}`;
+    }
+
+    function radarBasemapUrl() {
+      const params = new URLSearchParams({
+        bbox: radarBbox,
+        bboxSR: "4326",
+        imageSR: "4326",
+        size: `${radarWidth},${radarHeight}`,
+        format: "png32",
+        transparent: "false",
+        f: "image",
+        t: String(Math.floor(radarCacheBust / (15 * 60 * 1000)))
+      });
+      return `https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/export?${params.toString()}`;
     }
 
     function formatRadarClock(frame) {
@@ -2682,6 +2748,8 @@
 
     function refreshRadarImage() {
       radarCacheBust = Date.now();
+      const basemap = document.getElementById("radar-basemap");
+      if (basemap) basemap.src = radarBasemapUrl();
       preloadRadarFrames();
       renderRadarFrame();
     }
