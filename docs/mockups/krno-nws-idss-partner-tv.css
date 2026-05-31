@@ -408,8 +408,8 @@ body {
 
 .wind-rose {
   position: relative;
-  width: 172px;
-  height: 172px;
+  width: 158px;
+  height: 158px;
   align-self: center;
   justify-self: center;
   border-radius: 50%;
@@ -419,36 +419,26 @@ body {
     conic-gradient(from 0deg, rgba(255,255,255,0.10), transparent 18%, rgba(255,255,255,0.10) 25%, transparent 42%, rgba(255,255,255,0.10) 50%, transparent 68%, rgba(255,255,255,0.10) 75%, transparent 92%);
 }
 
-.cardinal {
+.wind-rose::before,
+.wind-rose::after {
   position: absolute;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 1;
 }
 
-.cardinal.north {
-  top: 10px;
+.wind-rose::before {
+  content: "N";
+  top: 7px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.cardinal.south {
-  bottom: 10px;
+.wind-rose::after {
+  content: "S";
+  bottom: 7px;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.cardinal.east {
-  right: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.cardinal.west {
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .wind-arrow {
@@ -476,17 +466,13 @@ body {
 
 .wind-calm {
   position: absolute;
-  inset: 57px;
+  inset: 52px;
   display: grid;
   place-items: center;
   border-radius: 50%;
   color: var(--body);
   background: rgba(255,255,255,0.08);
   font-size: 17px;
-}
-
-.wind-calm[hidden] {
-  display: none;
 }
 
 .obs-values {
@@ -538,7 +524,7 @@ body {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px 14px;
   min-height: 0;
 }
 
@@ -565,31 +551,12 @@ body {
   font-family: var(--font);
 }
 
-.leaflet-pane,
-.leaflet-map-pane,
-.leaflet-tile-pane,
-.leaflet-overlay-pane {
-  overflow: visible;
-}
-
 .city-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
   color: #eaf1f8;
   font-size: 12px;
   font-weight: 600;
   text-shadow: 0 1px 4px #001b33, 0 0 5px #001b33;
   white-space: nowrap;
-}
-
-.city-dot {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #c8d4e3;
-  box-shadow: 0 0 0 2px rgba(8, 27, 48, 0.85);
 }
 
 .lightning-dot {
@@ -603,7 +570,7 @@ body {
 
 .trigger-status {
   display: grid;
-  gap: 5px;
+  gap: 8px;
   align-content: center;
 }
 
@@ -615,16 +582,16 @@ body {
 }
 
 .trigger-line .value {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .trigger-action {
   margin-top: 1px;
-  padding: 7px 8px;
+  padding: 8px;
   border-radius: 8px;
   color: var(--text);
   background: rgba(255,255,255,0.07);
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.12;
 }
 
@@ -731,119 +698,6 @@ body {
   .banner-title { font-size: 33px; }
   .message-card p { font-size: 20px; }
   .bottom { grid-template-columns: 1fr 1fr 0.8fr; }
-}
-
-@media (max-height: 900px) {
-  .app {
-    grid-template-rows: 66px 106px 34px 96px minmax(0, 1fr) 252px;
-    gap: 8px;
-    padding-bottom: 10px;
-  }
-
-  .header {
-    padding-block: 6px;
-  }
-
-  .seal {
-    width: 40px;
-    height: 40px;
-  }
-
-  .title h1 {
-    font-size: 28px;
-  }
-
-  .title .sub,
-  .status {
-    font-size: 15px;
-  }
-
-  .banner-main {
-    padding-block: 10px;
-  }
-
-  .banner-title {
-    font-size: 34px;
-  }
-
-  .banner-detail,
-  .action-text {
-    font-size: 19px;
-  }
-
-  .message-card {
-    padding-block: 12px;
-  }
-
-  .message-card p {
-    margin-top: 6px;
-    font-size: 21px;
-    line-height: 1.12;
-  }
-
-  .timeline {
-    grid-auto-rows: minmax(26px, 1fr);
-    padding-top: 6px;
-  }
-
-  .no-signal {
-    font-size: 14px;
-    padding-bottom: 6px;
-  }
-
-  .map-content,
-  .obs-content,
-  .alerts-content {
-    padding: 8px 12px 10px;
-  }
-
-  .trigger-status {
-    gap: 4px;
-  }
-
-  .trigger-line {
-    grid-template-columns: 96px 1fr;
-  }
-
-  .trigger-line .value,
-  .data-list .value {
-    font-size: 17px;
-  }
-
-  .trigger-action {
-    padding: 6px 8px;
-    font-size: 16px;
-  }
-
-  .obs-content {
-    grid-template-columns: 158px 1fr;
-    gap: 10px;
-  }
-
-  .wind-rose {
-    width: 150px;
-    height: 150px;
-  }
-
-  .wind-calm {
-    inset: 48px;
-  }
-
-  .obs-values {
-    gap: 5px 9px;
-  }
-
-  .obs-main {
-    font-size: 32px;
-  }
-
-  .value {
-    font-size: 19px;
-  }
-
-  .label {
-    font-size: 11px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
