@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DSS Admin Configuration</title>
+  <title>Core Partner DSS Admin</title>
   <link rel="stylesheet" href="./dss-admin-config.css">
 </head>
 <body>
@@ -12,150 +12,140 @@
       <img class="seal" src="./assets/noaa-emblem-circle.png" alt="NOAA">
       <img class="seal" src="./assets/nws-logo-2021.png" alt="National Weather Service">
       <div>
-        <h1>Partner DSS Admin Configuration</h1>
-        <div class="subtitle">Forecaster configuration for partner thresholds, actions, data sources, and confidence weights</div>
+        <h1>Core Partner DSS Admin</h1>
+        <div class="subtitle">Guided NBM-only setup for partner thresholds, actions, risk, and confidence</div>
       </div>
     </div>
     <div class="header-actions">
-      <button id="save-config" class="primary">Save Config</button>
-      <button id="export-config">Export JSON</button>
-      <label class="file-button" for="import-file">Import JSON</label>
-      <input class="hidden-input" id="import-file" type="file" accept="application/json,.json">
-      <button id="open-preview">Preview Partner Display</button>
-      <button id="reset-config">Reset to Airport Defaults</button>
+      <button id="save-draft">Save Draft</button>
+      <button id="preview-display">Preview Partner Display</button>
+      <button id="export-json" class="primary">Export JSON</button>
+      <label class="file-button" for="import-json">Import JSON</label>
+      <input id="import-json" class="hidden-input" type="file" accept="application/json,.json">
+      <button id="reset-defaults">Reset Airport Defaults</button>
     </div>
   </header>
 
-  <main class="layout">
-    <section class="stack">
-      <section class="panel">
-        <h2>Partner Profile</h2>
-        <div class="panel-body">
+  <main class="wizard-shell">
+    <aside class="wizard-sidebar">
+      <div class="progress-card">
+        <div class="step-eyebrow" id="step-count">Step 1 of 10</div>
+        <h2 id="step-title">Partner / Event Setup</h2>
+        <div class="progress-track"><div id="progress-bar"></div></div>
+      </div>
+      <nav class="step-list" id="step-list" aria-label="Wizard steps"></nav>
+      <section class="side-note">
+        <h3>Workflow</h3>
+        <p>Ask the partner what weather threshold changes their decision. Enter the threshold, map it to an NBM field, then let the Weather Risk Matrix translate probability and impact into partner-facing risk.</p>
+      </section>
+    </aside>
+
+    <section class="wizard-panel">
+      <section class="wizard-step active" data-step="0">
+        <h2>Partner / Event Setup</h2>
+        <p class="lead">Basic information shown on the partner display and exported configuration.</p>
+        <div class="form-grid two">
           <label><span>Partner Name</span><input id="partnerName"></label>
           <label><span>Product Title</span><input id="productTitle"></label>
           <label><span>Event Name</span><input id="eventName"></label>
           <label><span>Location Name</span><input id="locationName"></label>
-          <div class="grid-2">
-            <label><span>Latitude</span><input id="latitude" type="number" step="0.0001"></label>
-            <label><span>Longitude</span><input id="longitude" type="number" step="0.0001"></label>
-          </div>
-          <div class="grid-2">
-            <label><span>Decision Radius NM</span><input id="decisionRadiusNm" type="number" min="1"></label>
-            <label><span>Valid Period Hours</span><input id="validPeriodHours" type="number" min="1"></label>
-          </div>
-          <div class="grid-2">
-            <label><span>Timezone</span><input id="timezone"></label>
-            <label><span>Display Mode</span><select id="displayMode"></select></label>
+          <label><span>Latitude</span><input id="latitude" type="number" step="0.0001"></label>
+          <label><span>Longitude</span><input id="longitude" type="number" step="0.0001"></label>
+          <label><span>Valid Period</span><input id="validPeriodHours" type="number" min="1"></label>
+          <label><span>Timezone</span><input id="timezone"></label>
+          <label><span>Update Frequency</span><input id="updateFrequencyMinutes" type="number" min="1"></label>
+          <label><span>Contact / Notes</span><input id="contactNotes"></label>
+        </div>
+      </section>
+
+      <section class="wizard-step" data-step="1">
+        <h2>Forecast Area Setup</h2>
+        <p class="lead">Choose how weather risk is evaluated for this partner.</p>
+        <div class="choice-grid" id="geometry-choices"></div>
+        <div id="geometry-editor" class="stack"></div>
+      </section>
+
+      <section class="wizard-step" data-step="2">
+        <h2>Select Partner Type</h2>
+        <p class="lead">Templates preload common hazards. You can change hazards on the next step.</p>
+        <div class="choice-grid" id="partner-type-choices"></div>
+      </section>
+
+      <section class="wizard-step" data-step="3">
+        <h2>Select Hazards</h2>
+        <p class="lead">Airport operations defaults to visibility only. Ceiling stays optional unless the partner asks for it.</p>
+        <div class="hazard-grid" id="hazard-select-grid"></div>
+      </section>
+
+      <section class="wizard-step" data-step="4">
+        <h2>Define Impact Levels</h2>
+        <p class="lead">Admin uses Impact Levels 1-5. The partner display converts those to category words only.</p>
+        <div class="editor-top">
+          <label><span>Hazard</span><select id="threshold-hazard"></select></label>
+          <div class="helper-card" id="threshold-helper"></div>
+        </div>
+        <div class="impact-table" id="impact-table"></div>
+      </section>
+
+      <section class="wizard-step" data-step="5">
+        <h2>Map NBM Variable</h2>
+        <p class="lead">Recommended NBM fields are shown first so forecasters do not need to memorize variable names.</p>
+        <div class="editor-top">
+          <label><span>Hazard</span><select id="mapping-hazard"></select></label>
+          <label><span>NBM Variable</span><select id="nbm-field"></select></label>
+        </div>
+        <div class="field-detail" id="field-detail"></div>
+        <div class="form-grid three">
+          <label><span>Aggregation</span><select id="aggregation-method"></select></label>
+          <label><span>Threshold Direction</span><select id="threshold-direction"></select></label>
+          <label><span>Units</span><input id="units"></label>
+        </div>
+      </section>
+
+      <section class="wizard-step" data-step="6">
+        <h2>Define Partner Actions</h2>
+        <p class="lead">Keep actions short enough for a partner display and specific enough for decisions.</p>
+        <div class="editor-top">
+          <label><span>Hazard</span><select id="action-hazard"></select></label>
+          <div class="helper-card" id="action-helper"></div>
+        </div>
+        <div class="action-table" id="action-table"></div>
+      </section>
+
+      <section class="wizard-step" data-step="7">
+        <h2>Review Weather Risk Matrix</h2>
+        <p class="lead">Risk is calculated from impact and NBM probability of threshold exceedance.</p>
+        <div class="matrix-layout">
+          <div class="risk-matrix" id="risk-matrix"></div>
+          <div class="matrix-calc">
+            <label><span>Impact Level</span><select id="matrix-impact"></select></label>
+            <label><span>NBM Probability</span><input id="matrix-probability" type="number" min="0" max="100" value="18"></label>
+            <div class="calc-result" id="matrix-result"></div>
           </div>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Hazards</h2>
-        <div class="panel-body">
-          <div class="hazard-list" id="hazard-list"></div>
-        </div>
+      <section class="wizard-step" data-step="8">
+        <h2>Preview Partner Display</h2>
+        <p class="lead">Partner preview uses category words only and keeps confidence simple.</p>
+        <div class="partner-preview" id="partner-preview"></div>
       </section>
 
-      <section class="panel">
-        <h2>Data Source Mapping</h2>
-        <div class="panel-body">
-          <div class="source-grid" id="source-options"></div>
-          <label><span>Radar Layer</span><input id="radarLayer"></label>
-          <label><span>Lightning Layer</span><input id="lightningLayer"></label>
-          <label><span>Decision Rings NM</span><input id="ringsNm"></label>
-          <label><span>NWS Alert Sources</span><input id="alertSources"></label>
-          <label><span>City Markers JSON</span><textarea id="cityMarkers" spellcheck="false"></textarea></label>
+      <section class="wizard-step" data-step="9">
+        <h2>Export / Save JSON</h2>
+        <p class="lead">Save locally for this browser, export JSON for sharing, or open the partner display preview.</p>
+        <div class="export-actions">
+          <button id="save-draft-bottom">Save Draft</button>
+          <button id="preview-display-bottom">Preview Partner Display</button>
+          <button id="export-json-bottom" class="primary">Export JSON</button>
         </div>
-      </section>
-    </section>
-
-    <section class="stack">
-      <section class="panel">
-        <h2>Hazard Configuration</h2>
-        <div class="panel-body">
-          <div class="grid-3">
-            <label><span>Hazard ID</span><input id="hazardId"></label>
-            <label><span>Display Name</span><input id="displayName"></label>
-            <label><span>Operational Row Name</span><input id="operationalRowName"></label>
-          </div>
-          <div class="grid-3">
-            <label><span>Enabled</span><select id="enabled"><option>true</option><option>false</option></select></label>
-            <label><span>Show on Partner Display</span><select id="showOnPartnerDisplay"><option>true</option><option>false</option></select></label>
-            <label><span>Priority</span><input id="priority" type="number" min="1"></label>
-          </div>
-          <div class="grid-3">
-            <label><span>Data Source</span><select id="dataSource"></select></label>
-            <label><span>NBM Variable</span><select id="nbmCatalogKey"></select></label>
-            <label><span>Units</span><input id="units"></label>
-          </div>
-          <label><span>Model Variable</span><input id="modelVariable"></label>
-          <div class="preview-card">
-            <div class="preview-title">Selected NBM Field</div>
-            <div class="preview-value" id="nbm-field-detail">--</div>
-          </div>
-          <div class="grid-3">
-            <label><span>Accumulation Window</span><input id="accumulationWindow"></label>
-            <label><span>Forecast Window</span><input id="forecastWindow"></label>
-            <label><span>Threshold Direction</span><input id="thresholdDirection"></label>
-          </div>
-          <label><span>Decision Trigger Text</span><input id="decisionTriggerText"></label>
-          <label><span>No Signal Text</span><input id="noSignalText"></label>
-        </div>
+        <textarea id="json-output" class="json-box" spellcheck="false"></textarea>
       </section>
 
-      <section class="panel">
-        <h2>Impact Category Editor</h2>
-        <div class="panel-body">
-          <div class="threshold-grid" id="threshold-grid"></div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Action Text Editor</h2>
-        <div class="panel-body">
-          <div class="action-grid" id="action-grid"></div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Forecast Confidence Editor</h2>
-        <div class="panel-body">
-          <div class="weights-grid" id="weights-grid"></div>
-        </div>
-      </section>
-    </section>
-
-    <section class="stack">
-      <section class="panel">
-        <h2>Preview Panel</h2>
-        <div class="panel-body preview">
-          <div class="preview-card">
-            <div class="preview-title">Product</div>
-            <div class="preview-value" id="preview-product">--</div>
-          </div>
-          <div class="preview-card">
-            <div class="preview-title">Selected Hazard</div>
-            <div class="preview-value" id="preview-hazard">--</div>
-          </div>
-          <div class="preview-card">
-            <div class="preview-title">Partner Action</div>
-            <div class="preview-value" id="preview-action">--</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2>Confidence Components</h2>
-        <div class="panel-body confidence-components" id="confidence-components"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Export / Import JSON</h2>
-        <div class="panel-body">
-          <textarea id="json-output" class="json-box" spellcheck="false"></textarea>
-        </div>
-      </section>
+      <footer class="wizard-nav">
+        <button id="back-step">Back</button>
+        <button id="next-step" class="primary">Next</button>
+      </footer>
     </section>
   </main>
 

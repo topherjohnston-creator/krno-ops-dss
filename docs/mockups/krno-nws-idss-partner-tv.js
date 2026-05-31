@@ -1,4 +1,10 @@
-import { CATEGORY_COLORS, CATEGORY_RANK, cloneDefaultConfig, IMPACT_CATEGORIES } from "./dss-config-schema.js";
+import {
+  CATEGORY_COLORS,
+  CATEGORY_RANK,
+  cloneDefaultConfig,
+  getDecisionAreaLabel,
+  getDecisionRadiusNm
+} from "./dss-config-schema.js";
 import {
   buildPartnerState,
   escapeHtml,
@@ -8,7 +14,8 @@ import {
   loadDssInputs
 } from "./data-source-adapters.js";
 
-const config = cloneDefaultConfig();
+const storageKey = "krno-partner-dss-admin-config";
+const config = loadConfig();
 const tooltip = document.getElementById("tooltip");
 const metersPerNm = 1852;
 let partnerState = fallbackPartnerState(config);
@@ -28,6 +35,15 @@ let radarFrame = radarFrames.length - 1;
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function loadConfig() {
+  try {
+    const stored = localStorage.getItem(storageKey);
+    return stored ? { ...cloneDefaultConfig(), ...JSON.parse(stored) } : cloneDefaultConfig();
+  } catch {
+    return cloneDefaultConfig();
+  }
 }
 
 function setText(id, text) {
@@ -58,7 +74,7 @@ function updateHeaderClock() {
 function renderHeader(state) {
   const profile = state.config.partnerProfile;
   setText("product-title", profile.productTitle);
-  setText("product-subtitle", `${profile.locationName} | ${profile.decisionRadiusNm} NM Decision Area`);
+  setText("product-subtitle", getDecisionAreaLabel(state.config));
   setText("obs-badge", state.obs.statusLabel);
   byId("obs-badge")?.classList.toggle("good", state.obs.statusLabel === "Obs Fresh");
   byId("obs-badge")?.classList.toggle("warn", state.obs.statusLabel === "Obs Aging");
@@ -75,7 +91,7 @@ function renderBanner(state) {
   setText("primary-headline", primary.headline);
   setText(
     "primary-detail",
-    `${category} • ${primary.displayName} • Peak ${primary.window} • ${state.config.partnerProfile.decisionRadiusNm} NM Decision Area`
+    `${category} • ${primary.displayName} • Peak ${primary.window} • ${decisionAreaShort(state.config)}`
   );
   setText("primary-action", primary.action);
   setText("primary-confidence", `Confidence ${primary.confidence.label}`);
@@ -92,6 +108,14 @@ function renderBanner(state) {
       ["Primary Driver", primary.confidence.drivers?.[0] || "Forecast category support"]
     ]
   });
+}
+
+function decisionAreaShort(config) {
+  if (config.forecastGeometry?.mode === "point") return "Point Forecast";
+  const radius = config.forecastGeometry?.radius;
+  if (radius) return `${radius.radiusValue} ${radius.radiusUnits} Decision Area`;
+  const fallbackRadius = getDecisionRadiusNm(config);
+  return fallbackRadius ? `${fallbackRadius} NM Decision Area` : "Decision Area";
 }
 
 function renderSinceLastUpdate(state) {
@@ -270,8 +294,10 @@ function destinationPoint(lat, lon, distanceNm, bearingDegrees) {
 function initMap(state) {
   if (!window.L || map) return;
   const profile = state.config.partnerProfile;
+  const centerLat = state.config.forecastGeometry?.radius?.centerLat ?? profile.latitude;
+  const centerLon = state.config.forecastGeometry?.radius?.centerLon ?? profile.longitude;
   map = L.map("radar-map", {
-    center: [profile.latitude, profile.longitude],
+    center: [centerLat, centerLon],
     zoom: 9,
     zoomControl: false,
     attributionControl: false,
@@ -285,16 +311,17 @@ function initMap(state) {
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
     maxZoom: 16
   }).addTo(map);
+  const decisionRadius = getDecisionRadiusNm(state.config) || profile.decisionRadiusNm || 20;
   (state.config.mapLayers.ringsNm || [10, 20]).forEach(limit => {
-    L.circle([profile.latitude, profile.longitude], {
+    L.circle([centerLat, centerLon], {
       radius: limit * metersPerNm,
-      color: limit === profile.decisionRadiusNm ? "rgba(255,211,92,0.85)" : "rgba(234,244,255,0.62)",
-      weight: limit === profile.decisionRadiusNm ? 2 : 1,
+      color: limit === decisionRadius ? "rgba(255,211,92,0.85)" : "rgba(234,244,255,0.62)",
+      weight: limit === decisionRadius ? 2 : 1,
       fill: false,
       interactive: false
     }).addTo(map);
   });
-  L.circleMarker([profile.latitude, profile.longitude], {
+  L.circleMarker([centerLat, centerLon], {
     radius: 5,
     color: "#fff",
     fillColor: "#4fc3ff",
