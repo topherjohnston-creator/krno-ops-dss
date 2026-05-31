@@ -3,14 +3,14 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 00Z",
-  "generated_utc": "2026-05-31T06:45:03Z",
-  "cycle_utc_iso": "2026-05-31T00:00:00Z",
-  "cycle": "NBM 00Z",
+  "source": "NOAA NBM core AWS 06Z",
+  "generated_utc": "2026-05-31T08:45:39Z",
+  "cycle_utc_iso": "2026-05-31T06:00:00Z",
+  "cycle": "NBM 06Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-05-31T00:00:00Z",
-    "end_utc": "2026-06-03T00:00:00Z"
+    "start_utc": "2026-05-31T06:00:00Z",
+    "end_utc": "2026-06-03T06:00:00Z"
   },
   "threats": {
     "WIND": {
@@ -24,14 +24,14 @@
       "risk_label": "Little to None",
       "level": 1,
       "impact_level": 1,
-      "metric": "Max gust 9 mph",
+      "metric": "Max gust 13 mph",
       "display_label": "Max gust",
-      "display_value": "9 mph",
+      "display_value": "13 mph",
       "window": "72 hr",
-      "peak_start_fxx": 1,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
-      "peak_valid_utc": "2026-05-31T18:00:00Z",
+      "peak_start_fxx": 49,
+      "peak_end_fxx": 72,
+      "source_fxx": 72,
+      "peak_valid_utc": "2026-06-03T00:00:00Z",
       "driver": "NBM QMD 24-hour maximum gust at KRNO",
       "methodology": "Wind risk card uses QMD 24-hour maximum gust at KRNO mapped to the KRNO wind impact table.",
       "data_status": "live",
@@ -52,23 +52,23 @@
       ],
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_qmd_24hr_max_gust",
-      "source": "NOAA NBM QMD AWS 18Z",
-      "source_cycle_utc_iso": "2026-05-31T00:00:00Z",
+      "source": "NOAA NBM QMD AWS 00Z",
+      "source_cycle_utc_iso": "2026-05-31T06:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
-          "gust_mph": 8.5,
-          "valid_utc": "2026-05-31T18:00:00Z"
+          "gust_mph": 12.3,
+          "valid_utc": "2026-06-01T00:00:00Z"
         },
         {
           "fxx": 48,
-          "gust_mph": 7.2,
-          "valid_utc": "2026-06-01T18:00:00Z"
+          "gust_mph": 12.1,
+          "valid_utc": "2026-06-02T00:00:00Z"
         },
         {
           "fxx": 72,
-          "gust_mph": 6.5,
-          "valid_utc": "2026-06-02T18:00:00Z"
+          "gust_mph": 13.4,
+          "valid_utc": "2026-06-03T00:00:00Z"
         }
       ]
     },
@@ -289,7 +289,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 6,
       "source_fxx": 6,
-      "peak_valid_utc": "2026-05-31T00:00:00Z",
+      "peak_valid_utc": "2026-05-31T06:00:00Z",
       "driver": "NBM QMD 6-hour precipitation probabilities and deterministic precipitation at KRNO",
       "methodology": "Rain summary uses QMD 6-hour precipitation windows mapped to the KRNO rain/flooding impact table and likelihood-vs-impact matrix.",
       "data_status": "live",
@@ -310,11 +310,11 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_qmd_6hr_precip",
-      "source": "NOAA NBM QMD AWS 18Z",
+      "source": "NOAA NBM QMD AWS 00Z",
       "six_hour_values": [
         {
           "fxx": 6,
-          "valid_utc": "2026-05-31T00:00:00Z",
+          "valid_utc": "2026-05-31T06:00:00Z",
           "start_fxx": 1,
           "end_fxx": 6,
           "amount_in": 0.0,
@@ -330,7 +330,7 @@
         },
         {
           "fxx": 12,
-          "valid_utc": "2026-05-31T06:00:00Z",
+          "valid_utc": "2026-05-31T12:00:00Z",
           "start_fxx": 7,
           "end_fxx": 12,
           "amount_in": 0.0,
@@ -346,7 +346,7 @@
         },
         {
           "fxx": 18,
-          "valid_utc": "2026-05-31T12:00:00Z",
+          "valid_utc": "2026-05-31T18:00:00Z",
           "start_fxx": 13,
           "end_fxx": 18,
           "amount_in": 0.0,
@@ -362,7 +362,7 @@
         },
         {
           "fxx": 24,
-          "valid_utc": "2026-05-31T18:00:00Z",
+          "valid_utc": "2026-06-01T00:00:00Z",
           "start_fxx": 19,
           "end_fxx": 24,
           "amount_in": 0.0,
@@ -378,7 +378,7 @@
         },
         {
           "fxx": 30,
-          "valid_utc": "2026-06-01T00:00:00Z",
+          "valid_utc": "2026-06-01T06:00:00Z",
           "start_fxx": 25,
           "end_fxx": 30,
           "amount_in": 0.0,
@@ -394,7 +394,7 @@
         },
         {
           "fxx": 36,
-          "valid_utc": "2026-06-01T06:00:00Z",
+          "valid_utc": "2026-06-01T12:00:00Z",
           "start_fxx": 31,
           "end_fxx": 36,
           "amount_in": 0.0,
@@ -410,7 +410,7 @@
         },
         {
           "fxx": 42,
-          "valid_utc": "2026-06-01T12:00:00Z",
+          "valid_utc": "2026-06-01T18:00:00Z",
           "start_fxx": 37,
           "end_fxx": 42,
           "amount_in": 0.0,
@@ -426,7 +426,7 @@
         },
         {
           "fxx": 48,
-          "valid_utc": "2026-06-01T18:00:00Z",
+          "valid_utc": "2026-06-02T00:00:00Z",
           "start_fxx": 43,
           "end_fxx": 48,
           "amount_in": 0.0,
@@ -442,7 +442,7 @@
         },
         {
           "fxx": 54,
-          "valid_utc": "2026-06-02T00:00:00Z",
+          "valid_utc": "2026-06-02T06:00:00Z",
           "start_fxx": 49,
           "end_fxx": 54,
           "amount_in": 0.0,
@@ -458,7 +458,7 @@
         },
         {
           "fxx": 60,
-          "valid_utc": "2026-06-02T06:00:00Z",
+          "valid_utc": "2026-06-02T12:00:00Z",
           "start_fxx": 55,
           "end_fxx": 60,
           "amount_in": 0.0,
@@ -474,7 +474,7 @@
         },
         {
           "fxx": 66,
-          "valid_utc": "2026-06-02T12:00:00Z",
+          "valid_utc": "2026-06-02T18:00:00Z",
           "start_fxx": 61,
           "end_fxx": 66,
           "amount_in": 0.0,
@@ -490,7 +490,7 @@
         },
         {
           "fxx": 72,
-          "valid_utc": "2026-06-02T18:00:00Z",
+          "valid_utc": "2026-06-03T00:00:00Z",
           "start_fxx": 67,
           "end_fxx": 72,
           "amount_in": 0.0,
@@ -510,25 +510,25 @@
       "id": "TEMPERATURE",
       "title": "TEMPERATURE",
       "name": "TEMPERATURE",
-      "prob": null,
-      "probability": null,
+      "prob": 0,
+      "probability": 0,
       "risk": 1,
       "risk_level": 1,
       "risk_label": "Little to None",
       "level": 1,
       "impact_level": 1,
       "metric": "Max 75\u00b0F / Min 47\u00b0F",
-      "display_label": "QMD max/min",
+      "display_label": "24-hr max/min",
       "display_value": "75/47\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 24,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
-      "peak_valid_utc": "2026-05-31T18:00:00Z",
-      "driver": "NBM QMD max/min temperature at KRNO",
-      "methodology": "Temperature summary uses QMD max/min temperature mapped to the KRNO cold/heat impact table.",
+      "peak_start_fxx": 6,
+      "peak_end_fxx": 6,
+      "source_fxx": 6,
+      "peak_valid_utc": "2026-05-31T12:00:00Z",
+      "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
+      "methodology": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
       "data_status": "live",
-      "method": "nbm_qmd_aws_gridpoint",
+      "method": "nbm_core_aws_gridpoint",
       "native_windows": [
         {
           "start_fxx": 1,
@@ -544,34 +544,8 @@
         }
       ],
       "likelihood_category": null,
-      "risk_method": "krno_threshold_deterministic_qmd_max_min_temperature",
-      "source": "NOAA NBM QMD AWS 18Z",
-      "daily_values": [
-        {
-          "fxx": 24,
-          "valid_utc": "2026-05-31T18:00:00Z",
-          "max_f": 66.3,
-          "min_f": 46.8,
-          "impact_level": 1,
-          "risk": 1
-        },
-        {
-          "fxx": 48,
-          "valid_utc": "2026-06-01T18:00:00Z",
-          "max_f": 69.4,
-          "min_f": 49.9,
-          "impact_level": 1,
-          "risk": 1
-        },
-        {
-          "fxx": 72,
-          "valid_utc": "2026-06-02T18:00:00Z",
-          "max_f": 75.1,
-          "min_f": 53.3,
-          "impact_level": 1,
-          "risk": 1
-        }
-      ]
+      "risk_method": "krno_threshold_deterministic_core_24hr_max_min",
+      "source": "NOAA NBM core AWS 06Z"
     }
   },
   "hazards": [
