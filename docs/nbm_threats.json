@@ -3,14 +3,14 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 12Z",
-  "generated_utc": "2026-05-31T17:42:56Z",
-  "cycle_utc_iso": "2026-05-31T12:00:00Z",
-  "cycle": "NBM 12Z",
+  "source": "NOAA NBM core AWS 18Z",
+  "generated_utc": "2026-05-31T18:50:42Z",
+  "cycle_utc_iso": "2026-05-31T18:00:00Z",
+  "cycle": "NBM 18Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-05-31T12:00:00Z",
-    "end_utc": "2026-06-03T12:00:00Z"
+    "start_utc": "2026-05-31T18:00:00Z",
+    "end_utc": "2026-06-03T18:00:00Z"
   },
   "threats": {
     "WIND": {
@@ -53,7 +53,7 @@
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-05-31T12:00:00Z",
+      "source_cycle_utc_iso": "2026-05-31T18:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
@@ -87,9 +87,9 @@
       "display_label": "Peak 3-hour thunder probability",
       "display_value": "Thunder 6%",
       "window": "72 hr",
-      "peak_start_fxx": 10,
-      "peak_end_fxx": 12,
-      "source_fxx": 12,
+      "peak_start_fxx": 4,
+      "peak_end_fxx": 6,
+      "source_fxx": 6,
       "peak_valid_utc": "2026-06-01T00:00:00Z",
       "driver": "NBM core 3-hour thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
@@ -105,7 +105,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_lightning_probability_threshold_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "SNOW": {
       "id": "SNOW",
@@ -125,7 +125,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-31T15:00:00Z",
+      "peak_valid_utc": "2026-05-31T21:00:00Z",
       "driver": "NBM core snow amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -146,7 +146,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
@@ -166,7 +166,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-31T15:00:00Z",
+      "peak_valid_utc": "2026-05-31T21:00:00Z",
       "driver": "NBM core visibility at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -187,7 +187,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FZRA": {
       "id": "FZRA",
@@ -207,7 +207,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-05-31T15:00:00Z",
+      "peak_valid_utc": "2026-05-31T21:00:00Z",
       "driver": "NBM core fzra amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -228,7 +228,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
@@ -243,11 +243,11 @@
       "impact_level": 1,
       "metric": "Temperature/wet-surface freeze risk",
       "display_label": "Lowest temperature",
-      "display_value": "Temp 50\u00b0F",
+      "display_value": "Temp 51\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 22,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
+      "peak_start_fxx": 16,
+      "peak_end_fxx": 18,
+      "source_fxx": 18,
       "peak_valid_utc": "2026-06-01T12:00:00Z",
       "driver": "NBM core temperature and precipitation proxy at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
@@ -269,7 +269,7 @@
       ],
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_core_wet_surface_proxy",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     },
     "RAIN": {
       "id": "RAIN",
@@ -517,13 +517,13 @@
       "risk_label": "Little to None",
       "level": 1,
       "impact_level": 1,
-      "metric": "Max 75\u00b0F / Min 50\u00b0F",
+      "metric": "Max 76\u00b0F / Min 51\u00b0F",
       "display_label": "24-hr max/min",
-      "display_value": "75/50\u00b0F",
+      "display_value": "76/51\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 24,
-      "peak_end_fxx": 24,
-      "source_fxx": 24,
+      "peak_start_fxx": 18,
+      "peak_end_fxx": 18,
+      "source_fxx": 18,
       "peak_valid_utc": "2026-06-01T12:00:00Z",
       "driver": "NBM core 2-meter 24-hour temperature max/min at KRNO",
       "methodology": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
@@ -545,7 +545,7 @@
       ],
       "likelihood_category": null,
       "risk_method": "krno_threshold_deterministic_core_24hr_max_min",
-      "source": "NOAA NBM core AWS 12Z"
+      "source": "NOAA NBM core AWS 18Z"
     }
   },
   "hazards": [
