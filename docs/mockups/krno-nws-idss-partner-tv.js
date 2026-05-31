@@ -1,10 +1,10 @@
 import {
   CATEGORY_COLORS,
   CATEGORY_RANK,
-  cloneDefaultConfig,
   getDecisionAreaLabel,
   getDecisionRadiusNm
 } from "./dss-config-schema.js";
+import { KRNO_OPERATIONAL_CONFIG } from "./krno-config.js?v=krno-operational-3";
 import {
   buildPartnerState,
   escapeHtml,
@@ -12,10 +12,9 @@ import {
   formatLocalTime,
   formatUtcTime,
   loadDssInputs
-} from "./data-source-adapters.js";
+} from "./data-source-adapters.js?v=krno-operational-3";
 
-const storageKey = "krno-partner-dss-admin-config";
-const config = loadConfig();
+const config = KRNO_OPERATIONAL_CONFIG;
 const tooltip = document.getElementById("tooltip");
 const metersPerNm = 1852;
 let partnerState = fallbackPartnerState(config);
@@ -35,15 +34,6 @@ let radarFrame = radarFrames.length - 1;
 
 function byId(id) {
   return document.getElementById(id);
-}
-
-function loadConfig() {
-  try {
-    const stored = localStorage.getItem(storageKey);
-    return stored ? { ...cloneDefaultConfig(), ...JSON.parse(stored) } : cloneDefaultConfig();
-  } catch {
-    return cloneDefaultConfig();
-  }
 }
 
 function setText(id, text) {
@@ -256,7 +246,7 @@ function renderObs(state) {
     arrow.hidden = false;
     const direction = Number(obs.windDirection);
     arrow.style.transform = Number.isFinite(direction)
-      ? `rotate(${direction + 90}deg)`
+      ? `rotate(${direction - 90}deg)`
       : "rotate(90deg)";
   }
 
@@ -334,12 +324,19 @@ function initMap(state) {
       interactive: false,
       icon: L.divIcon({
         className: "city-label",
-        html: escapeHtml(city.name),
-        iconSize: null
+        html: `<span class="city-dot"></span><span>${escapeHtml(city.name)}</span>`,
+        iconSize: [112, 18],
+        iconAnchor: [7, 9]
       })
     }).addTo(map);
   });
-  map.fitBounds([[39.08, -120.24], [39.68, -118.74]], { padding: [8, 8], animate: false });
+  const ringLimit = Math.max(...(state.config.mapLayers.ringsNm || [10, 20]), decisionRadius) * 1.22;
+  const north = destinationPoint(centerLat, centerLon, ringLimit, 0);
+  const east = destinationPoint(centerLat, centerLon, ringLimit, 90);
+  const south = destinationPoint(centerLat, centerLon, ringLimit, 180);
+  const west = destinationPoint(centerLat, centerLon, ringLimit, 270);
+  map.fitBounds([[south.lat, west.lon], [north.lat, east.lon]], { padding: [24, 24], animate: false });
+  setTimeout(() => map.invalidateSize(false), 0);
   setRadarFrame();
 }
 
@@ -368,7 +365,12 @@ function updateLightningMarker(state) {
   if (Number.isFinite(Number(strike.lat)) && Number.isFinite(Number(strike.lon))) {
     point = { lat: Number(strike.lat), lon: Number(strike.lon) };
   } else if (Number.isFinite(Number(strike.distance_nm)) && Number.isFinite(Number(strike.bearing_degrees))) {
-    point = destinationPoint(state.config.partnerProfile.latitude, state.config.partnerProfile.longitude, strike.distance_nm, strike.bearing_degrees);
+    point = destinationPoint(
+      state.config.forecastGeometry?.radius?.centerLat ?? state.config.partnerProfile.latitude,
+      state.config.forecastGeometry?.radius?.centerLon ?? state.config.partnerProfile.longitude,
+      strike.distance_nm,
+      strike.bearing_degrees
+    );
   }
   if (!point) return;
   lightningLayer = L.marker([point.lat, point.lon], {
@@ -407,7 +409,7 @@ function renderAlerts(state) {
   setText("alert-detail", state.alerts.detailText);
   setText("data-model", state.model.cycle);
   setText("data-build", `${state.model.buildText} build`);
-  setText("data-status", `${state.obs.statusLabel} | Forecast ${state.model.dataHealth.status}`);
+  setText("data-status", state.model.statusSummary || `${state.obs.statusLabel} | Forecast ${state.model.dataHealth.status}`);
 }
 
 function tipHtml({ title, subtitle, lines = [] }) {
@@ -474,7 +476,7 @@ function render(state) {
 
 async function refresh() {
   try {
-    const inputs = await loadDssInputs();
+    const inputs = await loadDssInputs(config);
     render(buildPartnerState(inputs, config));
   } catch (error) {
     console.info("Using fallback partner display state.", error);

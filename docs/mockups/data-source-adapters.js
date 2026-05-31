@@ -1,7 +1,17 @@
 import { CATEGORY_RANK, CATEGORY_COLORS, cloneDefaultConfig } from "./dss-config-schema.js";
 import { calculateForecastConfidence, categoryFromRank, categoryRank } from "./confidence-engine.js";
+import { getLikelihoodCategory } from "./weather-risk-matrix.js";
 
 const KRNO_TIMEZONE = "America/Los_Angeles";
+const DATA_PATHS = {
+  currentObs: ["../data/krno/current_obs.json", "../observations.json"],
+  timeline: ["../data/krno/timeline.json", "../nbm_timeline.json"],
+  threats: ["../data/krno/threats.json", "../nbm_threats.json"],
+  primaryAction: ["../data/krno/primary_action.json"],
+  lightningStatus: ["../data/krno/lightning_status.json", "../lightning.json"],
+  alerts: ["../data/krno/alerts.json", "../alerts.json"],
+  dataHealth: ["../data/krno/data_health.json"]
+};
 
 export function escapeHtml(value) {
   return String(value ?? "")
@@ -17,6 +27,19 @@ export async function fetchJson(path) {
   const response = await fetch(`${path}${separator}t=${Date.now()}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Unable to load ${path}`);
   return response.json();
+}
+
+async function fetchFirstJson(paths, fallback, label) {
+  const errors = [];
+  for (const path of paths) {
+    try {
+      return await fetchJson(path);
+    } catch (error) {
+      errors.push(`${path}: ${error.message}`);
+    }
+  }
+  console.warn(`Using fallback ${label}.`, errors);
+  return typeof fallback === "function" ? fallback() : fallback;
 }
 
 export function formatLocalTime(iso, options = {}) {
@@ -53,55 +76,137 @@ export function normalizeCategory(value) {
   return categoryFromRank(value);
 }
 
-function rankForDetail(detail) {
-  return categoryRank(detail?.risk_label || detail?.risk || detail?.level);
+function parseSkyFromMetar(metar) {
+  const tokens = String(metar || "").split(/\s+/);
+  const sky = tokens.filter(token => /^(FEW|SCT|BKN|OVC|VV|CLR|SKC)\d{0,3}/.test(token));
+  return sky.length ? sky.join(" / ") : "Not reported";
+}
+
+function parseWeatherFromMetar(metar) {
+  const wxTokens = String(metar || "").split(/\s+/).filter(token => /^[-+]?((RA|SN|DZ|FG|BR|TS|SH|FZ|UP|GR|GS|PL){2,})$/.test(token));
+  if (!wxTokens.length) return "None";
+  return wxTokens.join(" ")
+    .replace("-RA", "Light Rain")
+    .replace("RA", "Rain")
+    .replace("SN", "Snow")
+    .replace("TS", "Thunder");
+}
+
+export function formatWindValue(direction, speed, gust) {
+  const mph = Number(speed);
+  const gustMph = Number(gust);
+  if (!Number.isFinite(mph) || mph <= 0) return "CALM";
+  const dirText = direction == null || String(direction).toUpperCase() === "VRB" ? "VRB" : `${Math.round(Number(direction))}°`;
+  if (Number.isFinite(gustMph) && gustMph > mph) return `${dirText} ${Math.round(mph)}G${Math.round(gustMph)} mph`;
+  return `${dirText} ${Math.round(mph)} mph`;
+}
+
+function isoFromCompactUtc(value) {
+  if (!value) return null;
+  const text = String(value);
+  if (text.includes("T")) return text.replace(/Z?$/, "Z");
+  const date = new Date(text);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
+
+export function adaptObservation(obs = {}) {
+  const observedUtc = isoFromCompactUtc(obs.validUtc || obs.observed_utc || obs.generated_utc);
+  const ageMinutes = Number.isFinite(Number(obs.ageMinutes))
+    ? Number(obs.ageMinutes)
+    : observedUtc ? (Date.now() - new Date(observedUtc).getTime()) / 60000 : Infinity;
+  const status = obs.status || (ageMinutes <= 15 ? "Fresh" : ageMinutes <= 45 ? "Aging" : "Stale");
+  const stale = status === "Stale" || !Number.isFinite(ageMinutes) || ageMinutes > 45;
+  const speed = obs.windSpeedMph ?? obs.wind_speed_mph ?? (Number(obs.wind_speed_kt) * 1.15078);
+  const gust = obs.windGustMph ?? obs.wind_gust_mph ?? (Number(obs.wind_gust_kt) * 1.15078);
+  const direction = obs.windDirectionDeg ?? obs.wind_dir_deg;
+  const visibility = Number(obs.visibilitySm ?? obs.visibility_sm);
+  const temp = Number(obs.temperatureF ?? obs.temperature_f);
+  const dew = Number(obs.dewpointF ?? obs.dewpoint_f);
+  const rain = Number(obs.precip1hrIn ?? obs.precip_1hr_in ?? 0);
+  return {
+    source: obs.source || "KRNO observation feed",
+    observedUtc,
+    localTime: obs.validLocal || formatLocalTime(observedUtc, { zone: true }),
+    utcTime: formatUtcTime(observedUtc),
+    stale,
+    ageMinutes,
+    statusLabel: stale ? "Obs Stale" : status === "Aging" ? "Obs Aging" : "Obs Fresh",
+    windDirection: direction,
+    windSpeedMph: Number(speed),
+    windGustMph: Number(gust),
+    windText: formatWindValue(direction, speed, gust),
+    visibilityText: Number.isFinite(visibility) ? (visibility >= 10 ? "10+ SM" : `${visibility.toFixed(1)} SM`) : "--",
+    skyText: obs.skyCondition || obs.sky_condition || parseSkyFromMetar(obs.rawMetar || obs.metar),
+    tempDpText: Number.isFinite(temp) && Number.isFinite(dew) ? `${Math.round(temp)} / ${Math.round(dew)}°F` : "--",
+    weatherText: obs.presentWeather || obs.present_weather || parseWeatherFromMetar(obs.rawMetar || obs.metar),
+    rainText: Number.isFinite(rain) ? `${rain.toFixed(2)} in` : "--",
+    metar: obs.rawMetar || obs.metar || ""
+  };
 }
 
 function sourceKeysForHazard(hazard) {
-  return Array.isArray(hazard.sourceKeys) ? hazard.sourceKeys : [hazard.sourceKey];
+  if (Array.isArray(hazard.sourceKeys)) return hazard.sourceKeys;
+  return [hazard.sourceKey].filter(Boolean);
 }
 
-function bestDetailForBlock(blockHazards, sourceKeys) {
-  const candidates = sourceKeys.map(source => blockHazards?.[source]).filter(Boolean);
-  if (!candidates.length) return null;
-  return candidates.sort((a, b) => rankForDetail(b) - rankForDetail(a))[0];
-}
-
-function threatForHazard(threats, hazard) {
-  const candidates = sourceKeysForHazard(hazard).map(source => threats?.[source]).filter(Boolean);
+function bestLegacyDetail(blockHazards, hazard) {
+  const candidates = sourceKeysForHazard(hazard).map(source => blockHazards?.[source]).filter(Boolean);
   if (!candidates.length) return null;
   return candidates.sort((a, b) => categoryRank(b.risk_label || b.risk) - categoryRank(a.risk_label || a.risk))[0];
 }
 
-function blockCellsForHazard(timeline, hazard) {
-  const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks.slice(0, 24) : [];
+function cellsForHazard(timeline, hazard) {
+  const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks : [];
+  if (!blocks.length) return [];
+
+  if (blocks.some(block => block.hazardId)) {
+    return blocks
+      .filter(block => block.hazardId === hazard.hazardId)
+      .slice(0, 24)
+      .map((block, index) => ({
+        blockIndex: index,
+        validStartUtc: block.validStartUtc,
+        validEndUtc: block.validEndUtc,
+        riskCategory: normalizeCategory(block.risk),
+        rank: categoryRank(normalizeCategory(block.risk)),
+        metric: metricFromBlock(block),
+        probability: block.probability,
+        confidence: block.confidence || "Medium",
+        action: block.action,
+        likelihood: block.likelihood
+      }));
+  }
+
   const blockHazards = Array.isArray(timeline?.block_hazards) ? timeline.block_hazards.slice(0, 24) : [];
-  const sourceKeys = sourceKeysForHazard(hazard);
   return blocks.map((block, index) => {
-    const detail = bestDetailForBlock(blockHazards[index], sourceKeys);
-    const sourceRanks = sourceKeys.map(source => Number(block?.[source] ?? detail?.risk ?? 0));
-    const rank = Math.max(...sourceRanks, rankForDetail(detail), 0);
-    const riskCategory = normalizeCategory(detail?.risk_label || rank);
+    const detail = bestLegacyDetail(blockHazards[index], hazard);
+    const ranks = sourceKeysForHazard(hazard).map(source => Number(block?.[source] ?? detail?.risk ?? 0));
+    const rank = Math.max(...ranks, 0);
+    const category = normalizeCategory(detail?.risk_label || rank);
     return {
       blockIndex: index,
       validStartUtc: block.valid_start_utc,
       validEndUtc: block.valid_end_utc,
-      riskCategory,
-      rank: categoryRank(riskCategory),
-      detail,
-      metric: detail?.metric || detail?.display_value || "",
-      probability: detail?.probability ?? detail?.prob ?? detail?.values?.probability ?? detail?.values?.prob ?? null
+      riskCategory: category,
+      rank: categoryRank(category),
+      metric: detail?.display_value || detail?.metric || "",
+      probability: detail?.probability ?? detail?.prob ?? null,
+      confidence: "Medium",
+      action: detail?.action
     };
   });
+}
+
+function metricFromBlock(block) {
+  if (block.metric) return block.metric;
+  if (Number.isFinite(Number(block.probability))) return `${Math.round(Number(block.probability))}%`;
+  return "";
 }
 
 function highestContiguousWindow(cells, timezone) {
   if (!cells.length) return { label: "Timing TBD", cells: [] };
   const maxRank = Math.max(...cells.map(cell => cell.rank));
-  if (maxRank <= 1) {
-    const first = cells[0];
-    return { label: "No action window", cells: [first] };
-  }
+  if (maxRank <= 1) return { label: "No action window", cells: [cells[0]] };
 
   let best = [];
   let current = [];
@@ -113,18 +218,20 @@ function highestContiguousWindow(cells, timezone) {
       current = [];
     }
   });
-  const windowCells = best.length ? best : cells.filter(cell => cell.rank === maxRank).slice(0, 1);
+  const active = best.length ? best : cells.filter(cell => cell.rank === maxRank).slice(0, 1);
   return {
-    label: formatWindow(windowCells[0].validStartUtc, windowCells[windowCells.length - 1].validEndUtc, timezone),
-    cells: windowCells
+    label: formatWindow(active[0].validStartUtc, active[active.length - 1].validEndUtc, timezone),
+    cells: active
   };
 }
 
-function metricForThreat(threat, hazard) {
-  if (!threat) return hazard.noSignalText || "No signal";
-  if (threat.display_value) return String(threat.display_value);
-  if (threat.metric) return String(threat.metric).replace(/^Peak 3-hour thunder probability$/i, `Thunder ${Math.round(Number(threat.probability ?? 0))}%`);
-  return hazard.noSignalText || "No signal";
+function threatForHazard(threats, hazard) {
+  const list = Array.isArray(threats?.hazards) ? threats.hazards : null;
+  if (list) return list.find(item => item.hazardId === hazard.hazardId);
+  const legacy = threats?.threats || threats || {};
+  const candidates = sourceKeysForHazard(hazard).map(source => legacy?.[source]).filter(Boolean);
+  if (!candidates.length) return null;
+  return candidates.sort((a, b) => categoryRank(b.risk_label || b.risk) - categoryRank(a.risk_label || a.risk))[0];
 }
 
 function probabilityForThreat(threat) {
@@ -132,18 +239,56 @@ function probabilityForThreat(threat) {
   return Number.isFinite(Number(value)) ? Number(value) : null;
 }
 
-function dataHealthForTimeline(timeline) {
-  const generated = timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
+function dataHealthForTimeline(timeline, dataHealth) {
+  if (dataHealth?.forecastStatus) {
+    return {
+      status: String(dataHealth.forecastStatus).toLowerCase(),
+      generated: dataHealth.lastBuildUtc,
+      ageHours: dataHealth.lastBuildUtc ? (Date.now() - new Date(dataHealth.lastBuildUtc).getTime()) / 3600000 : Infinity
+    };
+  }
+  const generated = timeline?.generatedAtUtc || timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
   const ageHours = generated ? (Date.now() - new Date(generated).getTime()) / 3600000 : Infinity;
-  const complete = Array.isArray(timeline?.blocks) && timeline.blocks.length >= 24 && Array.isArray(timeline?.block_hazards) && timeline.block_hazards.length >= 24;
+  const complete = Array.isArray(timeline?.blocks) && timeline.blocks.length >= 24;
   if (!complete) return { status: "missing", generated, ageHours };
   if (ageHours <= 6) return { status: "fresh", generated, ageHours };
   if (ageHours <= 10) return { status: "aging", generated, ageHours };
   return { status: "stale", generated, ageHours };
 }
 
-function makeConfidenceInput({ hazard, threat, cells, timeline }) {
-  const riskCategory = normalizeCategory(threat?.risk_label || threat?.risk || Math.max(...cells.map(cell => cell.rank), 0));
+function actionFor(hazard, category, threat) {
+  return threat?.action || hazard.actionTextByImpact?.[category] || hazard.noSignalText || "Continue monitoring.";
+}
+
+function impactPhrase(hazard, category, threat) {
+  if (threat?.summary) return threat.summary;
+  if (categoryRank(category) <= 1) return hazard.noSignalText || "No operational restrictions expected.";
+  if (hazard.hazardId === "rampLightning") return "Isolated lightning may require ramp monitoring.";
+  if (hazard.hazardId === "airfieldWind") return "Gusts may affect exposed ramp operations.";
+  if (hazard.hazardId === "visibility") return "Reduced visibility may affect airfield movement.";
+  if (hazard.hazardId === "rainDrainage") return "Ponding or drainage checks may be needed.";
+  if (hazard.hazardId === "snowWinterOps") return "Treatment or winter staffing may be needed.";
+  if (hazard.hazardId === "freezingRain") return "Surface icing checks may be needed.";
+  if (hazard.hazardId === "flashFreeze") return "Wet pavement could freeze.";
+  if (hazard.hazardId === "temperature") return "Crew or equipment precautions may be needed.";
+  return "Weather may affect operations.";
+}
+
+function headlineFor(hazard, category, primaryAction) {
+  if (primaryAction?.primaryAction) return primaryAction.primaryAction.toUpperCase();
+  if (categoryRank(category) <= 1) return "CONTINUE ROUTINE AIRFIELD MONITORING";
+  if (hazard.hazardId === "rampLightning") return "MONITOR RAMP LIGHTNING POTENTIAL";
+  if (hazard.hazardId === "airfieldWind") return "MONITOR AIRFIELD WIND GUSTS";
+  if (hazard.hazardId === "visibility") return "MONITOR AIRFIELD VISIBILITY";
+  if (hazard.hazardId === "rainDrainage") return "MONITOR RAIN AND DRAINAGE";
+  if (hazard.hazardId === "snowWinterOps") return "PREPARE WINTER OPERATIONS CHECKS";
+  if (hazard.hazardId === "freezingRain") return "MONITOR FREEZING RAIN POTENTIAL";
+  if (hazard.hazardId === "flashFreeze") return "MONITOR PAVEMENT FREEZE POTENTIAL";
+  if (hazard.hazardId === "temperature") return "MONITOR TEMPERATURE IMPACTS";
+  return "MONITOR WEATHER IMPACTS";
+}
+
+function makeConfidenceInput({ hazard, threat, cells, riskCategory, timeline, dataHealth }) {
   const window = highestContiguousWindow(cells, KRNO_TIMEZONE);
   return {
     hazardConfig: hazard,
@@ -155,63 +300,37 @@ function makeConfidenceInput({ hazard, threat, cells, timeline }) {
     },
     previousRuns: [],
     spread: threat?.spread || null,
-    spatial: threat?.spatial || null,
     blocks: cells.map(cell => ({ riskCategory: cell.riskCategory })),
-    dataHealth: dataHealthForTimeline(timeline)
+    dataHealth: dataHealthForTimeline(timeline, dataHealth)
   };
 }
 
-function actionFor(hazard, category) {
-  return hazard.actionTextByImpact?.[category] || hazard.noSignalText || "Continue monitoring.";
-}
-
-function impactPhrase(hazard, category) {
-  if (categoryRank(category) <= 1) return hazard.noSignalText || "No operational restrictions expected.";
-  if (hazard.hazardId === "rampLightning") return "Ramp lightning monitoring may be needed.";
-  if (hazard.hazardId === "airfieldWind") return "Gusts may affect exposed ramp operations.";
-  if (hazard.hazardId === "visibilityCeiling") return "Reduced visibility may affect airfield movement.";
-  if (hazard.hazardId === "rainDrainage") return "Ponding or drainage checks may be needed.";
-  if (hazard.hazardId === "winterOps") return "Runway treatment or winter staffing may be needed.";
-  if (hazard.hazardId === "flashFreeze") return "Wet pavement could freeze.";
-  if (hazard.hazardId === "temperature") return "Crew or equipment precautions may be needed.";
-  return "Weather may affect operations.";
-}
-
-function headlineFor(hazard, category) {
-  if (categoryRank(category) <= 1) return "CONTINUE ROUTINE AIRFIELD MONITORING";
-  if (hazard.hazardId === "rampLightning") return "MONITOR RAMP LIGHTNING POTENTIAL";
-  if (hazard.hazardId === "airfieldWind") return "MONITOR AIRFIELD WIND GUSTS";
-  if (hazard.hazardId === "visibilityCeiling") return "MONITOR AIRFIELD VISIBILITY";
-  if (hazard.hazardId === "rainDrainage") return "MONITOR RAIN AND DRAINAGE";
-  if (hazard.hazardId === "winterOps") return "PREPARE WINTER OPERATIONS CHECKS";
-  if (hazard.hazardId === "flashFreeze") return "MONITOR PAVEMENT FREEZE POTENTIAL";
-  if (hazard.hazardId === "temperature") return "MONITOR TEMPERATURE IMPACTS";
-  return "MONITOR WEATHER IMPACTS";
-}
-
-export function buildHazardSummaries(config, timeline, threats) {
+export function buildHazardSummaries(config, timeline, threats, dataHealth) {
   return (config.hazards || [])
     .filter(hazard => hazard.enabled && hazard.showOnPartnerDisplay)
     .map(hazard => {
-      const cells = blockCellsForHazard(timeline, hazard);
-      const threat = threatForHazard(threats?.threats || threats || {}, hazard);
-      const riskCategory = normalizeCategory(threat?.risk_label || threat?.risk || Math.max(...cells.map(cell => cell.rank), 0));
-      const window = highestContiguousWindow(cells, config.partnerProfile.timezone);
-      const confidence = calculateForecastConfidence(makeConfidenceInput({ hazard, threat, cells, timeline }));
+      const cells = cellsForHazard(timeline, hazard);
+      const threat = threatForHazard(threats, hazard);
+      const cellMaxRank = cells.length ? Math.max(...cells.map(cell => cell.rank)) : 0;
+      const riskCategory = normalizeCategory(threat?.risk || threat?.risk_label || cellMaxRank);
+      const window = threat?.peakWindow ? { label: threat.peakWindow, cells: [] } : highestContiguousWindow(cells, config.partnerProfile.timezone);
+      const confidence = threat?.confidence
+        ? { label: threat.confidence, score: threat.confidenceScore, drivers: [] }
+        : calculateForecastConfidence(makeConfidenceInput({ hazard, threat, cells, riskCategory, timeline, dataHealth }));
       return {
         hazardId: hazard.hazardId,
         sourceKey: hazard.sourceKey,
-        displayName: hazard.displayName,
-        operationalRowName: hazard.operationalRowName,
+        displayName: threat?.displayName || hazard.displayName,
+        operationalRowName: threat?.operationalRowName || hazard.operationalRowName,
         priority: hazard.priority ?? 99,
         riskCategory,
         rank: categoryRank(riskCategory),
-        metric: metricForThreat(threat, hazard),
+        metric: threat?.metric || threat?.display_value || threat?.summary || hazard.noSignalText || "",
         window: window.label,
-        action: actionFor(hazard, riskCategory),
-        impact: impactPhrase(hazard, riskCategory),
+        action: actionFor(hazard, riskCategory, threat),
+        impact: impactPhrase(hazard, riskCategory, threat),
         headline: headlineFor(hazard, riskCategory),
-        trigger: hazard.decisionTriggerText,
+        trigger: threat?.decisionTrigger || hazard.decisionTriggerText,
         confidence,
         cells,
         threat
@@ -277,116 +396,282 @@ export function buildKeyMessages(primary, config) {
   ];
 }
 
-export function buildSinceLastUpdate(primary, alerts) {
-  const alertCount = Array.isArray(alerts?.alerts) ? alerts.alerts.length : 0;
+function mergePrimaryAction(primary, primaryAction) {
+  if (!primaryAction || !primary) return primary;
+  const riskCategory = normalizeCategory(primaryAction.risk || primary.riskCategory);
+  return {
+    ...primary,
+    headline: String(primaryAction.primaryAction || primary.headline).toUpperCase(),
+    displayName: primaryAction.primaryHazard || primary.displayName,
+    riskCategory,
+    rank: categoryRank(riskCategory),
+    window: primaryAction.peakWindow || primary.window,
+    action: primaryAction.actionLine || primary.action,
+    confidence: { ...primary.confidence, label: primaryAction.confidence || primary.confidence.label },
+    trigger: primaryAction.decisionTrigger || primary.trigger
+  };
+}
+
+export function buildSinceLastUpdate(primary, alerts, primaryAction) {
+  if (primaryAction?.sinceLastUpdate) return primaryAction.sinceLastUpdate;
+  const alertCount = Array.isArray(alerts?.list) ? alerts.list.length : 0;
   if (alertCount) return `${alertCount} official alert${alertCount === 1 ? "" : "s"} active. Review alert panel.`;
   if (!primary || primary.rank <= 1) return "No significant operational signal. No official alerts.";
   return `${primary.displayName} remains the main watch item. No official alerts.`;
 }
 
-function parseSkyFromMetar(metar) {
-  const tokens = String(metar || "").split(/\s+/);
-  const sky = tokens.filter(token => /^(FEW|SCT|BKN|OVC|VV|CLR|SKC)\d{0,3}/.test(token));
-  return sky.length ? sky.join(" / ") : "Not reported";
-}
-
-function parseWeatherFromMetar(metar) {
-  const wxTokens = String(metar || "").split(/\s+/).filter(token => /^[-+]?((RA|SN|DZ|FG|BR|TS|SH|FZ|UP|GR|GS|PL){2,})$/.test(token));
-  if (!wxTokens.length) return "None";
-  return wxTokens.join(" ").replace("-RA", "Light Rain").replace("RA", "Rain").replace("SN", "Snow").replace("TS", "Thunder");
-}
-
-export function formatWindValue(direction, speed, gust) {
-  const mph = Number(speed);
-  const gustMph = Number(gust);
-  if (!Number.isFinite(mph) || mph <= 0) return "CALM";
-  const dirText = direction == null || String(direction).toUpperCase() === "VRB" ? "VRB" : `${Math.round(Number(direction))}°`;
-  if (Number.isFinite(gustMph) && gustMph > mph) return `${dirText} ${Math.round(mph)}G${Math.round(gustMph)} mph`;
-  return `${dirText} ${Math.round(mph)} mph`;
-}
-
-export function adaptObservation(obs = {}) {
-  const observedUtc = obs.observed_utc || obs.generated_utc;
-  const ageMinutes = observedUtc ? (Date.now() - new Date(observedUtc).getTime()) / 60000 : Infinity;
-  const stale = !Number.isFinite(ageMinutes) || ageMinutes > 30;
-  const windText = formatWindValue(obs.wind_dir_deg, obs.wind_speed_mph ?? (Number(obs.wind_speed_kt) * 1.15078), obs.wind_gust_mph ?? (Number(obs.wind_gust_kt) * 1.15078));
-  const visibility = Number(obs.visibility_sm);
-  const temp = Number(obs.temperature_f);
-  const dew = Number(obs.dewpoint_f);
-  const rain = Number(obs.precip_1hr_in || 0);
-  return {
-    source: obs.source || "Observation feed",
-    observedUtc,
-    localTime: formatLocalTime(observedUtc, { zone: true }),
-    utcTime: formatUtcTime(observedUtc),
-    stale,
-    ageMinutes,
-    statusLabel: stale ? "Obs Stale" : ageMinutes > 15 ? "Obs Aging" : "Obs Fresh",
-    windDirection: obs.wind_dir_deg,
-    windSpeedMph: Number(obs.wind_speed_mph ?? (Number(obs.wind_speed_kt) * 1.15078)),
-    windGustMph: Number(obs.wind_gust_mph ?? (Number(obs.wind_gust_kt) * 1.15078)),
-    windText,
-    visibilityText: Number.isFinite(visibility) ? (visibility >= 10 ? "10+ SM" : `${visibility.toFixed(1)} SM`) : "--",
-    skyText: obs.sky_condition || parseSkyFromMetar(obs.metar),
-    tempDpText: Number.isFinite(temp) && Number.isFinite(dew) ? `${Math.round(temp)} / ${Math.round(dew)}°F` : "--",
-    weatherText: obs.present_weather || parseWeatherFromMetar(obs.metar),
-    rainText: Number.isFinite(rain) ? `${rain.toFixed(2)} in` : "--",
-    metar: obs.metar || ""
-  };
-}
-
 export function adaptLightning(lightning = {}, config = cloneDefaultConfig()) {
-  const nearest = lightning.nearest_strike || null;
+  const nearest = lightning.nearest_strike || lightning.nearest || null;
   const rings = lightning.rings || {};
   const within20 = Number(rings.within_20_nm?.count || 0);
   const within10 = Number(rings.within_10_nm?.count || 0);
-  const age = nearest?.age_minutes;
+  const clear20 = lightning.ring20Status || (within20 > 0 ? "Strike detected" : "Clear");
+  const clear10 = lightning.ring10Status || (within10 > 0 ? "Strike detected" : "Clear");
+  const closestDistance = lightning.closestStrikeDistanceNm ?? nearest?.distance_nm;
+  const closestDirection = lightning.closestStrikeDirection ?? nearest?.bearing_cardinal;
+  const closestText = lightning.closestLightningText
+    || (Number.isFinite(Number(closestDistance)) ? `${Number(closestDistance).toFixed(1)} NM ${closestDirection || ""}`.trim() : "None detected");
+  const age = lightning.closestStrikeAgeMinutes ?? nearest?.age_minutes;
   return {
-    source: lightning.source || "Lightning feed",
-    generatedUtc: lightning.generated_utc,
-    localScanTime: formatLocalTime(lightning.generated_utc, { zone: true }),
-    ring20Status: within20 > 0 ? "Strike detected" : "Clear",
-    ring10Status: within10 > 0 ? "Strike detected" : "Clear",
-    closestText: nearest ? `${Number(nearest.distance_nm).toFixed(1)} NM ${nearest.bearing_cardinal || ""}`.trim() : "None detected",
+    source: lightning.source || "GLM lightning feed",
+    generatedUtc: lightning.lastScanUtc || lightning.generated_utc,
+    localScanTime: lightning.lastScanLocal || formatLocalTime(lightning.lastScanUtc || lightning.generated_utc, { zone: true }),
+    ring20Status: clear20,
+    ring10Status: clear10,
+    closestText,
     strikeAgeText: Number.isFinite(Number(age)) ? `${Math.round(Number(age))} min ago` : "--",
-    action: within20 > 0 ? "Consider ramp lightning procedures." : "Continue monitoring.",
+    action: lightning.action || (clear20 === "Strike detected" ? "Consider ramp lightning procedures." : "Continue monitoring."),
     nearest,
     ringsNm: config.mapLayers?.ringsNm || [10, 20],
-    riskCategory: within10 > 0 ? "Major" : within20 > 0 ? "Moderate" : "None"
+    riskCategory: clear10 === "Strike detected" ? "Major" : clear20 === "Strike detected" ? "Moderate" : "None"
   };
 }
 
 export function adaptAlerts(alerts = {}) {
-  const list = Array.isArray(alerts.alerts) ? alerts.alerts : [];
+  const list = Array.isArray(alerts.activeAlerts) ? alerts.activeAlerts : Array.isArray(alerts.alerts) ? alerts.alerts : [];
   return {
-    generatedUtc: alerts.generated_utc,
+    generatedUtc: alerts.updatedUtc || alerts.generated_utc,
     count: list.length,
     list,
-    statusText: list.length ? `${list.length} Active Alert${list.length === 1 ? "" : "s"}` : "All Clear",
-    detailText: list.length ? "Review official products for KRNO." : "No active official alerts for KRNO."
+    statusText: alerts.status || (list.length ? `${list.length} Active Alert${list.length === 1 ? "" : "s"}` : "All Clear"),
+    detailText: alerts.summary || (list.length ? "Review official products for KRNO." : "No active official alerts for KRNO.")
   };
 }
 
-export async function loadDssInputs() {
-  const [timeline, threats, observations, lightning, alerts] = await Promise.all([
-    fetchJson("../nbm_timeline.json"),
-    fetchJson("../nbm_threats.json"),
-    fetchJson("../observations.json"),
-    fetchJson("../lightning.json"),
-    fetchJson("../alerts.json")
+function adaptModel(inputs) {
+  const health = inputs.dataHealth || {};
+  const generatedUtc = health.lastBuildUtc || inputs.timeline?.generatedAtUtc || inputs.timeline?.generated_utc || inputs.threats?.generatedAtUtc || inputs.threats?.generated_utc;
+  return {
+    cycle: health.forecastCycle || inputs.timeline?.forecastCycle || inputs.timeline?.cycle || inputs.threats?.forecastCycle || inputs.threats?.cycle || "NBM",
+    generatedUtc,
+    buildText: formatUtcTime(generatedUtc),
+    dataHealth: dataHealthForTimeline(inputs.timeline, health),
+    statusSummary: health.statusSummary || ""
+  };
+}
+
+function makeFallbackTimeline(config) {
+  const now = new Date();
+  const blocks = [];
+  const hazards = [
+    ["rampLightning", "Ramp Lightning"],
+    ["airfieldWind", "Airfield Wind"],
+    ["visibility", "Visibility"],
+    ["rainDrainage", "Rain / Drainage"],
+    ["snowWinterOps", "Snow / Winter Ops"],
+    ["freezingRain", "Freezing Rain"],
+    ["flashFreeze", "Flash Freeze"],
+    ["temperature", "Temperature"]
+  ];
+  hazards.forEach(([hazardId, rowName]) => {
+    for (let index = 0; index < 24; index += 1) {
+      const start = new Date(now.getTime() + index * 3 * 3600000);
+      const end = new Date(start.getTime() + 3 * 3600000);
+      const activeLightning = hazardId === "rampLightning" && index >= 12 && index <= 14;
+      const risk = activeLightning ? "Minor" : "Little to None";
+      const probability = activeLightning ? 18 : hazardId === "rampLightning" ? 4 : null;
+      blocks.push({
+        hazardId,
+        operationalRowName: rowName,
+        validStartUtc: start.toISOString(),
+        validEndUtc: end.toISOString(),
+        risk,
+        riskValue: categoryRank(risk),
+        probability,
+        impactLevel: activeLightning ? 2 : 1,
+        likelihood: probability == null ? null : getLikelihoodCategory(probability),
+        action: activeLightning ? "Monitor ramp lightning potential." : "Routine awareness.",
+        confidence: "Medium",
+        confidenceScore: 62
+      });
+    }
+  });
+  return {
+    generatedAtUtc: now.toISOString(),
+    forecastCycle: "NBM fallback",
+    blocks,
+    config
+  };
+}
+
+function makeFallbackThreats() {
+  return {
+    hazards: [
+      {
+        hazardId: "rampLightning",
+        displayName: "Lightning",
+        operationalRowName: "Ramp Lightning",
+        risk: "Minor",
+        peakWindow: "Sun 2PM-8PM",
+        probability: 18,
+        confidence: "Medium",
+        action: "Monitor ramp lightning potential.",
+        decisionTrigger: "Lightning within 20 NM decision ring",
+        summary: "Isolated lightning may require ramp monitoring."
+      },
+      {
+        hazardId: "airfieldWind",
+        displayName: "Wind",
+        operationalRowName: "Airfield Wind",
+        risk: "Little to None",
+        peakWindow: "No action window",
+        confidence: "Medium",
+        action: "Routine awareness.",
+        decisionTrigger: "Gusts affecting ramp or aircraft handling",
+        summary: "No ground wind restrictions expected."
+      },
+      {
+        hazardId: "visibility",
+        displayName: "Visibility",
+        operationalRowName: "Visibility",
+        risk: "Little to None",
+        peakWindow: "No action window",
+        confidence: "Medium",
+        action: "Routine awareness.",
+        decisionTrigger: "Reduced visibility affecting airfield movement",
+        summary: "Low visibility procedures are unlikely."
+      },
+      {
+        hazardId: "rainDrainage",
+        displayName: "Rain",
+        operationalRowName: "Rain / Drainage",
+        risk: "Little to None",
+        peakWindow: "No action window",
+        confidence: "Medium",
+        action: "Routine awareness.",
+        decisionTrigger: "Rain rates causing drainage or ponding concerns",
+        summary: "Drainage impacts are unlikely."
+      }
+    ]
+  };
+}
+
+function makeFallbackObs() {
+  const now = new Date();
+  return {
+    station: "KRNO",
+    validLocal: formatLocalTime(now.toISOString(), { zone: true }),
+    validUtc: now.toISOString(),
+    ageMinutes: 0,
+    status: "Fresh",
+    windDirectionDeg: 280,
+    windSpeedMph: 8,
+    windGustMph: null,
+    visibilitySm: 10,
+    skyCondition: "FEW090",
+    temperatureF: 66,
+    dewpointF: 35,
+    presentWeather: "None",
+    precip1hrIn: 0,
+    rawMetar: "KRNO AUTO 28008KT 10SM FEW090 19/02"
+  };
+}
+
+function makeFallbackLightning() {
+  const now = new Date();
+  return {
+    decisionRadiusNm: 20,
+    ring20Status: "Clear",
+    ring10Status: "Clear",
+    closestStrikeDistanceNm: null,
+    closestStrikeDirection: null,
+    closestStrikeAgeMinutes: null,
+    closestLightningText: "None detected",
+    lastScanLocal: formatLocalTime(now.toISOString(), { zone: true }),
+    lastScanUtc: now.toISOString(),
+    action: "Continue monitoring"
+  };
+}
+
+function makeFallbackPrimary() {
+  return {
+    primaryAction: "Monitor Ramp Lightning Potential",
+    primaryHazard: "Lightning",
+    risk: "Minor",
+    peakWindow: "Sun 2-8 PM",
+    decisionArea: "20 NM Decision Area",
+    confidence: "Medium",
+    actionLine: "Continue routine operations; monitor lightning ring and updates.",
+    sinceLastUpdate: "Lightning remains the main watch item. No official alerts."
+  };
+}
+
+function makeFallbackAlerts() {
+  return {
+    status: "All Clear",
+    activeAlerts: [],
+    summary: "No active official alerts for KRNO.",
+    updatedUtc: new Date().toISOString()
+  };
+}
+
+function makeFallbackHealth() {
+  const now = new Date();
+  return {
+    obsStatus: "Fresh",
+    obsAgeMinutes: 0,
+    forecastStatus: "Fresh",
+    forecastCycle: "NBM fallback",
+    lastBuildUtc: now.toISOString(),
+    statusSummary: `Obs fresh | NBM fallback | Build ${formatUtcTime(now.toISOString())}`
+  };
+}
+
+export async function loadDssInputs(config = cloneDefaultConfig()) {
+  const fallbackTimeline = () => makeFallbackTimeline(config);
+  const [
+    currentObs,
+    timeline,
+    threats,
+    primaryAction,
+    lightningStatus,
+    alerts,
+    dataHealth
+  ] = await Promise.all([
+    fetchFirstJson(DATA_PATHS.currentObs, makeFallbackObs, "current observations"),
+    fetchFirstJson(DATA_PATHS.timeline, fallbackTimeline, "timeline"),
+    fetchFirstJson(DATA_PATHS.threats, makeFallbackThreats, "threats"),
+    fetchFirstJson(DATA_PATHS.primaryAction, makeFallbackPrimary, "primary action"),
+    fetchFirstJson(DATA_PATHS.lightningStatus, makeFallbackLightning, "lightning status"),
+    fetchFirstJson(DATA_PATHS.alerts, makeFallbackAlerts, "alerts"),
+    fetchFirstJson(DATA_PATHS.dataHealth, makeFallbackHealth, "data health")
   ]);
-  return { timeline, threats, observations, lightning, alerts };
+  return { currentObs, timeline, threats, primaryAction, lightningStatus, alerts, dataHealth };
 }
 
 export function buildPartnerState(inputs, config = cloneDefaultConfig()) {
-  const summaries = buildHazardSummaries(config, inputs.timeline, inputs.threats);
-  const primary = primaryConcernFromSummaries(summaries);
+  const summaries = buildHazardSummaries(config, inputs.timeline, inputs.threats, inputs.dataHealth);
+  const calculatedPrimary = primaryConcernFromSummaries(summaries);
+  const primary = mergePrimaryAction(calculatedPrimary, inputs.primaryAction);
   const operationalTimeline = buildOperationalRows(config, inputs.timeline, summaries);
-  const obs = adaptObservation(inputs.observations);
-  const lightning = adaptLightning(inputs.lightning, config);
+  const obs = adaptObservation(inputs.currentObs || inputs.observations);
+  const lightning = adaptLightning(inputs.lightningStatus || inputs.lightning, config);
   const alerts = adaptAlerts(inputs.alerts);
-  const keyMessages = buildKeyMessages(primary, config);
-  const dataHealth = dataHealthForTimeline(inputs.timeline);
+  const keyMessages = inputs.primaryAction ? [
+    { title: "Hazard / Impact", text: calculatedPrimary?.impact || "No operational weather signal in the next 72 hours." },
+    { title: "Timing", text: primary?.rank <= 1 ? "No action window in the next 72 hours." : `Highest concern ${primary?.window || inputs.primaryAction.peakWindow}.` },
+    { title: "Action / Confidence", text: `${primary?.action || inputs.primaryAction.actionLine} Confidence ${primary?.confidence?.label || inputs.primaryAction.confidence}.` }
+  ] : buildKeyMessages(primary, config);
   return {
     config,
     primary,
@@ -396,78 +681,20 @@ export function buildPartnerState(inputs, config = cloneDefaultConfig()) {
     lightning,
     alerts,
     keyMessages,
-    sinceLastUpdate: buildSinceLastUpdate(primary, alerts),
-    model: {
-      cycle: inputs.timeline?.cycle || inputs.threats?.cycle || "NBM",
-      generatedUtc: inputs.timeline?.generated_utc || inputs.threats?.generated_utc,
-      buildText: formatUtcTime(inputs.timeline?.generated_utc || inputs.threats?.generated_utc),
-      dataHealth
-    },
+    sinceLastUpdate: buildSinceLastUpdate(primary, alerts, inputs.primaryAction),
+    model: adaptModel(inputs),
     categoryColors: CATEGORY_COLORS
   };
 }
 
 export function fallbackPartnerState(config = cloneDefaultConfig()) {
-  const now = new Date();
-  const blocks = Array.from({ length: 24 }, (_, index) => {
-    const start = new Date(now.getTime() + index * 3 * 3600000);
-    const end = new Date(start.getTime() + 3 * 3600000);
-    return {
-      valid_start_utc: start.toISOString(),
-      valid_end_utc: end.toISOString(),
-      WIND: 1,
-      LIGHTNING: index >= 12 && index <= 14 ? 2 : 1,
-      RAIN: 1,
-      VISIBILITY: 1,
-      SNOW: 1,
-      FZRA: 1,
-      FLASH_FREEZE: 1,
-      TEMPERATURE: 1
-    };
-  });
-  const block_hazards = blocks.map((block, index) => ({
-    LIGHTNING: {
-      risk: block.LIGHTNING,
-      risk_label: normalizeCategory(block.LIGHTNING),
-      metric: index >= 12 && index <= 14 ? "Thunder 12%" : "Thunder 2%",
-      prob: index >= 12 && index <= 14 ? 12 : 2,
-      valid_start_utc: block.valid_start_utc,
-      valid_end_utc: block.valid_end_utc
-    }
-  }));
   return buildPartnerState({
-    timeline: {
-      cycle: "NBM",
-      generated_utc: now.toISOString(),
-      blocks,
-      block_hazards
-    },
-    threats: {
-      threats: {
-        LIGHTNING: {
-          risk: 2,
-          risk_label: "Minor",
-          display_value: "Thunder 12%",
-          prob: 12,
-          peak_valid_utc: blocks[12].valid_start_utc
-        }
-      }
-    },
-    observations: {
-      observed_utc: now.toISOString(),
-      wind_speed_mph: 8,
-      wind_dir_deg: 280,
-      visibility_sm: 10,
-      temperature_f: 62,
-      dewpoint_f: 38,
-      precip_1hr_in: 0,
-      metar: "KRNO AUTO 28007KT 10SM FEW065 17/03"
-    },
-    lightning: {
-      generated_utc: now.toISOString(),
-      rings: {},
-      nearest_strike: null
-    },
-    alerts: { alerts: [] }
+    currentObs: makeFallbackObs(),
+    timeline: makeFallbackTimeline(config),
+    threats: makeFallbackThreats(),
+    primaryAction: makeFallbackPrimary(),
+    lightningStatus: makeFallbackLightning(),
+    alerts: makeFallbackAlerts(),
+    dataHealth: makeFallbackHealth()
   }, config);
 }
