@@ -4,6 +4,7 @@ import {
   IMPACT_CATEGORIES,
   cloneDefaultConfig
 } from "./dss-config-schema.js";
+import { NBM_VARIABLE_CATALOG, catalogKey, catalogLabel, getCatalogItem } from "./nbm-variable-catalog.js";
 import { calculateForecastConfidence } from "./confidence-engine.js";
 
 const storageKey = "krno-partner-dss-admin-config";
@@ -31,12 +32,12 @@ const hazardFields = [
   "showOnPartnerDisplay",
   "priority",
   "dataSource",
+  "nbmCatalogKey",
   "modelVariable",
   "units",
   "accumulationWindow",
   "forecastWindow",
   "thresholdDirection",
-  "backupDataSources",
   "decisionTriggerText",
   "noSignalText"
 ];
@@ -69,6 +70,16 @@ function setSelectOptions(select, options) {
     const element = document.createElement("option");
     element.value = option;
     element.textContent = option;
+    select.appendChild(element);
+  });
+}
+
+function setSelectOptionObjects(select, options) {
+  select.innerHTML = "";
+  options.forEach(option => {
+    const element = document.createElement("option");
+    element.value = option.value;
+    element.textContent = option.label;
     select.appendChild(element);
   });
 }
@@ -159,30 +170,53 @@ function renderHazardEditor() {
   const hazard = selectedHazard();
   if (!hazard) return;
   setSelectOptions(byId("dataSource"), DATA_SOURCE_OPTIONS);
+  setSelectOptionObjects(byId("nbmCatalogKey"), NBM_VARIABLE_CATALOG.map(item => ({
+    value: catalogKey(item),
+    label: catalogLabel(item)
+  })));
   hazardFields.forEach(field => {
     const element = byId(field);
     if (!element) return;
-    if (field === "backupDataSources") {
-      element.value = (hazard.backupDataSources || []).join(", ");
-    } else {
-      element.value = String(hazard[field] ?? "");
-    }
+    element.value = String(hazard[field] ?? "");
     element.oninput = () => {
-      if (field === "backupDataSources") {
-        hazard.backupDataSources = element.value.split(",").map(item => item.trim()).filter(Boolean);
-      } else if (field === "enabled" || field === "showOnPartnerDisplay") {
+      if (field === "enabled" || field === "showOnPartnerDisplay") {
         hazard[field] = element.value === "true";
       } else if (field === "priority") {
         hazard[field] = Number(element.value);
       } else {
         hazard[field] = element.value;
         if (field === "hazardId") selectedHazardId = element.value;
+        if (field === "nbmCatalogKey") applyCatalogSelection(hazard, element.value);
       }
       renderHazardList();
       renderPreview();
+      renderNbmFieldDetail();
       updateJsonOutput();
     };
   });
+  renderNbmFieldDetail();
+}
+
+function applyCatalogSelection(hazard, key) {
+  const item = getCatalogItem(key);
+  if (!item) return;
+  hazard.dataSource = "NBM";
+  hazard.modelVariable = item.variable;
+  hazard.forecastWindow = Object.entries(item.temporal || {}).map(([window, range]) => `${window} ${range}`).join("; ") || hazard.forecastWindow;
+  hazard.accumulationWindow = Object.keys(item.temporal || {})[0] || hazard.accumulationWindow;
+}
+
+function renderNbmFieldDetail() {
+  const hazard = selectedHazard();
+  const item = getCatalogItem(hazard?.nbmCatalogKey);
+  const detail = byId("nbm-field-detail");
+  if (!detail) return;
+  if (!item) {
+    detail.textContent = "Choose an NBM variable from the controlled catalog.";
+    return;
+  }
+  const windows = Object.entries(item.temporal || {}).map(([window, range]) => `${window}: ${range}`).join(" | ") || "Temporal coverage not listed";
+  detail.textContent = `${item.product} • ${item.weatherType} • ${item.fieldOptions.join(", ")} • ${windows}`;
 }
 
 function renderThresholds() {

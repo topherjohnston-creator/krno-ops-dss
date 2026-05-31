@@ -86,15 +86,19 @@
           </div>
           <div class="grid-3">
             <label><span>Data Source</span><select id="dataSource"></select></label>
-            <label><span>Model Variable</span><input id="modelVariable"></label>
+            <label><span>NBM Variable</span><select id="nbmCatalogKey"></select></label>
             <label><span>Units</span><input id="units"></label>
+          </div>
+          <label><span>Model Variable</span><input id="modelVariable"></label>
+          <div class="preview-card">
+            <div class="preview-title">Selected NBM Field</div>
+            <div class="preview-value" id="nbm-field-detail">--</div>
           </div>
           <div class="grid-3">
             <label><span>Accumulation Window</span><input id="accumulationWindow"></label>
             <label><span>Forecast Window</span><input id="forecastWindow"></label>
             <label><span>Threshold Direction</span><input id="thresholdDirection"></label>
           </div>
-          <label><span>Backup Data Sources</span><input id="backupDataSources"></label>
           <label><span>Decision Trigger Text</span><input id="decisionTriggerText"></label>
           <label><span>No Signal Text</span><input id="noSignalText"></label>
         </div>

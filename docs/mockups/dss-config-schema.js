@@ -25,19 +25,7 @@ export const CATEGORY_COLORS = {
   Extreme: "#b44fd4"
 };
 
-export const DATA_SOURCE_OPTIONS = [
-  "NBM",
-  "HREF",
-  "REFS",
-  "RRFS",
-  "HRRR",
-  "OBS",
-  "RADAR",
-  "MRMS",
-  "LIGHTNING",
-  "NWS_ALERTS",
-  "CUSTOM_JSON"
-];
+export const DATA_SOURCE_OPTIONS = ["NBM"];
 
 export const DEFAULT_CONFIDENCE_WEIGHTS = {
   probabilitySupport: 0.25,
@@ -85,7 +73,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: true,
       priority: 1,
       dataSource: "NBM",
-      backupDataSources: ["REFS", "HREF", "HRRR", "LIGHTNING", "RADAR"],
+      nbmCatalogKey: "Core:Convection:3 hr Probability of Thunder",
       modelVariable: "thunder_probability",
       accumulationWindow: "3-hour",
       forecastWindow: "72-hour",
@@ -127,7 +115,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: true,
       priority: 2,
       dataSource: "NBM",
-      backupDataSources: ["REFS", "HREF", "HRRR", "OBS"],
+      nbmCatalogKey: "QMD:Dynamics:24 hr Max 10m Wind Gust",
       modelVariable: "wind_gust",
       accumulationWindow: "instant",
       forecastWindow: "72-hour",
@@ -164,7 +152,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: true,
       priority: 3,
       dataSource: "NBM",
-      backupDataSources: ["REFS", "HREF", "OBS"],
+      nbmCatalogKey: "Core:Aviation:Ceiling <3 kft",
       modelVariable: "visibility_probability",
       accumulationWindow: "3-hour",
       forecastWindow: "72-hour",
@@ -206,7 +194,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: true,
       priority: 4,
       dataSource: "NBM",
-      backupDataSources: ["REFS", "HREF", "RADAR", "MRMS"],
+      nbmCatalogKey: "QMD:Precipitation:6 hr Precipitation",
       modelVariable: "precipitation_amount",
       accumulationWindow: "6-hour",
       forecastWindow: "72-hour",
@@ -249,7 +237,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: false,
       priority: 5,
       dataSource: "NBM",
-      backupDataSources: ["REFS", "HREF", "OBS"],
+      nbmCatalogKey: "Core:Snow:1 hr Snowfall",
       modelVariable: "snow_fzra_amount",
       accumulationWindow: "1-hour or 6-hour",
       forecastWindow: "72-hour",
@@ -291,7 +279,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: false,
       priority: 6,
       dataSource: "NBM",
-      backupDataSources: ["OBS", "RADAR", "MRMS"],
+      nbmCatalogKey: "Core:Surface:2m Temperature",
       modelVariable: "temperature_wet_surface_proxy",
       accumulationWindow: "3-hour",
       forecastWindow: "72-hour",
@@ -328,7 +316,7 @@ export const DEFAULT_DSS_CONFIG = {
       alwaysShowOnTimeline: false,
       priority: 7,
       dataSource: "NBM",
-      backupDataSources: ["OBS"],
+      nbmCatalogKey: "QMD:Surface:Max Temperature",
       modelVariable: "max_min_temperature",
       accumulationWindow: "daily",
       forecastWindow: "72-hour",
