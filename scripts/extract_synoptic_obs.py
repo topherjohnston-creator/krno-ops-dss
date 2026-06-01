@@ -19,7 +19,6 @@ KRNO_LAT = 39.4991
 KRNO_LON = -119.7681
 
 API_URL = "https://api.synopticdata.com/v2/stations/latest"
-AWC_METAR_URL = "https://aviationweather.gov/api/data/metar"
 
 
 def utc_now() -> str:
@@ -95,59 +94,6 @@ def mph_to_kt(value: Any) -> int | None:
         return round(float(value) / 1.15078)
     except (TypeError, ValueError):
         return None
-
-
-def kt_to_mph(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return round(float(value) * 1.15078, 1)
-    except (TypeError, ValueError):
-        return None
-
-
-def c_to_f(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return round(float(value) * 9 / 5 + 32, 2)
-    except (TypeError, ValueError):
-        return None
-
-
-def m_to_ft(value: Any) -> float | None:
-    if value is None:
-        return None
-    try:
-        return round(float(value) * 3.28084, 1)
-    except (TypeError, ValueError):
-        return None
-
-
-def relative_humidity_from_c(temp_c: Any, dewpoint_c: Any) -> float | None:
-    try:
-        temp = float(temp_c)
-        dewpoint = float(dewpoint_c)
-    except (TypeError, ValueError):
-        return None
-    vapor_pressure = 6.112 * pow(2.718281828, (17.67 * dewpoint) / (dewpoint + 243.5))
-    saturation = 6.112 * pow(2.718281828, (17.67 * temp) / (temp + 243.5))
-    if saturation <= 0:
-        return None
-    return round(max(0, min(100, 100 * vapor_pressure / saturation)), 2)
-
-
-def parse_awc_time(record: dict[str, Any]) -> str | None:
-    obs_time = record.get("obsTime")
-    if obs_time is not None:
-        try:
-            return datetime.fromtimestamp(float(obs_time), timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-        except (TypeError, ValueError, OSError):
-            pass
-    report_time = record.get("reportTime")
-    if isinstance(report_time, str) and report_time:
-        return report_time.replace("+00:00", "Z")
-    return None
 
 
 def display_weather_text(value: Any) -> str:
@@ -234,110 +180,6 @@ def fetch_synoptic_latest(token: str) -> dict[str, Any]:
     return response.json()
 
 
-def fetch_awc_metar() -> dict[str, Any] | None:
-    params = {
-        "ids": SITE,
-        "format": "json",
-        "hours": 2,
-    }
-    response = requests.get(AWC_METAR_URL, params=params, timeout=30)
-    response.raise_for_status()
-    records = response.json()
-    if not isinstance(records, list) or not records:
-        return None
-    return records[0]
-
-
-def parse_awc_metar(record: dict[str, Any] | None) -> dict[str, Any] | None:
-    if not record:
-        return None
-    observed_utc = parse_awc_time(record)
-    if not observed_utc:
-        return None
-    wind_speed_mph = kt_to_mph(record.get("wspd"))
-    wind_gust_mph = kt_to_mph(record.get("wgst"))
-    visibility_raw = str(record.get("visib") or "").replace("+", "")
-    try:
-        visibility_sm = float(visibility_raw)
-    except ValueError:
-        visibility_sm = None
-    temp_f = c_to_f(record.get("temp"))
-    dewpoint_f = c_to_f(record.get("dewp"))
-    cover = record.get("cover")
-    clouds = record.get("clouds") if isinstance(record.get("clouds"), list) else []
-    sky_condition = cover or " / ".join(
-        f"{cloud.get('cover')}{int(cloud.get('base')):03d}"
-        for cloud in clouds
-        if isinstance(cloud, dict) and cloud.get("cover") and cloud.get("base") is not None
-    )
-    return {
-        "site": SITE,
-        "source": "Aviation Weather Center METAR API",
-        "generated_utc": utc_now(),
-        "status": "ok",
-        "station": record.get("icaoId") or SITE,
-        "name": record.get("name"),
-        "latitude": record.get("lat"),
-        "longitude": record.get("lon"),
-        "elevation_ft": m_to_ft(record.get("elev")),
-        "observed_utc": observed_utc,
-        "wind_dir_deg": record.get("wdir"),
-        "wind_speed_kt": record.get("wspd"),
-        "wind_gust_kt": record.get("wgst"),
-        "wind_speed_mph": wind_speed_mph,
-        "wind_gust_mph": wind_gust_mph,
-        "visibility_sm": visibility_sm,
-        "temperature_f": temp_f,
-        "dewpoint_f": dewpoint_f,
-        "relative_humidity": relative_humidity_from_c(record.get("temp"), record.get("dewp")),
-        "precip_1hr_in": None,
-        "sky_condition": sky_condition or None,
-        "present_weather": "None",
-        "metar": record.get("rawOb"),
-        "field_times_utc": {
-            "awc_metar": observed_utc,
-        },
-        "age_minutes_at_build": round((iso_timestamp(utc_now()) - iso_timestamp(observed_utc)) / 60, 1),
-        "raw": {"awc": record},
-    }
-
-
-def merge_awc_if_newer(synoptic_obs: dict[str, Any], awc_obs: dict[str, Any] | None) -> dict[str, Any]:
-    if not awc_obs or awc_obs.get("status") != "ok":
-        return synoptic_obs
-    if synoptic_obs.get("status") != "ok":
-        return awc_obs
-    if iso_timestamp(awc_obs.get("observed_utc")) > iso_timestamp(synoptic_obs.get("observed_utc")):
-        merged = dict(awc_obs)
-        merged["source"] = "Aviation Weather Center METAR API"
-        merged["generated_utc"] = utc_now()
-        merged["synoptic_observed_utc"] = synoptic_obs.get("observed_utc")
-        merged["synoptic_generated_utc"] = synoptic_obs.get("generated_utc")
-        merged["synoptic_metar"] = synoptic_obs.get("metar")
-        merged["refresh_note"] = "AWC METAR was newer than Synoptic latest for KRNO during this build."
-        merged["raw"] = {
-            "awc": awc_obs.get("raw", {}).get("awc"),
-            "synoptic": synoptic_obs.get("raw"),
-        }
-        return merged
-
-    merged = dict(synoptic_obs)
-    synoptic_raw = synoptic_obs.get("raw", {})
-    merged.update({
-        "source": "Synoptic API",
-        "generated_utc": utc_now(),
-        "awc_metar": awc_obs.get("metar"),
-        "awc_observed_utc": awc_obs.get("observed_utc"),
-        "raw": {
-            "synoptic": synoptic_raw,
-            "awc": awc_obs.get("raw", {}).get("awc"),
-        },
-    })
-    if not merged.get("metar") and awc_obs.get("metar"):
-        merged["metar"] = awc_obs.get("metar")
-    return merged
-
-
 def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
     stations = payload.get("STATION", [])
 
@@ -402,7 +244,7 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
         "metar": get_ob_value(observations, ["metar"]),
         "field_times_utc": field_times,
         "age_minutes_at_build": round((iso_timestamp(generated_utc) - iso_timestamp(observed_utc)) / 60, 1) if observed_utc else None,
-        "refresh_note": "Synoptic latest endpoint queried by GitHub Actions. KRNO may update most fields on METAR-style timestamps rather than every minute.",
+        "refresh_note": "Synoptic latest endpoint queried by GitHub Actions. No secondary observation fallback is used.",
         "raw": station,
     }
 
@@ -413,24 +255,13 @@ def main() -> None:
     token = os.getenv("SYNOPTIC_TOKEN")
 
     if not token:
-        try:
-            obs = parse_awc_metar(fetch_awc_metar()) or build_error_obs(
-                "Missing SYNOPTIC_TOKEN environment variable and AWC METAR fallback returned no KRNO record."
-            )
-        except Exception as exc:
-            obs = build_error_obs(
-                f"Missing SYNOPTIC_TOKEN environment variable and AWC METAR fallback failed: {exc}"
-            )
+        obs = build_error_obs("Missing SYNOPTIC_TOKEN environment variable. Observation generation is Synoptic-only.")
     else:
         try:
             payload = fetch_synoptic_latest(token)
             obs = parse_synoptic_response(payload)
         except Exception as exc:
             obs = build_error_obs(f"Synoptic API fetch failed: {exc}")
-        try:
-            obs = merge_awc_if_newer(obs, parse_awc_metar(fetch_awc_metar()))
-        except Exception as exc:
-            obs["awc_fallback_error"] = str(exc)
 
     payload = json.dumps(obs, indent=2)
     output_paths = [
