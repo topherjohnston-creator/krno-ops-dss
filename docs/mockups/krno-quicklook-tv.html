@@ -53,6 +53,7 @@
       --gap-main: 14px;
       --gap-small: 10px;
       --font: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      --title-font: Helvetica, "Helvetica Neue", Arial, "Public Sans", Roboto, sans-serif;
       --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
 
@@ -107,7 +108,7 @@
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
-      gap: 17px;
+      gap: 18px;
       margin-inline: calc(-1 * var(--page-pad));
       padding: 8px 46px;
       border: 0;
@@ -119,15 +120,15 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       overflow: hidden;
       white-space: nowrap;
     }
 
     .seal {
       display: block;
-      width: 43px;
-      height: 43px;
+      width: 48px;
+      height: 48px;
       flex: 0 0 auto;
       padding: 0;
       border: 1px solid rgba(231, 237, 245, 0.72);
@@ -140,11 +141,11 @@
     .title h1 {
       margin: 0;
       color: #f2f6fb;
-      font-family: "Roboto", "Segoe UI", Arial, sans-serif;
-      font-size: 34px;
+      font-family: var(--title-font);
+      font-size: 46px;
       line-height: 1;
       font-weight: 400;
-      letter-spacing: 0.01em;
+      letter-spacing: 0;
       text-shadow: none;
     }
 
@@ -232,7 +233,7 @@
 
     .concern-main {
       display: grid;
-      grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.25fr);
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
       align-items: center;
       gap: 26px;
       padding: 12px 24px;
@@ -265,6 +266,31 @@
       font-weight: 520;
       white-space: nowrap;
       text-align: right;
+    }
+
+    .concern-pills {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .concern-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 6px 14px;
+      border: 1px solid rgba(196, 215, 238, 0.25);
+      border-radius: 999px;
+      background: rgba(38, 50, 68, 0.84);
+      color: var(--text-body);
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 620;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
 
     .hazard-strip {
@@ -312,7 +338,7 @@
 
     .summary-hazard {
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1;
       font-weight: 650;
       letter-spacing: 0.07em;
@@ -324,7 +350,7 @@
 
     .summary-risk {
       color: var(--text-body);
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.02;
       font-weight: 620;
       white-space: nowrap;
@@ -334,10 +360,10 @@
 
     .summary-value {
       color: var(--text-muted);
-      font-size: 13px;
-      line-height: 1.05;
+      font-size: 12px;
+      line-height: 1.08;
       font-weight: 500;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -401,7 +427,7 @@
       align-items: end;
       padding: 0 0 8px 10px;
       color: var(--text-dim);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 520;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -583,7 +609,7 @@
 
     .bottom-row {
       display: grid;
-      grid-template-columns: 1.18fr 1.32fr 0.9fr;
+      grid-template-columns: 1.06fr 1.46fr 0.82fr;
       gap: var(--gap-main);
       min-height: 0;
       overflow: hidden;
@@ -598,7 +624,7 @@
     .bottom-body {
       min-height: 0;
       overflow: hidden;
-      padding: 12px 14px 14px;
+      padding: 10px 14px;
     }
 
     .obs-body {
@@ -617,14 +643,14 @@
     .obs-lines {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 12px;
+      gap: 5px 12px;
       align-content: center;
     }
 
     .wind-big {
       grid-column: 1 / -1;
       color: var(--text-main);
-      font-size: 43px;
+      font-size: 39px;
       line-height: 1;
       font-weight: 660;
       white-space: nowrap;
@@ -635,7 +661,7 @@
       align-items: baseline;
       gap: 7px;
       color: var(--text-muted);
-      font-size: 21px;
+      font-size: 19px;
       line-height: 1.05;
       font-weight: 500;
       white-space: nowrap;
@@ -643,7 +669,7 @@
 
     .obs-line strong {
       color: var(--text-body);
-      font-size: 25px;
+      font-size: 22px;
       font-weight: 600;
       overflow: visible;
       text-overflow: clip;
@@ -729,7 +755,7 @@
 
     .radar-body {
       display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(190px, 0.75fr);
+      grid-template-columns: minmax(0, 1.22fr) minmax(270px, 0.78fr);
       gap: 12px;
       align-items: stretch;
     }
@@ -812,9 +838,9 @@
     }
 
     .range-ring.r10 { height: 33.333%; aspect-ratio: 1; }
-    .range-ring.r15 { height: 50%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.42); }
+    .range-ring.r15 { display: none; }
     .range-ring.r20 { height: 66.667%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.35); }
-    .range-ring.r25 { height: 83.333%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.28); }
+    .range-ring.r25 { display: none; }
 
     .lightning-dot {
       position: absolute;
@@ -938,22 +964,20 @@
 
     .lightning-status {
       display: grid;
-      grid-template-rows: 1fr;
-      gap: 9px;
+      align-content: center;
+      gap: 8px;
       min-height: 0;
     }
 
-    .lightning-main {
+    .trigger-line {
       display: grid;
-      gap: 4px;
-      padding: 11px 12px;
-      border: 1px solid rgba(79, 195, 255, 0.28);
-      border-left: 6px solid var(--broadcast-cyan);
-      border-radius: 8px;
-      background: rgba(29, 45, 61, 0.74);
+      grid-template-columns: 116px minmax(0, 1fr);
+      gap: 10px;
+      align-items: baseline;
+      min-height: 0;
     }
 
-    .lightning-label {
+    .trigger-label {
       color: var(--text-muted);
       font-size: 14px;
       font-weight: 620;
@@ -961,16 +985,21 @@
       text-transform: uppercase;
     }
 
-    .lightning-value {
+    .trigger-value {
       color: var(--text-main);
-      font-size: 29px;
+      font-size: 23px;
       line-height: 1.05;
-      font-weight: 650;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
-    .lightning-meta {
-      color: var(--text-muted);
-      font-size: 16px;
+    .trigger-action {
+      margin-top: 2px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--text-main);
+      background: rgba(255,255,255,0.07);
+      font-size: 19px;
       line-height: 1.15;
       font-weight: 500;
     }
@@ -1265,8 +1294,8 @@
   <div class="app">
     <header class="header" aria-label="Airport weather DSS header">
       <div class="brand" aria-label="NOAA and National Weather Service branding">
-        <img class="seal" src="../assets/noaa-logo.svg" alt="NOAA">
-        <img class="seal" src="../assets/nws-logo.svg" alt="National Weather Service">
+        <img class="seal" src="./assets/noaa-emblem-circle.png" alt="NOAA">
+        <img class="seal" src="./assets/nws-logo-2021.png" alt="National Weather Service">
       </div>
       <div class="title">
         <h1>Weather Decision Support Dashboard</h1>
@@ -1276,6 +1305,7 @@
         <div class="badge mono" id="updated-utc">2155Z</div>
         <div class="badge fresh" id="obs-badge">Obs <strong id="obs-state">Fresh</strong></div>
         <div class="badge" id="model-badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
+        <div class="badge" id="obs-source-badge">Obs <strong>Synoptic 1-min</strong></div>
         <div class="badge beta" id="beta-badge">Beta / Internal Use</div>
       </div>
     </header>
@@ -1287,12 +1317,17 @@
           <div class="concern-label">Primary Concern</div>
           <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
         </div>
-        <div class="concern-detail" id="primary-detail">Peak Thu 5 PM · Ramp monitoring · Monitor closely</div>
+        <div class="concern-detail concern-pills" id="primary-detail">
+          <span class="concern-pill">Peak Thu 5 PM</span>
+          <span class="concern-pill">Ramp Lightning</span>
+          <span class="concern-pill">Monitor</span>
+          <span class="concern-pill">Confidence High</span>
+        </div>
       </div>
     </section>
 
     <section class="panel hazard-strip" aria-label="72-hour hazard summary">
-      <div class="strip-label">72-Hr Hazard Summary</div>
+      <div class="strip-label">Weather Risk Summary</div>
       <div class="summary-chip" data-summary-placeholder>
         <div class="summary-hazard">Lightning</div>
         <div class="summary-risk">Moderate</div>
@@ -1337,7 +1372,7 @@
 
     <section class="panel timeline-panel" aria-label="72-hour impact timeline">
       <div class="panel-head">
-        <div class="panel-title">72-Hour Weather Risk Timeline</div>
+        <div class="panel-title">Weather Risk Timeline</div>
         <div class="timeline-note">3-hour blocks</div>
       </div>
       <div class="matrix" id="timeline-matrix">
@@ -1351,7 +1386,7 @@
     <section class="bottom-row" aria-label="Quick-look bottom row">
       <section class="panel bottom-panel" data-current-obs aria-labelledby="obs-title">
         <div class="panel-head">
-          <div class="panel-title" id="obs-title">Current Obs</div>
+          <div class="panel-title" id="obs-title">Current Conditions</div>
         </div>
         <div class="bottom-body obs-body">
           <svg class="wind-rose" id="wind-rose" viewBox="0 0 220 220" role="img" aria-label="Wind rose">
@@ -1379,12 +1414,12 @@
           </svg>
           <div class="obs-lines">
             <div class="wind-big" id="wind-line" data-wind-value>280&deg; 13 mph</div>
-            <div class="obs-line" id="vis-item">VIS:<strong id="vis-line">10+ SM</strong></div>
+            <div class="obs-line" id="vis-item">VISIBILITY:<strong id="vis-line">10+ SM</strong></div>
             <div class="obs-line wide" id="sky-item">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
             <div class="obs-line" id="temp-item">T/TD:<strong id="temp-line">46 / 37&deg;F</strong></div>
             <div class="obs-line" id="wx-item">WX:<strong id="wx-line">None</strong></div>
-            <div class="obs-line" id="rain-item">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
-            <div class="obs-line" id="obs-time-item">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
+            <div class="obs-line wide" id="rain-item">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
+            <div class="obs-line wide" id="obs-time-item">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
           </div>
         </div>
       </section>
@@ -1411,11 +1446,12 @@
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
-            <div class="lightning-main" id="lightning-main">
-              <div class="lightning-label">Closest Lightning</div>
-              <div class="lightning-value" id="lightning-value">None &lt;25 nm</div>
-              <div class="lightning-meta" id="lightning-meta"></div>
-            </div>
+            <div class="trigger-line"><span class="trigger-label">20 NM Ring</span><span class="trigger-value" id="ring20-value">Clear</span></div>
+            <div class="trigger-line"><span class="trigger-label">10 NM Ring</span><span class="trigger-value" id="ring10-value">Clear</span></div>
+            <div class="trigger-line"><span class="trigger-label">Closest Strike</span><span class="trigger-value" id="lightning-value">None detected</span></div>
+            <div class="trigger-line"><span class="trigger-label">Strike Age</span><span class="trigger-value" id="strike-age-value">--</span></div>
+            <div class="trigger-line"><span class="trigger-label">Last Scan</span><span class="trigger-value" id="lightning-scan-value">--</span></div>
+            <div class="trigger-action" id="lightning-action">Continue monitoring.</div>
           </div>
         </div>
       </section>
@@ -1511,7 +1547,7 @@
     const radarHalfSpanNm = 30;
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
-    const decisionRadiiNm = [10, 15, 20, 25];
+    const decisionRadiiNm = [10, 20];
     const mapCityMarkers = [
       { name: "Truckee", lat: 39.32796, lon: -120.18325 },
       { name: "Carson City", lat: 39.16380, lon: -119.76740 },
@@ -2380,7 +2416,12 @@
       const action = item.action || operationalAction(risk);
       const confidence = hazardConfidence({ ...item, risk });
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
-      document.getElementById("primary-detail").textContent = `${item.peak || "Peak window TBD"} · ${impact} · ${action} · Confidence ${confidence.label}`;
+      document.getElementById("primary-detail").innerHTML = [
+        item.peak || "Peak window TBD",
+        impact,
+        action,
+        `Confidence ${confidence.label}`
+      ].map(text => `<span class="concern-pill">${escapeHtml(text)}</span>`).join("");
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
         title: `${name} - ${risk}`,
@@ -2480,36 +2521,15 @@
       updateNowMarker();
     }
 
-    function cloudFromMetar(raw) {
-      if (!raw) return "Not reported";
-      if (/\bCLR\b/.test(raw)) return "CLR";
-      if (/\bSKC\b/.test(raw)) return "SKC";
-      const clouds = raw.split(/\s+/).filter(part => /^(FEW|SCT|BKN|OVC|VV)\d{3}/.test(part));
-      return clouds.length ? clouds.join(" / ") : "Not reported";
-    }
-
-    function cloudFromAwc(record) {
-      if (Array.isArray(record?.clouds) && record.clouds.length) {
-        return record.clouds
-          .map(cloud => `${cloud.cover}${String(Math.round(Number(cloud.base || 0) / 100)).padStart(3, "0")}`)
-          .join(" / ");
-      }
-      return cloudFromMetar(record?.rawOb);
-    }
-
-    function parsePresentWeatherFromMetar(raw) {
-      if (!raw) return "None";
-      const weatherTokens = raw.split(/\s+/).filter(token =>
-        /^(?:VC)?(?:\+|-)?(?:TS|RA|SN|DZ|FG|BR|HZ|FU|DU|SA|FZRA|FZDZ|PL|GR|GS|UP|SH|BLSN|RASN|TSRA|TSGR)$/.test(token)
-      );
-      if (!weatherTokens.length) return "None";
-      const names = {
-        "-RA": "Light Rain", "RA": "Rain", "+RA": "Heavy Rain",
-        "-SN": "Light Snow", "SN": "Snow", "+SN": "Heavy Snow",
-        "TS": "Thunder", "TSRA": "Thunder/Rain", "FG": "Fog", "BR": "Mist",
-        "HZ": "Haze", "DZ": "Drizzle", "FZRA": "Freezing Rain", "FZDZ": "Freezing Drizzle"
-      };
-      return weatherTokens.map(token => names[token] || token).join(" ");
+    function skyFromSynopticSummary(value) {
+      const text = String(value || "").trim().toLowerCase();
+      if (!text) return "";
+      if (text.includes("clear")) return "Clear";
+      if (text.includes("few")) return "Few";
+      if (text.includes("scattered")) return "Scattered";
+      if (text.includes("broken")) return "Broken";
+      if (text.includes("overcast")) return "Overcast";
+      return displayWeatherText(text);
     }
 
     function updateWindRose(deg) {
@@ -2731,7 +2751,8 @@
         dewpoint_f: synopticValue(observations, ["dew_point_temperature"]),
         relative_humidity: synopticValue(observations, ["relative_humidity"]),
         precip_1hr_in: synopticValue(observations, ["precip_accum_one_hour", "precip_accum"]),
-        metar: synopticValue(observations, ["metar"]),
+        sky_condition: skyFromSynopticSummary(synopticValue(observations, ["weather_summary"])),
+        present_weather: displayWeatherText(synopticValue(observations, ["weather_condition"])) || "None",
         raw: { synoptic: station }
       };
     }
@@ -2771,7 +2792,7 @@
       attachTooltip(document.getElementById("sky-item"), {
         title: "Sky Condition",
         subtitle: values.sky,
-        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", "Latest METAR"]],
+        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", "Synoptic API"]],
         risk: "Little to None"
       });
       attachTooltip(document.getElementById("temp-item"), {
@@ -2824,7 +2845,7 @@
       const vis = Number(obs.visibility_sm);
       const visText = Number.isFinite(vis) ? (vis >= 10 ? "10+ SM" : `${vis.toFixed(1)} SM`) : "--";
       setValueColor("vis-line", visText, visibilityColor(vis));
-      const sky = obs.sky_condition || cloudFromMetar(obs.metar);
+      const sky = obs.sky_condition || skyFromSynopticSummary(obs.raw?.OBSERVATIONS?.weather_summary_value_1d?.value) || "Not reported";
       setValueColor("sky-line", sky, cloudColor(sky));
       let tempText = "--";
       let tempTooltipText = "--";
@@ -2833,204 +2854,12 @@
         tempTooltipText = tempText.replaceAll("&deg;", "°");
         setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
       }
-      const wx = obs.present_weather || parsePresentWeatherFromMetar(obs.metar) || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value);
+      const wx = obs.present_weather || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value) || "None";
       setValueColor("wx-line", wx, wx === "None" ? "var(--text-body)" : precipColor(0.1));
       const rain = Number(obs.precip_1hr_in || 0);
       const rainText = rain.toFixed(2) + " in";
       setValueColor("rain-line", rainText, precipColor(rain));
       updateObsTooltips(obs, { obsIso, dir, dirText: dirText.replace("&deg;", "°"), speed, gust, windText: windTooltipText, gustText, vis, visText, sky, tempText: tempTooltipText, wx, rain, rainText });
-    }
-
-    function awcMetarToObs(record) {
-      if (!record) return null;
-      const obsIso = record.obsTime ? new Date(Number(record.obsTime) * 1000).toISOString() : record.reportTime;
-      if (!obsIso) return null;
-      const tempF = record.temp == null ? null : Number(record.temp) * 9 / 5 + 32;
-      const dewF = record.dewp == null ? null : Number(record.dewp) * 9 / 5 + 32;
-      const speedMph = record.wspd == null ? null : Number(record.wspd) * 1.15078;
-      const gustMph = record.wgst == null ? null : Number(record.wgst) * 1.15078;
-      const visValue = String(record.visib || "").replace("+", "");
-      return {
-        site: "KRNO",
-        source: "Aviation Weather Center METAR API",
-        status: "ok",
-        observed_utc: obsIso,
-        generated_utc: new Date().toISOString(),
-        wind_dir_deg: record.wdir,
-        wind_speed_mph: speedMph,
-        wind_gust_mph: gustMph,
-        visibility_sm: Number(visValue || 10),
-        temperature_f: tempF,
-        dewpoint_f: dewF,
-        precip_1hr_in: 0,
-        metar: record.rawOb,
-        raw: { awc: record }
-      };
-    }
-
-    function nwsSkyCondition(layers = []) {
-      if (!Array.isArray(layers) || !layers.length) return "Not reported";
-      return layers
-        .map(layer => {
-          const amount = String(layer?.amount || "").toUpperCase();
-          if (amount === "CLR" || amount === "SKC") return amount;
-          const baseFt = Number(layer?.base?.value) * 3.28084;
-          if (!amount || !Number.isFinite(baseFt)) return amount;
-          return `${amount}${String(Math.round(baseFt / 100)).padStart(3, "0")}`;
-        })
-        .filter(Boolean)
-        .join(" / ") || "Not reported";
-    }
-
-    function nwsPresentWeather(presentWeather = []) {
-      if (!Array.isArray(presentWeather) || !presentWeather.length) return "None";
-      const text = presentWeather
-        .map(item => item?.weather || item?.rawString || item?.intensity || item?.modifier || "")
-        .filter(Boolean)
-        .join(" ");
-      return displayWeatherText(text) || "Weather reported";
-    }
-
-    function nwsApiObservationToObs(payload) {
-      const properties = payload?.properties || {};
-      const obsIso = properties.timestamp;
-      if (!obsIso) return null;
-      return {
-        site: "KRNO",
-        source: "NWS API latest station observation",
-        status: "ok",
-        station: "KRNO",
-        observed_utc: new Date(obsIso).toISOString(),
-        generated_utc: new Date().toISOString(),
-        wind_dir_deg: properties.windDirection?.value,
-        wind_speed_mph: kphToMph(properties.windSpeed?.value),
-        wind_gust_mph: kphToMph(properties.windGust?.value),
-        visibility_sm: metersToSm(properties.visibility?.value),
-        temperature_f: cToF(properties.temperature?.value),
-        dewpoint_f: cToF(properties.dewpoint?.value),
-        relative_humidity: properties.relativeHumidity?.value,
-        precip_1hr_in: mmToIn(properties.precipitationLastHour?.value),
-        sky_condition: nwsSkyCondition(properties.cloudLayers),
-        present_weather: nwsPresentWeather(properties.presentWeather),
-        metar: properties.rawMessage || "",
-        raw: { nws: payload }
-      };
-    }
-
-    async function fetchNwsObservationFallback() {
-      const url = "https://api.weather.gov/stations/KRNO/observations/latest?require_qc=false";
-      const response = await fetch(url, {
-        cache: "no-store",
-        headers: { Accept: "application/geo+json" }
-      });
-      if (!response.ok) throw new Error("NWS latest observation API unavailable");
-      const obs = nwsApiObservationToObs(await response.json());
-      if (!obs) return false;
-      const obsMs = new Date(obs.observed_utc).getTime();
-      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
-        updateObsDisplay(obs);
-        return true;
-      }
-      return false;
-    }
-
-    function signedMetarTemp(token) {
-      if (!token || token === "//") return null;
-      return Number(token.replace("M", "-"));
-    }
-
-    function tgftpMetarToObs(text) {
-      const lines = String(text || "").trim().split(/\n+/).map(line => line.trim()).filter(Boolean);
-      if (lines.length < 2) return null;
-      const timeLine = lines[0];
-      const rawOb = lines.slice(1).join(" ");
-      const timeMatch = timeLine.match(/^(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);
-      if (!timeMatch || !rawOb.includes("KRNO")) return null;
-      const [, year, month, day, hour, minute] = timeMatch;
-      const obsIso = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))).toISOString();
-      const windMatch = rawOb.match(/\b(00000|(?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?)KT\b/);
-      let windDir = null;
-      let windSpeedKt = null;
-      let windGustKt = null;
-      if (windMatch) {
-        const token = windMatch[1];
-        if (token === "00000") {
-          windDir = 0;
-          windSpeedKt = 0;
-        } else {
-          const parsed = token.match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?$/);
-          if (parsed) {
-            windDir = parsed[1] === "VRB" ? "VRB" : Number(parsed[1]);
-            windSpeedKt = Number(parsed[2]);
-            windGustKt = parsed[3] ? Number(parsed[3]) : null;
-          }
-        }
-      }
-      const tempMatch = rawOb.match(/\b(M?\d{2})\/(M?\d{2}|\/\/)\b/);
-      const tempC = tempMatch ? signedMetarTemp(tempMatch[1]) : null;
-      const dewC = tempMatch ? signedMetarTemp(tempMatch[2]) : null;
-      const visMatch = rawOb.match(/\b(P?\d{1,2})(?:SM)\b/);
-      const visibility = visMatch ? Number(visMatch[1].replace("P", "")) : null;
-      return {
-        site: "KRNO",
-        source: "NWS TGFTP METAR",
-        status: "ok",
-        observed_utc: obsIso,
-        generated_utc: new Date().toISOString(),
-        wind_dir_deg: windDir,
-        wind_speed_kt: windSpeedKt,
-        wind_gust_kt: windGustKt,
-        wind_speed_mph: windSpeedKt == null ? null : windSpeedKt * 1.15078,
-        wind_gust_mph: windGustKt == null ? null : windGustKt * 1.15078,
-        visibility_sm: visibility,
-        temperature_f: tempC == null ? null : tempC * 9 / 5 + 32,
-        dewpoint_f: dewC == null ? null : dewC * 9 / 5 + 32,
-        precip_1hr_in: 0,
-        metar: rawOb,
-        raw: { tgftp: text }
-      };
-    }
-
-    async function fetchAwcMetarFallback() {
-      const url = "https://aviationweather.gov/api/data/metar?ids=KRNO&format=json&hours=2";
-      const response = await fetch(`${url}&t=${Date.now()}`, { cache: "no-store" });
-      if (!response.ok) throw new Error("AWC METAR API unavailable");
-      const records = await response.json();
-      const latest = Array.isArray(records) ? records[0] : null;
-      const obs = awcMetarToObs(latest);
-      if (!obs) return false;
-      const obsMs = new Date(obs.observed_utc).getTime();
-      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
-        updateObsDisplay(obs);
-        return true;
-      }
-      return false;
-    }
-
-    async function fetchTgftpMetarFallback() {
-      const baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
-      const urls = [
-        `${baseUrl}?t=${Date.now()}`,
-        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
-      ];
-      for (const url of urls) {
-        try {
-          const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(5000) });
-          if (!response.ok) continue;
-          const obs = tgftpMetarToObs(await response.text());
-          if (!obs) continue;
-          const obsMs = new Date(obs.observed_utc).getTime();
-          if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
-            updateObsDisplay(obs);
-            return true;
-          }
-        } catch (error) {
-          console.info("Unable to refresh one TGFTP METAR endpoint.", error);
-        }
-      }
-      return false;
     }
 
     async function fetchSynopticLiveFallback() {
@@ -3054,7 +2883,6 @@
             "wind_direction",
             "wind_gust",
             "visibility",
-            "metar",
             "weather_condition",
             "weather_summary",
             "precip_accum_one_hour"
@@ -3096,10 +2924,7 @@
         console.info("Unable to refresh observations.", error);
       }
       const fallbackLoaders = [
-        ["Synoptic live observation fallback", fetchSynopticLiveFallback],
-        ["NWS TGFTP METAR fallback", fetchTgftpMetarFallback],
-        ["AWC METAR fallback", fetchAwcMetarFallback],
-        ["NWS API observation fallback", fetchNwsObservationFallback]
+        ["Synoptic live observation fallback", fetchSynopticLiveFallback]
       ];
       for (const [label, loader] of fallbackLoaders) {
         try {
@@ -3324,7 +3149,7 @@
         lines: [
           ["Radar", "Reflectivity loop"],
           ["Loop", "Last 20 minutes"],
-          ["Rings", "10/15/20/25 nm from KRNO"],
+          ["Rings", "10 and 20 nm from KRNO"],
           ["Map", "Projected lat/lon overlay"],
           ["Lightning", "Closest GOES GLM group"],
           ["Use", "Situational awareness"]
@@ -3457,28 +3282,49 @@
       const risk = lightningRisk(lightning?.alert_level);
       const nearest = lightning?.nearest_strike || null;
       const status = document.getElementById("lightning-value");
-      const meta = document.getElementById("lightning-meta");
-      const main = document.getElementById("lightning-main");
+      const ring20 = document.getElementById("ring20-value");
+      const ring10 = document.getElementById("ring10-value");
+      const strikeAge = document.getElementById("strike-age-value");
+      const scan = document.getElementById("lightning-scan-value");
+      const action = document.getElementById("lightning-action");
+      const panel = document.getElementById("lightning-panel");
       const label = lightning?.alert_label || "No GLM lightning detected";
+      const ring20Count = ringCount(lightning, 20);
+      const ring10Count = ringCount(lightning, 10);
       if (status) {
         status.textContent = nearest
           ? `${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
-          : "None <25 nm";
+          : "None detected";
         status.style.color = risk === "None" ? "var(--text-body)" : (riskColors[risk] || "var(--text-main)");
       }
-      if (meta) {
-        meta.textContent = nearest ? formatStrikeAge(nearest) : "";
+      if (ring20) {
+        ring20.textContent = ring20Count > 0 ? "Strike detected" : "Clear";
+        ring20.style.color = ring20Count > 0 ? (riskColors.Minor || "var(--text-main)") : "var(--text-main)";
       }
-      if (main) {
-        main.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
-        attachTooltip(main, {
-          title: "Closest Lightning",
+      if (ring10) {
+        ring10.textContent = ring10Count > 0 ? "Strike detected" : "Clear";
+        ring10.style.color = ring10Count > 0 ? (riskColors.Major || "var(--text-main)") : "var(--text-main)";
+      }
+      if (strikeAge) strikeAge.textContent = nearest ? formatStrikeAge(nearest) || "--" : "--";
+      if (scan) {
+        scan.textContent = (document.getElementById("radar-time")?.textContent || "--")
+          .replace(/^Scan ~?/, "")
+          .replace(/\s+\(-\d+m\)/, "");
+      }
+      if (action) {
+        action.textContent = nearest ? "Monitor lightning distance and ramp triggers." : "Continue monitoring.";
+        action.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
+      }
+      if (panel) {
+        attachTooltip(panel, {
+          title: "Radar / Lightning Trigger",
           subtitle: label,
           lines: [
-            ["Nearest", nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : "None within 25 nm"],
-            ["Last", lightning?.last_strike ? formatStrikeAge(lightning.last_strike) : "None"],
+            ["20 NM Ring", ring20Count > 0 ? "Strike detected" : "Clear"],
+            ["10 NM Ring", ring10Count > 0 ? "Strike detected" : "Clear"],
+            ["Closest Strike", nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : "None within 25 nm"],
+            ["Strike Age", nearest ? formatStrikeAge(nearest) || "--" : "--"],
             ["Source", "GOES-18 GLM"],
-            ["Confidence", nearest ? "Medium" : "Medium", confidenceColors.Medium],
             ["Note", "Total lightning proxy, not exact CG strike"]
           ],
           risk
