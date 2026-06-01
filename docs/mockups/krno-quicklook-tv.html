@@ -3028,6 +3028,102 @@
       };
     }
 
+    function signedMetarTemp(token) {
+      if (!token || token === "//") return null;
+      return token.startsWith("M") ? -Number(token.slice(1)) : Number(token);
+    }
+
+    function parseMetarVisibility(rawOb) {
+      const text = String(rawOb || "");
+      const mixed = text.match(/\b(\d{1,2})\s+(\d)\/(\d)SM\b/);
+      if (mixed) return Number(mixed[1]) + Number(mixed[2]) / Number(mixed[3]);
+      const fraction = text.match(/\b(M?)(\d)\/(\d)SM\b/);
+      if (fraction) return Number(fraction[2]) / Number(fraction[3]);
+      const whole = text.match(/\b(P?)(\d{1,2})SM\b/);
+      if (whole) return Number(whole[2]);
+      return null;
+    }
+
+    function parseMetarSky(rawOb) {
+      const layers = String(rawOb || "").match(/\b(?:FEW|SCT|BKN|OVC)\d{3}(?:CB|TCU)?\b/g);
+      if (layers?.length) return layers.join(" / ");
+      if (/\b(?:SKC|CLR|NSC|NCD)\b/.test(String(rawOb || ""))) return "CLR";
+      return null;
+    }
+
+    function parseMetarPresentWeather(rawOb) {
+      const weatherTokens = String(rawOb || "").match(/\b(?:[-+]?TSRA|[-+]?TS|[-+]?RA|[-+]?SN|[-+]?DZ|FZRA|FZDZ|FG|BR|HZ|FU|DU|SQ|GR|GS|PL|BLSN|RASN)\b/g);
+      return weatherTokens?.length ? weatherTokens.join(" ") : "None";
+    }
+
+    function rhFromTempDewpoint(tempF, dewpointF) {
+      const tempC = (Number(tempF) - 32) * 5 / 9;
+      const dewC = (Number(dewpointF) - 32) * 5 / 9;
+      if (!Number.isFinite(tempC) || !Number.isFinite(dewC)) return null;
+      const e = Math.exp(17.625 * dewC / (243.04 + dewC));
+      const es = Math.exp(17.625 * tempC / (243.04 + tempC));
+      return Math.max(0, Math.min(100, Math.round(100 * e / es)));
+    }
+
+    function tgftpMetarToObs(text) {
+      const lines = String(text || "").trim().split(/\n+/).map(line => line.trim()).filter(Boolean);
+      if (lines.length < 2) return null;
+      const timeLine = lines[0];
+      const rawOb = lines.slice(1).join(" ");
+      const timeMatch = timeLine.match(/^(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);
+      if (!timeMatch || !rawOb.includes("KRNO")) return null;
+      const [, year, month, day, hour, minute] = timeMatch;
+      const obsIso = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))).toISOString();
+      const windMatch = rawOb.match(/\b(00000|(?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?)KT\b/);
+      let windDir = null;
+      let windSpeedKt = null;
+      let windGustKt = null;
+      if (windMatch) {
+        const token = windMatch[1];
+        if (token === "00000") {
+          windDir = 0;
+          windSpeedKt = 0;
+        } else {
+          const parsed = token.match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?$/);
+          if (parsed) {
+            windDir = parsed[1] === "VRB" ? "VRB" : Number(parsed[1]);
+            windSpeedKt = Number(parsed[2]);
+            windGustKt = parsed[3] ? Number(parsed[3]) : null;
+          }
+        }
+      }
+      const tempMatch = rawOb.match(/\b(M?\d{2})\/(M?\d{2}|\/\/)\b/);
+      const tempC = tempMatch ? signedMetarTemp(tempMatch[1]) : null;
+      const dewC = tempMatch ? signedMetarTemp(tempMatch[2]) : null;
+      const temperatureF = tempC == null ? null : tempC * 9 / 5 + 32;
+      const dewpointF = dewC == null ? null : dewC * 9 / 5 + 32;
+      const visibility = parseMetarVisibility(rawOb);
+      const sky = parseMetarSky(rawOb);
+      const presentWeather = parseMetarPresentWeather(rawOb);
+      return {
+        site: "KRNO",
+        source: "TGFTP METAR live browser refresh",
+        status: "ok",
+        station: "KRNO",
+        observed_utc: obsIso,
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: windDir,
+        wind_speed_kt: windSpeedKt,
+        wind_gust_kt: windGustKt,
+        wind_speed_mph: windSpeedKt == null ? null : windSpeedKt * 1.15078,
+        wind_gust_mph: windGustKt == null ? null : windGustKt * 1.15078,
+        visibility_sm: visibility,
+        temperature_f: temperatureF,
+        dewpoint_f: dewpointF,
+        relative_humidity: rhFromTempDewpoint(temperatureF, dewpointF),
+        precip_1hr_in: 0,
+        sky_condition: sky,
+        present_weather: presentWeather,
+        metar: rawOb,
+        raw: { tgftp: text }
+      };
+    }
+
     function updateObsTooltips(obs, values) {
       const rh = Number(obs.relative_humidity ?? obs.raw?.OBSERVATIONS?.relative_humidity_value_1?.value);
       const wb = wetBulbF(obs.temperature_f, rh);
@@ -3079,7 +3175,7 @@
       attachTooltip(document.getElementById("sky-item"), {
         title: "Sky Condition",
         subtitle: values.sky,
-        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", "Synoptic API"]],
+        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", obs.source || "Observation feed"]],
         risk: "Little to None"
       });
       attachTooltip(document.getElementById("temp-item"), {
@@ -3199,6 +3295,32 @@
       return false;
     }
 
+    async function fetchTgftpMetarFallback() {
+      const baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
+      const urls = [
+        `${baseUrl}?t=${Date.now()}`,
+        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
+      ];
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+          if (!response.ok) continue;
+          const obs = tgftpMetarToObs(await response.text());
+          if (!obs) continue;
+          const obsMs = new Date(obs.observed_utc).getTime();
+          if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+            updateObsDisplay(obs);
+            return true;
+          }
+        } catch (error) {
+          console.info("Unable to refresh one TGFTP METAR endpoint.", error);
+        }
+      }
+      return false;
+    }
+
     async function loadObsData() {
       updateHeaderClock();
       let primaryObs = null;
@@ -3217,7 +3339,8 @@
         console.info("Unable to refresh observations.", error);
       }
       const fallbackLoaders = [
-        ["Synoptic live observation refresh", fetchSynopticLiveFallback]
+        ["Synoptic live observation refresh", fetchSynopticLiveFallback],
+        ["TGFTP METAR live refresh", fetchTgftpMetarFallback]
       ];
       for (const [label, loader] of fallbackLoaders) {
         try {
