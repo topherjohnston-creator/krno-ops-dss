@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -1161,6 +1162,91 @@ def select_qmd_daymax_gust_row(rows: list[dict[str, Any]], day_index: int) -> di
     return select_first_row(rows, lambda line: ":GUST:10 m above ground:" in line and "ens mean" in line)
 
 
+def qmd_gust_probability_threshold_mps(line: str) -> float | None:
+    match = re.search(r":GUST:10 m above ground:.*:prob >([0-9.]+):prob fcst", line)
+    if not match:
+        return None
+    try:
+        return float(match.group(1))
+    except ValueError:
+        return None
+
+
+def select_qmd_daymax_gust_probability_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    for row in rows:
+        threshold_mps = qmd_gust_probability_threshold_mps(row["line"])
+        if threshold_mps is None:
+            continue
+        new_row = dict(row)
+        new_row["threshold_mps"] = threshold_mps
+        new_row["threshold_mph"] = threshold_mps * MPS_TO_MPH
+        selected.append(new_row)
+    selected.sort(key=lambda row: row["threshold_mph"])
+    return selected
+
+
+def interpolate_probability_at_threshold(probability_rows: list[dict[str, float]], threshold_mph: float) -> float | None:
+    points = sorted(
+        [
+            (float(row["threshold_mph"]), float(row["probability"]))
+            for row in probability_rows
+            if row.get("threshold_mph") is not None and row.get("probability") is not None
+        ],
+        key=lambda item: item[0],
+    )
+    if not points:
+        return None
+    for threshold, probability in points:
+        if abs(threshold - threshold_mph) < 0.001:
+            return probability
+    if threshold_mph <= points[0][0]:
+        return points[0][1]
+    if threshold_mph >= points[-1][0]:
+        if len(points) < 2:
+            return points[-1][1]
+        lower_threshold, lower_probability = points[-2]
+        upper_threshold, upper_probability = points[-1]
+    else:
+        lower_threshold, lower_probability = points[0]
+        upper_threshold, upper_probability = points[-1]
+        for index in range(1, len(points)):
+            if points[index][0] >= threshold_mph:
+                lower_threshold, lower_probability = points[index - 1]
+                upper_threshold, upper_probability = points[index]
+                break
+    if upper_threshold == lower_threshold:
+        return upper_probability
+    ratio = (threshold_mph - lower_threshold) / (upper_threshold - lower_threshold)
+    probability = lower_probability + ratio * (upper_probability - lower_probability)
+    return max(0.0, min(100.0, probability))
+
+
+def wind_probability_risk_detail(probabilities: dict[str, float]) -> dict[str, Any]:
+    thresholds = [
+        ("prob_gt_65_mph", 5),
+        ("prob_gt_58_mph", 4),
+        ("prob_gt_45_mph", 3),
+        ("prob_gt_30_mph", 2),
+    ]
+    best = {"risk": 1, "impact_level": 1, "probability": 0.0, "probability_key": None}
+    for key, impact_level in thresholds:
+        probability = float(probabilities.get(key, 0.0) or 0.0)
+        risk = risk_from_matrix(impact_level, probability)
+        if (
+            risk > best["risk"]
+            or (risk == best["risk"] and impact_level > best["impact_level"] and probability > 0)
+            or (risk == best["risk"] and impact_level == best["impact_level"] and probability > best["probability"])
+        ):
+            best = {
+                "risk": risk,
+                "impact_level": impact_level,
+                "probability": probability,
+                "probability_key": key,
+            }
+    return best
+
+
 def select_qmd_temp_rows(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     selected: dict[str, dict[str, Any]] = {}
     max_row = select_first_row(rows, lambda line: ":TMP:2 m above ground:" in line and "hour fcst:ens mean" in line)
@@ -1207,16 +1293,52 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
                 if not row:
                     continue
                 gust_mph = extract_row_value(grib_url, row, tmp, f"qmd_gust_day{day_index}") * MPS_TO_MPH
-                day_rows.append({"day_index": day_index, "fxx": fxx, "gust_mph": gust_mph, "valid_utc": iso(qmd_cycle + timedelta(hours=fxx))})
+                probability_rows: list[dict[str, float]] = []
+                for prob_row in select_qmd_daymax_gust_probability_rows(rows):
+                    probability = extract_row_value(grib_url, prob_row, tmp, f"qmd_gust_prob_{prob_row['threshold_mps']:g}_day{day_index}")
+                    probability_rows.append(
+                        {
+                            "threshold_mps": round(float(prob_row["threshold_mps"]), 3),
+                            "threshold_mph": round(float(prob_row["threshold_mph"]), 1),
+                            "probability": round(float(probability), 1),
+                        }
+                    )
+                probabilities = {
+                    "prob_gt_30_mph": interpolate_probability_at_threshold(probability_rows, 30.0),
+                    "prob_gt_45_mph": interpolate_probability_at_threshold(probability_rows, 45.0),
+                    "prob_gt_58_mph": interpolate_probability_at_threshold(probability_rows, 58.0),
+                    "prob_gt_65_mph": interpolate_probability_at_threshold(probability_rows, 65.0),
+                }
+                probability_detail = wind_probability_risk_detail(
+                    {key: float(value) for key, value in probabilities.items() if value is not None}
+                )
+                day_rows.append(
+                    {
+                        "day_index": day_index,
+                        "fxx": fxx,
+                        "gust_mph": gust_mph,
+                        "valid_utc": iso(qmd_cycle + timedelta(hours=fxx)),
+                        "probabilities": {key: round(float(value), 1) for key, value in probabilities.items() if value is not None},
+                        "native_probability_thresholds": probability_rows,
+                        "probability_risk": probability_detail["risk"],
+                        "probability_impact_level": probability_detail["impact_level"],
+                        "selected_probability": probability_detail["probability"],
+                        "selected_probability_key": probability_detail["probability_key"],
+                    }
+                )
             except Exception:
                 continue
 
     if not day_rows:
         return
 
-    peak = max(day_rows, key=lambda row: row["gust_mph"])
-    impact = wind_impact_level(float(peak["gust_mph"]))
-    risk = risk_from_matrix(impact)
+    peak = max(day_rows, key=lambda row: (row.get("probability_risk", 1), row.get("probabilities", {}).get("prob_gt_30_mph", 0.0), row["gust_mph"]))
+    deterministic_impact = wind_impact_level(float(peak["gust_mph"]))
+    probability_risk = int(peak.get("probability_risk") or 1)
+    has_probabilities = bool(peak.get("probabilities"))
+    impact = int(peak.get("probability_impact_level") or deterministic_impact) if has_probabilities else deterministic_impact
+    risk = probability_risk if has_probabilities else risk_from_matrix(deterministic_impact)
+    probability = float(peak.get("selected_probability") or max(peak.get("probabilities", {}).values() or [0.0]))
     threat = threats_payload["threats"]["WIND"]
     threat.update(
         {
@@ -1225,8 +1347,10 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "risk_label": RISK_LABELS[risk],
             "level": risk,
             "impact_level": impact,
-            "likelihood_category": None,
-            "risk_method": "krno_threshold_deterministic_qmd_24hr_max_gust",
+            "prob": probability,
+            "probability": probability,
+            "likelihood_category": likelihood_bin(probability),
+            "risk_method": "krno_threshold_probability_matrix_qmd_24hr_max_gust",
             "metric": f"Max gust {peak['gust_mph']:.0f} mph",
             "display_label": "Max gust",
             "display_value": f"{peak['gust_mph']:.0f} mph",
@@ -1234,17 +1358,26 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             "peak_end_fxx": peak["fxx"],
             "source_fxx": peak["fxx"],
             "peak_valid_utc": peak["valid_utc"],
-            "driver": "NBM QMD 24-hour maximum gust at KRNO",
-            "methodology": "Wind risk card uses QMD 24-hour maximum gust at KRNO mapped to the KRNO wind impact table.",
+            "driver": "NBM QMD 24-hour maximum gust probabilities at KRNO",
+            "methodology": "Wind summary uses QMD 24-hour maximum gust probability-of-threshold exceedance for the 0-24, 24-48, and 48-72 hour windows mapped through the KRNO likelihood-vs-impact risk matrix.",
             "data_status": "live",
             "method": QMD_SOURCE_METHOD,
             "source": f"NOAA NBM QMD AWS {qmd_cycle:%HZ}",
-            "daily_values": [{"fxx": row["fxx"], "gust_mph": round(row["gust_mph"], 1), "valid_utc": row["valid_utc"]} for row in day_rows],
+            "daily_values": [
+                {
+                    "fxx": row["fxx"],
+                    "gust_mph": round(row["gust_mph"], 1),
+                    "valid_utc": row["valid_utc"],
+                    "probabilities": row.get("probabilities", {}),
+                    "risk": row.get("probability_risk", 1),
+                }
+                for row in day_rows
+            ],
         }
     )
     for hazard in threats_payload["hazards"]:
         if hazard["id"] == "WIND":
-            hazard.update({"risk": risk, "probability": None, "level": risk})
+            hazard.update({"risk": risk, "probability": probability, "level": risk})
 
 
 def apply_qmd_rain_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
