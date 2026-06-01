@@ -150,6 +150,29 @@ def parse_awc_time(record: dict[str, Any]) -> str | None:
     return None
 
 
+def display_weather_text(value: Any) -> str:
+    if not value:
+        return "None"
+    return str(value).replace("_", " ").strip().title()
+
+
+def sky_from_summary(value: Any) -> str | None:
+    if not value:
+        return None
+    text = str(value).strip().lower()
+    if "clear" in text:
+        return "Clear"
+    if "few" in text:
+        return "Few"
+    if "scattered" in text:
+        return "Scattered"
+    if "broken" in text:
+        return "Broken"
+    if "overcast" in text:
+        return "Overcast"
+    return display_weather_text(text)
+
+
 def iso_timestamp(value: str | None) -> float:
     if not value:
         return 0.0
@@ -176,6 +199,8 @@ def build_error_obs(message: str, raw: dict[str, Any] | None = None) -> dict[str
         "dewpoint_f": None,
         "relative_humidity": None,
         "precip_1hr_in": None,
+        "sky_condition": None,
+        "present_weather": "None",
         "metar": None,
         "raw": raw or {},
     }
@@ -313,6 +338,8 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
     }
     wind_speed_mph = recent_ob_value(observations, ["wind_speed"], observed_utc, 20)
     wind_gust_mph = recent_ob_value(observations, ["wind_gust"], observed_utc, 15)
+    sky_summary = recent_ob_value(observations, ["weather_summary"], observed_utc, 20)
+    present_weather = recent_ob_value(observations, ["weather_condition"], observed_utc, 20)
 
     obs = {
         "site": SITE,
@@ -344,6 +371,8 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
             observed_utc,
             90,
         ),
+        "sky_condition": sky_from_summary(sky_summary),
+        "present_weather": display_weather_text(present_weather),
         "metar": get_ob_value(observations, ["metar"]),
         "field_times_utc": field_times,
         "age_minutes_at_build": round((iso_timestamp(generated_utc) - iso_timestamp(observed_utc)) / 60, 1) if observed_utc else None,

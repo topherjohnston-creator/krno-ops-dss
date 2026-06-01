@@ -3098,7 +3098,10 @@
       const vis = Number(obs.visibility_sm);
       const visText = Number.isFinite(vis) ? (vis >= 10 ? "10+ SM" : `${vis.toFixed(1)} SM`) : "--";
       setValueColor("vis-line", visText, visibilityColor(vis));
-      const sky = obs.sky_condition || skyFromSynopticSummary(obs.raw?.OBSERVATIONS?.weather_summary_value_1d?.value) || "Not reported";
+      const skyRaw = staleRawObservation(obs, ["weather_summary"], obsIso, 20)
+        ? null
+        : obs.raw?.OBSERVATIONS?.weather_summary_value_1d?.value;
+      const sky = obs.sky_condition || skyFromSynopticSummary(skyRaw) || "Not reported";
       setValueColor("sky-line", sky, cloudColor(sky));
       let tempText = "--";
       let tempTooltipText = "--";
@@ -3107,7 +3110,10 @@
         tempTooltipText = tempText.replaceAll("&deg;", "°");
         setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
       }
-      const wx = obs.present_weather || displayWeatherText(obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value) || "None";
+      const wxRaw = staleRawObservation(obs, ["weather_condition"], obsIso, 20)
+        ? null
+        : obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
+      const wx = obs.present_weather || displayWeatherText(wxRaw) || "None";
       setValueColor("wx-line", wx, wx === "None" ? "var(--text-body)" : precipColor(0.1));
       const rain = Number(obs.precip_1hr_in || 0);
       const rainText = rain.toFixed(2) + " in";
