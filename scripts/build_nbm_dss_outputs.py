@@ -614,6 +614,16 @@ def wind_risk_from_gust(gust_mph: float) -> int:
     return risk_from_matrix(wind_impact_level(gust_mph))
 
 
+def percentile_from_idx_line(line: str) -> float | None:
+    match = re.search(r":(\d+(?:\.\d+)?)%\s+level", line)
+    if not match:
+        return None
+    try:
+        return float(match.group(1))
+    except ValueError:
+        return None
+
+
 def block_label_for_wind(hourly_values: list[dict[str, Any]]) -> str:
     if not hourly_values:
         return "No forecast value"
@@ -764,6 +774,192 @@ def apply_core_wind(timeline: dict[str, Any], threats_payload: dict[str, Any]) -
     threats_payload["source"] = timeline["source"]
     threats_payload["cycle_utc_iso"] = cycle_iso
     threats_payload["cycle"] = timeline["cycle"]
+
+
+def select_qmd_hour_gust_percentile_row(rows: list[dict[str, Any]], fxx: int, percentile: float) -> dict[str, Any] | None:
+    expected_time = f":{fxx} hour fcst:"
+    selected: list[dict[str, Any]] = []
+    for row in rows:
+        line = row["line"]
+        if ":GUST:10 m above ground:" not in line or expected_time not in line or "% level" not in line:
+            continue
+        row_percentile = percentile_from_idx_line(line)
+        if row_percentile is None:
+            continue
+        new_row = dict(row)
+        new_row["percentile"] = row_percentile
+        selected.append(new_row)
+    if not selected:
+        return None
+    return min(selected, key=lambda row: abs(float(row["percentile"]) - percentile))
+
+
+def qmd_hour_gust_probability_threshold_mps(line: str, fxx: int) -> float | None:
+    if f":{fxx} hour fcst:" not in line:
+        return None
+    match = re.search(r":GUST:10 m above ground:.*:prob >([0-9.]+):prob fcst", line)
+    if not match:
+        return None
+    try:
+        return float(match.group(1))
+    except ValueError:
+        return None
+
+
+def select_qmd_hour_gust_probability_rows(rows: list[dict[str, Any]], fxx: int) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    for row in rows:
+        threshold_mps = qmd_hour_gust_probability_threshold_mps(row["line"], fxx)
+        if threshold_mps is None:
+            continue
+        new_row = dict(row)
+        new_row["threshold_mps"] = threshold_mps
+        new_row["threshold_mph"] = threshold_mps * MPS_TO_MPH
+        selected.append(new_row)
+    selected.sort(key=lambda row: row["threshold_mph"])
+    return selected
+
+
+def extract_qmd_wind_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any] | None:
+    grib_url = aws_grib_url(cycle, "qmd", fxx)
+    rows = parse_idx(fetch_text(grib_url + ".idx"))
+    p90_row = select_qmd_hour_gust_percentile_row(rows, fxx, 90.0)
+    probability_rows = select_qmd_hour_gust_probability_rows(rows, fxx)
+    if not p90_row and not probability_rows:
+        return None
+
+    p90_gust_mph = None
+    if p90_row:
+        p90_gust_mph = extract_row_value(grib_url, p90_row, tmp, f"qmd_wind_f{fxx:03d}_p90") * MPS_TO_MPH
+
+    native_probability_rows: list[dict[str, float]] = []
+    for prob_row in probability_rows:
+        probability = extract_row_value(
+            grib_url,
+            prob_row,
+            tmp,
+            f"qmd_wind_f{fxx:03d}_prob_{prob_row['threshold_mps']:g}",
+        )
+        native_probability_rows.append(
+            {
+                "threshold_mps": round(float(prob_row["threshold_mps"]), 3),
+                "threshold_mph": round(float(prob_row["threshold_mph"]), 1),
+                "probability": round(float(probability), 1),
+            }
+        )
+
+    probabilities = {
+        "prob_gt_30_mph": interpolate_probability_at_threshold(native_probability_rows, 30.0),
+        "prob_gt_45_mph": interpolate_probability_at_threshold(native_probability_rows, 45.0),
+        "prob_gt_58_mph": interpolate_probability_at_threshold(native_probability_rows, 58.0),
+        "prob_gt_65_mph": interpolate_probability_at_threshold(native_probability_rows, 65.0),
+    }
+    probability_detail = wind_probability_risk_detail(
+        {key: float(value) for key, value in probabilities.items() if value is not None}
+    )
+
+    fallback_gust = float(p90_gust_mph or 0.0)
+    fallback_impact = wind_impact_level(fallback_gust)
+    risk = int(probability_detail["risk"] or risk_from_matrix(fallback_impact))
+    impact = int(probability_detail["impact_level"] or fallback_impact)
+    probability = float(probability_detail["probability"] or 0.0)
+
+    return {
+        "fxx": fxx,
+        "valid_utc": iso(cycle + timedelta(hours=fxx)),
+        "p90_gust_mph": round(fallback_gust, 1) if p90_gust_mph is not None else None,
+        "gust_mph": round(fallback_gust, 1) if p90_gust_mph is not None else None,
+        "probabilities": {key: round(float(value), 1) for key, value in probabilities.items() if value is not None},
+        "native_probability_thresholds": native_probability_rows,
+        "selected_probability": probability,
+        "selected_probability_key": probability_detail["probability_key"],
+        "impact_level": impact,
+        "risk": risk,
+        "likelihood_category": likelihood_bin(probability),
+    }
+
+
+def apply_qmd_wind_timeline(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    qmd_cycle = find_latest_available_cycle("qmd", [1, 72])
+    source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
+    fxx_values = sorted({int(block["end_fxx"]) for block in timeline["blocks"]})
+    qmd_by_fxx: dict[int, dict[str, Any]] = {}
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in fxx_values:
+            try:
+                row = extract_qmd_wind_hour(qmd_cycle, fxx, tmp)
+                if row:
+                    qmd_by_fxx[fxx] = row
+            except Exception:
+                continue
+
+    if not qmd_by_fxx:
+        raise RuntimeError("NBM QMD wind timeline extraction returned no gridpoint values")
+
+    for block, hazards in zip(timeline["blocks"], timeline["block_hazards"]):
+        end_fxx = int(block["end_fxx"])
+        row = qmd_by_fxx.get(end_fxx)
+        if not row:
+            continue
+        risk = int(row["risk"])
+        block["WIND"] = risk
+        p90_gust_mph = row.get("p90_gust_mph")
+        display_value = f"{p90_gust_mph:.0f} mph" if p90_gust_mph is not None else "No QMD value"
+        hazard = hazards["WIND"]
+        hazard.update(
+            {
+                "label": "Wind",
+                "name": "Wind",
+                "risk": risk,
+                "risk_label": RISK_LABELS[risk],
+                "level": risk,
+                "impact_level": row["impact_level"],
+                "likelihood_category": row["likelihood_category"],
+                "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+                "prob": row["selected_probability"],
+                "probability": row["selected_probability"],
+                "metric": f"P90 gust {display_value}",
+                "display_label": "P90 gust",
+                "display_value": display_value,
+                "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
+                "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
+                "source_fxx": int(row["fxx"]),
+                "peak_valid_utc": row["valid_utc"],
+                "data_status": "live",
+                "method": QMD_SOURCE_METHOD,
+                "source": source,
+                "gust_max_mph": p90_gust_mph,
+                "p90_gust_mph": p90_gust_mph,
+                "probabilities": row["probabilities"],
+                "native_probability_thresholds": row["native_probability_thresholds"],
+                "hourly_values": [
+                    {
+                        "fxx": int(row["fxx"]),
+                        "valid_utc": row["valid_utc"],
+                        "p90_gust_mph": p90_gust_mph,
+                        "gust_mph": p90_gust_mph,
+                        "probabilities": row["probabilities"],
+                        "value": p90_gust_mph,
+                        "unit": "mph",
+                        "label": "P90 gust",
+                        "window_hours": int(block.get("duration_hours") or 3),
+                    }
+                ],
+                "values": {
+                    "impact_level": row["impact_level"],
+                    "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+                    "peak_gust_mph": p90_gust_mph,
+                    "gust_max_mph": p90_gust_mph,
+                    "p90_gust_mph": p90_gust_mph,
+                    "probabilities": row["probabilities"],
+                    "probability": row["selected_probability"],
+                    "value": p90_gust_mph,
+                    "unit": "mph",
+                },
+            }
+        )
 
 
 def extract_core_block_values(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any]:
@@ -1658,6 +1854,12 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["WIND"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["WIND"] = str(exc)
+
+    try:
+        apply_qmd_wind_timeline(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_WIND_TIMELINE"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_WIND_TIMELINE"] = str(exc)
 
     try:
         apply_core_remaining_hazards(timeline, threats_payload)

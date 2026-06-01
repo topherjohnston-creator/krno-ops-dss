@@ -1598,7 +1598,7 @@
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
     const hazardIdBySource = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.id]));
     const timelineMethodText = {
-      WIND: "Timeline: maximum NBM 10 m wind gust in each 3-hour block.",
+      WIND: "Timeline: NBM QMD P90 10 m wind gust display with probability-of-threshold risk in each 3-hour block.",
       LIGHTNING: "Timeline: maximum NBM 3-hour thunder probability in each 3-hour block.",
       RAIN: "Timeline: NBM hourly rain amount/rate mapped into each 3-hour block.",
       VISIBILITY: "Timeline: lowest NBM visibility / low-visibility probability in each 3-hour block.",
