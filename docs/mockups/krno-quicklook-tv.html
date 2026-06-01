@@ -3461,7 +3461,7 @@
         }).addTo(quicklookMap);
       });
       mapCityCandidates
-        .filter(city => distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon) > 20)
+        .filter(city => distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon) >= 25)
         .slice(0, 7)
         .forEach(city => {
         L.marker([city.lat, city.lon], {
@@ -3559,7 +3559,7 @@
           distanceNm: distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon),
           point: coordinateToRadarPct(city.lat, city.lon)
         }))
-        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm > 20)
+        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm >= 25)
         .filter(city => city.point && city.point.left >= 5 && city.point.left <= 86 && city.point.top >= 6 && city.point.top <= 94)
         .sort((a, b) => a.priority - b.priority);
       const selected = [];
