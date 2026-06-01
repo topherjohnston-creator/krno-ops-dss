@@ -3,10 +3,10 @@ name: Update KRNO Observations
 on:
   workflow_dispatch:
   schedule:
-    # GitHub scheduled workflows are most likely to be delayed or dropped on
-    # exact five-minute boundaries. Use an offset while keeping the supported
-    # five-minute cadence.
-    - cron: "2-59/5 * * * *"
+    # GitHub Actions does not support true one-minute schedules. Poll at the
+    # supported five-minute cadence and let the page re-read this JSON every
+    # minute between workflow commits.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write

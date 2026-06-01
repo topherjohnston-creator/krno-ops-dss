@@ -359,15 +359,6 @@ def main() -> None:
         except Exception as exc:
             obs = build_error_obs(f"Synoptic API fetch failed: {exc}")
 
-    try:
-        awc_obs = parse_awc_metar(fetch_awc_metar())
-        obs = merge_awc_if_newer(obs, awc_obs)
-    except Exception as exc:
-        if obs.get("status") != "ok":
-            obs = build_error_obs(f"Synoptic and AWC METAR fetch failed: {exc}", obs.get("raw"))
-        else:
-            obs["awc_fallback_error"] = str(exc)
-
     payload = json.dumps(obs, indent=2)
     output_paths = [
         DOCS_OUT / "obs.json",

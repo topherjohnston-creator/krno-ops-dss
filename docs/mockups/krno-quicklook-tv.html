@@ -141,10 +141,10 @@
     .title h1 {
       margin: 0;
       color: #f2f6fb;
-      font-family: var(--title-font);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 32px;
       line-height: 1;
-      font-weight: 400;
+      font-weight: 300;
       letter-spacing: 0;
       text-shadow: none;
     }
@@ -772,7 +772,7 @@
 
     .radar-body {
       display: grid;
-      grid-template-columns: minmax(0, 1.22fr) minmax(270px, 0.78fr);
+      grid-template-columns: minmax(0, 1.58fr) minmax(210px, 0.42fr);
       gap: 12px;
       align-items: stretch;
     }
@@ -803,6 +803,11 @@
       font-family: var(--font);
     }
 
+    .radar-map.no-leaflet > .radar-basemap,
+    .radar-map.no-leaflet > .radar-reflectivity {
+      object-fit: fill;
+    }
+
     .radar-map.leaflet-ready > .radar-basemap,
     .radar-map.leaflet-ready > .radar-reflectivity,
     .radar-map.leaflet-ready > .range-ring,
@@ -821,8 +826,8 @@
 
     .radar-basemap {
       z-index: 0;
-      opacity: 0.9;
-      filter: saturate(0.92) contrast(1.08) brightness(0.78);
+      opacity: 0.62;
+      filter: saturate(0.78) contrast(1.02) brightness(0.54);
     }
 
     .radar-reflectivity {
@@ -910,14 +915,15 @@
       gap: 4px;
       padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(18, 27, 39, 0.66);
-      color: rgba(231, 237, 245, 0.82);
-      font-size: 11px;
-      font-weight: 620;
+      background: rgba(24, 32, 45, 0.86);
+      color: rgba(244, 248, 255, 0.94);
+      font-size: 13px;
+      font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
+      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
     }
 
     .city-marker::before {
@@ -937,15 +943,16 @@
       height: auto !important;
       padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(18, 27, 39, 0.72);
-      color: rgba(231, 237, 245, 0.88);
-      font-size: 11px;
-      font-weight: 620;
+      background: rgba(24, 32, 45, 0.86);
+      color: rgba(244, 248, 255, 0.94);
+      font-size: 13px;
+      font-weight: 700;
       letter-spacing: 0.03em;
       line-height: 1.1;
       text-transform: uppercase;
       white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
+      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
     }
 
     .quicklook-city-label::before {
@@ -982,8 +989,56 @@
     .lightning-status {
       display: grid;
       align-content: center;
-      gap: 8px;
+      gap: 9px;
       min-height: 0;
+    }
+
+    .lightning-pill {
+      display: grid;
+      place-items: center;
+      min-height: 72px;
+      padding: 8px 12px;
+      border: 1px solid rgba(52, 195, 143, 0.58);
+      border-radius: 999px;
+      background: rgba(52, 195, 143, 0.22);
+      color: #d8f5e7;
+      font-size: 27px;
+      line-height: 1.05;
+      font-weight: 650;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 26px rgba(0,0,0,0.16);
+    }
+
+    .lightning-pill.yellow {
+      background: rgba(215, 188, 74, 0.28);
+      color: #fff5bf;
+      border-color: rgba(215, 188, 74, 0.58);
+    }
+
+    .lightning-pill.orange {
+      background: rgba(217, 140, 51, 0.30);
+      color: #ffe2c3;
+      border-color: rgba(217, 140, 51, 0.62);
+    }
+
+    .lightning-pill.red {
+      background: rgba(210, 85, 85, 0.34);
+      color: #ffe3e3;
+      border-color: rgba(210, 85, 85, 0.66);
+    }
+
+    .lightning-pill.purple {
+      background: rgba(180, 79, 212, 0.34);
+      color: #fce8ff;
+      border-color: rgba(180, 79, 212, 0.7);
+    }
+
+    .lightning-subtext {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.16;
+      font-weight: 520;
+      text-align: center;
     }
 
     .trigger-line {
@@ -1075,7 +1130,7 @@
 
     .timeline-tooltip {
       position: fixed;
-      z-index: 40;
+      z-index: 2200;
       width: min(430px, calc(100vw - 32px));
       padding: 13px 14px 14px;
       border: 1px solid var(--line-strong);
@@ -1315,7 +1370,7 @@
         <img class="seal" src="./assets/nws-logo-2021.png" alt="National Weather Service">
       </div>
       <div class="title">
-        <h1>Weather Decision Support Dashboard</h1>
+        <h1>WEATHER DECISION SUPPORT DASHBOARD</h1>
       </div>
       <div class="badges">
         <div class="badge" id="updated-badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
@@ -1462,11 +1517,8 @@
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
-            <div class="trigger-line"><span class="trigger-label">20 NM Ring</span><span class="trigger-value" id="ring20-value">Clear</span></div>
-            <div class="trigger-line"><span class="trigger-label">10 NM Ring</span><span class="trigger-value" id="ring10-value">Clear</span></div>
-            <div class="trigger-line"><span class="trigger-label">Closest Strike</span><span class="trigger-value" id="lightning-value">None detected</span></div>
-            <div class="trigger-line"><span class="trigger-label">Strike Age</span><span class="trigger-value" id="strike-age-value">--</span></div>
-            <div class="trigger-line"><span class="trigger-label">Last Scan</span><span class="trigger-value" id="lightning-scan-value">--</span></div>
+            <div class="lightning-pill" id="lightning-pill">No Lightning</div>
+            <div class="lightning-subtext" id="lightning-subtext">Last scan --</div>
             <div class="trigger-action" id="lightning-action">Continue monitoring.</div>
           </div>
         </div>
@@ -1526,8 +1578,28 @@
       { id: "RAIN", row: "RAIN", cell: "RAIN", name: "Rain", source: "RAIN" },
       { id: "TEMP", row: "TEMPERATURE", cell: "TEMP", name: "Temperature", source: "TEMPERATURE" }
     ];
-    const hazardPriority = ["LIGHTNING", "WIND", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
+    const hazardPriority = ["WIND", "LIGHTNING", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
+    const timelineMethodText = {
+      WIND: "Timeline: maximum NBM 10 m wind gust in each 3-hour block.",
+      LIGHTNING: "Timeline: maximum NBM 3-hour thunder probability in each 3-hour block.",
+      RAIN: "Timeline: NBM hourly rain amount/rate mapped into each 3-hour block.",
+      VISIBILITY: "Timeline: lowest NBM visibility / low-visibility probability in each 3-hour block.",
+      SNOW: "Timeline: NBM snow amount/probability in the native 1-hour or 6-hour snow window.",
+      FZRA: "Timeline: NBM freezing-rain amount/probability in the native 1-hour or 6-hour window.",
+      FLASH_FREEZE: "Timeline: NBM temperature plus wet-surface signal in each block.",
+      TEMPERATURE: "Timeline: NBM temperature in each 3-hour block."
+    };
+    const summaryMethodText = {
+      WIND: "Summary: highest timeline wind risk; NBM 24-hour max gust supports the card value when available.",
+      LIGHTNING: "Summary: highest 3-hour NBM thunder probability risk during the 72-hour board.",
+      RAIN: "Summary: highest rain/drainage risk; QMD 6-hour precipitation supports accumulation guidance when available.",
+      VISIBILITY: "Summary: lowest visibility / highest low-visibility probability risk during the 72-hour board.",
+      SNOW: "Summary: highest snow risk and 72-hour total where available.",
+      FZRA: "Summary: highest freezing-rain risk and 72-hour total where available.",
+      FLASH_FREEZE: "Summary: highest temperature plus wet-surface freeze signal during the 72-hour board.",
+      TEMPERATURE: "Summary: max/min temperature risk during the 72-hour board."
+    };
     const metricLineLabels = new Set([
       "Block Value", "Max Gust", "Chance", "Rain", "Snow",
       "Freezing Rain", "Visibility", "Temperature", "Wet Surface"
@@ -1900,7 +1972,7 @@
 
     function impactWindowFromBlocks(source, risk, blocks = []) {
       const target = rankFromCategory(risk);
-      if (target <= 0 || !Array.isArray(blocks)) return "";
+      if (target <= 1 || !Array.isArray(blocks)) return "";
       let best = null;
       let current = null;
       blocks.forEach((block, index) => {
@@ -2117,6 +2189,7 @@
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
         ["Action", operationalAction(risk)],
+        ["Method", timelineMethodText[hazard.source] || "NBM guidance mapped to KRNO thresholds."],
         ["Confidence Basis", confidence.reason]
       );
       return lines;
@@ -2326,17 +2399,19 @@
     function concernTooltipLines(item, details) {
       const metric = compactConcernMetric(item) || item.metric || "No signal";
       const confidence = hazardConfidence(item);
+      const rank = rankFromCategory(item.risk);
       return [
         ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
         confidenceLine(confidence),
-        ["Timing", item.peak || "No signal"],
+        ["Timing", rank > 1 ? (item.peak || "Peak window TBD") : ""],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)],
-        ["Basis", riskWindowLabel(item)],
+        ["Timeline Method", timelineMethodText[item.source] || riskWindowLabel(item)],
+        ["Summary Method", summaryMethodText[item.source] || "Highest 72-hour risk from the timeline blocks."],
         ["Confidence Basis", confidence.reason],
         ["Timeline", "3-hour blocks"]
-      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rankFromCategory(item.risk) <= 1));
+      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rank <= 1));
     }
 
     function renderTopHazards(items) {
@@ -2445,6 +2520,60 @@
         subtitle: item.peak || "Peak window TBD",
         lines: concernTooltipLines({ ...item, impact, action }, ""),
         risk
+      });
+    }
+
+    function bestTimelineDetailFor(source, risk, timeline = {}) {
+      const target = rankFromCategory(risk);
+      const hazardBlocks = Array.isArray(timeline.block_hazards) ? timeline.block_hazards : [];
+      const candidates = hazardBlocks
+        .map((block, index) => ({ detail: block?.[source] || null, index }))
+        .filter(({ detail }) => detail && rankFromCategory(categoryFromRank(detail.risk ?? detail.risk_level)) === target);
+      if (!candidates.length) return null;
+      return candidates.sort((a, b) => {
+        const av = Number(a.detail?.timing_value ?? a.detail?.probability ?? a.detail?.prob ?? a.detail?.values?.value ?? 0);
+        const bv = Number(b.detail?.timing_value ?? b.detail?.probability ?? b.detail?.prob ?? b.detail?.values?.value ?? 0);
+        return bv - av;
+      })[0].detail;
+    }
+
+    function timelineRowsFromData(threatMap, timeline = {}) {
+      const blocks = Array.isArray(timeline.blocks) ? timeline.blocks : [];
+      const hazardBlocks = Array.isArray(timeline.block_hazards) ? timeline.block_hazards : [];
+      return hazardPriority.map(source => {
+        const item = threatMap?.[source] || {};
+        const timelineMax = Math.max(
+          0,
+          ...blocks.map(block => Number(block?.[source] ?? 0)).filter(Number.isFinite),
+          ...hazardBlocks.map(block => Number(block?.[source]?.risk ?? block?.[source]?.risk_level ?? 0)).filter(Number.isFinite)
+        );
+        const risk = categoryFromRank(timelineMax || item.risk_level || item.risk || 0);
+        const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
+        const bestDetail = bestTimelineDetailFor(source, risk, timeline);
+        const windowText = impactWindowFromBlocks(source, risk, blocks);
+        const detailMetric = bestDetail?.metric || bestDetail?.display_value || bestDetail?.values?.label;
+        const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
+          ? (detailMetric || item.metric || item.display_value || "No signal")
+          : (detailMetric || item.display_value || item.metric || "No signal");
+        return {
+          source,
+          name,
+          risk,
+          metric: displayMetric,
+          peak: windowText || (rankFromCategory(risk) > 1 ? shortPeak(bestDetail?.peak_valid_utc || item.peak_valid_utc) : ""),
+          impact: operationalImpact(source, risk),
+          action: operationalAction(risk),
+          methodology: bestDetail?.methodology || bestDetail?.driver || item.methodology || item.driver || "",
+          dataSource: bestDetail?.source || item.source || "",
+          displayLabel: item.display_label || bestDetail?.label || "",
+          riskMethod: bestDetail?.risk_method || bestDetail?.method || item.risk_method || ""
+        };
+      }).sort((a, b) => {
+        const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
+        if (riskDelta) return riskDelta;
+        const aPriority = hazardPriority.includes(a.source) ? hazardPriority.indexOf(a.source) : 99;
+        const bPriority = hazardPriority.includes(b.source) ? hazardPriority.indexOf(b.source) : 99;
+        return aPriority - bPriority;
       });
     }
 
@@ -2674,10 +2803,10 @@
       if (Number.isFinite(obsDate.getTime())) latestObsMs = Math.max(latestObsMs, obsDate.getTime());
       let state = "Fresh";
       let className = "fresh";
-      if (ageMinutes > 30) {
+      if (ageMinutes > 75) {
         state = "Stale";
         className = "stale";
-      } else if (ageMinutes > 15) {
+      } else if (ageMinutes > 20) {
         state = "Aging";
         className = "aging";
       }
@@ -2690,9 +2819,10 @@
         subtitle: `Obs ${state}`,
         lines: [
           ["Age", Number.isFinite(ageMinutes) ? `${Math.round(ageMinutes)} min` : "Unknown"],
-          ["Fresh", "<= 15 min"],
-          ["Aging", "16-30 min"],
-          ["Stale", "> 30 min"]
+          ["Fresh", "<= 20 min"],
+          ["Aging", "21-75 min"],
+          ["Stale", "> 75 min"],
+          ["Note", "KRNO Synoptic feed can report hourly METAR timestamps"]
         ],
         risk: state === "Stale" ? "Major" : state === "Aging" ? "Minor" : "Little to None"
       });
@@ -2973,8 +3103,10 @@
     }
 
     function initQuicklookMap() {
-      if (quicklookMapReady || !window.L) return Boolean(quicklookMap);
       const mapEl = document.getElementById("radar-map");
+      if (mapEl) mapEl.classList.add("no-leaflet");
+      return false;
+      if (quicklookMapReady || !window.L) return Boolean(quicklookMap);
       if (!mapEl) return false;
       mapEl.classList.add("leaflet-ready");
       quicklookMap = L.map(mapEl, {
@@ -3080,8 +3212,23 @@
       return projectedToRadarPct(mercatorProject(latitude, longitude));
     }
 
+    function distanceNmBetween(lat1, lon1, lat2, lon2) {
+      const radiusNm = 3440.065;
+      const phi1 = Number(lat1) * Math.PI / 180;
+      const phi2 = Number(lat2) * Math.PI / 180;
+      const dPhi = (Number(lat2) - Number(lat1)) * Math.PI / 180;
+      const dLambda = (Number(lon2) - Number(lon1)) * Math.PI / 180;
+      const a = Math.sin(dPhi / 2) ** 2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLambda / 2) ** 2;
+      return 2 * radiusNm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
     function positionCityMarkers() {
       document.querySelectorAll(".city-marker").forEach(marker => {
+        const distance = distanceNmBetween(krnoPoint.lat, krnoPoint.lon, marker.dataset.lat, marker.dataset.lon);
+        if (Number.isFinite(distance) && distance <= 20) {
+          marker.hidden = true;
+          return;
+        }
         const point = coordinateToRadarPct(marker.dataset.lat, marker.dataset.lon);
         if (!point || point.left < -4 || point.left > 104 || point.top < -4 || point.top > 104) {
           marker.hidden = true;
@@ -3298,38 +3445,34 @@
     function updateLightningDisplay(lightning) {
       const risk = lightningRisk(lightning?.alert_level);
       const nearest = lightning?.nearest_strike || null;
-      const status = document.getElementById("lightning-value");
-      const ring20 = document.getElementById("ring20-value");
-      const ring10 = document.getElementById("ring10-value");
-      const strikeAge = document.getElementById("strike-age-value");
-      const scan = document.getElementById("lightning-scan-value");
+      const pill = document.getElementById("lightning-pill");
+      const subtext = document.getElementById("lightning-subtext");
       const action = document.getElementById("lightning-action");
       const panel = document.getElementById("lightning-panel");
       const label = lightning?.alert_label || "No GLM lightning detected";
       const ring20Count = ringCount(lightning, 20);
       const ring10Count = ringCount(lightning, 10);
-      if (status) {
-        status.textContent = nearest
-          ? `${Number(nearest.distance_nm).toFixed(1)} nm ${nearest.bearing_cardinal || ""}`.trim()
-          : "None detected";
-        status.style.color = risk === "None" ? "var(--text-body)" : (riskColors[risk] || "var(--text-main)");
+      const scanText = (document.getElementById("radar-time")?.textContent || "Scan --")
+        .replace(/^Scan ~?/, "")
+        .replace(/\s+\(-\d+m\)/, "");
+      const distance = nearest ? Number(nearest.distance_nm) : NaN;
+      const ageText = nearest ? formatStrikeAge(nearest) : "";
+      let pillClass = "";
+      let pillText = "No Lightning";
+      if (Number.isFinite(distance)) {
+        if (distance <= 10) pillClass = "purple";
+        else if (distance <= 20) pillClass = "red";
+        else if (distance <= 30) pillClass = "orange";
+        else if (distance <= 40) pillClass = "yellow";
+        pillText = `${distance.toFixed(1)} nm ${nearest.bearing_cardinal || ""}${ageText ? ` • ${ageText}` : ""}`.trim();
       }
-      if (ring20) {
-        ring20.textContent = ring20Count > 0 ? "Strike detected" : "Clear";
-        ring20.style.color = ring20Count > 0 ? (riskColors.Minor || "var(--text-main)") : "var(--text-main)";
+      if (pill) {
+        pill.className = `lightning-pill${pillClass ? ` ${pillClass}` : ""}`;
+        pill.textContent = pillText;
       }
-      if (ring10) {
-        ring10.textContent = ring10Count > 0 ? "Strike detected" : "Clear";
-        ring10.style.color = ring10Count > 0 ? (riskColors.Major || "var(--text-main)") : "var(--text-main)";
-      }
-      if (strikeAge) strikeAge.textContent = nearest ? formatStrikeAge(nearest) || "--" : "--";
-      if (scan) {
-        scan.textContent = (document.getElementById("radar-time")?.textContent || "--")
-          .replace(/^Scan ~?/, "")
-          .replace(/\s+\(-\d+m\)/, "");
-      }
+      if (subtext) subtext.textContent = `Last scan ${scanText}`;
       if (action) {
-        action.textContent = nearest ? "Monitor lightning distance and ramp triggers." : "Continue monitoring.";
+        action.textContent = nearest ? "Monitor ramp lightning trigger." : "Continue monitoring.";
         action.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
       }
       if (panel) {
@@ -3387,7 +3530,7 @@
           buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
         });
 
-        const threatRows = threatRowsFromData(threats.threats || {}, timeline.blocks || []);
+        const threatRows = timelineRowsFromData(threats.threats || {}, timeline);
         if (threatRows.length) {
           renderTopHazards(threatRows);
           renderHazardSummaryStrip(threatRows);
