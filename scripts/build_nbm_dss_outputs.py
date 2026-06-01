@@ -1232,11 +1232,13 @@ def wind_probability_risk_detail(probabilities: dict[str, float]) -> dict[str, A
     best = {"risk": 1, "impact_level": 1, "probability": 0.0, "probability_key": None}
     for key, impact_level in thresholds:
         probability = float(probabilities.get(key, 0.0) or 0.0)
+        if probability < 0.5:
+            continue
         risk = risk_from_matrix(impact_level, probability)
         if (
             risk > best["risk"]
-            or (risk == best["risk"] and impact_level > best["impact_level"] and probability > 0)
-            or (risk == best["risk"] and impact_level == best["impact_level"] and probability > best["probability"])
+            or (risk == best["risk"] and probability > best["probability"])
+            or (risk == best["risk"] and probability == best["probability"] and impact_level > best["impact_level"])
         ):
             best = {
                 "risk": risk,
