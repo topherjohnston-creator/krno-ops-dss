@@ -3678,7 +3678,7 @@
           buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
         });
 
-        const threatRows = timelineRowsFromData(threats.threats || {}, timeline);
+        const threatRows = threatRowsFromData(threats.threats || {}, timeline.blocks || []);
         if (threatRows.length) {
           renderTopHazards(threatRows);
           renderHazardSummaryStrip(threatRows);
