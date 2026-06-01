@@ -142,15 +142,24 @@
       margin: 0;
       color: #f2f6fb;
       font-family: var(--title-font);
-      font-size: 32px;
+      font-size: 31px;
       line-height: 1;
-      font-weight: 400;
+      font-weight: 300;
       letter-spacing: 0;
       text-shadow: none;
     }
 
     .title div {
-      display: none;
+      display: block;
+      margin-top: 5px;
+      color: rgba(242, 246, 251, 0.82);
+      font-family: var(--title-font);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .badges {
@@ -626,7 +635,7 @@
 
     .bottom-row {
       display: grid;
-      grid-template-columns: 1.06fr 1.46fr 0.82fr;
+      grid-template-columns: 1.06fr 1.18fr 1.10fr;
       gap: var(--gap-main);
       min-height: 0;
       overflow: hidden;
@@ -772,7 +781,7 @@
 
     .radar-body {
       display: grid;
-      grid-template-columns: minmax(0, 1.58fr) minmax(210px, 0.42fr);
+      grid-template-columns: minmax(0, 1.16fr) minmax(190px, 0.84fr);
       gap: 12px;
       align-items: stretch;
     }
@@ -1076,6 +1085,10 @@
       font-weight: 500;
     }
 
+    .trigger-action:empty {
+      display: none;
+    }
+
     .alerts-data {
       display: grid;
       grid-template-columns: 1fr;
@@ -1371,6 +1384,7 @@
       </div>
       <div class="title">
         <h1>WEATHER DECISION SUPPORT DASHBOARD</h1>
+        <div>Reno-Tahoe International Airport Ground Operations</div>
       </div>
       <div class="badges">
         <div class="badge" id="updated-badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
@@ -1519,7 +1533,7 @@
           <div class="lightning-status" id="lightning-panel">
             <div class="lightning-pill" id="lightning-pill">No Lightning</div>
             <div class="lightning-subtext" id="lightning-subtext">Last scan --</div>
-            <div class="trigger-action" id="lightning-action">Continue monitoring.</div>
+            <div class="trigger-action" id="lightning-action"></div>
           </div>
         </div>
       </section>
@@ -1567,7 +1581,6 @@
       "Extreme": "EXTREME"
     };
     const coreTimelineSources = new Set(["WIND", "LIGHTNING", "RAIN", "VISIBILITY"]);
-    const timelineOrder = ["WIND", "LTNG", "SNOW", "VIS", "FZRA", "FLASHFZ", "RAIN", "TEMP"];
     const hazards = [
       { id: "WIND", row: "WIND", cell: "WIND", name: "Wind", source: "WIND" },
       { id: "LTNG", row: "LIGHTNING", cell: "LTNG", name: "Lightning", source: "LIGHTNING" },
@@ -1578,7 +1591,7 @@
       { id: "RAIN", row: "RAIN", cell: "RAIN", name: "Rain", source: "RAIN" },
       { id: "TEMP", row: "TEMPERATURE", cell: "TEMP", name: "Temperature", source: "TEMPERATURE" }
     ];
-    const hazardPriority = ["WIND", "LIGHTNING", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
+    const hazardPriority = ["TEMPERATURE", "RAIN", "VISIBILITY", "WIND", "LIGHTNING", "SNOW", "FZRA", "FLASH_FREEZE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
     const hazardIdBySource = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.id]));
     const timelineMethodText = {
@@ -1687,6 +1700,17 @@
     function normalizeForecastRisk(category) {
       const rank = rankFromCategory(category);
       return rank <= 1 ? "Little to None" : category;
+    }
+
+    function hazardPriorityIndex(source) {
+      const index = hazardPriority.indexOf(source);
+      return index === -1 ? 99 : index;
+    }
+
+    function compareHazardItems(a, b) {
+      const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
+      if (riskDelta) return riskDelta;
+      return hazardPriorityIndex(a.source) - hazardPriorityIndex(b.source);
     }
 
     function clamp(value, min, max) {
@@ -1982,10 +2006,15 @@
       const bestDetail = detail || details.find(row => rankFromCategory(categoryFromRank(row?.risk ?? row?.risk_level ?? 0)) === rankFromCategory(risk)) || details[0] || {};
       const probability = detailProbability(bestDetail, item);
       const probabilityScore = probabilityClarityScore(probability) ?? deterministicClarityScore(source, item, bestDetail);
-      const spreadScore = spreadAgreementScore({ ...bestDetail, source });
+      let spreadScore = spreadAgreementScore({ ...bestDetail, source });
       const timingScore = timingPersistenceScore(source, risk);
       const dataScore = dataHealthScore();
-      const runScore = runConsistencyScore();
+      let runScore = runConsistencyScore();
+      const quietSignal = rankFromCategory(risk) <= 1;
+      if (quietSignal && probabilityScore >= 80 && timingScore >= 85 && dataScore >= 70) {
+        if (runScore === 55) runScore = 80;
+        if (spreadScore === 55) spreadScore = 80;
+      }
       const score =
         0.30 * boundedScore(probabilityScore) +
         0.25 * boundedScore(runScore) +
@@ -2294,11 +2323,10 @@
       const validEnd = block.validEndUtc || detail?.valid_end_utc;
       const localWindow = `${formatTooltipLocal(validStart)} - ${formatTooltipLocal(validEnd)}`;
       const utcWindow = `${formatTooltipUtc(validStart)}-${formatTooltipUtc(validEnd)}`;
-      const peak = detail?.peak_valid_utc ? shortPeak(detail.peak_valid_utc) : "Peak window TBD";
       const lines = tooltipLinesFor(hazard, block, risk, detail);
       return `
         <div class="tooltip-title">${escapeHtml(hazard.name)} - ${escapeHtml(risk)}</div>
-        <div class="tooltip-time">${escapeHtml(localWindow)} / ${escapeHtml(utcWindow)}<br>${escapeHtml(peak)}</div>
+        <div class="tooltip-time">${escapeHtml(localWindow)} / ${escapeHtml(utcWindow)}</div>
         <div class="tooltip-lines">
           ${lines.map(([label, value]) => {
             const color = label === "Risk"
@@ -2391,7 +2419,11 @@
         maxRank: maxRankFor(hazard, rows)
       }));
       const visibleHazards = rankedHazards
-        .sort((a, b) => timelineOrder.indexOf(a.hazard.id) - timelineOrder.indexOf(b.hazard.id));
+        .sort((a, b) => {
+          const riskDelta = b.maxRank - a.maxRank;
+          if (riskDelta) return riskDelta;
+          return hazardPriorityIndex(a.hazard.source) - hazardPriorityIndex(b.hazard.source);
+        });
 
       matrix.style.setProperty("--timeline-rows", String(Math.max(1, visibleHazards.length)));
 
@@ -2544,7 +2576,8 @@
       const fallback = new Map(topHazards.map(item => [item.source, item]));
       return hazards
         .map(hazard => bySource.get(hazard.source) || fallback.get(hazard.source))
-        .filter(Boolean);
+        .filter(Boolean)
+        .sort(compareHazardItems);
     }
 
     function stripValueFor(item) {
@@ -2591,25 +2624,36 @@
       const risk = normalizeForecastRisk(item.risk || "Little to None");
       const name = item.name || "Weather";
       const color = riskColors[risk] || riskColors.None;
+      const rank = rankFromCategory(risk);
+      const noConcern = rank <= 1;
       const impact = item.impact || operationalImpact(item.source);
       const action = item.action || operationalAction(risk);
       const confidence = hazardConfidence({ ...item, risk });
-      document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
+      const primaryTitle = noConcern ? "NO WEATHER CONCERNS" : `${risk.toUpperCase()} - ${name.toUpperCase()}`;
+      document.getElementById("primary-title").textContent = primaryTitle;
       const confidenceClass = String(confidence.label || "Medium").toLowerCase();
-      document.getElementById("primary-detail").innerHTML = [
-        { text: item.peak || "Peak window TBD", className: "peak" },
-        { text: impact, className: "impact", style: `--pill-risk-color: ${color}` },
-        { text: action, className: "action" },
-        { text: `Confidence ${confidence.label}`, className: `confidence ${confidenceClass}` }
-      ].map(pill => {
+      const pills = noConcern
+        ? [
+          { text: "Next 72 Hours", className: "peak" },
+          { text: "Routine Operations", className: "impact", style: `--pill-risk-color: ${color}` },
+          { text: "No Action", className: "action" },
+          { text: `Confidence ${confidence.label}`, className: `confidence ${confidenceClass}` }
+        ]
+        : [
+          { text: item.peak || "Peak window TBD", className: "peak" },
+          { text: impact, className: "impact", style: `--pill-risk-color: ${color}` },
+          { text: action, className: "action" },
+          { text: `Confidence ${confidence.label}`, className: `confidence ${confidenceClass}` }
+        ];
+      document.getElementById("primary-detail").innerHTML = pills.map(pill => {
         const style = pill.style ? ` style="${pill.style}"` : "";
         return `<span class="concern-pill ${pill.className}"${style}>${escapeHtml(pill.text)}</span>`;
       }).join("");
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
-        title: `${name} - ${risk}`,
-        subtitle: item.peak || "Peak window TBD",
-        lines: concernTooltipLines({ ...item, impact, action }, ""),
+        title: noConcern ? "No Weather Concerns" : `${name} - ${risk}`,
+        subtitle: noConcern ? "No operational weather signal in the next 72 hours" : item.peak || "Peak window TBD",
+        lines: concernTooltipLines({ ...item, impact: noConcern ? "Routine operations" : impact, action: noConcern ? "No action" : action }, ""),
         risk
       });
     }
@@ -2660,13 +2704,7 @@
           displayLabel: item.display_label || bestDetail?.label || "",
           riskMethod: bestDetail?.risk_method || bestDetail?.method || item.risk_method || ""
         };
-      }).sort((a, b) => {
-        const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
-        if (riskDelta) return riskDelta;
-        const aPriority = hazardPriority.includes(a.source) ? hazardPriority.indexOf(a.source) : 99;
-        const bPriority = hazardPriority.includes(b.source) ? hazardPriority.indexOf(b.source) : 99;
-        return aPriority - bPriority;
-      });
+      }).sort(compareHazardItems);
     }
 
     function threatRowsFromData(threatMap, blocks = []) {
@@ -2691,13 +2729,7 @@
           displayLabel: item.display_label || "",
           riskMethod: item.risk_method || ""
         };
-      }).sort((a, b) => {
-        const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
-        if (riskDelta) return riskDelta;
-        const aPriority = hazardPriority.includes(a.source) ? hazardPriority.indexOf(a.source) : 99;
-        const bPriority = hazardPriority.includes(b.source) ? hazardPriority.indexOf(b.source) : 99;
-        return aPriority - bPriority;
-      });
+      }).sort(compareHazardItems);
     }
 
     function formatLocal(iso, options = {}) {
@@ -2911,8 +2943,7 @@
           ["Age", Number.isFinite(ageMinutes) ? `${Math.round(ageMinutes)} min` : "Unknown"],
           ["Fresh", "<= 20 min"],
           ["Aging", "21-75 min"],
-          ["Stale", "> 75 min"],
-          ["Note", "KRNO Synoptic feed can report hourly METAR timestamps"]
+          ["Stale", "> 75 min"]
         ],
         risk: state === "Stale" ? "Major" : state === "Aging" ? "Minor" : "Little to None"
       });
@@ -3686,7 +3717,7 @@
       }
       if (subtext) subtext.textContent = `Last scan ${scanText}`;
       if (action) {
-        action.textContent = nearest ? "Monitor ramp lightning trigger." : "Continue monitoring.";
+        action.textContent = nearest ? "Monitor ramp lightning trigger." : "";
         action.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
       }
       if (panel) {
