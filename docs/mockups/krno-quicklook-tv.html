@@ -2994,6 +2994,93 @@
       };
     }
 
+    function awcTimestamp(record) {
+      const obsTime = Number(record?.obsTime);
+      if (Number.isFinite(obsTime)) return new Date(obsTime * 1000).toISOString();
+      const reportTime = record?.reportTime;
+      if (reportTime) return new Date(reportTime).toISOString();
+      return null;
+    }
+
+    function awcCloudText(record) {
+      if (record?.cover) return record.cover;
+      const clouds = Array.isArray(record?.clouds) ? record.clouds : [];
+      const coded = clouds
+        .filter(cloud => cloud?.cover && cloud?.base != null)
+        .map(cloud => `${cloud.cover}${String(Math.round(Number(cloud.base) / 100)).padStart(3, "0")}`);
+      return coded.length ? coded.join(" / ") : "";
+    }
+
+    function awcPayloadToObs(records) {
+      const record = Array.isArray(records) ? records[0] : records;
+      const observedUtc = awcTimestamp(record);
+      if (!record || !observedUtc) return null;
+      const windSpeedKt = Number(record.wspd);
+      const windGustKt = Number(record.wgst);
+      const visibilityRaw = String(record.visib || "").replace("+", "");
+      const visibility = Number(visibilityRaw);
+      return {
+        site: "KRNO",
+        source: "Aviation Weather Center METAR API live browser fallback",
+        status: "ok",
+        station: record.icaoId || "KRNO",
+        name: record.name,
+        latitude: record.lat,
+        longitude: record.lon,
+        elevation_ft: record.elev == null ? null : Math.round(Number(record.elev) * 3.28084),
+        observed_utc: observedUtc,
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: record.wdir,
+        wind_speed_kt: Number.isFinite(windSpeedKt) ? windSpeedKt : null,
+        wind_gust_kt: Number.isFinite(windGustKt) ? windGustKt : null,
+        wind_speed_mph: Number.isFinite(windSpeedKt) ? windSpeedKt * 1.15078 : null,
+        wind_gust_mph: Number.isFinite(windGustKt) ? windGustKt * 1.15078 : null,
+        visibility_sm: Number.isFinite(visibility) ? visibility : null,
+        temperature_f: cToF(record.temp),
+        dewpoint_f: cToF(record.dewp),
+        relative_humidity: null,
+        precip_1hr_in: null,
+        sky_condition: awcCloudText(record),
+        present_weather: "None",
+        metar: record.rawOb,
+        field_times_utc: { awc_metar: observedUtc },
+        raw: { awc: record }
+      };
+    }
+
+    function nwsPayloadToObs(payload) {
+      const props = payload?.properties || {};
+      const observedUtc = props.timestamp ? new Date(props.timestamp).toISOString() : null;
+      if (!observedUtc) return null;
+      const windSpeedMs = Number(props.windSpeed?.value);
+      const windGustMs = Number(props.windGust?.value);
+      const visibilityM = Number(props.visibility?.value);
+      const presentWeather = Array.isArray(props.presentWeather) && props.presentWeather.length
+        ? props.presentWeather.map(item => item.weather || item.rawString).filter(Boolean).join(", ")
+        : "None";
+      return {
+        site: "KRNO",
+        source: "NWS API live browser fallback",
+        status: "ok",
+        station: "KRNO",
+        observed_utc: observedUtc,
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: props.windDirection?.value,
+        wind_speed_mph: Number.isFinite(windSpeedMs) ? windSpeedMs * 2.23694 : null,
+        wind_gust_mph: Number.isFinite(windGustMs) ? windGustMs * 2.23694 : null,
+        visibility_sm: Number.isFinite(visibilityM) ? visibilityM / 1609.344 : null,
+        temperature_f: cToF(props.temperature?.value),
+        dewpoint_f: cToF(props.dewpoint?.value),
+        relative_humidity: props.relativeHumidity?.value ?? null,
+        precip_1hr_in: null,
+        sky_condition: props.textDescription || "Not reported",
+        present_weather: displayWeatherText(presentWeather),
+        metar: props.rawMessage || "",
+        field_times_utc: { nws_observation: observedUtc },
+        raw: { weather_gov: payload }
+      };
+    }
+
     function updateObsTooltips(obs, values) {
       const rh = Number(obs.relative_humidity ?? obs.raw?.OBSERVATIONS?.relative_humidity_value_1?.value);
       const wb = wetBulbF(obs.temperature_f, rh);
@@ -3165,6 +3252,20 @@
       return false;
     }
 
+    async function fetchNwsObservationFallback() {
+      const url = `https://api.weather.gov/stations/KRNO/observations/latest?t=${Date.now()}`;
+      const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error("NWS latest observation unavailable");
+      const obs = nwsPayloadToObs(await response.json());
+      if (!obs) return false;
+      const obsMs = new Date(obs.observed_utc).getTime();
+      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+        updateObsDisplay(obs);
+        return true;
+      }
+      return false;
+    }
+
     async function loadObsData() {
       updateHeaderClock();
       let primaryObs = null;
@@ -3183,7 +3284,8 @@
         console.info("Unable to refresh observations.", error);
       }
       const fallbackLoaders = [
-        ["Synoptic live observation fallback", fetchSynopticLiveFallback]
+        ["Synoptic live observation fallback", fetchSynopticLiveFallback],
+        ["NWS latest observation fallback", fetchNwsObservationFallback]
       ];
       for (const [label, loader] of fallbackLoaders) {
         try {

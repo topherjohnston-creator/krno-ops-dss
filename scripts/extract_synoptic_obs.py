@@ -263,6 +263,13 @@ def parse_awc_metar(record: dict[str, Any] | None) -> dict[str, Any] | None:
         visibility_sm = None
     temp_f = c_to_f(record.get("temp"))
     dewpoint_f = c_to_f(record.get("dewp"))
+    cover = record.get("cover")
+    clouds = record.get("clouds") if isinstance(record.get("clouds"), list) else []
+    sky_condition = cover or " / ".join(
+        f"{cloud.get('cover')}{int(cloud.get('base')):03d}"
+        for cloud in clouds
+        if isinstance(cloud, dict) and cloud.get("cover") and cloud.get("base") is not None
+    )
     return {
         "site": SITE,
         "source": "Aviation Weather Center METAR API",
@@ -284,7 +291,13 @@ def parse_awc_metar(record: dict[str, Any] | None) -> dict[str, Any] | None:
         "dewpoint_f": dewpoint_f,
         "relative_humidity": relative_humidity_from_c(record.get("temp"), record.get("dewp")),
         "precip_1hr_in": None,
+        "sky_condition": sky_condition or None,
+        "present_weather": "None",
         "metar": record.get("rawOb"),
+        "field_times_utc": {
+            "awc_metar": observed_utc,
+        },
+        "age_minutes_at_build": round((iso_timestamp(utc_now()) - iso_timestamp(observed_utc)) / 60, 1),
         "raw": {"awc": record},
     }
 
@@ -294,6 +307,19 @@ def merge_awc_if_newer(synoptic_obs: dict[str, Any], awc_obs: dict[str, Any] | N
         return synoptic_obs
     if synoptic_obs.get("status") != "ok":
         return awc_obs
+    if iso_timestamp(awc_obs.get("observed_utc")) > iso_timestamp(synoptic_obs.get("observed_utc")):
+        merged = dict(awc_obs)
+        merged["source"] = "Aviation Weather Center METAR API"
+        merged["generated_utc"] = utc_now()
+        merged["synoptic_observed_utc"] = synoptic_obs.get("observed_utc")
+        merged["synoptic_generated_utc"] = synoptic_obs.get("generated_utc")
+        merged["synoptic_metar"] = synoptic_obs.get("metar")
+        merged["refresh_note"] = "AWC METAR was newer than Synoptic latest for KRNO during this build."
+        merged["raw"] = {
+            "awc": awc_obs.get("raw", {}).get("awc"),
+            "synoptic": synoptic_obs.get("raw"),
+        }
+        return merged
 
     merged = dict(synoptic_obs)
     synoptic_raw = synoptic_obs.get("raw", {})
@@ -387,15 +413,24 @@ def main() -> None:
     token = os.getenv("SYNOPTIC_TOKEN")
 
     if not token:
-        obs = build_error_obs(
-            "Missing SYNOPTIC_TOKEN environment variable. Add it as a GitHub Actions secret."
-        )
+        try:
+            obs = parse_awc_metar(fetch_awc_metar()) or build_error_obs(
+                "Missing SYNOPTIC_TOKEN environment variable and AWC METAR fallback returned no KRNO record."
+            )
+        except Exception as exc:
+            obs = build_error_obs(
+                f"Missing SYNOPTIC_TOKEN environment variable and AWC METAR fallback failed: {exc}"
+            )
     else:
         try:
             payload = fetch_synoptic_latest(token)
             obs = parse_synoptic_response(payload)
         except Exception as exc:
             obs = build_error_obs(f"Synoptic API fetch failed: {exc}")
+        try:
+            obs = merge_awc_if_newer(obs, parse_awc_metar(fetch_awc_metar()))
+        except Exception as exc:
+            obs["awc_fallback_error"] = str(exc)
 
     payload = json.dumps(obs, indent=2)
     output_paths = [
