@@ -3,21 +3,16 @@ name: Update KRNO Observations
 on:
   workflow_dispatch:
   schedule:
-    # GitHub Actions schedules are not guaranteed to fire exactly on time. Each
-    # individual schedule stays at the supported five-minute cadence, but the
-    # offsets give the KRNO obs workflow a chance to run each minute.
-    - cron: "0-59/5 * * * *"
-    - cron: "1-59/5 * * * *"
-    - cron: "2-59/5 * * * *"
-    - cron: "3-59/5 * * * *"
-    - cron: "4-59/5 * * * *"
+    # GitHub Actions schedules are not guaranteed to fire exactly on time.
+    # Keep one five-minute schedule so observation commits cannot overlap.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
 concurrency:
   group: update-krno-observations
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update-obs:
@@ -26,6 +21,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Sync latest repository state
+        run: |
+          git pull --ff-only origin main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -47,12 +46,18 @@ jobs:
         run: |
           python scripts/extract_glm_lightning.py
 
+      - name: Validate generated JSON
+        run: |
+          python -m json.tool docs/observations.json > /dev/null
+          python -m json.tool docs/obs.json > /dev/null
+          python -m json.tool data/observations.json > /dev/null
+          python -m json.tool docs/lightning.json > /dev/null
+          python -m json.tool data/lightning.json > /dev/null
+
       - name: Commit updated observations
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git pull --rebase --autostash origin main
 
           git add docs/observations.json || true
           git add docs/obs.json || true
