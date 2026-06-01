@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 12Z",
-  "generated_utc": "2026-06-01T16:41:06Z",
+  "generated_utc": "2026-06-01T16:50:40Z",
   "cycle_utc_iso": "2026-06-01T12:00:00Z",
   "cycle": "NBM 12Z",
   "valid_period": {
@@ -17,21 +17,21 @@
       "id": "WIND",
       "title": "Wind",
       "name": "Wind",
-      "prob": 1.0,
-      "probability": 1.0,
-      "risk": 2,
-      "risk_level": 2,
-      "risk_label": "Minor",
-      "level": 2,
-      "impact_level": 3,
-      "metric": "Max gust 9 mph",
+      "prob": 0.9347826086956528,
+      "probability": 0.9347826086956528,
+      "risk": 3,
+      "risk_level": 3,
+      "risk_label": "Moderate",
+      "level": 3,
+      "impact_level": 5,
+      "metric": "Max gust 37 mph",
       "display_label": "Max gust",
-      "display_value": "9 mph",
+      "display_value": "37 mph",
       "window": "72 hr",
-      "peak_start_fxx": 25,
-      "peak_end_fxx": 48,
-      "source_fxx": 48,
-      "peak_valid_utc": "2026-06-03T06:00:00Z",
+      "peak_start_fxx": 49,
+      "peak_end_fxx": 72,
+      "source_fxx": 72,
+      "peak_valid_utc": "2026-06-04T06:00:00Z",
       "driver": "NBM QMD 24-hour maximum gust probabilities at KRNO",
       "methodology": "Wind summary uses QMD 24-hour maximum gust probability-of-threshold exceedance for the 0-24, 24-48, and 48-72 hour windows mapped through the KRNO likelihood-vs-impact risk matrix.",
       "data_status": "live",
@@ -57,39 +57,39 @@
       "daily_values": [
         {
           "fxx": 24,
-          "gust_mph": 7.8,
+          "gust_mph": 20.8,
           "valid_utc": "2026-06-02T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 1.0,
+            "prob_gt_30_mph": 12.2,
             "prob_gt_45_mph": 1.0,
-            "prob_gt_58_mph": 0.0,
+            "prob_gt_58_mph": 0.7,
             "prob_gt_65_mph": 0.0
           },
           "risk": 2
         },
         {
           "fxx": 48,
-          "gust_mph": 9.2,
+          "gust_mph": 26.2,
           "valid_utc": "2026-06-03T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 1.0,
+            "prob_gt_30_mph": 35.9,
             "prob_gt_45_mph": 1.0,
-            "prob_gt_58_mph": 0.3,
-            "prob_gt_65_mph": 0.1
+            "prob_gt_58_mph": 1.0,
+            "prob_gt_65_mph": 1.0
           },
-          "risk": 2
+          "risk": 3
         },
         {
           "fxx": 72,
-          "gust_mph": 9.2,
+          "gust_mph": 36.9,
           "valid_utc": "2026-06-04T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 1.0,
-            "prob_gt_45_mph": 3.6,
-            "prob_gt_58_mph": 0.3,
-            "prob_gt_65_mph": 0.0
+            "prob_gt_30_mph": 74.5,
+            "prob_gt_45_mph": 12.1,
+            "prob_gt_58_mph": 2.4,
+            "prob_gt_65_mph": 0.9
           },
-          "risk": 2
+          "risk": 3
         }
       ]
     },
@@ -572,9 +572,9 @@
   "hazards": [
     {
       "id": "WIND",
-      "risk": 2,
-      "probability": 1.0,
-      "level": 2
+      "risk": 3,
+      "probability": 0.9347826086956528,
+      "level": 3
     },
     {
       "id": "LIGHTNING",
