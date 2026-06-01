@@ -154,6 +154,10 @@ def iso(dt: datetime) -> str:
     return dt.isoformat().replace("+00:00", "Z")
 
 
+def parse_iso_utc(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
 def aws_grib_url(cycle: datetime, product: str, fxx: int) -> str:
     ymd = cycle.strftime("%Y%m%d")
     hh = cycle.strftime("%H")
@@ -880,9 +884,30 @@ def extract_qmd_wind_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any
 
 
 def apply_qmd_wind_timeline(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
-    qmd_cycle = find_latest_available_cycle("qmd", [1, 72])
+    block_end_times = [parse_iso_utc(block["valid_end_utc"]) for block in timeline["blocks"]]
+    qmd_cycle = None
+    fxx_values_by_end_time: dict[str, int] = {}
+    for cycle in candidate_cycles(count=8):
+        offsets = {
+            iso(end_time): int(round((end_time - cycle).total_seconds() / 3600.0))
+            for end_time in block_end_times
+        }
+        if not offsets or min(offsets.values()) < 1:
+            continue
+        required = sorted(set(offsets.values()))
+        try:
+            for fxx in (required[0], required[-1]):
+                fetch_text(aws_grib_url(cycle, "qmd", fxx) + ".idx")
+        except Exception:
+            continue
+        qmd_cycle = cycle
+        fxx_values_by_end_time = offsets
+        break
+    if qmd_cycle is None:
+        raise RuntimeError("No recent complete NBM QMD wind timeline cycle found")
+
     source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
-    fxx_values = sorted({int(block["end_fxx"]) for block in timeline["blocks"]})
+    fxx_values = sorted(set(fxx_values_by_end_time.values()))
     qmd_by_fxx: dict[int, dict[str, Any]] = {}
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -899,7 +924,10 @@ def apply_qmd_wind_timeline(timeline: dict[str, Any], threats_payload: dict[str,
         raise RuntimeError("NBM QMD wind timeline extraction returned no gridpoint values")
 
     for block, hazards in zip(timeline["blocks"], timeline["block_hazards"]):
-        end_fxx = int(block["end_fxx"])
+        end_time_key = iso(parse_iso_utc(block["valid_end_utc"]))
+        end_fxx = fxx_values_by_end_time.get(end_time_key)
+        if end_fxx is None:
+            continue
         row = qmd_by_fxx.get(end_fxx)
         if not row:
             continue
