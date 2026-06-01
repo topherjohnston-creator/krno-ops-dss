@@ -1158,11 +1158,21 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                 hazard.update({"risk": risk, "probability": None, "level": risk})
 
 
+def qmd_daymax_gust_window(day_index: int) -> str:
+    return f"{day_index}-{day_index + 1} day max fcst"
+
+
 def select_qmd_daymax_gust_row(rows: list[dict[str, Any]], day_index: int) -> dict[str, Any] | None:
-    return select_first_row(rows, lambda line: ":GUST:10 m above ground:" in line and "ens mean" in line)
+    window = qmd_daymax_gust_window(day_index)
+    return select_first_row(
+        rows,
+        lambda line: ":GUST:10 m above ground:" in line and window in line and is_deterministic(line),
+    )
 
 
-def qmd_gust_probability_threshold_mps(line: str) -> float | None:
+def qmd_gust_probability_threshold_mps(line: str, day_index: int) -> float | None:
+    if qmd_daymax_gust_window(day_index) not in line:
+        return None
     match = re.search(r":GUST:10 m above ground:.*:prob >([0-9.]+):prob fcst", line)
     if not match:
         return None
@@ -1172,10 +1182,10 @@ def qmd_gust_probability_threshold_mps(line: str) -> float | None:
         return None
 
 
-def select_qmd_daymax_gust_probability_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def select_qmd_daymax_gust_probability_rows(rows: list[dict[str, Any]], day_index: int) -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for row in rows:
-        threshold_mps = qmd_gust_probability_threshold_mps(row["line"])
+        threshold_mps = qmd_gust_probability_threshold_mps(row["line"], day_index)
         if threshold_mps is None:
             continue
         new_row = dict(row)
@@ -1296,7 +1306,7 @@ def apply_qmd_wind_card(timeline: dict[str, Any], threats_payload: dict[str, Any
                     continue
                 gust_mph = extract_row_value(grib_url, row, tmp, f"qmd_gust_day{day_index}") * MPS_TO_MPH
                 probability_rows: list[dict[str, float]] = []
-                for prob_row in select_qmd_daymax_gust_probability_rows(rows):
+                for prob_row in select_qmd_daymax_gust_probability_rows(rows, day_index):
                     probability = extract_row_value(grib_url, prob_row, tmp, f"qmd_gust_prob_{prob_row['threshold_mps']:g}_day{day_index}")
                     probability_rows.append(
                         {
