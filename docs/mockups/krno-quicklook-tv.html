@@ -1580,6 +1580,7 @@
     ];
     const hazardPriority = ["WIND", "LIGHTNING", "RAIN", "VISIBILITY", "SNOW", "FZRA", "FLASH_FREEZE", "TEMPERATURE"];
     const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
+    const hazardIdBySource = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.id]));
     const timelineMethodText = {
       WIND: "Timeline: maximum NBM 10 m wind gust in each 3-hour block.",
       LIGHTNING: "Timeline: maximum NBM 3-hour thunder probability in each 3-hour block.",
@@ -1616,6 +1617,8 @@
       label: "Medium",
       reason: "Live NBM data are loading"
     };
+    let latestForecastRawTimeline = null;
+    let latestTimelineDetails = {};
     let currentPrimaryItem = null;
     let latestObsMs = 0;
     let latestForecastTimeline = null;
@@ -1809,8 +1812,8 @@
     }
 
     function confidenceFromScore(score) {
-      if (score >= 3) return "High";
-      if (score >= 2) return "Medium";
+      if (score >= 80) return "High";
+      if (score >= 55) return "Medium";
       return "Low";
     }
 
@@ -1829,6 +1832,136 @@
       return Number.isFinite(date.getTime()) ? (Date.now() - date.getTime()) / 3600000 : Infinity;
     }
 
+    function boundedScore(value, fallback = 55) {
+      const score = Number(value);
+      if (!Number.isFinite(score)) return fallback;
+      return clamp(score, 0, 100);
+    }
+
+    function probabilityClarityScore(probability) {
+      const probabilityNumber = Number(probability);
+      if (!Number.isFinite(probabilityNumber)) return null;
+      const edges = [10, 33, 66, 90];
+      const minDistance = Math.min(...edges.map(edge => Math.abs(probabilityNumber - edge)));
+      if (minDistance >= 15) return 95;
+      if (minDistance >= 8) return 80;
+      if (minDistance >= 4) return 65;
+      return 45;
+    }
+
+    function deterministicThresholds(source) {
+      return {
+        WIND: [30, 45, 58, 65],
+        VISIBILITY: [0.5, 1, 3, 5],
+        FLASH_FREEZE: [25, 28, 32, 36],
+        TEMPERATURE: [10, 20, 32, 40, 90, 95, 100, 105]
+      }[source] || [];
+    }
+
+    function deterministicValueForConfidence(source, item = {}, detail = null) {
+      const values = detail?.values || {};
+      if (source === "WIND") return Number(values.gust_max_mph ?? values.peak_gust_mph ?? item.gust_mph ?? numberFromText(item.metric));
+      if (source === "VISIBILITY") return Number(values.visibility_mi ?? values.visibility_sm ?? numberFromText(item.metric));
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE") return Number(values.temp_f ?? item.temp_f ?? numberFromText(item.metric));
+      return Number(values.value ?? item.value ?? numberFromText(item.metric));
+    }
+
+    function deterministicClarityScore(source, item = {}, detail = null) {
+      const value = deterministicValueForConfidence(source, item, detail);
+      const thresholds = deterministicThresholds(source);
+      if (!Number.isFinite(value) || !thresholds.length) return 55;
+      const distance = Math.min(...thresholds.map(threshold => Math.abs(value - threshold)));
+      if (source === "WIND") {
+        if (distance >= 10) return 95;
+        if (distance >= 5) return 80;
+        if (distance >= 2) return 65;
+        return 45;
+      }
+      if (source === "VISIBILITY") {
+        if (distance >= 2) return 95;
+        if (distance >= 1) return 80;
+        if (distance >= 0.5) return 65;
+        return 45;
+      }
+      if (distance >= 10) return 95;
+      if (distance >= 5) return 80;
+      if (distance >= 2) return 65;
+      return 45;
+    }
+
+    function dataHealthScore(timeline = latestForecastRawTimeline) {
+      const buildIso = timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
+      const age = buildAgeHours(buildIso);
+      const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks.slice(0, 24) : [];
+      const blockHazards = Array.isArray(timeline?.block_hazards) ? timeline.block_hazards.slice(0, 24) : [];
+      if (!buildIso || !Number.isFinite(age) || !blocks.length || !blockHazards.length) return 10;
+      if (blocks.length < 24 || blockHazards.length < 24) return 45;
+      if (age > 12) return 30;
+      if (age > 8) return 70;
+      return 100;
+    }
+
+    function detailProbability(detail = {}, item = {}) {
+      const values = detail?.values || {};
+      const candidates = [
+        item.probability,
+        item.prob,
+        detail.probability,
+        detail.prob,
+        values.probability,
+        values.prob,
+        values.prob_gt_trace,
+        values.prob_lt_5mi
+      ];
+      for (const candidate of candidates) {
+        const value = Number(candidate);
+        if (Number.isFinite(value)) return value;
+      }
+      return null;
+    }
+
+    function spreadAgreementScore(detail = {}) {
+      const values = detail?.values || {};
+      const low = Number(values.p10 ?? values.percentile_10 ?? detail.p10);
+      const mid = Number(values.p50 ?? values.percentile_50 ?? detail.p50);
+      const high = Number(values.p90 ?? values.percentile_90 ?? detail.p90);
+      if (![low, mid, high].every(Number.isFinite)) return 55;
+      const thresholds = deterministicThresholds(detail.id || detail.source || "");
+      if (!thresholds.length) return 55;
+      const categories = [low, mid, high].map(value => thresholds.filter(threshold => value >= threshold).length);
+      const spread = Math.max(...categories) - Math.min(...categories);
+      if (spread <= 0) return 90;
+      if (spread === 1) return 70;
+      return 40;
+    }
+
+    function timingPersistenceScore(source, risk) {
+      const hazardId = hazardIdBySource[source];
+      const details = latestTimelineDetails[hazardId] || [];
+      const target = rankFromCategory(risk);
+      const ranks = details.map(detail => rankFromCategory(categoryFromRank(detail?.risk ?? detail?.risk_level ?? 0)));
+      if (!ranks.length) return 45;
+      if (target <= 1) return ranks.every(rank => rank <= 1) ? 85 : 65;
+      let longest = 0;
+      let current = 0;
+      ranks.forEach(rank => {
+        if (rank >= target) {
+          current += 1;
+          longest = Math.max(longest, current);
+        } else {
+          current = 0;
+        }
+      });
+      if (longest >= 3) return 90;
+      if (longest === 2) return 70;
+      if (longest === 1) return 45;
+      return 40;
+    }
+
+    function runConsistencyScore() {
+      return 55;
+    }
+
     function obsConfidence() {
       const age = latestObsMs ? (Date.now() - latestObsMs) / 60000 : Infinity;
       if (age <= 15) return { label: "High", reason: "observations are fresh" };
@@ -1837,77 +1970,40 @@
     }
 
     function forecastConfidence(timeline) {
-      const buildIso = timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
-      const age = buildAgeHours(buildIso);
-      let score = 3;
-      const reasons = [];
-      if (!buildIso || !Number.isFinite(age)) {
-        score -= 2;
-        reasons.push("forecast build time is missing");
-      } else if (age > 10) {
-        score -= 2;
-        reasons.push("forecast build is stale");
-      } else if (age > 6) {
-        score -= 1;
-        reasons.push("forecast build is aging");
-      } else {
-        reasons.push("forecast build is fresh");
-      }
-
-      const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks.slice(0, 24) : [];
-      const blockHazards = Array.isArray(timeline?.block_hazards) ? timeline.block_hazards.slice(0, 24) : [];
-      if (blocks.length < 24 || blockHazards.length < 24) {
-        score -= 1;
-        reasons.push("72-hour coverage is incomplete");
-      } else {
-        reasons.push("72-hour coverage is complete");
-      }
-
-      const obs = obsConfidence();
-      if (obs.label === "Low") score -= 1;
-
-      const label = confidenceFromScore(score);
-      return {
-        label,
-        reason: `${reasons.slice(0, 2).join("; ")}; ${obs.reason}`
-      };
+      const score = dataHealthScore(timeline);
+      return { label: confidenceFromScore(score), score, reason: "forecast data health component" };
     }
 
     function hazardConfidence(item = {}, detail = null) {
       const source = item.source || item;
-      let label = latestForecastConfidence.label || "Medium";
-      const method = String(item.riskMethod || item.methodology || detail?.risk_method || detail?.method || "");
       const risk = item.risk || "Little to None";
-      let reason = latestForecastConfidence.reason || "NBM guidance mapped to local thresholds";
-
-      if (detail === null && item.detailMissing) {
-        label = "Low";
-        reason = "block detail is missing";
-      } else if (source === "LIGHTNING") {
-        reason = "NBM thunder probability; GLM is observational context only";
-      } else if (source === "RAIN" || source === "SNOW" || source === "FZRA") {
-        reason = /qmd/i.test(method)
-          ? "NBM probability window mapped to impact thresholds"
-          : "NBM hourly/core guidance mapped to impact thresholds";
-      } else if (source === "FLASH_FREEZE") {
-        reason = "temperature plus wet-surface signal; not a pavement sensor";
-        if (label === "High") label = "Medium";
-      } else if (source === "VISIBILITY") {
-        reason = "NBM visibility threshold probabilities mapped to lowest expected visibility";
-      } else if (source === "WIND") {
-        reason = /qmd/i.test(method)
-          ? "NBM QMD 24-hour gust guidance supports the summary"
-          : "NBM wind gust guidance mapped to KRNO thresholds";
-      } else if (source === "TEMPERATURE") {
-        reason = /qmd/i.test(method)
-          ? "NBM QMD max/min temperature guidance supports the summary"
-          : "NBM temperature guidance mapped to heat/cold thresholds";
-      }
-
-      if (rankFromCategory(risk) <= 1 && /near|threshold/i.test(String(item.driver || ""))) {
-        label = lowestConfidence(label, "Medium");
-      }
-      return { label, reason };
+      const hazardId = hazardIdBySource[source];
+      const details = latestTimelineDetails[hazardId] || [];
+      const bestDetail = detail || details.find(row => rankFromCategory(categoryFromRank(row?.risk ?? row?.risk_level ?? 0)) === rankFromCategory(risk)) || details[0] || {};
+      const probability = detailProbability(bestDetail, item);
+      const probabilityScore = probabilityClarityScore(probability) ?? deterministicClarityScore(source, item, bestDetail);
+      const spreadScore = spreadAgreementScore({ ...bestDetail, source });
+      const timingScore = timingPersistenceScore(source, risk);
+      const dataScore = dataHealthScore();
+      const runScore = runConsistencyScore();
+      const score =
+        0.30 * boundedScore(probabilityScore) +
+        0.25 * boundedScore(runScore) +
+        0.20 * boundedScore(spreadScore) +
+        0.15 * boundedScore(timingScore) +
+        0.10 * boundedScore(dataScore);
+      return {
+        label: confidenceFromScore(score),
+        score: Math.round(score),
+        components: {
+          probabilityClarity: Math.round(probabilityScore),
+          runConsistency: Math.round(runScore),
+          spreadAgreement: Math.round(spreadScore),
+          timingPersistence: Math.round(timingScore),
+          dataHealth: Math.round(dataScore)
+        },
+        reason: "NBM confidence score"
+      };
     }
 
     function confidenceLine(confidence) {
@@ -2555,6 +2651,7 @@
           name,
           risk,
           metric: displayMetric,
+          probability: detailProbability(bestDetail, item),
           peak: windowText || (rankFromCategory(risk) > 1 ? shortPeak(bestDetail?.peak_valid_utc || item.peak_valid_utc) : ""),
           impact: operationalImpact(source, risk),
           action: operationalAction(risk),
@@ -2901,6 +2998,22 @@
       const rh = Number(obs.relative_humidity ?? obs.raw?.OBSERVATIONS?.relative_humidity_value_1?.value);
       const wb = wetBulbF(obs.temperature_f, rh);
       const observed = values.obsIso ? `${formatTooltipLocal(values.obsIso)} / ${formatTooltipUtc(values.obsIso)}` : "Observation time unknown";
+      const retrievedIso = obs.generated_utc || obs.retrieved_utc;
+      const retrieved = retrievedIso ? `${formatTooltipLocal(retrievedIso)} / ${formatTooltipUtc(retrievedIso)}` : "Retrieval time unknown";
+      const ageNow = values.obsIso ? obsAgeMinutes(values.obsIso) : Infinity;
+      const ageAtBuild = Number(obs.age_minutes_at_build);
+      const obsTimeLines = [
+        ["Observed", observed],
+        ["Retrieved", retrieved],
+        ["Age Now", Number.isFinite(ageNow) ? `${Math.round(ageNow)} min` : "Unknown"],
+        ["Age At Build", Number.isFinite(ageAtBuild) ? `${Math.round(ageAtBuild)} min` : "Unknown"],
+        ["Source", obs.source || "Observation feed"]
+      ];
+      const fieldTimes = obs.field_times_utc || {};
+      const windFieldTime = fieldTimes.wind_speed_value_1 || fieldTimes.wind_speed_value_1d;
+      const tempFieldTime = fieldTimes.air_temp_value_1 || fieldTimes.air_temp_value_1d;
+      if (windFieldTime) obsTimeLines.push(["Wind Field", `${formatTooltipLocal(windFieldTime)} / ${formatTooltipUtc(windFieldTime)}`]);
+      if (tempFieldTime) obsTimeLines.push(["Temp Field", `${formatTooltipLocal(tempFieldTime)} / ${formatTooltipUtc(tempFieldTime)}`]);
       attachTooltip(document.getElementById("wind-rose"), {
         title: "Wind Rose",
         subtitle: values.windText,
@@ -2960,7 +3073,7 @@
       attachTooltip(document.getElementById("obs-time-item"), {
         title: "Observation Time",
         subtitle: observed,
-        lines: [["Source", obs.source || "Observation feed"]],
+        lines: obsTimeLines,
         risk: "Little to None"
       });
     }
@@ -3517,6 +3630,8 @@
           document.getElementById("model-cycle").textContent = timeline.cycle;
         }
         latestForecastTimeline = timeline;
+        latestForecastRawTimeline = timeline;
+        latestTimelineDetails = details;
         latestForecastConfidence = forecastConfidence(timeline);
         updateDataSummary({
           model: timeline.cycle || "NBM",

@@ -305,13 +305,19 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
 
     observations = station.get("OBSERVATIONS", {})
     observed_utc = get_ob_time(observations)
+    generated_utc = utc_now()
+    field_times = {
+        key: value.get("date_time")
+        for key, value in observations.items()
+        if isinstance(value, dict) and value.get("date_time")
+    }
     wind_speed_mph = recent_ob_value(observations, ["wind_speed"], observed_utc, 20)
     wind_gust_mph = recent_ob_value(observations, ["wind_gust"], observed_utc, 15)
 
     obs = {
         "site": SITE,
         "source": "Synoptic API",
-        "generated_utc": utc_now(),
+        "generated_utc": generated_utc,
         "status": "ok",
         "station": station.get("STID"),
         "name": station.get("NAME"),
@@ -339,6 +345,9 @@ def parse_synoptic_response(payload: dict[str, Any]) -> dict[str, Any]:
             90,
         ),
         "metar": get_ob_value(observations, ["metar"]),
+        "field_times_utc": field_times,
+        "age_minutes_at_build": round((iso_timestamp(generated_utc) - iso_timestamp(observed_utc)) / 60, 1) if observed_utc else None,
+        "refresh_note": "Synoptic latest endpoint queried by GitHub Actions. KRNO may update most fields on METAR-style timestamps rather than every minute.",
         "raw": station,
     }
 

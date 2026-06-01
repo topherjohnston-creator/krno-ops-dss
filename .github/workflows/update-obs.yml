@@ -3,17 +3,21 @@ name: Update KRNO Observations
 on:
   workflow_dispatch:
   schedule:
-    # GitHub Actions does not support true one-minute schedules. Poll at the
-    # supported five-minute cadence and let the page re-read this JSON every
-    # minute between workflow commits.
-    - cron: "*/5 * * * *"
+    # GitHub Actions schedules are not guaranteed to fire exactly on time. Each
+    # individual schedule stays at the supported five-minute cadence, but the
+    # offsets give the KRNO obs workflow a chance to run each minute.
+    - cron: "0-59/5 * * * *"
+    - cron: "1-59/5 * * * *"
+    - cron: "2-59/5 * * * *"
+    - cron: "3-59/5 * * * *"
+    - cron: "4-59/5 * * * *"
 
 permissions:
   contents: write
 
 concurrency:
   group: update-krno-observations
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   update-obs:
