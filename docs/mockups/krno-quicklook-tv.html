@@ -28,8 +28,8 @@
       --risk-extreme: #b44fd4;
       --success: #34c38f;
       --desi-blue-1: #17408d;
-      --desi-blue-2: #1266bf;
-      --desi-blue-3: #1684dc;
+      --desi-blue-2: #0f5bab;
+      --desi-blue-3: #177ed8;
       --broadcast-cyan: #4fc3ff;
       --broadcast-orange: #f26a22;
       --bg: var(--bg-page);
@@ -110,7 +110,7 @@
       align-items: center;
       gap: 18px;
       margin-inline: calc(-1 * var(--page-pad));
-      padding: 8px 46px;
+      padding: 8px 42px;
       border: 0;
       border-radius: 0;
       background: linear-gradient(90deg, var(--desi-blue-1) 0%, var(--desi-blue-2) 56%, var(--desi-blue-3) 100%);
@@ -127,13 +127,13 @@
 
     .seal {
       display: block;
-      width: 48px;
-      height: 48px;
+      width: 42px;
+      height: 42px;
       flex: 0 0 auto;
       padding: 0;
-      border: 1px solid rgba(231, 237, 245, 0.72);
+      border: 0;
       border-radius: 50%;
-      background: #eef3f8;
+      background: transparent;
       object-fit: contain;
       box-shadow: 0 2px 9px rgba(0, 0, 0, 0.25);
     }
@@ -142,7 +142,7 @@
       margin: 0;
       color: #f2f6fb;
       font-family: var(--title-font);
-      font-size: 46px;
+      font-size: 32px;
       line-height: 1;
       font-weight: 400;
       letter-spacing: 0;
@@ -282,16 +282,24 @@
       align-items: center;
       min-height: 44px;
       padding: 6px 14px;
-      border: 1px solid rgba(196, 215, 238, 0.25);
+      border: 1px solid color-mix(in srgb, var(--pill-color, #8ba6ca) 70%, transparent);
       border-radius: 999px;
-      background: rgba(38, 50, 68, 0.84);
-      color: var(--text-body);
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--pill-color, #8ba6ca) 26%, rgba(38, 50, 68, 0.94)), rgba(28, 37, 51, 0.84));
+      color: #f2f6fb;
       font-size: 27px;
       line-height: 1;
       font-weight: 620;
       white-space: nowrap;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
+
+    .concern-pill.peak { --pill-color: #4fc3ff; }
+    .concern-pill.impact { --pill-color: var(--pill-risk-color, var(--minor)); }
+    .concern-pill.action { --pill-color: var(--accent-blue-soft); }
+    .concern-pill.confidence { --pill-color: var(--success); }
+    .concern-pill.confidence.medium { --pill-color: var(--minor); color: #fff7d6; }
+    .concern-pill.confidence.low { --pill-color: var(--major); }
 
     .hazard-strip {
       display: grid;
@@ -407,7 +415,7 @@
       position: relative;
       display: grid;
       grid-template-columns: 184px repeat(24, minmax(0, 1fr));
-      grid-template-rows: 44px repeat(var(--timeline-rows, 8), minmax(0, 1fr));
+      grid-template-rows: 50px repeat(var(--timeline-rows, 8), minmax(0, 1fr));
       gap: 2px;
       min-height: 0;
       padding: 10px 14px 6px;
@@ -436,18 +444,27 @@
     .time-cell {
       display: grid;
       place-items: center;
-      padding: 4px 2px;
+      padding: 3px 1px;
       color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.05;
+      font-size: 12px;
+      line-height: 0.98;
       font-weight: 500;
       text-align: center;
+      overflow: hidden;
+    }
+
+    .time-cell > div {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .time-cell strong {
       display: block;
       color: var(--text-body);
-      font-size: 15px;
+      font-size: 13px;
+      line-height: 1;
       font-weight: 620;
     }
 
@@ -544,16 +561,16 @@
 
     .now-tag {
       position: absolute;
-      top: 17px;
+      top: 54px;
       left: calc(14px + 184px);
       z-index: 6;
       translate: -50% 0;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border: 1px solid rgba(139, 184, 245, 0.72);
       border-radius: 999px;
       background: #19375c;
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 650;
       letter-spacing: 0.08em;
     }
@@ -1305,7 +1322,6 @@
         <div class="badge mono" id="updated-utc">2155Z</div>
         <div class="badge fresh" id="obs-badge">Obs <strong id="obs-state">Fresh</strong></div>
         <div class="badge" id="model-badge">Model <strong id="model-cycle">NBM 18Z</strong></div>
-        <div class="badge" id="obs-source-badge">Obs <strong>Synoptic 1-min</strong></div>
         <div class="badge beta" id="beta-badge">Beta / Internal Use</div>
       </div>
     </header>
@@ -1318,10 +1334,10 @@
           <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
         </div>
         <div class="concern-detail concern-pills" id="primary-detail">
-          <span class="concern-pill">Peak Thu 5 PM</span>
-          <span class="concern-pill">Ramp Lightning</span>
-          <span class="concern-pill">Monitor</span>
-          <span class="concern-pill">Confidence High</span>
+          <span class="concern-pill peak">Peak Thu 5 PM</span>
+          <span class="concern-pill impact">Ramp Lightning</span>
+          <span class="concern-pill action">Monitor</span>
+          <span class="concern-pill confidence high">Confidence High</span>
         </div>
       </div>
     </section>
@@ -2218,12 +2234,9 @@
       matrix.appendChild(corner);
       blocks.forEach(block => {
         const cell = document.createElement("div");
-        const showLabel = block.offset === 0 || block.offset === 72 || block.offset % 6 === 0 || block.dayStart;
-        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}${showLabel ? "" : " quiet"}`;
-        if (showLabel) {
-          cell.innerHTML = `<div><strong>${block.day}</strong>+${block.offset}h<br>${block.hour}</div>`;
-          if (block.offset === 0) cell.innerHTML = `<div><strong>${block.day}</strong>Now<br>${block.hour}</div>`;
-        }
+        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
+        const offsetLabel = block.offset === 0 ? "Now" : `+${block.offset}h`;
+        cell.innerHTML = `<div><strong>${block.day}</strong><span>${offsetLabel}</span><span>${block.hour}</span></div>`;
         matrix.appendChild(cell);
       });
       visibleHazards.forEach(({ hazard }) => {
@@ -2416,12 +2429,16 @@
       const action = item.action || operationalAction(risk);
       const confidence = hazardConfidence({ ...item, risk });
       document.getElementById("primary-title").textContent = `${risk.toUpperCase()} - ${name.toUpperCase()}`;
+      const confidenceClass = String(confidence.label || "Medium").toLowerCase();
       document.getElementById("primary-detail").innerHTML = [
-        item.peak || "Peak window TBD",
-        impact,
-        action,
-        `Confidence ${confidence.label}`
-      ].map(text => `<span class="concern-pill">${escapeHtml(text)}</span>`).join("");
+        { text: item.peak || "Peak window TBD", className: "peak" },
+        { text: impact, className: "impact", style: `--pill-risk-color: ${color}` },
+        { text: action, className: "action" },
+        { text: `Confidence ${confidence.label}`, className: `confidence ${confidenceClass}` }
+      ].map(pill => {
+        const style = pill.style ? ` style="${pill.style}"` : "";
+        return `<span class="concern-pill ${pill.className}"${style}>${escapeHtml(pill.text)}</span>`;
+      }).join("");
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
         title: `${name} - ${risk}`,
