@@ -978,10 +978,9 @@
       border-radius: 999px;
       background: rgba(24, 32, 45, 0.86);
       color: rgba(244, 248, 255, 0.94);
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 650;
       letter-spacing: 0.03em;
-      text-transform: uppercase;
       white-space: nowrap;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
       box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
@@ -1704,20 +1703,14 @@
     const mercatorLimit = 20037508.342789244;
     const decisionRadiiNm = [10, 20];
     const mapCityCandidates = [
-      { name: "Reno", lat: 39.5296, lon: -119.8138 },
-      { name: "Sparks", lat: 39.5349, lon: -119.7527 },
-      { name: "Truckee", lat: 39.32796, lon: -120.18325 },
-      { name: "Carson City", lat: 39.16380, lon: -119.76740 },
-      { name: "Virginia City", lat: 39.3096, lon: -119.6496 },
-      { name: "Fernley", lat: 39.60797, lon: -119.25183 },
-      { name: "Incline Village", lat: 39.24970, lon: -119.95270 },
-      { name: "Fallon", lat: 39.47353, lon: -118.77737 },
-      { name: "Minden", lat: 38.9541, lon: -119.7657 },
-      { name: "Gardnerville", lat: 38.9413, lon: -119.7496 },
+      { name: "Sierra City", lat: 39.5657, lon: -120.6341 },
+      { name: "Tahoe City", lat: 39.1677, lon: -120.1452 },
+      { name: "Carson City", lat: 39.1638, lon: -119.7674 },
       { name: "Silver Springs", lat: 39.4155, lon: -119.2243 },
-      { name: "Wadsworth", lat: 39.6332, lon: -119.2854 },
-      { name: "Stead", lat: 39.6330, lon: -119.8838 },
-      { name: "Verdi", lat: 39.5182, lon: -119.9888 }
+      { name: "Fernley", lat: 39.6080, lon: -119.2518 },
+      { name: "Portola", lat: 39.8105, lon: -120.4691 },
+      { name: "Loyalton", lat: 39.6763, lon: -120.2413 },
+      { name: "Nixon", lat: 39.8313, lon: -119.3566 }
     ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
@@ -3461,8 +3454,7 @@
         }).addTo(quicklookMap);
       });
       mapCityCandidates
-        .filter(city => distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon) >= 25)
-        .slice(0, 7)
+        .filter(city => distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon) > 20)
         .forEach(city => {
         L.marker([city.lat, city.lon], {
           interactive: false,
@@ -3559,20 +3551,10 @@
           distanceNm: distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon),
           point: coordinateToRadarPct(city.lat, city.lon)
         }))
-        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm >= 25)
-        .filter(city => city.point && city.point.left >= 5 && city.point.left <= 86 && city.point.top >= 6 && city.point.top <= 94)
+        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm > 20)
+        .filter(city => city.point && city.point.left >= 3 && city.point.left <= 97 && city.point.top >= 5 && city.point.top <= 95)
         .sort((a, b) => a.priority - b.priority);
-      const selected = [];
-      for (const city of candidates) {
-        const tooClose = selected.some(existing => {
-          const dx = city.point.left - existing.point.left;
-          const dy = city.point.top - existing.point.top;
-          return Math.hypot(dx, dy) < 8;
-        });
-        if (!tooClose) selected.push(city);
-        if (selected.length >= 6) break;
-      }
-      return selected;
+      return candidates;
     }
 
     function positionCityMarkers() {
