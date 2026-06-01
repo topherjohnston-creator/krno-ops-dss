@@ -141,10 +141,10 @@
     .title h1 {
       margin: 0;
       color: #f2f6fb;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: var(--title-font);
       font-size: 32px;
       line-height: 1;
-      font-weight: 300;
+      font-weight: 400;
       letter-spacing: 0;
       text-shadow: none;
     }
@@ -2188,9 +2188,7 @@
       if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
-        ["Action", operationalAction(risk)],
-        ["Method", timelineMethodText[hazard.source] || "NBM guidance mapped to KRNO thresholds."],
-        ["Confidence Basis", confidence.reason]
+        ["Action", operationalAction(risk)]
       );
       return lines;
     }
@@ -2407,9 +2405,6 @@
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)],
-        ["Timeline Method", timelineMethodText[item.source] || riskWindowLabel(item)],
-        ["Summary Method", summaryMethodText[item.source] || "Highest 72-hour risk from the timeline blocks."],
-        ["Confidence Basis", confidence.reason],
         ["Timeline", "3-hour blocks"]
       ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rank <= 1));
     }
@@ -2772,8 +2767,6 @@
         lines: [
           ["Model", latestModelSummary],
           ["Build", latestBuildSummary],
-          ["Data Confidence", latestForecastConfidence.label, confidenceColors[latestForecastConfidence.label] || confidenceColors.Medium],
-          ["Basis", latestForecastConfidence.reason],
           ["Timeline", "3-hour block risk"],
           ["Hazards", "72-hr summary"]
         ],
