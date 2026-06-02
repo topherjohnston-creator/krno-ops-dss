@@ -483,6 +483,43 @@ def flash_freeze_joint_probabilities(temp_f: float, wet_probability: float) -> d
     }
 
 
+def flash_freeze_joint_probabilities_from_temp_probs(temp_probabilities: dict[str, float], wet_probability: float) -> dict[str, float]:
+    wet_prob = max(0.0, min(100.0, float(wet_probability or 0.0)))
+    return {
+        "joint_wet_temp_le_36_f": min(wet_prob, max(0.0, min(100.0, float(temp_probabilities.get("prob_lt_36_f", 0.0) or 0.0)))),
+        "joint_wet_temp_le_32_f": min(wet_prob, max(0.0, min(100.0, float(temp_probabilities.get("prob_lt_32_f", 0.0) or 0.0)))),
+        "joint_wet_temp_le_28_f": min(wet_prob, max(0.0, min(100.0, float(temp_probabilities.get("prob_lt_28_f", 0.0) or 0.0)))),
+        "joint_wet_temp_le_25_f": min(wet_prob, max(0.0, min(100.0, float(temp_probabilities.get("prob_lt_25_f", 0.0) or 0.0)))),
+    }
+
+
+def flash_freeze_probability_risk_detail(joint_probabilities: dict[str, float]) -> dict[str, Any]:
+    thresholds = [
+        ("joint_wet_temp_le_25_f", 5),
+        ("joint_wet_temp_le_28_f", 4),
+        ("joint_wet_temp_le_32_f", 3),
+        ("joint_wet_temp_le_36_f", 2),
+    ]
+    best = {"risk": 1, "impact_level": 1, "probability": 0.0, "probability_key": None}
+    for key, impact_level in thresholds:
+        probability = float(joint_probabilities.get(key, 0.0) or 0.0)
+        if probability < 0.5:
+            continue
+        risk = risk_from_matrix(impact_level, probability)
+        if (
+            risk > best["risk"]
+            or (risk == best["risk"] and probability > best["probability"])
+            or (risk == best["risk"] and probability == best["probability"] and impact_level > best["impact_level"])
+        ):
+            best = {
+                "risk": risk,
+                "impact_level": impact_level,
+                "probability": probability,
+                "probability_key": key,
+            }
+    return best
+
+
 def k_to_f(value_k: float) -> float:
     return (value_k - 273.15) * 9 / 5 + 32
 
@@ -1659,6 +1696,206 @@ def temperature_probability_risk_detail(probabilities: dict[str, float]) -> dict
     return best
 
 
+def extract_qmd_temperature_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[str, Any] | None:
+    grib_url = aws_grib_url(cycle, "qmd", fxx)
+    rows = parse_idx(fetch_text(grib_url + ".idx"))
+    cold_probability_rows: list[dict[str, float]] = []
+    for row in select_qmd_temp_probability_rows(rows, fxx, "<"):
+        probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_lt_{row['threshold_k']:g}_f{fxx:03d}")
+        cold_probability_rows.append(
+            {
+                "threshold_k": round(float(row["threshold_k"]), 3),
+                "threshold_f": round(float(row["threshold_f"]), 1),
+                "probability": round(float(probability), 1),
+            }
+        )
+
+    heat_probability_rows: list[dict[str, float]] = []
+    for row in select_qmd_temp_probability_rows(rows, fxx, ">"):
+        probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_gt_{row['threshold_k']:g}_f{fxx:03d}")
+        heat_probability_rows.append(
+            {
+                "threshold_k": round(float(row["threshold_k"]), 3),
+                "threshold_f": round(float(row["threshold_f"]), 1),
+                "probability": round(float(probability), 1),
+            }
+        )
+
+    p50_f = None
+    p50_row = select_qmd_temp_percentile_row(rows, fxx, 50.0)
+    if p50_row:
+        p50_f = k_to_f(extract_row_value(grib_url, p50_row, tmp, f"qmd_temp_p50_f{fxx:03d}"))
+
+    temp_probabilities = {
+        "prob_lt_25_f": interpolate_probability_at_temperature(cold_probability_rows, 25.0),
+        "prob_lt_28_f": interpolate_probability_at_temperature(cold_probability_rows, 28.0),
+        "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
+        "prob_lt_36_f": interpolate_probability_at_temperature(cold_probability_rows, 36.0),
+        "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
+        "prob_gt_90_f": interpolate_probability_at_temperature(heat_probability_rows, 90.0),
+        "prob_gt_95_f": interpolate_probability_at_temperature(heat_probability_rows, 95.0),
+        "prob_gt_100_f": interpolate_probability_at_temperature(heat_probability_rows, 100.0),
+        "prob_gt_105_f": interpolate_probability_at_temperature(heat_probability_rows, 105.0),
+    }
+
+    if not cold_probability_rows and not heat_probability_rows and p50_f is None:
+        return None
+
+    return {
+        "fxx": fxx,
+        "valid_utc": iso(cycle + timedelta(hours=fxx)),
+        "p50_f": round(p50_f, 1) if p50_f is not None else None,
+        "temp_probabilities": {key: round(float(value), 1) for key, value in temp_probabilities.items() if value is not None},
+        "native_cold_probability_thresholds": cold_probability_rows,
+        "native_heat_probability_thresholds": heat_probability_rows,
+    }
+
+
+def apply_qmd_flash_freeze_timeline(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    block_end_times = [parse_iso_utc(block["valid_end_utc"]) for block in timeline["blocks"]]
+    qmd_cycle = None
+    fxx_values_by_end_time: dict[str, int] = {}
+    for cycle in candidate_cycles(count=8):
+        offsets = {
+            iso(end_time): int(round((end_time - cycle).total_seconds() / 3600.0))
+            for end_time in block_end_times
+        }
+        if not offsets or min(offsets.values()) < 1:
+            continue
+        required = sorted(set(offsets.values()))
+        try:
+            for fxx in (required[0], required[-1]):
+                fetch_text(aws_grib_url(cycle, "qmd", fxx) + ".idx")
+        except Exception:
+            continue
+        qmd_cycle = cycle
+        fxx_values_by_end_time = offsets
+        break
+    if qmd_cycle is None:
+        raise RuntimeError("No recent complete NBM QMD temperature timeline cycle found")
+
+    source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
+    qmd_by_fxx: dict[int, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in sorted(set(fxx_values_by_end_time.values())):
+            try:
+                row = extract_qmd_temperature_hour(qmd_cycle, fxx, tmp)
+                if row:
+                    qmd_by_fxx[fxx] = row
+            except Exception:
+                continue
+
+    if not qmd_by_fxx:
+        raise RuntimeError("NBM QMD temperature timeline extraction returned no values")
+
+    best: dict[str, Any] | None = None
+    for block, hazards in zip(timeline["blocks"], timeline["block_hazards"]):
+        end_time_key = iso(parse_iso_utc(block["valid_end_utc"]))
+        end_fxx = fxx_values_by_end_time.get(end_time_key)
+        if end_fxx is None:
+            continue
+        row = qmd_by_fxx.get(end_fxx)
+        if not row:
+            continue
+
+        hazard = hazards["FLASH_FREEZE"]
+        prior_values = hazard.get("values") or {}
+        wet_probability = float(prior_values.get("wet_probability", 0.0) or 0.0)
+        joint_probabilities = flash_freeze_joint_probabilities_from_temp_probs(row["temp_probabilities"], wet_probability)
+        probability_detail = flash_freeze_probability_risk_detail(joint_probabilities)
+        risk = int(probability_detail["risk"] or 1)
+        impact = int(probability_detail["impact_level"] or 1)
+        probability = float(probability_detail["probability"] or max(joint_probabilities.values() or [0.0]))
+        temp_display = row.get("p50_f")
+
+        block["FLASH_FREEZE"] = risk
+        hazard.update(
+            {
+                "label": "Flash Freeze",
+                "name": "Flash Freeze",
+                "risk": risk,
+                "risk_label": RISK_LABELS[risk],
+                "level": risk,
+                "impact_level": impact,
+                "likelihood_category": likelihood_bin(probability),
+                "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
+                "prob": round(probability, 1),
+                "probability": round(probability, 1),
+                "metric": f"Temp {temp_display:.0f}°F" if temp_display is not None else "Temperature probability",
+                "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
+                "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
+                "source_fxx": int(row["fxx"]),
+                "peak_valid_utc": row["valid_utc"],
+                "data_status": "live",
+                "method": QMD_SOURCE_METHOD,
+                "source": source,
+                "hourly_values": [
+                    {
+                        "fxx": int(row["fxx"]),
+                        "valid_utc": row["valid_utc"],
+                        "temp_f": temp_display,
+                        "wet_probability": round(wet_probability, 1),
+                        "temp_probabilities": row["temp_probabilities"],
+                        "joint_probabilities": {key: round(value, 1) for key, value in joint_probabilities.items()},
+                        "value": temp_display,
+                        "unit": "°F",
+                        "label": "temp",
+                        "window_hours": int(block.get("duration_hours") or 3),
+                    }
+                ],
+                "values": {
+                    "impact_level": impact,
+                    "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
+                    "temp_f": temp_display,
+                    "wet_probability": round(wet_probability, 1),
+                    "temp_probabilities": row["temp_probabilities"],
+                    "joint_probabilities": {key: round(value, 1) for key, value in joint_probabilities.items()},
+                    "probability": round(probability, 1),
+                    "value": temp_display,
+                    "unit": "°F",
+                },
+                "native_cold_probability_thresholds": row["native_cold_probability_thresholds"],
+            }
+        )
+        if best is None or risk > best["risk"] or (risk == best["risk"] and probability > best["probability"]):
+            best = {"risk": risk, "probability": probability, "impact": impact, "hazard": hazard, "block": block}
+
+    if best:
+        threat = threats_payload["threats"]["FLASH_FREEZE"]
+        hdata = best["hazard"]
+        block = best["block"]
+        threat.update(
+            {
+                "prob": round(float(best["probability"]), 1),
+                "probability": round(float(best["probability"]), 1),
+                "risk": int(best["risk"]),
+                "risk_level": int(best["risk"]),
+                "risk_label": RISK_LABELS[int(best["risk"])],
+                "level": int(best["risk"]),
+                "impact_level": int(best["impact"]),
+                "likelihood_category": hdata.get("likelihood_category"),
+                "risk_method": hdata.get("risk_method"),
+                "metric": "Wet-surface freeze probability",
+                "display_label": "Joint probability",
+                "display_value": f"{float(best['probability']):.0f}%",
+                "window": "72 hr",
+                "peak_start_fxx": block.get("start_fxx"),
+                "peak_end_fxx": block.get("end_fxx"),
+                "source_fxx": hdata.get("source_fxx"),
+                "peak_valid_utc": hdata.get("peak_valid_utc"),
+                "driver": "NBM QMD temperature probability and wet-surface probability at KRNO",
+                "methodology": "Flash-freeze summary uses the highest 3-hour joint probability of wet surface and cold temperature threshold.",
+                "data_status": "live",
+                "method": QMD_SOURCE_METHOD,
+                "source": source,
+            }
+        )
+        for hazard in threats_payload["hazards"]:
+            if hazard["id"] == "FLASH_FREEZE":
+                hazard.update({"risk": int(best["risk"]), "probability": round(float(best["probability"]), 1), "level": int(best["risk"])})
+
+
 def select_qmd_rain_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dict[str, Any]]:
     six_hr = six_hour_accum_window(fxx)
     return {
@@ -2111,6 +2348,12 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
+
+    try:
+        apply_qmd_flash_freeze_timeline(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_FLASH_FREEZE"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_FLASH_FREEZE"] = str(exc)
 
     try:
         apply_qmd_wind_card(timeline, threats_payload)
