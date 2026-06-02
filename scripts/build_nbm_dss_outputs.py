@@ -473,6 +473,16 @@ def flash_freeze_impact_level(temp_f: float, wet_surface: bool) -> int:
     return 1
 
 
+def flash_freeze_joint_probabilities(temp_f: float, wet_probability: float) -> dict[str, float]:
+    wet_prob = max(0.0, min(100.0, float(wet_probability or 0.0)))
+    return {
+        "joint_wet_temp_le_36_f": wet_prob if temp_f <= 36 else 0.0,
+        "joint_wet_temp_le_32_f": wet_prob if temp_f <= 32 else 0.0,
+        "joint_wet_temp_le_28_f": wet_prob if temp_f <= 28 else 0.0,
+        "joint_wet_temp_le_25_f": wet_prob if temp_f <= 25 else 0.0,
+    }
+
+
 def k_to_f(value_k: float) -> float:
     return (value_k - 273.15) * 9 / 5 + 32
 
@@ -1297,16 +1307,43 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
             "NBM core 2-meter temperature at KRNO",
         )
 
-        wet_surface = rain_in >= 0.01 or fzra_in >= 0.001
+        wet_probability = max(rain_prob_trace, fzra_probs["trace"])
+        wet_surface = rain_in >= 0.01 or fzra_in >= 0.001 or wet_probability >= 10.0
         flash_impact = flash_freeze_impact_level(temp_f, wet_surface)
-        flash_risk = risk_from_matrix(flash_impact)
+        flash_joint_probs = flash_freeze_joint_probabilities(temp_f, wet_probability)
+        flash_risk = max(
+            risk_from_matrix(flash_impact),
+            matrix_probability_risk(
+                flash_joint_probs,
+                [
+                    ("joint_wet_temp_le_25_f", 5),
+                    ("joint_wet_temp_le_28_f", 4),
+                    ("joint_wet_temp_le_32_f", 3),
+                    ("joint_wet_temp_le_36_f", 2),
+                ],
+            ),
+        )
+        flash_probability = max(flash_joint_probs.values() or [0.0])
         set_hazard_live(
             timeline,
             bi,
             "FLASH_FREEZE",
             flash_risk,
             f"Temp {temp_f:.0f}°F",
-            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": flash_impact, "risk_method": "krno_threshold_deterministic_core_wet_surface_proxy", "temp_f": round(temp_f, 1), "wet_surface": wet_surface, "value": round(temp_f, 1), "unit": "°F"},
+            {
+                "fxx": fxx,
+                "valid_utc": valid_utc,
+                "impact_level": flash_impact,
+                "risk_method": "krno_joint_probability_wet_surface_temperature_proxy",
+                "likelihood_category": likelihood_bin(flash_probability),
+                "temp_f": round(temp_f, 1),
+                "wet_surface": wet_surface,
+                "wet_probability": round(wet_probability, 1),
+                "joint_probabilities": {key: round(value, 1) for key, value in flash_joint_probs.items()},
+                "probability": round(flash_probability, 1),
+                "value": round(temp_f, 1),
+                "unit": "°F",
+            },
             [
                 {
                     "fxx": int(src["fxx"]),
@@ -1314,8 +1351,21 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                     "temp_f": round(row_temp_f(src), 1),
                     "rain_in": round(row_rain_in(src), 3),
                     "fzra_in": round(row_fzra_in(src), 3),
-                    "wet_surface": row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001,
-                    "impact_level": flash_freeze_impact_level(row_temp_f(src), row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001),
+                    "wet_probability": round(max(float(src.get("rain_prob_trace", 0.0) or 0.0), float(src.get("fzra_prob_trace", 0.0) or 0.0)), 1),
+                    "wet_surface": row_rain_in(src) >= 0.01 or row_fzra_in(src) >= 0.001 or max(float(src.get("rain_prob_trace", 0.0) or 0.0), float(src.get("fzra_prob_trace", 0.0) or 0.0)) >= 10.0,
+                    "joint_probabilities": {
+                        key: round(value, 1)
+                        for key, value in flash_freeze_joint_probabilities(
+                            row_temp_f(src),
+                            max(float(src.get("rain_prob_trace", 0.0) or 0.0), float(src.get("fzra_prob_trace", 0.0) or 0.0)),
+                        ).items()
+                    },
+                    "impact_level": flash_freeze_impact_level(
+                        row_temp_f(src),
+                        row_rain_in(src) >= 0.01
+                        or row_fzra_in(src) >= 0.001
+                        or max(float(src.get("rain_prob_trace", 0.0) or 0.0), float(src.get("fzra_prob_trace", 0.0) or 0.0)) >= 10.0,
+                    ),
                     "value": round(row_temp_f(src), 1),
                     "unit": "°F",
                     "label": "temp",
@@ -1324,7 +1374,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                 for src in block_rows
             ],
             source,
-            "NBM core temperature used as flash-freeze proxy with precipitation as wet-surface signal",
+            "NBM core temperature with measurable precipitation/freezing-rain probability as wet-surface joint-probability proxy",
         )
 
     for hazard_id, key in [("RAIN", "rain_in"), ("SNOW", "snow_in"), ("FZRA", "fzra_in")]:
@@ -1492,6 +1542,121 @@ def select_qmd_temp_rows(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]
     if min_row:
         selected["min"] = min_row
     return selected
+
+
+def qmd_temp_probability_threshold_k(line: str, fxx: int) -> tuple[str, float] | None:
+    if f":{fxx} hour fcst:" not in line or ":TMP:2 m above ground:" not in line:
+        return None
+    match = re.search(r":TMP:2 m above ground:.*:prob ([<>])([0-9.]+):prob fcst", line)
+    if not match:
+        return None
+    try:
+        return match.group(1), float(match.group(2))
+    except ValueError:
+        return None
+
+
+def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, operator: str) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    for row in rows:
+        parsed = qmd_temp_probability_threshold_k(row["line"], fxx)
+        if parsed is None:
+            continue
+        row_operator, threshold_k = parsed
+        if row_operator != operator:
+            continue
+        new_row = dict(row)
+        new_row["threshold_k"] = threshold_k
+        new_row["threshold_f"] = k_to_f(threshold_k)
+        selected.append(new_row)
+    selected.sort(key=lambda row: row["threshold_f"])
+    return selected
+
+
+def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percentile: float) -> dict[str, Any] | None:
+    expected_time = f":{fxx} hour fcst:"
+    selected: list[dict[str, Any]] = []
+    for row in rows:
+        line = row["line"]
+        if ":TMP:2 m above ground:" not in line or expected_time not in line or "% level" not in line:
+            continue
+        row_percentile = percentile_from_idx_line(line)
+        if row_percentile is None:
+            continue
+        new_row = dict(row)
+        new_row["percentile"] = row_percentile
+        selected.append(new_row)
+    if not selected:
+        return None
+    return min(selected, key=lambda row: abs(float(row["percentile"]) - percentile))
+
+
+def interpolate_probability_at_temperature(probability_rows: list[dict[str, float]], threshold_f: float) -> float | None:
+    points = sorted(
+        (
+            (float(row["threshold_f"]), float(row["probability"]))
+            for row in probability_rows
+            if row.get("threshold_f") is not None and row.get("probability") is not None
+        ),
+        key=lambda item: item[0],
+    )
+    if not points:
+        return None
+    for threshold, probability in points:
+        if abs(threshold - threshold_f) < 0.05:
+            return probability
+    if len(points) == 1:
+        return points[0][1]
+    if threshold_f <= points[0][0]:
+        lower_threshold, lower_probability = points[0]
+        upper_threshold, upper_probability = points[1]
+    elif threshold_f >= points[-1][0]:
+        lower_threshold, lower_probability = points[-2]
+        upper_threshold, upper_probability = points[-1]
+    else:
+        lower_threshold, lower_probability = points[0]
+        upper_threshold, upper_probability = points[-1]
+        for index in range(1, len(points)):
+            if points[index][0] >= threshold_f:
+                lower_threshold, lower_probability = points[index - 1]
+                upper_threshold, upper_probability = points[index]
+                break
+    if upper_threshold == lower_threshold:
+        return upper_probability
+    ratio = (threshold_f - lower_threshold) / (upper_threshold - lower_threshold)
+    probability = lower_probability + ratio * (upper_probability - lower_probability)
+    return max(0.0, min(100.0, probability))
+
+
+def temperature_probability_risk_detail(probabilities: dict[str, float]) -> dict[str, Any]:
+    thresholds = [
+        ("prob_lt_10_f", 5),
+        ("prob_gt_105_f", 5),
+        ("prob_lt_20_f", 4),
+        ("prob_gt_100_f", 4),
+        ("prob_lt_32_f", 3),
+        ("prob_gt_95_f", 3),
+        ("prob_lt_40_f", 2),
+        ("prob_gt_90_f", 2),
+    ]
+    best = {"risk": 1, "impact_level": 1, "probability": 0.0, "probability_key": None}
+    for key, impact_level in thresholds:
+        probability = float(probabilities.get(key, 0.0) or 0.0)
+        if probability < 0.5:
+            continue
+        risk = risk_from_matrix(impact_level, probability)
+        if (
+            risk > best["risk"]
+            or (risk == best["risk"] and probability > best["probability"])
+            or (risk == best["risk"] and probability == best["probability"] and impact_level > best["impact_level"])
+        ):
+            best = {
+                "risk": risk,
+                "impact_level": impact_level,
+                "probability": probability,
+                "probability_key": key,
+            }
+    return best
 
 
 def select_qmd_rain_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dict[str, Any]]:
@@ -1704,56 +1869,108 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
         for fxx in [24, 48, 72]:
             grib_url = aws_grib_url(qmd_cycle, "qmd", fxx)
             rows = parse_idx(fetch_text(grib_url + ".idx"))
-            selected = select_qmd_temp_rows(rows)
-            if "max" not in selected or "min" not in selected:
-                continue
-            max_f = k_to_f(extract_row_value(grib_url, selected["max"], tmp, f"qmd_temp_max_f{fxx:03d}"))
-            min_f = k_to_f(extract_row_value(grib_url, selected["min"], tmp, f"qmd_temp_min_f{fxx:03d}"))
-            max_impact = temperature_impact_level(max_f)
-            min_impact = temperature_impact_level(min_f)
-            impact = max(max_impact, min_impact)
+            cold_probability_rows: list[dict[str, float]] = []
+            for row in select_qmd_temp_probability_rows(rows, fxx, "<"):
+                probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_lt_{row['threshold_k']:g}_f{fxx:03d}")
+                cold_probability_rows.append(
+                    {
+                        "threshold_k": round(float(row["threshold_k"]), 3),
+                        "threshold_f": round(float(row["threshold_f"]), 1),
+                        "probability": round(float(probability), 1),
+                    }
+                )
+            heat_probability_rows: list[dict[str, float]] = []
+            for row in select_qmd_temp_probability_rows(rows, fxx, ">"):
+                probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_gt_{row['threshold_k']:g}_f{fxx:03d}")
+                heat_probability_rows.append(
+                    {
+                        "threshold_k": round(float(row["threshold_k"]), 3),
+                        "threshold_f": round(float(row["threshold_f"]), 1),
+                        "probability": round(float(probability), 1),
+                    }
+                )
+
+            p10_f = None
+            p90_f = None
+            p10_row = select_qmd_temp_percentile_row(rows, fxx, 10.0)
+            p90_row = select_qmd_temp_percentile_row(rows, fxx, 90.0)
+            if p10_row:
+                p10_f = k_to_f(extract_row_value(grib_url, p10_row, tmp, f"qmd_temp_p10_f{fxx:03d}"))
+            if p90_row:
+                p90_f = k_to_f(extract_row_value(grib_url, p90_row, tmp, f"qmd_temp_p90_f{fxx:03d}"))
+
+            probabilities = {
+                "prob_lt_10_f": interpolate_probability_at_temperature(cold_probability_rows, 10.0),
+                "prob_lt_20_f": interpolate_probability_at_temperature(cold_probability_rows, 20.0),
+                "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
+                "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
+                "prob_gt_90_f": interpolate_probability_at_temperature(heat_probability_rows, 90.0),
+                "prob_gt_95_f": interpolate_probability_at_temperature(heat_probability_rows, 95.0),
+                "prob_gt_100_f": interpolate_probability_at_temperature(heat_probability_rows, 100.0),
+                "prob_gt_105_f": interpolate_probability_at_temperature(heat_probability_rows, 105.0),
+            }
+            cleaned_probabilities = {key: round(float(value), 1) for key, value in probabilities.items() if value is not None}
+            probability_detail = temperature_probability_risk_detail(cleaned_probabilities)
+            display_impact = temperature_impact_level(float(p90_f if p90_f is not None else 70.0))
+            if p10_f is not None:
+                display_impact = max(display_impact, temperature_impact_level(float(p10_f)))
+            impact = int(probability_detail["impact_level"] or display_impact)
+            risk = int(probability_detail["risk"] or risk_from_matrix(display_impact))
             daily_values.append(
                 {
                     "fxx": fxx,
                     "valid_utc": iso(qmd_cycle + timedelta(hours=fxx)),
-                    "max_f": round(max_f, 1),
-                    "min_f": round(min_f, 1),
+                    "p90_f": round(p90_f, 1) if p90_f is not None else None,
+                    "p10_f": round(p10_f, 1) if p10_f is not None else None,
                     "impact_level": impact,
-                    "risk": risk_from_matrix(impact),
+                    "risk": risk,
+                    "probabilities": cleaned_probabilities,
+                    "native_cold_probability_thresholds": cold_probability_rows,
+                    "native_heat_probability_thresholds": heat_probability_rows,
+                    "selected_probability": probability_detail["probability"],
+                    "selected_probability_key": probability_detail["probability_key"],
                 }
             )
 
     if not daily_values:
         return
 
-    max_temp = max(daily_values, key=lambda row: row["max_f"])
-    min_temp = min(daily_values, key=lambda row: row["min_f"])
-    hot_impact = temperature_impact_level(float(max_temp["max_f"]))
-    cold_impact = temperature_impact_level(float(min_temp["min_f"]))
-    impact = max(hot_impact, cold_impact)
-    risk = risk_from_matrix(impact)
-    driver_row = min_temp if cold_impact >= hot_impact else max_temp
+    peak = max(
+        daily_values,
+        key=lambda row: (
+            row.get("risk", 1),
+            row.get("selected_probability", 0.0),
+            row.get("impact_level", 1),
+        ),
+    )
+    max_temp = max((row for row in daily_values if row.get("p90_f") is not None), key=lambda row: row["p90_f"], default=None)
+    min_temp = min((row for row in daily_values if row.get("p10_f") is not None), key=lambda row: row["p10_f"], default=None)
+    impact = int(peak.get("impact_level") or 1)
+    risk = int(peak.get("risk") or 1)
+    probability = float(peak.get("selected_probability") or max(peak.get("probabilities", {}).values() or [0.0]))
+    max_display = f"{max_temp['p90_f']:.0f}" if max_temp else "--"
+    min_display = f"{min_temp['p10_f']:.0f}" if min_temp else "--"
     threat = threats_payload["threats"]["TEMPERATURE"]
     threat.update(
         {
-            "prob": None,
-            "probability": None,
+            "prob": probability,
+            "probability": probability,
             "risk": risk,
             "risk_level": risk,
             "risk_label": RISK_LABELS[risk],
             "level": risk,
             "impact_level": impact,
-            "likelihood_category": None,
-            "risk_method": "krno_threshold_deterministic_qmd_max_min_temperature",
-            "metric": f"Max {max_temp['max_f']:.0f}°F / Min {min_temp['min_f']:.0f}°F",
-            "display_label": "QMD max/min",
-            "display_value": f"{max_temp['max_f']:.0f}/{min_temp['min_f']:.0f}°F",
-            "peak_start_fxx": driver_row["fxx"],
-            "peak_end_fxx": driver_row["fxx"],
-            "source_fxx": driver_row["fxx"],
-            "peak_valid_utc": driver_row["valid_utc"],
-            "driver": "NBM QMD max/min temperature at KRNO",
-            "methodology": "Temperature summary uses QMD max/min temperature mapped to the KRNO cold/heat impact table.",
+            "likelihood_category": likelihood_bin(probability),
+            "risk_method": "krno_threshold_probability_matrix_qmd_temperature",
+            "metric": f"P90/P10 temp {max_display}/{min_display}°F",
+            "display_label": "QMD P90/P10",
+            "display_value": f"{max_display}/{min_display}°F",
+            "peak_start_fxx": max(1, int(peak["fxx"]) - 23),
+            "peak_end_fxx": peak["fxx"],
+            "source_fxx": peak["fxx"],
+            "peak_valid_utc": peak["valid_utc"],
+            "driver": "NBM QMD 24-hour temperature probabilities at KRNO",
+            "methodology": "Temperature summary uses QMD 24/48/72-hour TMP probability-of-threshold exceedance for cold and heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix. QMD exposes TMP probabilities/percentiles in this domain rather than separate TMAX/TMIN field names.",
             "data_status": "live",
             "method": QMD_SOURCE_METHOD,
             "source": source,
@@ -1762,7 +1979,7 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
     )
     for hazard in threats_payload["hazards"]:
         if hazard["id"] == "TEMPERATURE":
-            hazard.update({"risk": risk, "probability": None, "level": risk})
+            hazard.update({"risk": risk, "probability": probability, "level": risk})
 
 
 def empty_hazard(hazard: str, start_fxx: int, end_fxx: int, start: datetime, end: datetime) -> dict[str, Any]:
