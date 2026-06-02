@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA RRFS / REFS via AWS S3",
-  "generated_utc": "2026-06-02T14:39:01Z",
+  "generated_utc": "2026-06-02T19:05:05Z",
   "cycle_utc_iso": "2026-06-02T12:00:00Z",
   "cycle": "REFS 12Z",
   "valid_period": "next_60_hours",
@@ -13,11 +13,11 @@
       "id": "WIND",
       "title": "WIND",
       "name": "WIND",
-      "prob": 21.4,
-      "probability": 21.4,
-      "risk": 1,
-      "risk_level": 1,
-      "risk_label": "Little to None",
+      "prob": 35.7,
+      "probability": 35.7,
+      "risk": 2,
+      "risk_level": 2,
+      "risk_label": "Minor",
       "level": 2,
       "impact_level": 2,
       "metric": ">30 mph",
@@ -28,7 +28,7 @@
       "peak_end_fxx": 36,
       "source_fxx": 36,
       "peak_valid_utc": "2026-06-04T00:00:00Z",
-      "driver": "21% of members exceed >30 mph; mean member 60-hr max gust 27.4 mph; peak member gust 45.4 mph",
+      "driver": "36% of members exceed >30 mph; mean member 60-hr max gust 29.4 mph; peak member gust 45.4 mph",
       "methodology": "WIND uses DESI-style time-lagged GUST:surface fields from HRRR, RRFS, and RRFSENS. For each member, the builder finds that member's maximum gust from f001-f060, then averages those member maxima. Threshold probabilities are the share of member maxima exceeding each gust threshold.",
       "data_status": "ok",
       "method": "desi_refs_time_lagged_gust",
@@ -74,19 +74,19 @@
           "member": "RRFS",
           "model": "rrfs",
           "lag_hours": 0,
-          "max_gust_mph": 19.7,
-          "source_fxx": 13,
-          "source_model_fxx": 13,
-          "peak_valid_utc": "2026-06-03T01:00:00Z"
+          "max_gust_mph": 24.4,
+          "source_fxx": 37,
+          "source_model_fxx": 37,
+          "peak_valid_utc": "2026-06-04T01:00:00Z"
         },
         {
           "member": "RRFS-1",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 25.9,
-          "source_fxx": 15,
-          "source_model_fxx": 15,
-          "peak_valid_utc": "2026-06-03T03:00:00Z"
+          "max_gust_mph": 30.0,
+          "source_fxx": 35,
+          "source_model_fxx": 35,
+          "peak_valid_utc": "2026-06-03T23:00:00Z"
         },
         {
           "member": "RRFS-1-6",
@@ -101,10 +101,10 @@
           "member": "RRFS-2",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 23.9,
-          "source_fxx": 15,
-          "source_model_fxx": 15,
-          "peak_valid_utc": "2026-06-03T03:00:00Z"
+          "max_gust_mph": 29.1,
+          "source_fxx": 37,
+          "source_model_fxx": 37,
+          "peak_valid_utc": "2026-06-04T01:00:00Z"
         },
         {
           "member": "RRFS-2-6",
@@ -137,10 +137,10 @@
           "member": "RRFS-4",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 25.7,
-          "source_fxx": 13,
-          "source_model_fxx": 13,
-          "peak_valid_utc": "2026-06-03T01:00:00Z"
+          "max_gust_mph": 26.8,
+          "source_fxx": 40,
+          "source_model_fxx": 40,
+          "peak_valid_utc": "2026-06-04T04:00:00Z"
         },
         {
           "member": "RRFS-4-6",
@@ -155,10 +155,10 @@
           "member": "RRFS-5",
           "model": "rrfsens",
           "lag_hours": 0,
-          "max_gust_mph": 23.5,
-          "source_fxx": 15,
-          "source_model_fxx": 15,
-          "peak_valid_utc": "2026-06-03T03:00:00Z"
+          "max_gust_mph": 36.5,
+          "source_fxx": 36,
+          "source_model_fxx": 36,
+          "peak_valid_utc": "2026-06-04T00:00:00Z"
         },
         {
           "member": "RRFS-5-6",
@@ -179,20 +179,20 @@
           "peak_valid_utc": "2026-06-04T01:00:00Z"
         }
       ],
-      "mean_member_max_gust_mph": 27.4,
-      "peak_signal_gust_mean_mph": 27.7,
-      "peak_signal_gust_max_mph": 45.0,
-      "peak_signal_member_count": 8,
+      "mean_member_max_gust_mph": 29.4,
+      "peak_signal_gust_mean_mph": 25.8,
+      "peak_signal_gust_max_mph": 36.5,
+      "peak_signal_member_count": 14,
       "peak_gust_mph": 45.4,
-      "peak_gust_member_mean_mph": 27.2,
-      "peak_gust_member_count": 8,
+      "peak_gust_member_mean_mph": 26.8,
+      "peak_gust_member_count": 14,
       "threshold_probabilities_60hr": {
-        "gt_30_mph": 21.4,
+        "gt_30_mph": 35.7,
         "gt_45_mph": 7.1,
         "gt_58_mph": 0.0,
         "gt_65_mph": 0.0
       },
-      "g24_p50_mph": 27.4
+      "g24_p50_mph": 29.4
     },
     "LIGHTNING": {
       "id": "LIGHTNING",
@@ -255,12 +255,12 @@
       "impact_level": 0,
       "metric": "No signal",
       "display_label": "60-hr min visibility",
-      "display_value": "15.0 mi",
+      "display_value": "14.9 mi",
       "window": "60 hr",
-      "peak_start_fxx": 1,
-      "peak_end_fxx": 1,
-      "source_fxx": 1,
-      "peak_valid_utc": "2026-06-02T13:00:00Z",
+      "peak_start_fxx": 49,
+      "peak_end_fxx": 49,
+      "source_fxx": 49,
+      "peak_valid_utc": "2026-06-04T13:00:00Z",
       "driver": "REFS point extraction found no threshold-level signal",
       "methodology": "REFS IDX-selected byte-range point extraction at the DSS location. Missing fields fail per hazard.",
       "data_status": "ok",
@@ -368,16 +368,16 @@
       "id": "WIND",
       "name": "WIND",
       "full_name": "WIND",
-      "risk_level": 1,
-      "risk_label": "Little to None",
+      "risk_level": 2,
+      "risk_label": "Minor",
       "impact_level": 2,
-      "probability": 21.4,
+      "probability": 35.7,
       "peak_start_fxx": 36,
       "peak_end_fxx": 36,
       "metric": ">30 mph",
       "display_label": "60-hr max gust",
       "display_value": "45 mph",
-      "driver": "21% of members exceed >30 mph; mean member 60-hr max gust 27.4 mph; peak member gust 45.4 mph"
+      "driver": "36% of members exceed >30 mph; mean member 60-hr max gust 29.4 mph; peak member gust 45.4 mph"
     },
     {
       "id": "LIGHTNING",
@@ -417,11 +417,11 @@
       "risk_label": "None",
       "impact_level": 0,
       "probability": 0.0,
-      "peak_start_fxx": 1,
-      "peak_end_fxx": 1,
+      "peak_start_fxx": 49,
+      "peak_end_fxx": 49,
       "metric": "No signal",
       "display_label": "60-hr min visibility",
-      "display_value": "15.0 mi",
+      "display_value": "14.9 mi",
       "driver": "REFS point extraction found no threshold-level signal"
     },
     {
