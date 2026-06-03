@@ -7,6 +7,7 @@ import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import requests
@@ -32,6 +33,7 @@ SITE = {
 CORE_SOURCE_METHOD = "nbm_core_aws_gridpoint"
 QMD_SOURCE_METHOD = "nbm_qmd_aws_gridpoint"
 HEAT_THRESHOLDS_PATH = DATA / "krno_heat_thresholds.csv"
+LOCAL_TZ = ZoneInfo("America/Los_Angeles")
 
 HAZARDS = ["WIND", "LIGHTNING", "SNOW", "VISIBILITY", "FZRA", "FLASH_FREEZE", "RAIN", "TEMPERATURE"]
 
@@ -1641,8 +1643,18 @@ def select_qmd_temp_rows(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]
     return selected
 
 
-def qmd_temp_probability_threshold_k(line: str, fxx: int) -> tuple[str, float] | None:
-    if f":{fxx} hour fcst:" not in line or ":TMP:2 m above ground:" not in line:
+def qmd_temp_line_matches_window(line: str, fxx: int, window_kind: str = "instant") -> bool:
+    if ":TMP:2 m above ground:" not in line:
+        return False
+    if window_kind == "max":
+        return f"-{fxx} hour max fcst:" in line or f":{fxx} hour max fcst:" in line
+    if window_kind == "min":
+        return f"-{fxx} hour min fcst:" in line or f":{fxx} hour min fcst:" in line
+    return f":{fxx} hour fcst:" in line
+
+
+def qmd_temp_probability_threshold_k(line: str, fxx: int, window_kind: str = "instant") -> tuple[str, float] | None:
+    if not qmd_temp_line_matches_window(line, fxx, window_kind):
         return None
     match = re.search(r":TMP:2 m above ground:.*:prob ([<>])([0-9.]+):prob fcst", line)
     if not match:
@@ -1653,10 +1665,10 @@ def qmd_temp_probability_threshold_k(line: str, fxx: int) -> tuple[str, float] |
         return None
 
 
-def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, operator: str) -> list[dict[str, Any]]:
+def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, operator: str, window_kind: str = "instant") -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
     for row in rows:
-        parsed = qmd_temp_probability_threshold_k(row["line"], fxx)
+        parsed = qmd_temp_probability_threshold_k(row["line"], fxx, window_kind)
         if parsed is None:
             continue
         row_operator, threshold_k = parsed
@@ -1670,12 +1682,11 @@ def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, opera
     return selected
 
 
-def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percentile: float) -> dict[str, Any] | None:
-    expected_time = f":{fxx} hour fcst:"
+def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percentile: float, window_kind: str = "instant") -> dict[str, Any] | None:
     selected: list[dict[str, Any]] = []
     for row in rows:
         line = row["line"]
-        if ":TMP:2 m above ground:" not in line or expected_time not in line or "% level" not in line:
+        if not qmd_temp_line_matches_window(line, fxx, window_kind) or "% level" not in line:
             continue
         row_percentile = percentile_from_idx_line(line)
         if row_percentile is None:
@@ -1686,6 +1697,14 @@ def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percent
     if not selected:
         return None
     return min(selected, key=lambda row: abs(float(row["percentile"]) - percentile))
+
+
+def select_qmd_temp_mean_row(rows: list[dict[str, Any]], fxx: int, window_kind: str = "instant") -> dict[str, Any] | None:
+    return select_first_row(
+        rows,
+        lambda line: qmd_temp_line_matches_window(line, fxx, window_kind)
+        and (":ens mean" in line or line.endswith("fcst:")),
+    )
 
 
 def interpolate_probability_at_temperature(probability_rows: list[dict[str, float]], threshold_f: float) -> float | None:
@@ -2270,81 +2289,109 @@ def apply_qmd_rain_card(timeline: dict[str, Any], threats_payload: dict[str, Any
             hazard.update({"risk": best["risk"], "probability": probability, "level": best["risk"]})
 
 
+def qmd_temperature_window_value(cycle: datetime, fxx: int, window_kind: str, tmp: Path) -> dict[str, Any] | None:
+    grib_url = aws_grib_url(cycle, "qmd", fxx)
+    rows = parse_idx(fetch_text(grib_url + ".idx"))
+    percentile_row = select_qmd_temp_percentile_row(rows, fxx, 50.0, window_kind)
+    mean_row = select_qmd_temp_mean_row(rows, fxx, window_kind)
+    display_temp_f = None
+    if percentile_row:
+        display_temp_f = k_to_f(extract_row_value(grib_url, percentile_row, tmp, f"qmd_temp_{window_kind}_p50_f{fxx:03d}"))
+    elif mean_row:
+        display_temp_f = k_to_f(extract_row_value(grib_url, mean_row, tmp, f"qmd_temp_{window_kind}_mean_f{fxx:03d}"))
+
+    cold_probability_rows: list[dict[str, float]] = []
+    for row in select_qmd_temp_probability_rows(rows, fxx, "<", window_kind):
+        probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_{window_kind}_lt_{row['threshold_k']:g}_f{fxx:03d}")
+        cold_probability_rows.append(
+            {
+                "threshold_k": round(float(row["threshold_k"]), 3),
+                "threshold_f": round(float(row["threshold_f"]), 1),
+                "probability": round(float(probability), 1),
+            }
+        )
+    heat_probability_rows: list[dict[str, float]] = []
+    for row in select_qmd_temp_probability_rows(rows, fxx, ">", window_kind):
+        probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_{window_kind}_gt_{row['threshold_k']:g}_f{fxx:03d}")
+        heat_probability_rows.append(
+            {
+                "threshold_k": round(float(row["threshold_k"]), 3),
+                "threshold_f": round(float(row["threshold_f"]), 1),
+                "probability": round(float(probability), 1),
+            }
+        )
+
+    valid_utc = iso(cycle + timedelta(hours=fxx))
+    heat_thresholds = heat_thresholds_for_valid_time(valid_utc)
+    probabilities: dict[str, float | None] = {}
+    if window_kind == "min":
+        probabilities.update(
+            {
+                "prob_lt_10_f": interpolate_probability_at_temperature(cold_probability_rows, 10.0),
+                "prob_lt_20_f": interpolate_probability_at_temperature(cold_probability_rows, 20.0),
+                "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
+                "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
+            }
+        )
+    if window_kind == "max":
+        probabilities.update(
+            {
+                "prob_heat_impact_2": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[2]) if heat_thresholds.get(2) is not None else None,
+                "prob_heat_impact_3": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[3]) if heat_thresholds.get(3) is not None else None,
+                "prob_heat_impact_4": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[4]) if heat_thresholds.get(4) is not None else None,
+                "prob_heat_impact_5": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[5]) if heat_thresholds.get(5) is not None else None,
+            }
+        )
+    cleaned_probabilities = {key: round(float(value), 1) for key, value in probabilities.items() if value is not None}
+    probability_detail = temperature_probability_risk_detail(cleaned_probabilities)
+    display_impact = temperature_impact_level(float(display_temp_f if display_temp_f is not None else 70.0), valid_utc)
+    return {
+        "fxx": fxx,
+        "valid_utc": valid_utc,
+        "window_kind": window_kind,
+        "temp_f": round(display_temp_f, 1) if display_temp_f is not None else None,
+        "heat_thresholds": {str(level): value for level, value in heat_thresholds.items()},
+        "impact_level": int(probability_detail["impact_level"] or display_impact),
+        "risk": int(probability_detail["risk"] or risk_from_matrix(display_impact)),
+        "probabilities": cleaned_probabilities,
+        "native_cold_probability_thresholds": cold_probability_rows,
+        "native_heat_probability_thresholds": heat_probability_rows,
+        "selected_probability": probability_detail["probability"],
+        "selected_probability_key": probability_detail["probability_key"],
+    }
+
+
+def format_temperature_summary_display(max_row: dict[str, Any] | None, min_row: dict[str, Any] | None) -> tuple[str, str, str]:
+    def temp_text(row: dict[str, Any] | None) -> str:
+        if not row or row.get("temp_f") is None:
+            return "--"
+        return f"{float(row['temp_f']):.0f}°F"
+
+    now_local = datetime.now(timezone.utc).astimezone(LOCAL_TZ)
+    max_text = temp_text(max_row)
+    min_text = temp_text(min_row)
+    if now_local.hour < 6:
+        return "Today Min/Max", f"{min_text} / {max_text}", f"Today Min {min_text} / Today Max {max_text}"
+    if now_local.hour >= 18:
+        return "Tonight Min / Tomorrow Max", f"{min_text} / {max_text}", f"Tonight Min {min_text} / Tomorrow Max {max_text}"
+    return "Today Max / Tomorrow Min", f"{max_text} / {min_text}", f"Today Max {max_text} / Tomorrow Min {min_text}"
+
+
 def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
-    qmd_cycle = find_latest_available_cycle("qmd", [24, 48, 72])
+    qmd_cycle = find_latest_available_cycle("qmd", [24, 36, 48, 60, 72])
     source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
     daily_values: list[dict[str, Any]] = []
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
         for fxx in [24, 48, 72]:
-            grib_url = aws_grib_url(qmd_cycle, "qmd", fxx)
-            rows = parse_idx(fetch_text(grib_url + ".idx"))
-            cold_probability_rows: list[dict[str, float]] = []
-            for row in select_qmd_temp_probability_rows(rows, fxx, "<"):
-                probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_lt_{row['threshold_k']:g}_f{fxx:03d}")
-                cold_probability_rows.append(
-                    {
-                        "threshold_k": round(float(row["threshold_k"]), 3),
-                        "threshold_f": round(float(row["threshold_f"]), 1),
-                        "probability": round(float(probability), 1),
-                    }
-                )
-            heat_probability_rows: list[dict[str, float]] = []
-            for row in select_qmd_temp_probability_rows(rows, fxx, ">"):
-                probability = extract_row_value(grib_url, row, tmp, f"qmd_temp_gt_{row['threshold_k']:g}_f{fxx:03d}")
-                heat_probability_rows.append(
-                    {
-                        "threshold_k": round(float(row["threshold_k"]), 3),
-                        "threshold_f": round(float(row["threshold_f"]), 1),
-                        "probability": round(float(probability), 1),
-                    }
-                )
-
-            p10_f = None
-            p90_f = None
-            p10_row = select_qmd_temp_percentile_row(rows, fxx, 10.0)
-            p90_row = select_qmd_temp_percentile_row(rows, fxx, 90.0)
-            if p10_row:
-                p10_f = k_to_f(extract_row_value(grib_url, p10_row, tmp, f"qmd_temp_p10_f{fxx:03d}"))
-            if p90_row:
-                p90_f = k_to_f(extract_row_value(grib_url, p90_row, tmp, f"qmd_temp_p90_f{fxx:03d}"))
-
-            valid_utc = iso(qmd_cycle + timedelta(hours=fxx))
-            heat_thresholds = heat_thresholds_for_valid_time(valid_utc)
-            probabilities = {
-                "prob_lt_10_f": interpolate_probability_at_temperature(cold_probability_rows, 10.0),
-                "prob_lt_20_f": interpolate_probability_at_temperature(cold_probability_rows, 20.0),
-                "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
-                "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
-                "prob_heat_impact_2": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[2]) if heat_thresholds.get(2) is not None else None,
-                "prob_heat_impact_3": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[3]) if heat_thresholds.get(3) is not None else None,
-                "prob_heat_impact_4": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[4]) if heat_thresholds.get(4) is not None else None,
-                "prob_heat_impact_5": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[5]) if heat_thresholds.get(5) is not None else None,
-            }
-            cleaned_probabilities = {key: round(float(value), 1) for key, value in probabilities.items() if value is not None}
-            probability_detail = temperature_probability_risk_detail(cleaned_probabilities)
-            display_impact = temperature_impact_level(float(p90_f if p90_f is not None else 70.0), valid_utc)
-            if p10_f is not None:
-                display_impact = max(display_impact, temperature_impact_level(float(p10_f), valid_utc))
-            impact = int(probability_detail["impact_level"] or display_impact)
-            risk = int(probability_detail["risk"] or risk_from_matrix(display_impact))
-            daily_values.append(
-                {
-                    "fxx": fxx,
-                    "valid_utc": valid_utc,
-                    "p90_f": round(p90_f, 1) if p90_f is not None else None,
-                    "p10_f": round(p10_f, 1) if p10_f is not None else None,
-                    "heat_thresholds": {str(level): value for level, value in heat_thresholds.items()},
-                    "impact_level": impact,
-                    "risk": risk,
-                    "probabilities": cleaned_probabilities,
-                    "native_cold_probability_thresholds": cold_probability_rows,
-                    "native_heat_probability_thresholds": heat_probability_rows,
-                    "selected_probability": probability_detail["probability"],
-                    "selected_probability_key": probability_detail["probability_key"],
-                }
-            )
+            row = qmd_temperature_window_value(qmd_cycle, fxx, "max", tmp)
+            if row:
+                daily_values.append(row)
+        for fxx in [36, 60]:
+            row = qmd_temperature_window_value(qmd_cycle, fxx, "min", tmp)
+            if row:
+                daily_values.append(row)
 
     if not daily_values:
         return
@@ -2357,13 +2404,14 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
             row.get("impact_level", 1),
         ),
     )
-    max_temp = max((row for row in daily_values if row.get("p90_f") is not None), key=lambda row: row["p90_f"], default=None)
-    min_temp = min((row for row in daily_values if row.get("p10_f") is not None), key=lambda row: row["p10_f"], default=None)
     impact = int(peak.get("impact_level") or 1)
     risk = int(peak.get("risk") or 1)
     probability = float(peak.get("selected_probability") or max(peak.get("probabilities", {}).values() or [0.0]))
-    max_display = f"{max_temp['p90_f']:.0f}" if max_temp else "--"
-    min_display = f"{min_temp['p10_f']:.0f}" if min_temp else "--"
+    max_rows = [row for row in daily_values if row.get("window_kind") == "max" and row.get("temp_f") is not None]
+    min_rows = [row for row in daily_values if row.get("window_kind") == "min" and row.get("temp_f") is not None]
+    max_temp = min(max_rows, key=lambda row: int(row["fxx"]), default=None)
+    min_temp = min(min_rows, key=lambda row: int(row["fxx"]), default=None)
+    display_label, display_value, metric = format_temperature_summary_display(max_temp, min_temp)
     threat = threats_payload["threats"]["TEMPERATURE"]
     threat.update(
         {
@@ -2376,15 +2424,15 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
             "impact_level": impact,
             "likelihood_category": likelihood_bin(probability),
             "risk_method": "krno_threshold_probability_matrix_qmd_temperature",
-            "metric": f"P90/P10 temp {max_display}/{min_display}°F",
-            "display_label": "QMD P90/P10",
-            "display_value": f"{max_display}/{min_display}°F",
+            "metric": metric,
+            "display_label": display_label,
+            "display_value": display_value,
             "peak_start_fxx": max(1, int(peak["fxx"]) - 23),
             "peak_end_fxx": peak["fxx"],
             "source_fxx": peak["fxx"],
             "peak_valid_utc": peak["valid_utc"],
-            "driver": "NBM QMD 24-hour temperature probabilities at KRNO",
-            "methodology": "Temperature summary uses QMD 24/48/72-hour TMP probability-of-threshold exceedance for cold and heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix. QMD exposes TMP probabilities/percentiles in this domain rather than separate TMAX/TMIN field names.",
+            "driver": "NBM QMD 24-hour max/min temperature probabilities at KRNO",
+            "methodology": "Temperature summary uses QMD 24-hour max-temperature and min-temperature probability-of-threshold exceedance for cold and date-specific KRNO heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix.",
             "data_status": "live",
             "method": QMD_SOURCE_METHOD,
             "source": source,
