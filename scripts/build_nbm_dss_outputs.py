@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import re
 import tempfile
@@ -30,6 +31,7 @@ SITE = {
 
 CORE_SOURCE_METHOD = "nbm_core_aws_gridpoint"
 QMD_SOURCE_METHOD = "nbm_qmd_aws_gridpoint"
+HEAT_THRESHOLDS_PATH = DATA / "krno_heat_thresholds.csv"
 
 HAZARDS = ["WIND", "LIGHTNING", "SNOW", "VISIBILITY", "FZRA", "FLASH_FREEZE", "RAIN", "TEMPERATURE"]
 
@@ -71,8 +73,8 @@ NATIVE_WINDOWS = {
         {"start_fxx": 51, "end_fxx": 72, "window_hours": 3, "source": "NBM 3-hour temperature probabilities + wet-surface proxy"},
     ],
     "TEMPERATURE": [
-        {"start_fxx": 1, "end_fxx": 48, "window_hours": 1, "source": "NBM hourly temperature probabilities / QMD max-min"},
-        {"start_fxx": 51, "end_fxx": 72, "window_hours": 3, "source": "NBM 3-hour temperature probabilities / QMD max-min"},
+        {"start_fxx": 1, "end_fxx": 48, "window_hours": 1, "source": "NBM/QMD temperature probabilities with KRNO heat thresholds"},
+        {"start_fxx": 51, "end_fxx": 72, "window_hours": 3, "source": "NBM/QMD 3-hour temperature probabilities with KRNO heat thresholds"},
     ],
 }
 
@@ -117,6 +119,17 @@ METHODOLOGY = {
             {"level": 3, "label": "Moderate", "threshold": "Trace to 0.01 inches"},
             {"level": 4, "label": "Major", "threshold": "0.01 to 0.10 inches"},
             {"level": 5, "label": "Extreme", "threshold": "Greater than 0.10 inches"},
+        ],
+    },
+    "temperature": {
+        "basis": "Cold thresholds use the KRNO fixed cold impact table. Heat thresholds use the day-of-year KRNO heat-risk table in data/krno_heat_thresholds.csv. QMD TMP probability-of-threshold exceedance is mapped through the likelihood-vs-impact matrix for the 72-hour card and timeline.",
+        "heat_threshold_source": "data/krno_heat_thresholds.csv",
+        "cold_impact_thresholds": [
+            {"level": 1, "label": "Little to None", "threshold": "Greater than or equal to 40°F"},
+            {"level": 2, "label": "Minor", "threshold": "32 to 40°F"},
+            {"level": 3, "label": "Moderate", "threshold": "20 to 32°F"},
+            {"level": 4, "label": "Major", "threshold": "10 to 20°F"},
+            {"level": 5, "label": "Extreme", "threshold": "Less than 10°F"},
         ],
     },
     "precip_type_conflict": [
@@ -435,7 +448,64 @@ def visibility_impact_level(visibility_mi: float) -> int:
     return 1
 
 
-def temperature_impact_level(temp_f: float) -> int:
+_HEAT_THRESHOLDS_CACHE: dict[str, dict[int, float | None]] | None = None
+
+
+def _parse_threshold_value(value: str | None) -> float | None:
+    if value is None:
+        return None
+    cleaned = str(value).strip()
+    if not cleaned or cleaned.lower() == "none":
+        return None
+    cleaned = cleaned.lstrip("<>=").strip()
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def load_heat_thresholds() -> dict[str, dict[int, float | None]]:
+    global _HEAT_THRESHOLDS_CACHE
+    if _HEAT_THRESHOLDS_CACHE is not None:
+        return _HEAT_THRESHOLDS_CACHE
+    thresholds: dict[str, dict[int, float | None]] = {}
+    if HEAT_THRESHOLDS_PATH.exists():
+        with HEAT_THRESHOLDS_PATH.open(newline="") as handle:
+            for row in csv.DictReader(handle):
+                date_key = str(row.get("Date", "")).strip()
+                if not date_key:
+                    continue
+                thresholds[date_key] = {
+                    2: _parse_threshold_value(row.get("2")),
+                    3: _parse_threshold_value(row.get("3")),
+                    4: _parse_threshold_value(row.get("4")),
+                    5: _parse_threshold_value(row.get("5")),
+                }
+    _HEAT_THRESHOLDS_CACHE = thresholds
+    return thresholds
+
+
+def heat_thresholds_for_valid_time(valid_utc: datetime | str | None) -> dict[int, float | None]:
+    if isinstance(valid_utc, str):
+        valid_dt = parse_iso_utc(valid_utc)
+    elif isinstance(valid_utc, datetime):
+        valid_dt = valid_utc.astimezone(timezone.utc)
+    else:
+        valid_dt = datetime.now(timezone.utc)
+    key = f"{valid_dt.month}/{valid_dt.day}"
+    return load_heat_thresholds().get(key, {2: 90.0, 3: 95.0, 4: 100.0, 5: 105.0})
+
+
+def heat_impact_level(temp_f: float, valid_utc: datetime | str | None = None) -> int:
+    thresholds = heat_thresholds_for_valid_time(valid_utc)
+    for level in [5, 4, 3, 2]:
+        threshold = thresholds.get(level)
+        if threshold is not None and temp_f >= threshold:
+            return level
+    return 1
+
+
+def temperature_impact_level(temp_f: float, valid_utc: datetime | str | None = None) -> int:
     cold = 1
     if temp_f < 10:
         cold = 5
@@ -446,17 +516,7 @@ def temperature_impact_level(temp_f: float) -> int:
     elif temp_f < 40:
         cold = 2
 
-    heat = 1
-    if temp_f > 105:
-        heat = 5
-    elif temp_f >= 100:
-        heat = 4
-    elif temp_f >= 95:
-        heat = 3
-    elif temp_f >= 90:
-        heat = 2
-
-    return max(cold, heat)
+    return max(cold, heat_impact_level(temp_f, valid_utc))
 
 
 def flash_freeze_impact_level(temp_f: float, wet_surface: bool) -> int:
@@ -1317,8 +1377,8 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         )
 
         temp_f = row_temp_f(row)
-        temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f, "impact_level": temperature_impact_level(temp_f)})
-        temp_impact = temperature_impact_level(temp_f)
+        temp_values.append({"fxx": fxx, "valid_utc": valid_utc, "temp_f": temp_f, "impact_level": temperature_impact_level(temp_f, valid_utc)})
+        temp_impact = temperature_impact_level(temp_f, valid_utc)
         temp_risk = risk_from_matrix(temp_impact)
         set_hazard_live(
             timeline,
@@ -1332,7 +1392,7 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
                     "fxx": int(src["fxx"]),
                     "valid_utc": src["valid_utc"],
                     "temp_f": round(row_temp_f(src), 1),
-                    "impact_level": temperature_impact_level(row_temp_f(src)),
+                    "impact_level": temperature_impact_level(row_temp_f(src), src["valid_utc"]),
                     "value": round(row_temp_f(src), 1),
                     "unit": "°F",
                     "label": "temp",
@@ -1436,8 +1496,8 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
         card_temp_values = [row for row in temp_values if int(row.get("fxx", 999)) <= 24] or temp_values
         max_temp = max(card_temp_values, key=lambda row: row["temp_f"])
         min_temp = min(card_temp_values, key=lambda row: row["temp_f"])
-        max_impact = temperature_impact_level(float(max_temp["temp_f"]))
-        min_impact = temperature_impact_level(float(min_temp["temp_f"]))
+        max_impact = temperature_impact_level(float(max_temp["temp_f"]), max_temp["valid_utc"])
+        min_impact = temperature_impact_level(float(min_temp["temp_f"]), min_temp["valid_utc"])
         impact = max(max_impact, min_impact)
         risk = risk_from_matrix(impact)
         driver_row = min_temp if min_impact >= max_impact else max_temp
@@ -1668,13 +1728,13 @@ def interpolate_probability_at_temperature(probability_rows: list[dict[str, floa
 def temperature_probability_risk_detail(probabilities: dict[str, float]) -> dict[str, Any]:
     thresholds = [
         ("prob_lt_10_f", 5),
-        ("prob_gt_105_f", 5),
+        ("prob_heat_impact_5", 5),
         ("prob_lt_20_f", 4),
-        ("prob_gt_100_f", 4),
+        ("prob_heat_impact_4", 4),
         ("prob_lt_32_f", 3),
-        ("prob_gt_95_f", 3),
+        ("prob_heat_impact_3", 3),
         ("prob_lt_40_f", 2),
-        ("prob_gt_90_f", 2),
+        ("prob_heat_impact_2", 2),
     ]
     best = {"risk": 1, "impact_level": 1, "probability": 0.0, "probability_key": None}
     for key, impact_level in thresholds:
@@ -1726,16 +1786,20 @@ def extract_qmd_temperature_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[s
     if p50_row:
         p50_f = k_to_f(extract_row_value(grib_url, p50_row, tmp, f"qmd_temp_p50_f{fxx:03d}"))
 
+    valid_utc = iso(cycle + timedelta(hours=fxx))
+    heat_thresholds = heat_thresholds_for_valid_time(valid_utc)
     temp_probabilities = {
+        "prob_lt_10_f": interpolate_probability_at_temperature(cold_probability_rows, 10.0),
+        "prob_lt_20_f": interpolate_probability_at_temperature(cold_probability_rows, 20.0),
         "prob_lt_25_f": interpolate_probability_at_temperature(cold_probability_rows, 25.0),
         "prob_lt_28_f": interpolate_probability_at_temperature(cold_probability_rows, 28.0),
         "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
         "prob_lt_36_f": interpolate_probability_at_temperature(cold_probability_rows, 36.0),
         "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
-        "prob_gt_90_f": interpolate_probability_at_temperature(heat_probability_rows, 90.0),
-        "prob_gt_95_f": interpolate_probability_at_temperature(heat_probability_rows, 95.0),
-        "prob_gt_100_f": interpolate_probability_at_temperature(heat_probability_rows, 100.0),
-        "prob_gt_105_f": interpolate_probability_at_temperature(heat_probability_rows, 105.0),
+        "prob_heat_impact_2": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[2]) if heat_thresholds.get(2) is not None else None,
+        "prob_heat_impact_3": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[3]) if heat_thresholds.get(3) is not None else None,
+        "prob_heat_impact_4": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[4]) if heat_thresholds.get(4) is not None else None,
+        "prob_heat_impact_5": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[5]) if heat_thresholds.get(5) is not None else None,
     }
 
     if not cold_probability_rows and not heat_probability_rows and p50_f is None:
@@ -1743,8 +1807,9 @@ def extract_qmd_temperature_hour(cycle: datetime, fxx: int, tmp: Path) -> dict[s
 
     return {
         "fxx": fxx,
-        "valid_utc": iso(cycle + timedelta(hours=fxx)),
+        "valid_utc": valid_utc,
         "p50_f": round(p50_f, 1) if p50_f is not None else None,
+        "heat_thresholds": {str(level): value for level, value in heat_thresholds.items()},
         "temp_probabilities": {key: round(float(value), 1) for key, value in temp_probabilities.items() if value is not None},
         "native_cold_probability_thresholds": cold_probability_rows,
         "native_heat_probability_thresholds": heat_probability_rows,
@@ -1894,6 +1959,115 @@ def apply_qmd_flash_freeze_timeline(timeline: dict[str, Any], threats_payload: d
         for hazard in threats_payload["hazards"]:
             if hazard["id"] == "FLASH_FREEZE":
                 hazard.update({"risk": int(best["risk"]), "probability": round(float(best["probability"]), 1), "level": int(best["risk"])})
+
+
+def qmd_temperature_by_block_end(timeline: dict[str, Any]) -> tuple[datetime, dict[str, int], dict[int, dict[str, Any]]]:
+    block_end_times = [parse_iso_utc(block["valid_end_utc"]) for block in timeline["blocks"]]
+    qmd_cycle = None
+    fxx_values_by_end_time: dict[str, int] = {}
+    for cycle in candidate_cycles(count=8):
+        offsets = {
+            iso(end_time): int(round((end_time - cycle).total_seconds() / 3600.0))
+            for end_time in block_end_times
+        }
+        if not offsets or min(offsets.values()) < 1:
+            continue
+        required = sorted(set(offsets.values()))
+        try:
+            for fxx in (required[0], required[-1]):
+                fetch_text(aws_grib_url(cycle, "qmd", fxx) + ".idx")
+        except Exception:
+            continue
+        qmd_cycle = cycle
+        fxx_values_by_end_time = offsets
+        break
+    if qmd_cycle is None:
+        raise RuntimeError("No recent complete NBM QMD temperature timeline cycle found")
+
+    qmd_by_fxx: dict[int, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        for fxx in sorted(set(fxx_values_by_end_time.values())):
+            try:
+                row = extract_qmd_temperature_hour(qmd_cycle, fxx, tmp)
+                if row:
+                    qmd_by_fxx[fxx] = row
+            except Exception:
+                continue
+    if not qmd_by_fxx:
+        raise RuntimeError("NBM QMD temperature timeline extraction returned no values")
+    return qmd_cycle, fxx_values_by_end_time, qmd_by_fxx
+
+
+def apply_qmd_temperature_timeline(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    qmd_cycle, fxx_values_by_end_time, qmd_by_fxx = qmd_temperature_by_block_end(timeline)
+    source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
+
+    for block, hazards in zip(timeline["blocks"], timeline["block_hazards"]):
+        end_time_key = iso(parse_iso_utc(block["valid_end_utc"]))
+        end_fxx = fxx_values_by_end_time.get(end_time_key)
+        if end_fxx is None:
+            continue
+        row = qmd_by_fxx.get(end_fxx)
+        if not row:
+            continue
+
+        probability_detail = temperature_probability_risk_detail(row["temp_probabilities"])
+        display_impact = temperature_impact_level(float(row["p50_f"] if row.get("p50_f") is not None else 70.0), row["valid_utc"])
+        risk = int(probability_detail["risk"] or risk_from_matrix(display_impact))
+        impact = int(probability_detail["impact_level"] or display_impact)
+        probability = float(probability_detail["probability"] or max(row.get("temp_probabilities", {}).values() or [0.0]))
+        display_temp = row.get("p50_f")
+
+        block["TEMPERATURE"] = risk
+        hazard = hazards["TEMPERATURE"]
+        hazard.update(
+            {
+                "label": "Temperature",
+                "name": "Temperature",
+                "risk": risk,
+                "risk_label": RISK_LABELS[risk],
+                "level": risk,
+                "impact_level": impact,
+                "likelihood_category": likelihood_bin(probability),
+                "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+                "prob": round(probability, 1),
+                "probability": round(probability, 1),
+                "metric": f"Temp {display_temp:.0f}°F" if display_temp is not None else "Temperature probability",
+                "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+                "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+                "source_fxx": int(row["fxx"]),
+                "peak_valid_utc": row["valid_utc"],
+                "data_status": "live",
+                "method": QMD_SOURCE_METHOD,
+                "source": source,
+                "hourly_values": [
+                    {
+                        "fxx": int(row["fxx"]),
+                        "valid_utc": row["valid_utc"],
+                        "temp_f": display_temp,
+                        "heat_thresholds": row["heat_thresholds"],
+                        "temp_probabilities": row["temp_probabilities"],
+                        "value": display_temp,
+                        "unit": "°F",
+                        "label": "temp",
+                        "window_hours": int(block.get("duration_hours") or 3),
+                    }
+                ],
+                "values": {
+                    "impact_level": impact,
+                    "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+                    "temp_f": display_temp,
+                    "heat_thresholds": row["heat_thresholds"],
+                    "temp_probabilities": row["temp_probabilities"],
+                    "probability": round(probability, 1),
+                    "value": display_temp,
+                    "unit": "°F",
+                },
+                "native_cold_probability_thresholds": row["native_cold_probability_thresholds"],
+                "native_heat_probability_thresholds": row["native_heat_probability_thresholds"],
+            }
+        )
 
 
 def select_qmd_rain_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dict[str, Any]]:
@@ -2136,29 +2310,32 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
             if p90_row:
                 p90_f = k_to_f(extract_row_value(grib_url, p90_row, tmp, f"qmd_temp_p90_f{fxx:03d}"))
 
+            valid_utc = iso(qmd_cycle + timedelta(hours=fxx))
+            heat_thresholds = heat_thresholds_for_valid_time(valid_utc)
             probabilities = {
                 "prob_lt_10_f": interpolate_probability_at_temperature(cold_probability_rows, 10.0),
                 "prob_lt_20_f": interpolate_probability_at_temperature(cold_probability_rows, 20.0),
                 "prob_lt_32_f": interpolate_probability_at_temperature(cold_probability_rows, 32.0),
                 "prob_lt_40_f": interpolate_probability_at_temperature(cold_probability_rows, 40.0),
-                "prob_gt_90_f": interpolate_probability_at_temperature(heat_probability_rows, 90.0),
-                "prob_gt_95_f": interpolate_probability_at_temperature(heat_probability_rows, 95.0),
-                "prob_gt_100_f": interpolate_probability_at_temperature(heat_probability_rows, 100.0),
-                "prob_gt_105_f": interpolate_probability_at_temperature(heat_probability_rows, 105.0),
+                "prob_heat_impact_2": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[2]) if heat_thresholds.get(2) is not None else None,
+                "prob_heat_impact_3": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[3]) if heat_thresholds.get(3) is not None else None,
+                "prob_heat_impact_4": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[4]) if heat_thresholds.get(4) is not None else None,
+                "prob_heat_impact_5": interpolate_probability_at_temperature(heat_probability_rows, heat_thresholds[5]) if heat_thresholds.get(5) is not None else None,
             }
             cleaned_probabilities = {key: round(float(value), 1) for key, value in probabilities.items() if value is not None}
             probability_detail = temperature_probability_risk_detail(cleaned_probabilities)
-            display_impact = temperature_impact_level(float(p90_f if p90_f is not None else 70.0))
+            display_impact = temperature_impact_level(float(p90_f if p90_f is not None else 70.0), valid_utc)
             if p10_f is not None:
-                display_impact = max(display_impact, temperature_impact_level(float(p10_f)))
+                display_impact = max(display_impact, temperature_impact_level(float(p10_f), valid_utc))
             impact = int(probability_detail["impact_level"] or display_impact)
             risk = int(probability_detail["risk"] or risk_from_matrix(display_impact))
             daily_values.append(
                 {
                     "fxx": fxx,
-                    "valid_utc": iso(qmd_cycle + timedelta(hours=fxx)),
+                    "valid_utc": valid_utc,
                     "p90_f": round(p90_f, 1) if p90_f is not None else None,
                     "p10_f": round(p10_f, 1) if p10_f is not None else None,
+                    "heat_thresholds": {str(level): value for level, value in heat_thresholds.items()},
                     "impact_level": impact,
                     "risk": risk,
                     "probabilities": cleaned_probabilities,
@@ -2348,6 +2525,12 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["CORE_HAZARDS"] = str(exc)
+
+    try:
+        apply_qmd_temperature_timeline(timeline, threats_payload)
+    except Exception as exc:
+        timeline.setdefault("extraction_errors", {})["QMD_TEMPERATURE_TIMELINE"] = str(exc)
+        threats_payload.setdefault("extraction_errors", {})["QMD_TEMPERATURE_TIMELINE"] = str(exc)
 
     try:
         apply_qmd_flash_freeze_timeline(timeline, threats_payload)
