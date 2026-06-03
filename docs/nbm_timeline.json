@@ -42,7 +42,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 2,
@@ -57,7 +57,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 3,
@@ -72,7 +72,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 4,
@@ -87,7 +87,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 5,
@@ -177,7 +177,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 11,
@@ -192,7 +192,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 2
+      "TEMPERATURE": 3
     },
     {
       "block_index": 12,
@@ -207,7 +207,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 13,
@@ -282,7 +282,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 18,
@@ -297,7 +297,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 2
+      "TEMPERATURE": 3
     },
     {
       "block_index": 19,
@@ -312,7 +312,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 20,
@@ -327,7 +327,7 @@
       "FZRA": 1,
       "FLASH_FREEZE": 1,
       "RAIN": 1,
-      "TEMPERATURE": 1
+      "TEMPERATURE": 2
     },
     {
       "block_index": 21,
@@ -968,11 +968,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 65\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 3,
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "Temp 66\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 9,
         "peak_valid_utc": "2026-06-03T15:00:00Z",
         "valid_start_utc": "2026-06-03T12:00:00Z",
         "valid_end_utc": "2026-06-03T15:00:00Z",
@@ -980,51 +980,110 @@
         "end_fxx": 3,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 1,
-            "valid_utc": "2026-06-03T13:00:00Z",
-            "temp_f": 56.2,
-            "impact_level": 1,
-            "value": 56.2,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 2,
-            "valid_utc": "2026-06-03T14:00:00Z",
-            "temp_f": 60.3,
-            "impact_level": 1,
-            "value": 60.3,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 3,
+            "fxx": 9,
             "valid_utc": "2026-06-03T15:00:00Z",
-            "temp_f": 65.2,
-            "impact_level": 1,
-            "value": 65.2,
+            "temp_f": 65.5,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 65.5,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 3,
-          "valid_utc": "2026-06-03T15:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 65.2,
-          "value": 65.2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 65.5,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 65.5,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -1615,15 +1674,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 74.1,
+        "probability": 74.1,
         "metric": "Temp 80\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 6,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 12,
         "peak_valid_utc": "2026-06-03T18:00:00Z",
         "valid_start_utc": "2026-06-03T15:00:00Z",
         "valid_end_utc": "2026-06-03T18:00:00Z",
@@ -1631,51 +1690,110 @@
         "end_fxx": 6,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 4,
-            "valid_utc": "2026-06-03T16:00:00Z",
-            "temp_f": 69.7,
-            "impact_level": 1,
-            "value": 69.7,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 5,
-            "valid_utc": "2026-06-03T17:00:00Z",
-            "temp_f": 74.6,
-            "impact_level": 1,
-            "value": 74.6,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 6,
+            "fxx": 12,
             "valid_utc": "2026-06-03T18:00:00Z",
-            "temp_f": 79.6,
-            "impact_level": 1,
-            "value": 79.6,
+            "temp_f": 79.8,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 74.1,
+              "prob_heat_impact_3": 7.8,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 79.8,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 6,
-          "valid_utc": "2026-06-03T18:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 79.6,
-          "value": 79.6,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 79.8,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 74.1,
+            "prob_heat_impact_3": 7.8,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 74.1,
+          "value": 79.8,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 39.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -2266,15 +2384,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 87\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 9,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
+        "metric": "Temp 88\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 15,
         "peak_valid_utc": "2026-06-03T21:00:00Z",
         "valid_start_utc": "2026-06-03T18:00:00Z",
         "valid_end_utc": "2026-06-03T21:00:00Z",
@@ -2282,51 +2400,110 @@
         "end_fxx": 9,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 7,
-            "valid_utc": "2026-06-03T19:00:00Z",
-            "temp_f": 83.4,
-            "impact_level": 1,
-            "value": 83.4,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 8,
-            "valid_utc": "2026-06-03T20:00:00Z",
-            "temp_f": 86.1,
-            "impact_level": 1,
-            "value": 86.1,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 9,
+            "fxx": 15,
             "valid_utc": "2026-06-03T21:00:00Z",
-            "temp_f": 87.2,
-            "impact_level": 1,
-            "value": 87.2,
+            "temp_f": 87.5,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 21.4,
+              "prob_heat_impact_4": 0.8
+            },
+            "value": 87.5,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 9,
-          "valid_utc": "2026-06-03T21:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 87.2,
-          "value": 87.2,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 87.5,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 21.4,
+            "prob_heat_impact_4": 0.8
+          },
+          "probability": 100.0,
+          "value": 87.5,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 2.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -2917,15 +3094,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
         "metric": "Temp 86\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 12,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 18,
         "peak_valid_utc": "2026-06-04T00:00:00Z",
         "valid_start_utc": "2026-06-03T21:00:00Z",
         "valid_end_utc": "2026-06-04T00:00:00Z",
@@ -2933,51 +3110,110 @@
         "end_fxx": 12,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 10,
-            "valid_utc": "2026-06-03T22:00:00Z",
-            "temp_f": 87.3,
-            "impact_level": 1,
-            "value": 87.3,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 11,
-            "valid_utc": "2026-06-03T23:00:00Z",
-            "temp_f": 87.0,
-            "impact_level": 1,
-            "value": 87.0,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 12,
+            "fxx": 18,
             "valid_utc": "2026-06-04T00:00:00Z",
-            "temp_f": 86.3,
-            "impact_level": 1,
-            "value": 86.3,
+            "temp_f": 86.5,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 20.6,
+              "prob_heat_impact_4": 0.4
+            },
+            "value": 86.5,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 12,
-          "valid_utc": "2026-06-04T00:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 86.3,
-          "value": 86.3,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 86.5,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 20.6,
+            "prob_heat_impact_4": 0.4
+          },
+          "probability": 100.0,
+          "value": 86.5,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 1.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -3568,15 +3804,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 3,
+        "prob": 3.2,
+        "probability": 3.2,
         "metric": "Temp 78\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 15,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 21,
         "peak_valid_utc": "2026-06-04T03:00:00Z",
         "valid_start_utc": "2026-06-04T00:00:00Z",
         "valid_end_utc": "2026-06-04T03:00:00Z",
@@ -3584,51 +3820,110 @@
         "end_fxx": 15,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 13,
-            "valid_utc": "2026-06-04T01:00:00Z",
-            "temp_f": 84.6,
-            "impact_level": 1,
-            "value": 84.6,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 14,
-            "valid_utc": "2026-06-04T02:00:00Z",
-            "temp_f": 81.8,
-            "impact_level": 1,
-            "value": 81.8,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 15,
+            "fxx": 21,
             "valid_utc": "2026-06-04T03:00:00Z",
-            "temp_f": 78.0,
-            "impact_level": 1,
-            "value": 78.0,
+            "temp_f": 78.4,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 30.4,
+              "prob_heat_impact_3": 3.2,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 78.4,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 15,
-          "valid_utc": "2026-06-04T03:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 78.0,
-          "value": 78.0,
+          "impact_level": 3,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 78.4,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 30.4,
+            "prob_heat_impact_3": 3.2,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 3.2,
+          "value": 78.4,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 16.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -4223,11 +4518,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 67\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 18,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 24,
         "peak_valid_utc": "2026-06-04T06:00:00Z",
         "valid_start_utc": "2026-06-04T03:00:00Z",
         "valid_end_utc": "2026-06-04T06:00:00Z",
@@ -4235,51 +4530,110 @@
         "end_fxx": 18,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 16,
-            "valid_utc": "2026-06-04T04:00:00Z",
-            "temp_f": 73.7,
-            "impact_level": 1,
-            "value": 73.7,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 17,
-            "valid_utc": "2026-06-04T05:00:00Z",
-            "temp_f": 70.1,
-            "impact_level": 1,
-            "value": 70.1,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 18,
+            "fxx": 24,
             "valid_utc": "2026-06-04T06:00:00Z",
             "temp_f": 67.0,
-            "impact_level": 1,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
             "value": 67.0,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 18,
-          "valid_utc": "2026-06-04T06:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
           "temp_f": 67.0,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
           "value": 67.0,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -4874,11 +5228,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 59\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 21,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 27,
         "peak_valid_utc": "2026-06-04T09:00:00Z",
         "valid_start_utc": "2026-06-04T06:00:00Z",
         "valid_end_utc": "2026-06-04T09:00:00Z",
@@ -4886,51 +5240,110 @@
         "end_fxx": 21,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 19,
-            "valid_utc": "2026-06-04T07:00:00Z",
-            "temp_f": 64.3,
-            "impact_level": 1,
-            "value": 64.3,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 20,
-            "valid_utc": "2026-06-04T08:00:00Z",
-            "temp_f": 61.2,
-            "impact_level": 1,
-            "value": 61.2,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 21,
+            "fxx": 27,
             "valid_utc": "2026-06-04T09:00:00Z",
-            "temp_f": 59.3,
-            "impact_level": 1,
-            "value": 59.3,
+            "temp_f": 59.2,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 59.2,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 21,
-          "valid_utc": "2026-06-04T09:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 59.3,
-          "value": 59.3,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 59.2,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 59.2,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -5525,11 +5938,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 55\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 24,
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "Temp 54\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 30,
         "peak_valid_utc": "2026-06-04T12:00:00Z",
         "valid_start_utc": "2026-06-04T09:00:00Z",
         "valid_end_utc": "2026-06-04T12:00:00Z",
@@ -5537,51 +5950,110 @@
         "end_fxx": 24,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 22,
-            "valid_utc": "2026-06-04T10:00:00Z",
-            "temp_f": 57.6,
-            "impact_level": 1,
-            "value": 57.6,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 23,
-            "valid_utc": "2026-06-04T11:00:00Z",
-            "temp_f": 55.8,
-            "impact_level": 1,
-            "value": 55.8,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 24,
+            "fxx": 30,
             "valid_utc": "2026-06-04T12:00:00Z",
-            "temp_f": 54.6,
-            "impact_level": 1,
-            "value": 54.6,
+            "temp_f": 54.5,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 54.5,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 24,
-          "valid_utc": "2026-06-04T12:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 54.6,
-          "value": 54.6,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 54.5,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 54.5,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -6176,11 +6648,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 63\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 27,
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "Temp 64\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 33,
         "peak_valid_utc": "2026-06-04T15:00:00Z",
         "valid_start_utc": "2026-06-04T12:00:00Z",
         "valid_end_utc": "2026-06-04T15:00:00Z",
@@ -6188,51 +6660,110 @@
         "end_fxx": 27,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 25,
-            "valid_utc": "2026-06-04T13:00:00Z",
-            "temp_f": 54.6,
-            "impact_level": 1,
-            "value": 54.6,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 26,
-            "valid_utc": "2026-06-04T14:00:00Z",
-            "temp_f": 58.9,
-            "impact_level": 1,
-            "value": 58.9,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 27,
+            "fxx": 33,
             "valid_utc": "2026-06-04T15:00:00Z",
-            "temp_f": 63.2,
-            "impact_level": 1,
-            "value": 63.2,
+            "temp_f": 63.9,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 63.9,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 27,
-          "valid_utc": "2026-06-04T15:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 63.2,
-          "value": 63.2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 63.9,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 63.9,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -6826,12 +7357,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "impact_level": 2,
+        "prob": 1.9,
+        "probability": 1.9,
         "metric": "Temp 76\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 30,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 36,
         "peak_valid_utc": "2026-06-04T18:00:00Z",
         "valid_start_utc": "2026-06-04T15:00:00Z",
         "valid_end_utc": "2026-06-04T18:00:00Z",
@@ -6839,51 +7370,110 @@
         "end_fxx": 30,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 28,
-            "valid_utc": "2026-06-04T16:00:00Z",
-            "temp_f": 67.2,
-            "impact_level": 1,
-            "value": 67.2,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 29,
-            "valid_utc": "2026-06-04T17:00:00Z",
-            "temp_f": 71.3,
-            "impact_level": 1,
-            "value": 71.3,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 30,
+            "fxx": 36,
             "valid_utc": "2026-06-04T18:00:00Z",
-            "temp_f": 75.6,
-            "impact_level": 1,
-            "value": 75.6,
+            "temp_f": 76.1,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_3": 0.2,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 76.1,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 30,
-          "valid_utc": "2026-06-04T18:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 75.6,
-          "value": 75.6,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 76.1,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_3": 0.2,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 1.9,
+          "value": 76.1,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 1.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -7474,15 +8064,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
         "metric": "Temp 86\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 33,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 39,
         "peak_valid_utc": "2026-06-04T21:00:00Z",
         "valid_start_utc": "2026-06-04T18:00:00Z",
         "valid_end_utc": "2026-06-04T21:00:00Z",
@@ -7490,51 +8080,110 @@
         "end_fxx": 33,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 31,
-            "valid_utc": "2026-06-04T19:00:00Z",
-            "temp_f": 80.1,
-            "impact_level": 1,
-            "value": 80.1,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 32,
-            "valid_utc": "2026-06-04T20:00:00Z",
-            "temp_f": 83.7,
-            "impact_level": 1,
-            "value": 83.7,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 33,
+            "fxx": 39,
             "valid_utc": "2026-06-04T21:00:00Z",
-            "temp_f": 86.1,
-            "impact_level": 1,
-            "value": 86.1,
+            "temp_f": 86.2,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 88.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 22.2,
+              "prob_heat_impact_4": 1.2
+            },
+            "value": 86.2,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 33,
-          "valid_utc": "2026-06-04T21:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 86.1,
-          "value": 86.1,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 86.2,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 88.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 22.2,
+            "prob_heat_impact_4": 1.2
+          },
+          "probability": 100.0,
+          "value": 86.2,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 3.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -8125,15 +8774,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 2,
-        "risk_label": "Minor",
-        "level": 2,
-        "impact_level": 2,
-        "prob": null,
-        "probability": null,
+        "risk": 3,
+        "risk_label": "Moderate",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 71.1,
+        "probability": 71.1,
         "metric": "Temp 91\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 36,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 42,
         "peak_valid_utc": "2026-06-05T00:00:00Z",
         "valid_start_utc": "2026-06-04T21:00:00Z",
         "valid_end_utc": "2026-06-05T00:00:00Z",
@@ -8141,51 +8790,110 @@
         "end_fxx": 36,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 34,
-            "valid_utc": "2026-06-04T22:00:00Z",
-            "temp_f": 87.9,
-            "impact_level": 1,
-            "value": 87.9,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 35,
-            "valid_utc": "2026-06-04T23:00:00Z",
-            "temp_f": 89.5,
-            "impact_level": 1,
-            "value": 89.5,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 36,
+            "fxx": 42,
             "valid_utc": "2026-06-05T00:00:00Z",
             "temp_f": 90.6,
-            "impact_level": 2,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 71.1,
+              "prob_heat_impact_4": 27.2
+            },
             "value": 90.6,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 36,
-          "valid_utc": "2026-06-05T00:00:00Z",
-          "impact_level": 2,
-          "risk_method": "krno_threshold_deterministic_core",
+          "impact_level": 3,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
           "temp_f": 90.6,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 71.1,
+            "prob_heat_impact_4": 27.2
+          },
+          "probability": 71.1,
           "value": 90.6,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 68.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -8776,15 +9484,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
         "metric": "Temp 84\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 39,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 45,
         "peak_valid_utc": "2026-06-05T03:00:00Z",
         "valid_start_utc": "2026-06-05T00:00:00Z",
         "valid_end_utc": "2026-06-05T03:00:00Z",
@@ -8792,51 +9500,110 @@
         "end_fxx": 39,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 37,
-            "valid_utc": "2026-06-05T01:00:00Z",
-            "temp_f": 90.2,
-            "impact_level": 2,
-            "value": 90.2,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 38,
-            "valid_utc": "2026-06-05T02:00:00Z",
-            "temp_f": 87.7,
-            "impact_level": 1,
-            "value": 87.7,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 39,
+            "fxx": 45,
             "valid_utc": "2026-06-05T03:00:00Z",
-            "temp_f": 83.7,
-            "impact_level": 1,
-            "value": 83.7,
+            "temp_f": 84.0,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 9.7,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 84.0,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 39,
-          "valid_utc": "2026-06-05T03:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 83.7,
-          "value": 83.7,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 84.0,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 9.7,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 100.0,
+          "value": 84.0,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 97.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -9431,11 +10198,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 72\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 42,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 48,
         "peak_valid_utc": "2026-06-05T06:00:00Z",
         "valid_start_utc": "2026-06-05T03:00:00Z",
         "valid_end_utc": "2026-06-05T06:00:00Z",
@@ -9443,51 +10210,110 @@
         "end_fxx": 42,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 40,
-            "valid_utc": "2026-06-05T04:00:00Z",
-            "temp_f": 78.5,
-            "impact_level": 1,
-            "value": 78.5,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 41,
-            "valid_utc": "2026-06-05T05:00:00Z",
-            "temp_f": 74.9,
-            "impact_level": 1,
-            "value": 74.9,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 42,
+            "fxx": 48,
             "valid_utc": "2026-06-05T06:00:00Z",
             "temp_f": 71.7,
-            "impact_level": 1,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
             "value": 71.7,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 42,
-          "valid_utc": "2026-06-05T06:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
           "temp_f": 71.7,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
           "value": 71.7,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -10082,11 +10908,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 64\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 45,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 51,
         "peak_valid_utc": "2026-06-05T09:00:00Z",
         "valid_start_utc": "2026-06-05T06:00:00Z",
         "valid_end_utc": "2026-06-05T09:00:00Z",
@@ -10094,51 +10920,110 @@
         "end_fxx": 45,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 43,
-            "valid_utc": "2026-06-05T07:00:00Z",
-            "temp_f": 69.2,
-            "impact_level": 1,
-            "value": 69.2,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 44,
-            "valid_utc": "2026-06-05T08:00:00Z",
-            "temp_f": 66.3,
-            "impact_level": 1,
-            "value": 66.3,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 45,
+            "fxx": 51,
             "valid_utc": "2026-06-05T09:00:00Z",
-            "temp_f": 64.1,
-            "impact_level": 1,
-            "value": 64.1,
+            "temp_f": 64.4,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 64.4,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 45,
-          "valid_utc": "2026-06-05T09:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 64.1,
-          "value": 64.1,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 64.4,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 64.4,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -10733,11 +11618,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 58\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 48,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 54,
         "peak_valid_utc": "2026-06-05T12:00:00Z",
         "valid_start_utc": "2026-06-05T09:00:00Z",
         "valid_end_utc": "2026-06-05T12:00:00Z",
@@ -10745,51 +11630,110 @@
         "end_fxx": 48,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 46,
-            "valid_utc": "2026-06-05T10:00:00Z",
-            "temp_f": 62.0,
-            "impact_level": 1,
-            "value": 62.0,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 47,
-            "valid_utc": "2026-06-05T11:00:00Z",
-            "temp_f": 60.0,
-            "impact_level": 1,
-            "value": 60.0,
-            "unit": "\u00b0F",
-            "label": "temp",
-            "window_hours": 1
-          },
-          {
-            "fxx": 48,
+            "fxx": 54,
             "valid_utc": "2026-06-05T12:00:00Z",
-            "temp_f": 58.2,
-            "impact_level": 1,
-            "value": 58.2,
+            "temp_f": 58.4,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 58.4,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 1
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 48,
-          "valid_utc": "2026-06-05T12:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 58.2,
-          "value": 58.2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 58.4,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 58.4,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -11278,11 +12222,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 67\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 51,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 57,
         "peak_valid_utc": "2026-06-05T15:00:00Z",
         "valid_start_utc": "2026-06-05T12:00:00Z",
         "valid_end_utc": "2026-06-05T15:00:00Z",
@@ -11290,31 +12234,110 @@
         "end_fxx": 51,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 51,
+            "fxx": 57,
             "valid_utc": "2026-06-05T15:00:00Z",
-            "temp_f": 67.2,
-            "impact_level": 1,
-            "value": 67.2,
+            "temp_f": 67.3,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 0.0,
+              "prob_heat_impact_3": 0.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 67.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 51,
-          "valid_utc": "2026-06-05T15:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 67.2,
-          "value": 67.2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 67.3,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 0.0,
+            "prob_heat_impact_3": 0.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 0.0,
+          "value": 67.3,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -11799,15 +12822,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
         "metric": "Temp 82\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 54,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 60,
         "peak_valid_utc": "2026-06-05T18:00:00Z",
         "valid_start_utc": "2026-06-05T15:00:00Z",
         "valid_end_utc": "2026-06-05T18:00:00Z",
@@ -11815,31 +12838,110 @@
         "end_fxx": 54,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 54,
+            "fxx": 60,
             "valid_utc": "2026-06-05T18:00:00Z",
             "temp_f": 81.8,
-            "impact_level": 1,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 9.4,
+              "prob_heat_impact_4": 0.0
+            },
             "value": 81.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 54,
-          "valid_utc": "2026-06-05T18:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
           "temp_f": 81.8,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 9.4,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 100.0,
           "value": 81.8,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 94.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -12324,15 +13426,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 2,
-        "risk_label": "Minor",
-        "level": 2,
-        "impact_level": 2,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 90\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 57,
+        "risk": 3,
+        "risk_label": "Moderate",
+        "level": 3,
+        "impact_level": 3,
+        "prob": 72.0,
+        "probability": 72.0,
+        "metric": "Temp 91\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 63,
         "peak_valid_utc": "2026-06-05T21:00:00Z",
         "valid_start_utc": "2026-06-05T18:00:00Z",
         "valid_end_utc": "2026-06-05T21:00:00Z",
@@ -12340,31 +13442,114 @@
         "end_fxx": 57,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 57,
+            "fxx": 63,
             "valid_utc": "2026-06-05T21:00:00Z",
-            "temp_f": 90.0,
-            "impact_level": 2,
-            "value": 90.0,
+            "temp_f": 90.9,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 72.0,
+              "prob_heat_impact_4": 27.6
+            },
+            "value": 90.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 57,
-          "valid_utc": "2026-06-05T21:00:00Z",
-          "impact_level": 2,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 90.0,
-          "value": 90.0,
-          "unit": "\u00b0F"
-        }
+          "impact_level": 3,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 90.9,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 72.0,
+            "prob_heat_impact_4": 27.6
+          },
+          "probability": 72.0,
+          "value": 90.9,
+          "unit": "\u00b0F",
+          "selected_probability_key": "prob_heat_impact_3",
+          "timing_kind": "peak"
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 69.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ],
+        "selected_probability_key": "prob_heat_impact_3",
+        "timing_kind": "peak"
       }
     },
     {
@@ -12849,15 +14034,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 89\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 60,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
+        "metric": "Temp 90\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 66,
         "peak_valid_utc": "2026-06-06T00:00:00Z",
         "valid_start_utc": "2026-06-05T21:00:00Z",
         "valid_end_utc": "2026-06-06T00:00:00Z",
@@ -12865,31 +14050,110 @@
         "end_fxx": 60,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 66,
             "valid_utc": "2026-06-06T00:00:00Z",
-            "temp_f": 88.8,
-            "impact_level": 1,
-            "value": 88.8,
+            "temp_f": 89.7,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 47.7,
+              "prob_heat_impact_4": 16.8
+            },
+            "value": 89.7,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 60,
-          "valid_utc": "2026-06-06T00:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 88.8,
-          "value": 88.8,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 89.7,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 47.7,
+            "prob_heat_impact_4": 16.8
+          },
+          "probability": 100.0,
+          "value": 89.7,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 99.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 42.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -13374,15 +14638,15 @@
         "id": "TEMPERATURE",
         "label": "Temperature",
         "name": "Temperature",
-        "risk": 1,
-        "risk_label": "Little to None",
-        "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 79\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 63,
+        "risk": 2,
+        "risk_label": "Minor",
+        "level": 2,
+        "impact_level": 2,
+        "prob": 100.0,
+        "probability": 100.0,
+        "metric": "Temp 80\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 69,
         "peak_valid_utc": "2026-06-06T03:00:00Z",
         "valid_start_utc": "2026-06-06T00:00:00Z",
         "valid_end_utc": "2026-06-06T03:00:00Z",
@@ -13390,31 +14654,110 @@
         "end_fxx": 63,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 63,
+            "fxx": 69,
             "valid_utc": "2026-06-06T03:00:00Z",
-            "temp_f": 79.4,
-            "impact_level": 1,
-            "value": 79.4,
+            "temp_f": 80.5,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 100.0,
+              "prob_heat_impact_3": 6.0,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 80.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "very_likely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 63,
-          "valid_utc": "2026-06-06T03:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 79.4,
-          "value": 79.4,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 80.5,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 6.0,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 100.0,
+          "value": 80.5,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 60.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -13902,12 +15245,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 69\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 66,
+        "impact_level": 2,
+        "prob": 1.9,
+        "probability": 1.9,
+        "metric": "Temp 70\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 72,
         "peak_valid_utc": "2026-06-06T06:00:00Z",
         "valid_start_utc": "2026-06-06T03:00:00Z",
         "valid_end_utc": "2026-06-06T06:00:00Z",
@@ -13915,31 +15258,110 @@
         "end_fxx": 66,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 66,
+            "fxx": 72,
             "valid_utc": "2026-06-06T06:00:00Z",
-            "temp_f": 69.2,
-            "impact_level": 1,
-            "value": 69.2,
+            "temp_f": 69.9,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_3": 0.1,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 69.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 66,
-          "valid_utc": "2026-06-06T06:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 69.2,
-          "value": 69.2,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 69.9,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_3": 0.1,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 1.9,
+          "value": 69.9,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 1.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -14427,12 +15849,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
+        "impact_level": 2,
+        "prob": 1.9,
+        "probability": 1.9,
         "metric": "Temp 63\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 69,
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 75,
         "peak_valid_utc": "2026-06-06T09:00:00Z",
         "valid_start_utc": "2026-06-06T06:00:00Z",
         "valid_end_utc": "2026-06-06T09:00:00Z",
@@ -14440,31 +15862,110 @@
         "end_fxx": 69,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 69,
+            "fxx": 75,
             "valid_utc": "2026-06-06T09:00:00Z",
-            "temp_f": 62.5,
-            "impact_level": 1,
-            "value": 62.5,
+            "temp_f": 63.2,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_3": 0.1,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 63.2,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 69,
-          "valid_utc": "2026-06-06T09:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 62.5,
-          "value": 62.5,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 63.2,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_3": 0.1,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 1.9,
+          "value": 63.2,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 1.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     },
     {
@@ -14952,12 +16453,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Temp 57\u00b0F",
-        "driver": "NBM core 2-meter temperature at KRNO",
-        "source_fxx": 72,
+        "impact_level": 2,
+        "prob": 1.9,
+        "probability": 1.9,
+        "metric": "Temp 58\u00b0F",
+        "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
+        "source_fxx": 78,
         "peak_valid_utc": "2026-06-06T12:00:00Z",
         "valid_start_utc": "2026-06-06T09:00:00Z",
         "valid_end_utc": "2026-06-06T12:00:00Z",
@@ -14965,31 +16466,110 @@
         "end_fxx": 72,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 72,
+            "fxx": 78,
             "valid_utc": "2026-06-06T12:00:00Z",
-            "temp_f": 57.1,
-            "impact_level": 1,
-            "value": 57.1,
+            "temp_f": 57.7,
+            "heat_thresholds": {
+              "2": 71.0,
+              "3": 89.0,
+              "4": 96.0,
+              "5": null
+            },
+            "temp_probabilities": {
+              "prob_lt_10_f": 0.0,
+              "prob_lt_20_f": 0.0,
+              "prob_lt_25_f": 0.0,
+              "prob_lt_28_f": 0.0,
+              "prob_lt_32_f": 0.0,
+              "prob_lt_36_f": 0.0,
+              "prob_lt_40_f": 0.0,
+              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_3": 0.1,
+              "prob_heat_impact_4": 0.0
+            },
+            "value": 57.7,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "fxx": 72,
-          "valid_utc": "2026-06-06T12:00:00Z",
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "temp_f": 57.1,
-          "value": 57.1,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
+          "temp_f": 57.7,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 89.0,
+            "4": 96.0,
+            "5": null
+          },
+          "temp_probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_25_f": 0.0,
+            "prob_lt_28_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_36_f": 0.0,
+            "prob_lt_40_f": 0.0,
+            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_3": 0.1,
+            "prob_heat_impact_4": 0.0
+          },
+          "probability": 1.9,
+          "value": 57.7,
           "unit": "\u00b0F"
-        }
+        },
+        "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
+        "native_cold_probability_thresholds": [
+          {
+            "threshold_k": 255.372,
+            "threshold_f": -0.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 270.928,
+            "threshold_f": 28.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 273.15,
+            "threshold_f": 32.0,
+            "probability": 0.0
+          }
+        ],
+        "native_heat_probability_thresholds": [
+          {
+            "threshold_k": 299.817,
+            "threshold_f": 80.0,
+            "probability": 1.0
+          },
+          {
+            "threshold_k": 305.372,
+            "threshold_f": 90.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 310.928,
+            "threshold_f": 100.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 316.483,
+            "threshold_f": 110.0,
+            "probability": 0.0
+          },
+          {
+            "threshold_k": 322.039,
+            "threshold_f": 120.0,
+            "probability": 0.0
+          }
+        ]
       }
     }
   ],

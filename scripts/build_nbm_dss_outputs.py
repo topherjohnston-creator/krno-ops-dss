@@ -2064,6 +2064,8 @@ def apply_qmd_temperature_timeline(timeline: dict[str, Any], threats_payload: di
         impact = int(probability_detail["impact_level"] or display_impact)
         probability = float(probability_detail["probability"] or max(row.get("temp_probabilities", {}).values() or [0.0]))
         display_temp = row.get("p50_f")
+        selected_probability_key = probability_detail.get("probability_key")
+        timing_kind = "min" if str(selected_probability_key or "").startswith("prob_lt") else "peak"
 
         block["TEMPERATURE"] = risk
         hazard = hazards["TEMPERATURE"]
@@ -2079,6 +2081,8 @@ def apply_qmd_temperature_timeline(timeline: dict[str, Any], threats_payload: di
                 "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
                 "prob": round(probability, 1),
                 "probability": round(probability, 1),
+                "selected_probability_key": selected_probability_key,
+                "timing_kind": timing_kind,
                 "metric": f"Temp {display_temp:.0f}°F" if display_temp is not None else "Temperature probability",
                 "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
                 "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
@@ -2106,6 +2110,8 @@ def apply_qmd_temperature_timeline(timeline: dict[str, Any], threats_payload: di
                     "temp_f": display_temp,
                     "heat_thresholds": row["heat_thresholds"],
                     "temp_probabilities": row["temp_probabilities"],
+                    "selected_probability_key": selected_probability_key,
+                    "timing_kind": timing_kind,
                     "probability": round(probability, 1),
                     "value": display_temp,
                     "unit": "°F",
@@ -2114,6 +2120,88 @@ def apply_qmd_temperature_timeline(timeline: dict[str, Any], threats_payload: di
                 "native_heat_probability_thresholds": row["native_heat_probability_thresholds"],
             }
         )
+
+
+def apply_temperature_peak_window_from_timeline(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
+    threat = threats_payload["threats"].get("TEMPERATURE")
+    if not threat:
+        return
+    target_risk = int(threat.get("risk") or threat.get("risk_level") or 0)
+    candidates: list[dict[str, Any]] = []
+    for bi, hazards in enumerate(timeline.get("block_hazards", [])):
+        detail = hazards.get("TEMPERATURE") if isinstance(hazards, dict) else None
+        if not detail or detail.get("data_status") != "live":
+            continue
+        risk = int(detail.get("risk") or detail.get("risk_level") or 0)
+        if risk <= 1:
+            continue
+        if target_risk > 1 and risk != target_risk:
+            continue
+        block = timeline["blocks"][bi]
+        values = detail.get("values") or {}
+        selected_key = str(detail.get("selected_probability_key") or values.get("selected_probability_key") or "")
+        temp_f = values.get("temp_f")
+        temp_score = -float(temp_f) if selected_key.startswith("prob_lt") and temp_f is not None else float(temp_f or 0.0)
+        candidates.append(
+            {
+                "detail": detail,
+                "block": block,
+                "score": (
+                    risk,
+                    float(detail.get("probability") or detail.get("prob") or 0.0),
+                    int(detail.get("impact_level") or risk),
+                    temp_score,
+                ),
+            }
+        )
+    if not candidates and target_risk > 1:
+        original_risk = target_risk
+        target_risk = 0
+        for bi, hazards in enumerate(timeline.get("block_hazards", [])):
+            detail = hazards.get("TEMPERATURE") if isinstance(hazards, dict) else None
+            if not detail or detail.get("data_status") != "live":
+                continue
+            risk = int(detail.get("risk") or detail.get("risk_level") or 0)
+            if risk <= 1 or risk > original_risk:
+                continue
+            block = timeline["blocks"][bi]
+            values = detail.get("values") or {}
+            selected_key = str(detail.get("selected_probability_key") or values.get("selected_probability_key") or "")
+            temp_f = values.get("temp_f")
+            temp_score = -float(temp_f) if selected_key.startswith("prob_lt") and temp_f is not None else float(temp_f or 0.0)
+            candidates.append(
+                {
+                    "detail": detail,
+                    "block": block,
+                    "score": (
+                        risk,
+                        float(detail.get("probability") or detail.get("prob") or 0.0),
+                        int(detail.get("impact_level") or risk),
+                        temp_score,
+                    ),
+                }
+            )
+    if not candidates:
+        return
+    best = max(candidates, key=lambda item: item["score"])
+    detail = best["detail"]
+    block = best["block"]
+    values = detail.get("values") or {}
+    selected_key = detail.get("selected_probability_key") or values.get("selected_probability_key")
+    timing_kind = detail.get("timing_kind") or values.get("timing_kind") or ("min" if str(selected_key or "").startswith("prob_lt") else "peak")
+    threat.update(
+        {
+            "peak_start_fxx": block.get("start_fxx"),
+            "peak_end_fxx": block.get("end_fxx"),
+            "source_fxx": detail.get("source_fxx"),
+            "peak_valid_utc": detail.get("peak_valid_utc"),
+            "peak_valid_start_utc": block.get("valid_start_utc"),
+            "peak_valid_end_utc": block.get("valid_end_utc"),
+            "peak_timing_source": "3-hour temperature timeline block",
+            "selected_probability_key": selected_key,
+            "timing_kind": timing_kind,
+        }
+    )
 
 
 def select_qmd_rain_rows(rows: list[dict[str, Any]], fxx: int) -> dict[str, dict[str, Any]]:
@@ -2627,6 +2715,7 @@ def build_outputs() -> tuple[dict[str, Any], dict[str, Any]]:
 
     try:
         apply_qmd_temperature_card(timeline, threats_payload)
+        apply_temperature_peak_window_from_timeline(timeline, threats_payload)
     except Exception as exc:
         timeline.setdefault("extraction_errors", {})["QMD_TEMPERATURE"] = str(exc)
         threats_payload.setdefault("extraction_errors", {})["QMD_TEMPERATURE"] = str(exc)

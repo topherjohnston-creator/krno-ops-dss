@@ -2144,8 +2144,26 @@
 
     function timingPrefix(source) {
       if (source === "VISIBILITY" || source === "FLASH_FREEZE") return "Min";
-      if (source === "TEMPERATURE") return "Temp";
       return "Peak";
+    }
+
+    function timingPrefixForDetail(source, detail = null) {
+      if (source === "TEMPERATURE") {
+        const values = detail?.values || {};
+        const key = String(detail?.selected_probability_key || values.selected_probability_key || "");
+        const kind = String(detail?.timing_kind || values.timing_kind || "");
+        return key.startsWith("prob_lt") || kind === "min" ? "Min" : "Peak";
+      }
+      return timingPrefix(source);
+    }
+
+    function detailWindowText(source, detail = null) {
+      if (!detail) return "";
+      const start = detail.valid_start_utc || detail.values?.valid_start_utc;
+      const end = detail.valid_end_utc || detail.values?.valid_end_utc;
+      if (!start || !end) return "";
+      const window = formatLocalWindow(start, end);
+      return window ? `${timingPrefixForDetail(source, detail)} ${window}` : "";
     }
 
     function impactWindowFromBlocks(source, risk, blocks = []) {
@@ -2738,7 +2756,7 @@
         const risk = categoryFromRank(timelineMax || item.risk_level || item.risk || 0);
         const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
         const bestDetail = bestTimelineDetailFor(source, risk, timeline);
-        const windowText = impactWindowFromBlocks(source, risk, blocks);
+        const windowText = detailWindowText(source, bestDetail) || impactWindowFromBlocks(source, risk, blocks);
         const detailMetric = bestDetail?.metric || bestDetail?.display_value || bestDetail?.values?.label;
         const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
           ? (detailMetric || item.metric || item.display_value || "No signal")
@@ -2765,7 +2783,10 @@
         const item = threatMap?.[source] || {};
         const risk = normalizeForecastRisk(item.risk_label || categoryFromRank(item.risk_level ?? item.risk));
         const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
-        const windowText = impactWindowFromBlocks(source, risk, blocks);
+        const detailWindow = item.peak_valid_start_utc && item.peak_valid_end_utc
+          ? `${timingPrefixForDetail(source, item)} ${formatLocalWindow(item.peak_valid_start_utc, item.peak_valid_end_utc)}`
+          : "";
+        const windowText = detailWindow || impactWindowFromBlocks(source, risk, blocks);
         const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
           ? (item.metric || item.display_value || "No signal")
           : (item.display_value || item.metric || "No signal");
