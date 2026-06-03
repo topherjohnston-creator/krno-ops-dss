@@ -13,6 +13,13 @@ import numpy as np
 import requests
 import xarray as xr
 
+try:
+    from eccodes import codes_grib_find_nearest, codes_grib_new_from_file, codes_release
+except Exception:  # pragma: no cover - local fallback when ecCodes is unavailable.
+    codes_grib_find_nearest = None
+    codes_grib_new_from_file = None
+    codes_release = None
+
 
 DOCS = Path("docs")
 DATA = Path("data")
@@ -291,7 +298,27 @@ def nearest_grid_indices(ds: xr.Dataset) -> tuple[int, int]:
     return int(iy), int(ix)
 
 
+def extract_gridpoint_value_eccodes(grib_path: Path) -> float | None:
+    if not codes_grib_new_from_file or not codes_grib_find_nearest or not codes_release:
+        return None
+    with grib_path.open("rb") as handle:
+        gid = codes_grib_new_from_file(handle)
+        if gid is None:
+            return None
+        try:
+            nearest = codes_grib_find_nearest(gid, SITE["lat"], SITE["lon"], is_lsm=False, npoints=1)
+            if not nearest:
+                return None
+            return float(nearest[0].value)
+        finally:
+            codes_release(gid)
+
+
 def extract_gridpoint_value(grib_path: Path) -> float:
+    eccodes_value = extract_gridpoint_value_eccodes(grib_path)
+    if eccodes_value is not None and np.isfinite(eccodes_value):
+        return eccodes_value
+
     ds = xr.open_dataset(grib_path, engine="cfgrib", backend_kwargs={"indexpath": ""})
     try:
         iy, ix = nearest_grid_indices(ds)
@@ -2371,10 +2398,10 @@ def format_temperature_summary_display(max_row: dict[str, Any] | None, min_row: 
     max_text = temp_text(max_row)
     min_text = temp_text(min_row)
     if now_local.hour < 6:
-        return "Today Min/Max", f"{min_text} / {max_text}", f"Today Min {min_text} / Today Max {max_text}"
+        return "Max / Min", f"{max_text} / {min_text}", f"Max {max_text} / Min {min_text}"
     if now_local.hour >= 18:
-        return "Tonight Min / Tomorrow Max", f"{min_text} / {max_text}", f"Tonight Min {min_text} / Tomorrow Max {max_text}"
-    return "Today Max / Tomorrow Min", f"{max_text} / {min_text}", f"Today Max {max_text} / Tomorrow Min {min_text}"
+        return "Max / Min", f"{max_text} / {min_text}", f"Max {max_text} / Min {min_text}"
+    return "Max / Min", f"{max_text} / {min_text}", f"Max {max_text} / Min {min_text}"
 
 
 def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
