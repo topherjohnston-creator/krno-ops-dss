@@ -135,13 +135,13 @@
         "start_fxx": 1,
         "end_fxx": 48,
         "window_hours": 1,
-        "source": "NBM hourly temperature probabilities / QMD max-min"
+        "source": "NBM/QMD temperature probabilities with KRNO heat thresholds"
       },
       {
         "start_fxx": 51,
         "end_fxx": 72,
         "window_hours": 3,
-        "source": "NBM 3-hour temperature probabilities / QMD max-min"
+        "source": "NBM/QMD 3-hour temperature probabilities with KRNO heat thresholds"
       }
     ]
   },
@@ -232,6 +232,37 @@
         "level": 5,
         "label": "Extreme",
         "threshold": "Greater than 0.10 inches"
+      }
+    ]
+  },
+  "temperature": {
+    "basis": "Cold thresholds use the KRNO fixed cold impact table. Heat thresholds use the day-of-year KRNO heat-risk table in data/krno_heat_thresholds.csv. QMD TMP probability-of-threshold exceedance is mapped through the likelihood-vs-impact matrix for the 72-hour card and timeline.",
+    "heat_threshold_source": "data/krno_heat_thresholds.csv",
+    "cold_impact_thresholds": [
+      {
+        "level": 1,
+        "label": "Little to None",
+        "threshold": "Greater than or equal to 40\u00b0F"
+      },
+      {
+        "level": 2,
+        "label": "Minor",
+        "threshold": "32 to 40\u00b0F"
+      },
+      {
+        "level": 3,
+        "label": "Moderate",
+        "threshold": "20 to 32\u00b0F"
+      },
+      {
+        "level": 4,
+        "label": "Major",
+        "threshold": "10 to 20\u00b0F"
+      },
+      {
+        "level": 5,
+        "label": "Extreme",
+        "threshold": "Less than 10\u00b0F"
       }
     ]
   },
