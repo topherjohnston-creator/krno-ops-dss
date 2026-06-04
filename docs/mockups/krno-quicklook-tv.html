@@ -284,7 +284,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 7px;
       min-width: 0;
       overflow: hidden;
     }
@@ -292,16 +292,17 @@
     .concern-pill {
       display: inline-flex;
       align-items: center;
-      min-height: 44px;
-      padding: 6px 14px;
+      min-height: 34px;
+      padding: 5px 10px;
       border: 1px solid color-mix(in srgb, var(--pill-color, #8ba6ca) 70%, transparent);
       border-radius: 999px;
       background:
         linear-gradient(180deg, color-mix(in srgb, var(--pill-color, #8ba6ca) 26%, rgba(38, 50, 68, 0.94)), rgba(28, 37, 51, 0.84));
       color: #f2f6fb;
-      font-size: 27px;
+      font-size: 20px;
       line-height: 1;
-      font-weight: 620;
+      font-weight: 560;
+      text-transform: capitalize;
       white-space: nowrap;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
     }
@@ -386,6 +387,11 @@
       white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .metric-separator,
+    .obs-separator {
+      color: var(--text-muted);
     }
 
     .timeline-panel {
@@ -783,15 +789,18 @@
     }
 
     .radar-body {
-      display: grid;
-      grid-template-columns: minmax(0, 1.16fr) minmax(190px, 0.84fr);
-      gap: 12px;
-      align-items: stretch;
+      position: relative;
+      display: block;
     }
 
     .radar-map {
       position: relative;
       min-height: 0;
+      width: 100%;
+      height: 100%;
+      max-height: 238px;
+      aspect-ratio: auto;
+      justify-self: center;
       overflow: hidden;
       border: 1px solid rgba(80, 97, 121, 0.72);
       border-radius: 8px;
@@ -801,6 +810,7 @@
     }
 
     .radar-basemap,
+    .radar-overlay,
     .radar-reflectivity {
       position: absolute;
       inset: 0;
@@ -816,11 +826,13 @@
     }
 
     .radar-map.no-leaflet > .radar-basemap,
+    .radar-map.no-leaflet > .radar-overlay,
     .radar-map.no-leaflet > .radar-reflectivity {
       object-fit: fill;
     }
 
     .radar-map.leaflet-ready > .radar-basemap,
+    .radar-map.leaflet-ready > .radar-overlay,
     .radar-map.leaflet-ready > .radar-reflectivity,
     .radar-map.leaflet-ready > .range-ring,
     .radar-map.leaflet-ready > .city-layer,
@@ -841,13 +853,25 @@
 
     .radar-basemap {
       z-index: 0;
-      opacity: 0.62;
-      filter: saturate(0.78) contrast(1.02) brightness(0.54);
+      opacity: 1;
+      filter: saturate(0.9) contrast(1.12) brightness(0.5);
+    }
+
+    .radar-overlay.transportation {
+      z-index: 1;
+      opacity: 0.92;
+      filter: hue-rotate(172deg) saturate(1.65) contrast(1.18) brightness(0.88);
+    }
+
+    .radar-overlay.reference {
+      z-index: 2;
+      opacity: 0.96;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.88));
     }
 
     .radar-reflectivity {
-      z-index: 1;
-      opacity: 0.82;
+      z-index: 3;
+      opacity: 0.6;
       mix-blend-mode: screen;
       filter: saturate(1.12) contrast(1.12) brightness(0.95);
     }
@@ -871,7 +895,7 @@
       border-radius: 50%;
       box-shadow: 0 0 0 1px rgba(10, 16, 24, 0.42);
       pointer-events: none;
-      z-index: 2;
+      z-index: 6;
     }
 
     .range-ring.r10 { height: 33.333%; aspect-ratio: 1; }
@@ -887,7 +911,7 @@
       height: 14px;
       translate: -50% -50%;
       border-radius: 50%;
-      z-index: 5;
+      z-index: 7;
       background: var(--airport-marker-color, var(--success));
       box-shadow:
         0 0 0 3px rgba(14, 20, 29, 0.78),
@@ -895,7 +919,7 @@
     }
 
     .airport-marker::after {
-      content: "KRNO";
+      content: none;
       position: absolute;
       left: 18px;
       top: 50%;
@@ -915,7 +939,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 4;
+      z-index: 5;
     }
 
     .lightning-strike {
@@ -932,7 +956,7 @@
       text-shadow:
         0 0 4px rgba(8, 12, 18, 0.96),
         0 0 10px color-mix(in srgb, var(--strike-color, #34c38f) 80%, transparent);
-      z-index: 6;
+      z-index: 8;
     }
 
     .lightning-strike::before {
@@ -963,14 +987,13 @@
     }
 
     .map-label.range {
-      right: 8px;
-      bottom: 8px;
+      display: none;
     }
 
     .city-marker {
       position: absolute;
       z-index: 4;
-      translate: -50% -50%;
+      translate: 0 -50%;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -978,12 +1001,17 @@
       border-radius: 999px;
       background: rgba(24, 32, 45, 0.86);
       color: rgba(244, 248, 255, 0.94);
-      font-size: 11px;
-      font-weight: 650;
+      font-size: 10.5px;
+      font-weight: 620;
       letter-spacing: 0.03em;
       white-space: nowrap;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
       box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
+    }
+
+    .city-marker[data-side="left"] {
+      translate: -100% -50%;
+      flex-direction: row-reverse;
     }
 
     .city-marker::before {
@@ -1047,22 +1075,32 @@
     }
 
     .lightning-status {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 8;
       display: grid;
       align-content: center;
-      gap: 9px;
+      gap: 5px;
+      width: min(220px, 38%);
       min-height: 0;
+      padding: 8px;
+      border: 1px solid rgba(51, 66, 85, 0.62);
+      border-radius: 10px;
+      background: rgba(18, 27, 39, 0.72);
+      backdrop-filter: blur(3px);
     }
 
     .lightning-pill {
       display: grid;
       place-items: center;
-      min-height: 72px;
-      padding: 8px 12px;
+      min-height: 38px;
+      padding: 5px 10px;
       border: 1px solid rgba(52, 195, 143, 0.58);
       border-radius: 999px;
       background: rgba(52, 195, 143, 0.22);
       color: #d8f5e7;
-      font-size: 27px;
+      font-size: 19px;
       line-height: 1.05;
       font-weight: 650;
       text-align: center;
@@ -1509,7 +1547,6 @@
     <section class="panel timeline-panel" aria-label="72-hour impact timeline">
       <div class="panel-head">
         <div class="panel-title">Weather Risk Timeline</div>
-        <div class="timeline-note">3-hour blocks</div>
       </div>
       <div class="matrix" id="timeline-matrix">
         <div class="now-line" aria-hidden="true"></div>
@@ -1567,6 +1604,8 @@
         <div class="bottom-body radar-body">
           <div class="radar-map" id="radar-map">
             <img id="radar-basemap" class="radar-basemap" alt="" aria-hidden="true">
+            <img id="radar-transportation" class="radar-overlay transportation" alt="" aria-hidden="true">
+            <img id="radar-reference" class="radar-overlay reference" alt="" aria-hidden="true">
             <img id="radar-img" class="radar-reflectivity" alt="Animated reflectivity loop near KRNO">
             <div class="range-ring r10"></div>
             <div class="range-ring r15"></div>
@@ -1698,19 +1737,19 @@
     let quicklookLightningLayer = null;
     let quicklookMapReady = false;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
-    const radarHalfSpanNm = 30;
+    const radarHalfSpanNm = 28;
+    const useReferenceCityLabels = true;
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
     const decisionRadiiNm = [10, 20];
     const mapCityCandidates = [
       { name: "Sierra City", lat: 39.5657, lon: -120.6341 },
-      { name: "Tahoe City", lat: 39.1677, lon: -120.1452 },
       { name: "Carson City", lat: 39.1638, lon: -119.7674 },
-      { name: "Silver Springs", lat: 39.4155, lon: -119.2243 },
       { name: "Fernley", lat: 39.6080, lon: -119.2518 },
       { name: "Portola", lat: 39.8105, lon: -120.4691 },
-      { name: "Loyalton", lat: 39.6763, lon: -120.2413 },
-      { name: "Nixon", lat: 39.8313, lon: -119.3566 }
+      { name: "Nixon", lat: 39.8313, lon: -119.3566 },
+      { name: "Fallon", lat: 39.4749, lon: -118.7774 },
+      { name: "Kingvale", lat: 39.3194, lon: -120.4349 }
     ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
@@ -1886,6 +1925,59 @@
       if (source === "FZRA" || /freezing rain|fzra/i.test(label)) return fzraColor(numeric);
       if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return tempColor(numeric);
       return null;
+    }
+
+    function titleCaseDisplay(value) {
+      return String(value ?? "")
+        .toLowerCase()
+        .replace(/\b([a-z])/g, letter => letter.toUpperCase())
+        .replace(/\bNm\b/g, "NM")
+        .replace(/\bAm\b/g, "AM")
+        .replace(/\bPm\b/g, "PM")
+        .replace(/\bPdt\b/g, "PDT")
+        .replace(/\bPst\b/g, "PST");
+    }
+
+    function temperaturePairHtml(value) {
+      const text = String(value ?? "");
+      const matches = [...text.matchAll(/(-?\d+(?:\.\d+)?)\s*(?:°F|F)\b/gi)];
+      if (matches.length < 2) return escapeHtml(text);
+      const first = Math.round(Number(matches[0][1]));
+      const second = Math.round(Number(matches[1][1]));
+      if (!Number.isFinite(first) || !Number.isFinite(second)) return escapeHtml(text);
+      return `<span style="color:${tempColor(first)}">${first}&deg;F</span><span class="metric-separator"> / </span><span style="color:${tempColor(second)}">${second}&deg;F</span>`;
+    }
+
+    function summaryValueColor(item, value) {
+      const rank = rankFromCategory(item?.risk);
+      if (rank <= 1) return "var(--text-muted)";
+      return riskColors[item?.risk] || riskColors.None;
+    }
+
+    const hiddenAlertPatterns = [
+      /lake wind advisory/i,
+      /red flag warning/i,
+      /fire weather watch/i
+    ];
+
+    function alertDisplayText(alert) {
+      if (!alert) return "";
+      const props = alert.properties || {};
+      return [
+        alert.event,
+        alert.headline,
+        alert.title,
+        alert.description,
+        alert.instruction,
+        props.event,
+        props.headline,
+        props.description,
+        props.instruction
+      ].filter(Boolean).join(" ");
+    }
+
+    function visibleNwsAlerts(alerts = []) {
+      return alerts.filter(alert => !hiddenAlertPatterns.some(pattern => pattern.test(alertDisplayText(alert))));
     }
 
     function confidenceFromScore(score) {
@@ -2104,7 +2196,7 @@
       const el = document.getElementById(id);
       if (!el) return;
       el.innerHTML = html;
-      if (color) el.style.color = color;
+      el.style.color = color || "";
     }
 
     function shortPeak(iso) {
@@ -2603,8 +2695,7 @@
         ["Timing", rank > 1 ? (item.peak || "Peak window TBD") : ""],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
-        ["Action", item.action || operationalAction(item.risk)],
-        ["Timeline", "3-hour blocks"]
+        ["Action", item.action || operationalAction(item.risk)]
       ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rank <= 1));
     }
 
@@ -2670,14 +2761,17 @@
         const rank = rankFromCategory(item.risk);
         const value = stripValueFor(item);
         const riskColor = riskColors[item.risk] || riskColors.None;
-        const valueColor = metricColorFor(item.source, value, item.name);
+        const valueColor = summaryValueColor(item, value);
+        const valueHtml = item.source === "TEMPERATURE" && /\/|max|min/i.test(value)
+          ? temperaturePairHtml(value)
+          : escapeHtml(value);
         chip.className = "summary-chip";
         chip.dataset.active = String(rank >= 2);
         chip.style.borderLeftColor = riskColor;
         chip.innerHTML = `
           <div class="summary-hazard">${escapeHtml(item.name)}</div>
           <div class="summary-risk" style="color:${rank >= 2 ? riskColor : "var(--text-body)"}">${escapeHtml(item.risk)}</div>
-          <div class="summary-value"${valueColor ? ` style="color:${valueColor}"` : ""}>${escapeHtml(value)}</div>
+          <div class="summary-value" style="color:${valueColor}">${valueHtml}</div>
         `;
         attachTooltip(chip, {
           title: `${item.name} - ${item.risk}`,
@@ -2718,7 +2812,7 @@
         ];
       document.getElementById("primary-detail").innerHTML = pills.map(pill => {
         const style = pill.style ? ` style="${pill.style}"` : "";
-        return `<span class="concern-pill ${pill.className}"${style}>${escapeHtml(pill.text)}</span>`;
+        return `<span class="concern-pill ${pill.className}"${style}>${escapeHtml(titleCaseDisplay(pill.text))}</span>`;
       }).join("");
       document.getElementById("primary-accent").style.background = color;
       attachTooltip(document.getElementById("primary-concern"), {
@@ -3307,9 +3401,11 @@
       let tempText = "--";
       let tempTooltipText = "--";
       if (obs.temperature_f != null && obs.dewpoint_f != null) {
-        tempText = `${Math.round(obs.temperature_f)} / ${Math.round(obs.dewpoint_f)}&deg;F`;
-        tempTooltipText = tempText.replaceAll("&deg;", "°");
-        setValueColor("temp-line", tempText, tempColor(obs.temperature_f));
+        const temp = Math.round(obs.temperature_f);
+        const dewpoint = Math.round(obs.dewpoint_f);
+        tempText = `<span style="color:${tempColor(temp)}">${temp}</span><span class="obs-separator"> / </span><span style="color:${tempColor(dewpoint)}">${dewpoint}</span><span class="obs-separator">&deg;F</span>`;
+        tempTooltipText = `${temp} / ${dewpoint}°F`;
+        setValueColor("temp-line", tempText, "");
       }
       const wxRaw = staleRawObservation(obs, ["weather_condition"], obsIso, 20)
         ? null
@@ -3578,16 +3674,25 @@
       return candidates;
     }
 
+    function cityLabelSide(point) {
+      if (!point) return "right";
+      if (point.left < 18) return "right";
+      if (point.left > 82) return "left";
+      return point.left < 50 ? "left" : "right";
+    }
+
     function positionCityMarkers() {
       const layer = document.getElementById("city-layer");
       if (!layer) return;
       layer.innerHTML = "";
+      if (useReferenceCityLabels) return;
       generatedCityMarkers().forEach(city => {
         const marker = document.createElement("div");
         marker.className = "city-marker";
         marker.dataset.lat = String(city.lat);
         marker.dataset.lon = String(city.lon);
         marker.dataset.distanceNm = city.distanceNm.toFixed(1);
+        marker.dataset.side = cityLabelSide(city.point);
         marker.textContent = city.name;
         marker.style.left = `${city.point.left}%`;
         marker.style.top = `${city.point.top}%`;
@@ -3636,17 +3741,30 @@
 
     function radarBasemapUrl() {
       if (!radarBbox) syncRadarGeometry();
+      return arcgisExportUrl("World_Imagery/MapServer", false);
+    }
+
+    function arcgisExportUrl(service, transparent = true) {
+      if (!radarBbox) syncRadarGeometry();
       const params = new URLSearchParams({
         bbox: radarBbox,
         bboxSR: "3857",
         imageSR: "3857",
         size: `${radarWidth},${radarHeight}`,
         format: "png32",
-        transparent: "false",
+        transparent: transparent ? "true" : "false",
         f: "image",
         t: String(Math.floor(radarCacheBust / (15 * 60 * 1000)))
       });
-      return `https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/export?${params.toString()}`;
+      return `https://services.arcgisonline.com/ArcGIS/rest/services/${service}/export?${params.toString()}`;
+    }
+
+    function radarTransportationUrl() {
+      return arcgisExportUrl("Reference/World_Transportation/MapServer", true);
+    }
+
+    function radarReferenceUrl() {
+      return arcgisExportUrl("Reference/World_Boundaries_and_Places/MapServer", true);
     }
 
     function formatRadarClock(frame) {
@@ -3717,6 +3835,10 @@
       syncRadarGeometry();
       const basemap = document.getElementById("radar-basemap");
       if (basemap) basemap.src = radarBasemapUrl();
+      const transportation = document.getElementById("radar-transportation");
+      if (transportation) transportation.src = radarTransportationUrl();
+      const reference = document.getElementById("radar-reference");
+      if (reference) reference.src = radarReferenceUrl();
       preloadRadarFrames();
       renderRadarFrame();
     }
@@ -3918,15 +4040,16 @@
       try {
         const alerts = await fetchJson("../alerts.json");
         const alertBox = document.getElementById("alert-box");
-        if (Array.isArray(alerts.alerts) && alerts.alerts.length) {
+        const activeAlerts = visibleNwsAlerts(Array.isArray(alerts.alerts) ? alerts.alerts : []);
+        if (activeAlerts.length) {
           alertBox.classList.add("active");
           alertBox.innerHTML = `
-            <div class="alert-title">${alerts.alerts.length} Active Alert${alerts.alerts.length > 1 ? "s" : ""}</div>
+            <div class="alert-title">${activeAlerts.length} Active Alert${activeAlerts.length > 1 ? "s" : ""}</div>
             <div class="alert-text">Review official products for KRNO</div>
           `;
           attachTooltip(alertBox, {
             title: "NWS Alerts",
-            subtitle: `${alerts.alerts.length} active`,
+            subtitle: `${activeAlerts.length} active`,
             lines: [
               ["Status", "Active alerts"],
               ["Action", "Review official products"],
