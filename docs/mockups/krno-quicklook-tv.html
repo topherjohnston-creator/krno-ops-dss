@@ -831,8 +831,7 @@
     .radar-map.leaflet-ready > .radar-basemap,
     .radar-map.leaflet-ready > .radar-reflectivity,
     .radar-map.leaflet-ready > .range-ring,
-    .radar-map.leaflet-ready > .city-layer,
-    .radar-map.leaflet-ready > .highway-layer,
+    .radar-map.leaflet-ready > .road-layer,
     .radar-map.leaflet-ready > .airport-marker,
     .radar-map.leaflet-ready > .lightning-layer,
     .radar-map.leaflet-ready > .lightning-dot,
@@ -885,7 +884,7 @@
 
     .range-ring.r10 { height: 33.333%; aspect-ratio: 1; }
     .range-ring.r15 { display: none; }
-    .range-ring.r20 { height: 66.667%; aspect-ratio: 1; border-color: rgba(235, 244, 255, 0.35); }
+    .range-ring.r20 { display: none; }
     .range-ring.r25 { display: none; }
 
     .airport-marker {
@@ -919,13 +918,36 @@
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
 
-    .lightning-layer,
-    .city-layer,
-    .highway-layer {
+    .lightning-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 4;
+    }
+
+    .road-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.58;
+    }
+
+    .road-line {
+      fill: none;
+      stroke: rgba(75, 156, 236, 0.72);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.86));
+    }
+
+    .road-line.secondary {
+      stroke: rgba(125, 190, 238, 0.48);
+      stroke-width: 1.2;
     }
 
     .lightning-strike {
@@ -976,68 +998,6 @@
       display: none;
     }
 
-    .city-marker {
-      position: absolute;
-      z-index: 4;
-      translate: 0 -50%;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(24, 32, 45, 0.86);
-      color: rgba(244, 248, 255, 0.94);
-      font-size: 10.5px;
-      font-weight: 620;
-      letter-spacing: 0.03em;
-      white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
-      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
-    }
-
-    .city-marker[data-side="left"] {
-      translate: -100% -50%;
-      flex-direction: row-reverse;
-    }
-
-    .city-marker::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(231, 237, 245, 0.88);
-      box-shadow: 0 0 0 2px rgba(10, 16, 24, 0.62);
-    }
-
-    .quicklook-city-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      width: max-content !important;
-      height: auto !important;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(24, 32, 45, 0.86);
-      color: rgba(244, 248, 255, 0.94);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      line-height: 1.1;
-      text-transform: uppercase;
-      white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.88), 0 0 5px rgba(12, 18, 27, 0.9);
-      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.38);
-    }
-
-    .quicklook-city-label::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(231, 237, 245, 0.88);
-      box-shadow: 0 0 0 2px rgba(10, 16, 24, 0.62);
-    }
-
     .quicklook-lightning-dot {
       width: 13px;
       height: 13px;
@@ -1057,23 +1017,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    .highway-label {
-      position: absolute;
-      translate: -50% -50%;
-      z-index: 4;
-      padding: 1px 5px;
-      border: 1px solid rgba(125, 154, 190, 0.45);
-      border-radius: 999px;
-      background: rgba(11, 17, 25, 0.54);
-      color: rgba(205, 223, 242, 0.74);
-      font-size: 9px;
-      line-height: 1;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
     }
 
     .map-label.lightning-clear {
@@ -1613,8 +1556,7 @@
             <div class="airport-marker" id="airport-marker" aria-label="KRNO"></div>
             <div class="lightning-layer" id="lightning-layer" hidden></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
-            <div class="city-layer" id="city-layer"></div>
-            <div class="highway-layer" id="highway-layer"></div>
+            <svg class="road-layer" id="road-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
@@ -1736,28 +1678,56 @@
     let quicklookLightningLayer = null;
     let quicklookMapReady = false;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
-    const radarHalfSpanNm = 22;
-    const useReferenceCityLabels = false;
+    const radarHalfSpanNm = 15;
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
-    const decisionRadiiNm = [10, 20];
-    const mapCityCandidates = [
-      { name: "Reno", lat: 39.5296, lon: -119.8138 },
-      { name: "Sparks", lat: 39.5349, lon: -119.7527 },
-      { name: "Sierra City", lat: 39.5657, lon: -120.6341 },
-      { name: "Carson City", lat: 39.1638, lon: -119.7674 },
-      { name: "Fernley", lat: 39.6080, lon: -119.2518 },
-      { name: "Portola", lat: 39.8105, lon: -120.4691 },
-      { name: "Nixon", lat: 39.8313, lon: -119.3566 },
-      { name: "Fallon", lat: 39.4749, lon: -118.7774 },
-      { name: "Kingvale", lat: 39.3194, lon: -120.4349 }
-    ];
-    const mapHighwayLabels = [
-      { name: "I-80", lat: 39.533, lon: -119.814 },
-      { name: "I-580", lat: 39.365, lon: -119.768 },
-      { name: "US 395", lat: 39.582, lon: -119.806 },
-      { name: "US 50", lat: 39.226, lon: -119.721 },
-      { name: "NV 431", lat: 39.336, lon: -119.853 }
+    const decisionRadiiNm = [10];
+    const mapRoads = [
+      {
+        className: "primary",
+        points: [
+          [39.520, -120.030],
+          [39.520, -119.950],
+          [39.523, -119.890],
+          [39.527, -119.845],
+          [39.529, -119.814],
+          [39.532, -119.775],
+          [39.536, -119.735],
+          [39.542, -119.690]
+        ]
+      },
+      {
+        className: "primary",
+        points: [
+          [39.660, -119.826],
+          [39.610, -119.814],
+          [39.565, -119.806],
+          [39.529, -119.814],
+          [39.480, -119.798],
+          [39.425, -119.789],
+          [39.365, -119.768],
+          [39.305, -119.760]
+        ]
+      },
+      {
+        className: "secondary",
+        points: [
+          [39.575, -119.770],
+          [39.548, -119.753],
+          [39.520, -119.740],
+          [39.488, -119.731],
+          [39.454, -119.720]
+        ]
+      },
+      {
+        className: "secondary",
+        points: [
+          [39.390, -119.860],
+          [39.430, -119.835],
+          [39.470, -119.805],
+          [39.500, -119.780]
+        ]
+      }
     ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
@@ -3578,21 +3548,9 @@
           interactive: false
         }).addTo(quicklookMap);
       });
-      mapCityCandidates
-        .filter(city => distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon) > 20)
-        .forEach(city => {
-        L.marker([city.lat, city.lon], {
-          interactive: false,
-          icon: L.divIcon({
-            className: "quicklook-city-label",
-            html: escapeHtml(city.name),
-            iconSize: null
-          })
-          }).addTo(quicklookMap);
-        });
       quicklookMap.fitBounds([
-        [39.08, -120.24],
-        [39.68, -118.74]
+        [39.27, -120.02],
+        [39.73, -119.48]
       ], { padding: [8, 8], animate: false });
       quicklookMapReady = true;
       return true;
@@ -3605,7 +3563,7 @@
         layers: frame.layer,
         format: "image/png",
         transparent: true,
-        opacity: 0.78,
+        opacity: 0.6,
         version: "1.1.1"
       }).addTo(quicklookMap);
     }
@@ -3668,66 +3626,21 @@
       return 2 * radiusNm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    function generatedCityMarkers() {
-      const candidates = mapCityCandidates
-        .map((city, priority) => ({
-          ...city,
-          priority,
-          distanceNm: distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon),
-          point: coordinateToRadarPct(city.lat, city.lon)
-        }))
-        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm > 3)
-        .filter(city => city.point && city.point.left >= 2 && city.point.left <= 98 && city.point.top >= 3 && city.point.top <= 97)
-        .sort((a, b) => a.priority - b.priority);
-      return candidates;
-    }
-
-    function cityLabelSide(point) {
-      if (!point) return "right";
-      if (point.left < 18) return "right";
-      if (point.left > 82) return "left";
-      return point.left < 50 ? "left" : "right";
-    }
-
-    function positionCityMarkers() {
-      const layer = document.getElementById("city-layer");
+    function drawRoadLayer() {
+      const layer = document.getElementById("road-layer");
       if (!layer) return;
+      const namespace = "http://www.w3.org/2000/svg";
       layer.innerHTML = "";
-      if (useReferenceCityLabels) return;
-      generatedCityMarkers().forEach(city => {
-        const marker = document.createElement("div");
-        marker.className = "city-marker";
-        marker.dataset.lat = String(city.lat);
-        marker.dataset.lon = String(city.lon);
-        marker.dataset.distanceNm = city.distanceNm.toFixed(1);
-        marker.dataset.side = cityLabelSide(city.point);
-        marker.textContent = city.name;
-        marker.style.left = `${city.point.left}%`;
-        marker.style.top = `${city.point.top}%`;
-        layer.appendChild(marker);
+      mapRoads.forEach(road => {
+        const points = road.points
+          .map(([lat, lon]) => coordinateToRadarPct(lat, lon))
+          .filter(point => point && Number.isFinite(point.left) && Number.isFinite(point.top));
+        if (points.length < 2) return;
+        const polyline = document.createElementNS(namespace, "polyline");
+        polyline.setAttribute("class", `road-line ${road.className || ""}`.trim());
+        polyline.setAttribute("points", points.map(point => `${point.left.toFixed(2)},${point.top.toFixed(2)}`).join(" "));
+        layer.appendChild(polyline);
       });
-    }
-
-    function positionHighwayLabels() {
-      const layer = document.getElementById("highway-layer");
-      if (!layer) return;
-      layer.innerHTML = "";
-      mapHighwayLabels
-        .map((label, priority) => ({
-          ...label,
-          priority,
-          point: coordinateToRadarPct(label.lat, label.lon)
-        }))
-        .filter(label => label.point && label.point.left >= 4 && label.point.left <= 96 && label.point.top >= 5 && label.point.top <= 95)
-        .sort((a, b) => a.priority - b.priority)
-        .forEach(label => {
-          const marker = document.createElement("div");
-          marker.className = "highway-label";
-          marker.textContent = label.name;
-          marker.style.left = `${label.point.left}%`;
-          marker.style.top = `${label.point.top}%`;
-          layer.appendChild(marker);
-        });
     }
 
     function syncRadarGeometry() {
@@ -3746,8 +3659,7 @@
         const ring = document.querySelector(`.range-ring.r${limit}`);
         if (ring) ring.style.height = `${(limit / radarHalfSpanNm) * 100}%`;
       });
-      positionCityMarkers();
-      positionHighwayLabels();
+      drawRoadLayer();
       renderLightningStrikes(latestLightningPayload);
     }
 
