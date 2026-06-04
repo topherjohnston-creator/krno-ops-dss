@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRNO Basemap Examples</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root {
+      --bg: #101722;
+      --panel: #1b2532;
+      --panel-2: #233143;
+      --border: #34475d;
+      --text: #eef4fb;
+      --muted: #9fb0c3;
+      --blue: #1e88e5;
+      --green: #2dd4a7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    header {
+      padding: 22px 28px 16px;
+      background: linear-gradient(90deg, #154d94, #1976d2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 520;
+      letter-spacing: 0;
+    }
+
+    .subhead {
+      margin-top: 6px;
+      color: rgba(238, 244, 251, 0.82);
+      font-size: 17px;
+    }
+
+    main {
+      padding: 22px 28px 32px;
+    }
+
+    .note {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(35, 49, 67, 0.74);
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .card-head {
+      min-height: 96px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+    }
+
+    .card-title {
+      margin: 0 0 6px;
+      font-size: 20px;
+      font-weight: 650;
+    }
+
+    .card-text {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.32;
+    }
+
+    .map {
+      height: 295px;
+      background: #162131;
+    }
+
+    .leaflet-control-attribution {
+      max-width: 86%;
+      color: #536274;
+      font-size: 9px;
+    }
+
+    .airport-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow:
+        0 0 0 4px rgba(10, 15, 22, 0.82),
+        0 0 18px rgba(45, 212, 167, 0.9);
+    }
+
+    .recommendation {
+      color: #c9f4e8;
+    }
+
+    @media (max-width: 1280px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      header,
+      main {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>KRNO Basemap Examples</h1>
+    <div class="subhead">Static GitHub Pages-compatible map tile options for the radar/lightning panel</div>
+  </header>
+
+  <main>
+    <p class="note">
+      These examples use public tiled basemaps that can run from a static GitHub Pages page with Leaflet.
+      The green dot is KRNO and the circle is 10 nautical miles. For the operational dashboard, the best choices are the ones with enough road/city context while staying quiet under radar and lightning.
+    </p>
+
+    <section class="grid" id="map-grid" aria-label="Basemap examples"></section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const krno = [39.4991, -119.7681];
+    const metersPerNm = 1852;
+    const attributionCarto = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    const attributionEsri = 'Tiles &copy; Esri';
+
+    const basemaps = [
+      {
+        name: "CARTO Voyager",
+        description: "Best balanced option. Roads and place labels are readable without feeling too bright.",
+        url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        attribution: attributionCarto,
+        recommendation: true
+      },
+      {
+        name: "CARTO Voyager No Labels",
+        description: "Good if radar/lightning clarity matters more than town labels. Roads remain visible.",
+        url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png",
+        attribution: attributionCarto
+      },
+      {
+        name: "CARTO Dark Matter",
+        description: "Dark operational look, but can become too muted in a small TV panel unless brightened.",
+        url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        attribution: attributionCarto
+      },
+      {
+        name: "CARTO Positron",
+        description: "Very readable roads and cities, but lighter than the current DSS visual style.",
+        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        attribution: attributionCarto
+      },
+      {
+        name: "Esri World Topographic",
+        description: "Detailed terrain and road context. Useful if terrain orientation matters.",
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        attribution: attributionEsri
+      },
+      {
+        name: "Esri World Imagery",
+        description: "Satellite look. Good geographic context, but radar/lightning can be harder to read.",
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attribution: attributionEsri
+      }
+    ];
+
+    const grid = document.getElementById("map-grid");
+
+    basemaps.forEach((base, index) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-head">
+          <h2 class="card-title">${base.name}${base.recommendation ? ' <span class="recommendation">Recommended</span>' : ""}</h2>
+          <p class="card-text">${base.description}</p>
+        </div>
+        <div class="map" id="map-${index}" role="img" aria-label="${base.name} centered on KRNO"></div>
+      `;
+      grid.appendChild(card);
+
+      const map = L.map(`map-${index}`, {
+        center: krno,
+        zoom: 10,
+        zoomControl: false,
+        attributionControl: true,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        tap: false
+      });
+
+      L.tileLayer(base.url, {
+        maxZoom: 19,
+        attribution: base.attribution
+      }).addTo(map);
+
+      L.circle(krno, {
+        radius: 10 * metersPerNm,
+        color: "rgba(255, 255, 255, 0.86)",
+        weight: 2,
+        fill: false,
+        interactive: false
+      }).addTo(map);
+
+      L.marker(krno, {
+        interactive: false,
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="airport-dot"></div>',
+          iconSize: [15, 15],
+          iconAnchor: [7.5, 7.5]
+        })
+      }).addTo(map);
+
+      map.fitBounds([
+        [39.31, -120.03],
+        [39.69, -119.48]
+      ], { padding: [8, 8], animate: false });
+    });
+  </script>
+</body>
+</html>
