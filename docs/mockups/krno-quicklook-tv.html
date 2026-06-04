@@ -843,7 +843,7 @@
     }
 
     .radar-map .leaflet-tile {
-      filter: saturate(0.9) contrast(1.14) brightness(0.94);
+      filter: saturate(1) contrast(1.08) brightness(1);
     }
 
     .radar-map .leaflet-overlay-pane {
@@ -3490,9 +3490,9 @@
         keyboard: false,
         tap: false
       });
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
-        opacity: 0.6,
+        opacity: 1,
         subdomains: "abcd"
       }).addTo(quicklookMap);
       decisionRadiiNm.forEach(limit => {
