@@ -831,7 +831,6 @@
     .radar-map.leaflet-ready > .radar-basemap,
     .radar-map.leaflet-ready > .radar-reflectivity,
     .radar-map.leaflet-ready > .range-ring,
-    .radar-map.leaflet-ready > .road-layer,
     .radar-map.leaflet-ready > .airport-marker,
     .radar-map.leaflet-ready > .lightning-layer,
     .radar-map.leaflet-ready > .lightning-dot,
@@ -849,8 +848,8 @@
 
     .radar-basemap {
       z-index: 0;
-      opacity: 0.72;
-      filter: saturate(0.72) contrast(1.1) brightness(0.58);
+      opacity: 0.4;
+      filter: saturate(0.82) contrast(1.08) brightness(0.62);
     }
 
     .radar-reflectivity {
@@ -923,31 +922,6 @@
       inset: 0;
       pointer-events: none;
       z-index: 4;
-    }
-
-    .road-layer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 3;
-      opacity: 0.58;
-    }
-
-    .road-line {
-      fill: none;
-      stroke: rgba(75, 156, 236, 0.72);
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      vector-effect: non-scaling-stroke;
-      filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.86));
-    }
-
-    .road-line.secondary {
-      stroke: rgba(125, 190, 238, 0.48);
-      stroke-width: 1.2;
     }
 
     .lightning-strike {
@@ -1556,7 +1530,6 @@
             <div class="airport-marker" id="airport-marker" aria-label="KRNO"></div>
             <div class="lightning-layer" id="lightning-layer" hidden></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
-            <svg class="road-layer" id="road-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
@@ -1682,53 +1655,6 @@
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
     const decisionRadiiNm = [10];
-    const mapRoads = [
-      {
-        className: "primary",
-        points: [
-          [39.520, -120.030],
-          [39.520, -119.950],
-          [39.523, -119.890],
-          [39.527, -119.845],
-          [39.529, -119.814],
-          [39.532, -119.775],
-          [39.536, -119.735],
-          [39.542, -119.690]
-        ]
-      },
-      {
-        className: "primary",
-        points: [
-          [39.660, -119.826],
-          [39.610, -119.814],
-          [39.565, -119.806],
-          [39.529, -119.814],
-          [39.480, -119.798],
-          [39.425, -119.789],
-          [39.365, -119.768],
-          [39.305, -119.760]
-        ]
-      },
-      {
-        className: "secondary",
-        points: [
-          [39.575, -119.770],
-          [39.548, -119.753],
-          [39.520, -119.740],
-          [39.488, -119.731],
-          [39.454, -119.720]
-        ]
-      },
-      {
-        className: "secondary",
-        points: [
-          [39.390, -119.860],
-          [39.430, -119.835],
-          [39.470, -119.805],
-          [39.500, -119.780]
-        ]
-      }
-    ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
       { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
@@ -3626,23 +3552,6 @@
       return 2 * radiusNm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    function drawRoadLayer() {
-      const layer = document.getElementById("road-layer");
-      if (!layer) return;
-      const namespace = "http://www.w3.org/2000/svg";
-      layer.innerHTML = "";
-      mapRoads.forEach(road => {
-        const points = road.points
-          .map(([lat, lon]) => coordinateToRadarPct(lat, lon))
-          .filter(point => point && Number.isFinite(point.left) && Number.isFinite(point.top));
-        if (points.length < 2) return;
-        const polyline = document.createElementNS(namespace, "polyline");
-        polyline.setAttribute("class", `road-line ${road.className || ""}`.trim());
-        polyline.setAttribute("points", points.map(point => `${point.left.toFixed(2)},${point.top.toFixed(2)}`).join(" "));
-        layer.appendChild(polyline);
-      });
-    }
-
     function syncRadarGeometry() {
       const { width, height } = radarMapDimensions();
       radarWidth = width;
@@ -3659,7 +3568,6 @@
         const ring = document.querySelector(`.range-ring.r${limit}`);
         if (ring) ring.style.height = `${(limit / radarHalfSpanNm) * 100}%`;
       });
-      drawRoadLayer();
       renderLightningStrikes(latestLightningPayload);
     }
 
@@ -3694,7 +3602,7 @@
         f: "image",
         t: String(Math.floor(radarCacheBust / (15 * 60 * 1000)))
       });
-      return `https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/export?${params.toString()}`;
+      return `https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?${params.toString()}`;
     }
 
     function formatRadarClock(frame) {
@@ -3717,8 +3625,8 @@
         lines: [
           ["Radar", "Reflectivity loop"],
           ["Loop", "Last 20 minutes"],
-          ["Rings", "10 and 20 nm from KRNO"],
-          ["Map", "Projected lat/lon overlay"],
+          ["Ring", "10 nm from KRNO"],
+          ["Map", "Satellite imagery"],
           ["Lightning", "Closest GOES GLM group"],
           ["Use", "Situational awareness"]
         ],
@@ -3899,8 +3807,8 @@
           title: "Radar / Lightning Trigger",
           subtitle: label,
           lines: [
-            ["20 NM Ring", ring20Count > 0 ? "Strike detected" : "Clear"],
-            ["10 NM Ring", ring10Count > 0 ? "Strike detected" : "Clear"],
+            ["20 NM", ring20Count > 0 ? "Strike detected" : "Clear"],
+            ["10 NM", ring10Count > 0 ? "Strike detected" : "Clear"],
             ["Closest Strike", nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : "None within 25 nm"],
             ["Strike Age", nearest ? formatStrikeAge(nearest) || "--" : "--"],
             ["Source", "GOES-18 GLM"],
