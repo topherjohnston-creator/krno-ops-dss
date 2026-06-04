@@ -843,12 +843,16 @@
     }
 
     .radar-map .leaflet-tile {
-      filter: saturate(0.86) contrast(1.08) brightness(0.82);
+      filter: saturate(0.92) contrast(1.08) brightness(0.82);
+    }
+
+    .radar-map .leaflet-overlay-pane {
+      mix-blend-mode: screen;
     }
 
     .radar-basemap {
       z-index: 0;
-      opacity: 0.4;
+      opacity: 0.6;
       filter: saturate(0.82) contrast(1.08) brightness(0.62);
     }
 
@@ -978,6 +982,30 @@
       border-radius: 50%;
       background: #ff4b22;
       box-shadow: 0 0 0 4px rgba(14, 20, 29, 0.72), 0 0 19px rgba(255, 75, 34, 0.9);
+    }
+
+    .leaflet-airport-marker {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--airport-marker-color, var(--success));
+      box-shadow:
+        0 0 0 3px rgba(14, 20, 29, 0.84),
+        0 0 18px color-mix(in srgb, var(--airport-marker-color, var(--success)) 70%, transparent);
+    }
+
+    .leaflet-lightning-strike {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      color: var(--strike-color, #34c38f);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 850;
+      text-shadow:
+        0 0 3px rgba(0, 0, 0, 0.95),
+        0 0 7px currentColor;
     }
 
     .map-label.radar-time {
@@ -1649,6 +1677,7 @@
     let quicklookMap = null;
     let quicklookRadarLayer = null;
     let quicklookLightningLayer = null;
+    let quicklookAirportMarker = null;
     let quicklookMapReady = false;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
     const radarHalfSpanNm = 15;
@@ -3444,10 +3473,10 @@
 
     function initQuicklookMap() {
       const mapEl = document.getElementById("radar-map");
-      if (mapEl) mapEl.classList.add("no-leaflet");
-      return false;
       if (quicklookMapReady || !window.L) return Boolean(quicklookMap);
+      if (mapEl) mapEl.classList.add("no-leaflet");
       if (!mapEl) return false;
+      mapEl.classList.remove("no-leaflet");
       mapEl.classList.add("leaflet-ready");
       quicklookMap = L.map(mapEl, {
         center: [krnoPoint.lat, krnoPoint.lon],
@@ -3461,8 +3490,10 @@
         keyboard: false,
         tap: false
       });
-      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
-        maxZoom: 16
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+        opacity: 0.6,
+        subdomains: "abcd"
       }).addTo(quicklookMap);
       decisionRadiiNm.forEach(limit => {
         L.circle([krnoPoint.lat, krnoPoint.lon], {
@@ -3478,6 +3509,16 @@
         [39.27, -120.02],
         [39.73, -119.48]
       ], { padding: [8, 8], animate: false });
+      quicklookAirportMarker = L.marker([krnoPoint.lat, krnoPoint.lon], {
+        interactive: false,
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="leaflet-airport-marker"></div>',
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        })
+      }).addTo(quicklookMap);
+      quicklookLightningLayer = L.layerGroup().addTo(quicklookMap);
       quicklookMapReady = true;
       return true;
     }
@@ -3626,7 +3667,7 @@
           ["Radar", "Reflectivity loop"],
           ["Loop", "Last 20 minutes"],
           ["Ring", "10 nm from KRNO"],
-          ["Map", "Satellite imagery"],
+          ["Map", "CARTO dark road basemap"],
           ["Lightning", "Closest GOES GLM group"],
           ["Use", "Situational awareness"]
         ],
@@ -3724,31 +3765,57 @@
       return "var(--success)";
     }
 
-    function strikeMapPoint(strike) {
+    function strikeLatLng(strike) {
       if (!strike) return null;
       if (Number.isFinite(Number(strike.lat)) && Number.isFinite(Number(strike.lon))) {
-        return coordinateToRadarPct(strike.lat, strike.lon);
+        return { lat: Number(strike.lat), lon: Number(strike.lon) };
       }
       if (Number.isFinite(Number(strike.distance_nm)) && Number.isFinite(Number(strike.bearing_degrees))) {
-        const location = destinationPoint(krnoPoint.lat, krnoPoint.lon, Number(strike.distance_nm), Number(strike.bearing_degrees));
-        return coordinateToRadarPct(location.lat, location.lon);
+        return destinationPoint(krnoPoint.lat, krnoPoint.lon, Number(strike.distance_nm), Number(strike.bearing_degrees));
       }
       return null;
+    }
+
+    function strikeMapPoint(strike) {
+      const location = strikeLatLng(strike);
+      return location ? coordinateToRadarPct(location.lat, location.lon) : null;
     }
 
     function renderLightningStrikes(lightning) {
       const layer = document.getElementById("lightning-layer");
       const oldDot = document.getElementById("lightning-dot");
       if (oldDot) oldDot.hidden = true;
-      if (!layer || !radarBounds) return;
-      layer.innerHTML = "";
+      if (quicklookMap && quicklookLightningLayer && window.L) {
+        quicklookLightningLayer.clearLayers();
+      }
+      if (layer) layer.innerHTML = "";
       const strikes = Array.isArray(lightning?.strikes) && lightning.strikes.length
         ? lightning.strikes
         : [lightning?.nearest_strike].filter(Boolean);
       if (!strikes.length) {
-        layer.hidden = true;
+        if (layer) layer.hidden = true;
         return;
       }
+      if (quicklookMap && quicklookLightningLayer && window.L) {
+        strikes.slice(0, 25).forEach(strike => {
+          const location = strikeLatLng(strike);
+          if (!location) return;
+          const title = `${Number(strike.distance_nm).toFixed(1)} nm ${strike.bearing_cardinal || ""} ${formatStrikeAge(strike)}`.trim();
+          const marker = L.marker([location.lat, location.lon], {
+            interactive: false,
+            icon: L.divIcon({
+              className: "",
+              html: `<div class="leaflet-lightning-strike" style="--strike-color: ${lightningStrikeColor(strike)}" title="${title}">+</div>`,
+              iconSize: [22, 22],
+              iconAnchor: [11, 11]
+            })
+          });
+          quicklookLightningLayer.addLayer(marker);
+        });
+        if (layer) layer.hidden = true;
+        return;
+      }
+      if (!layer || !radarBounds) return;
       layer.hidden = false;
       strikes.slice(0, 25).forEach(strike => {
         const point = strikeMapPoint(strike);
@@ -3766,8 +3833,11 @@
 
     function updateAirportMarker(className) {
       const marker = document.getElementById("airport-marker");
-      if (!marker) return;
-      marker.style.setProperty("--airport-marker-color", lightningThreatColor(className));
+      const color = lightningThreatColor(className);
+      if (marker) marker.style.setProperty("--airport-marker-color", color);
+      if (quicklookAirportMarker?._icon) {
+        quicklookAirportMarker._icon.style.setProperty("--airport-marker-color", color);
+      }
     }
 
     function updateLightningDisplay(lightning) {
