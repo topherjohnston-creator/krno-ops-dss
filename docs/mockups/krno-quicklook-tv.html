@@ -832,6 +832,7 @@
     .radar-map.leaflet-ready > .radar-reflectivity,
     .radar-map.leaflet-ready > .range-ring,
     .radar-map.leaflet-ready > .city-layer,
+    .radar-map.leaflet-ready > .highway-layer,
     .radar-map.leaflet-ready > .airport-marker,
     .radar-map.leaflet-ready > .lightning-layer,
     .radar-map.leaflet-ready > .lightning-dot,
@@ -919,7 +920,8 @@
     }
 
     .lightning-layer,
-    .city-layer {
+    .city-layer,
+    .highway-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -1045,11 +1047,33 @@
     }
 
     .map-label.radar-time {
-      left: 8px;
-      top: 8px;
-      max-width: calc(100% - 16px);
+      position: static;
+      max-width: 54%;
       color: var(--text-main);
+      background: rgba(18, 27, 39, 0.68);
+      border: 1px solid rgba(74, 99, 127, 0.55);
+      font-size: 12px;
+      padding: 3px 7px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .highway-label {
+      position: absolute;
+      translate: -50% -50%;
+      z-index: 4;
+      padding: 1px 5px;
+      border: 1px solid rgba(125, 154, 190, 0.45);
+      border-radius: 999px;
+      background: rgba(11, 17, 25, 0.54);
+      color: rgba(205, 223, 242, 0.74);
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
     }
 
     .map-label.lightning-clear {
@@ -1576,6 +1600,7 @@
       <section class="panel bottom-panel radar-panel" aria-labelledby="radar-title">
         <div class="panel-head">
           <div class="panel-title" id="radar-title">Radar / Lightning</div>
+          <div class="map-label radar-time" id="radar-time">Scan --</div>
         </div>
         <div class="bottom-body radar-body">
           <div class="radar-map" id="radar-map">
@@ -1589,7 +1614,7 @@
             <div class="lightning-layer" id="lightning-layer" hidden></div>
             <div class="lightning-dot" id="lightning-dot" hidden></div>
             <div class="city-layer" id="city-layer"></div>
-            <div class="map-label radar-time" id="radar-time">Scan --</div>
+            <div class="highway-layer" id="highway-layer"></div>
             <div class="map-label range">25 NM</div>
           </div>
           <div class="lightning-status" id="lightning-panel">
@@ -1712,11 +1737,13 @@
     let quicklookMapReady = false;
     const krnoPoint = { lat: 39.4991, lon: -119.7681 };
     const radarHalfSpanNm = 22;
-    const useReferenceCityLabels = true;
+    const useReferenceCityLabels = false;
     const metersPerNm = 1852;
     const mercatorLimit = 20037508.342789244;
     const decisionRadiiNm = [10, 20];
     const mapCityCandidates = [
+      { name: "Reno", lat: 39.5296, lon: -119.8138 },
+      { name: "Sparks", lat: 39.5349, lon: -119.7527 },
       { name: "Sierra City", lat: 39.5657, lon: -120.6341 },
       { name: "Carson City", lat: 39.1638, lon: -119.7674 },
       { name: "Fernley", lat: 39.6080, lon: -119.2518 },
@@ -1724,6 +1751,13 @@
       { name: "Nixon", lat: 39.8313, lon: -119.3566 },
       { name: "Fallon", lat: 39.4749, lon: -118.7774 },
       { name: "Kingvale", lat: 39.3194, lon: -120.4349 }
+    ];
+    const mapHighwayLabels = [
+      { name: "I-80", lat: 39.533, lon: -119.814 },
+      { name: "I-580", lat: 39.365, lon: -119.768 },
+      { name: "US 395", lat: 39.582, lon: -119.806 },
+      { name: "US 50", lat: 39.226, lon: -119.721 },
+      { name: "NV 431", lat: 39.336, lon: -119.853 }
     ];
     const radarFrames = [
       { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
@@ -3642,8 +3676,8 @@
           distanceNm: distanceNmBetween(krnoPoint.lat, krnoPoint.lon, city.lat, city.lon),
           point: coordinateToRadarPct(city.lat, city.lon)
         }))
-        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm > 20)
-        .filter(city => city.point && city.point.left >= 3 && city.point.left <= 97 && city.point.top >= 5 && city.point.top <= 95)
+        .filter(city => Number.isFinite(city.distanceNm) && city.distanceNm > 3)
+        .filter(city => city.point && city.point.left >= 2 && city.point.left <= 98 && city.point.top >= 3 && city.point.top <= 97)
         .sort((a, b) => a.priority - b.priority);
       return candidates;
     }
@@ -3674,6 +3708,28 @@
       });
     }
 
+    function positionHighwayLabels() {
+      const layer = document.getElementById("highway-layer");
+      if (!layer) return;
+      layer.innerHTML = "";
+      mapHighwayLabels
+        .map((label, priority) => ({
+          ...label,
+          priority,
+          point: coordinateToRadarPct(label.lat, label.lon)
+        }))
+        .filter(label => label.point && label.point.left >= 4 && label.point.left <= 96 && label.point.top >= 5 && label.point.top <= 95)
+        .sort((a, b) => a.priority - b.priority)
+        .forEach(label => {
+          const marker = document.createElement("div");
+          marker.className = "highway-label";
+          marker.textContent = label.name;
+          marker.style.left = `${label.point.left}%`;
+          marker.style.top = `${label.point.top}%`;
+          layer.appendChild(marker);
+        });
+    }
+
     function syncRadarGeometry() {
       const { width, height } = radarMapDimensions();
       radarWidth = width;
@@ -3691,6 +3747,7 @@
         if (ring) ring.style.height = `${(limit / radarHalfSpanNm) * 100}%`;
       });
       positionCityMarkers();
+      positionHighwayLabels();
       renderLightningStrikes(latestLightningPayload);
     }
 
