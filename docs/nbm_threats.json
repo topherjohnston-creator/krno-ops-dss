@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-06-09T19:01:39Z",
+  "generated_utc": "2026-06-09T21:15:14Z",
   "cycle_utc_iso": "2026-06-09T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -531,16 +531,16 @@
       "id": "TEMPERATURE",
       "title": "TEMPERATURE",
       "name": "TEMPERATURE",
-      "prob": 0.0,
-      "probability": 0.0,
-      "risk": 1,
-      "risk_level": 1,
-      "risk_label": "Little to None",
-      "level": 1,
-      "impact_level": 1,
-      "metric": "Max -- / Min --",
+      "prob": 100.0,
+      "probability": 100.0,
+      "risk": 2,
+      "risk_level": 2,
+      "risk_label": "Minor",
+      "level": 2,
+      "impact_level": 2,
+      "metric": "Max 87\u00b0F / Min 52\u00b0F",
       "display_label": "Max / Min",
-      "display_value": "-- / --",
+      "display_value": "87\u00b0F / 52\u00b0F",
       "window": "72 hr",
       "peak_start_fxx": 52,
       "peak_end_fxx": 54,
@@ -564,15 +564,145 @@
           "source": "NBM/QMD 3-hour temperature probabilities with KRNO heat thresholds"
         }
       ],
-      "likelihood_category": "extremely_unlikely",
+      "likelihood_category": "very_likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_temperature",
       "source": "NOAA NBM QMD AWS 12Z",
       "daily_values": [
         {
+          "fxx": 36,
+          "valid_utc": "2026-06-11T00:00:00Z",
+          "window_kind": "max",
+          "temp_f": 86.9,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 90.0,
+            "4": 96.0,
+            "5": null
+          },
+          "impact_level": 2,
+          "risk": 2,
+          "probabilities": {
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 3.0,
+            "prob_heat_impact_4": 1.2
+          },
+          "native_cold_probability_thresholds": [
+            {
+              "threshold_k": 255.372,
+              "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 270.928,
+              "threshold_f": 28.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 273.15,
+              "threshold_f": 32.0,
+              "probability": 0.0
+            }
+          ],
+          "native_heat_probability_thresholds": [
+            {
+              "threshold_k": 299.817,
+              "threshold_f": 80.0,
+              "probability": 99.0
+            },
+            {
+              "threshold_k": 305.372,
+              "threshold_f": 90.0,
+              "probability": 3.0
+            },
+            {
+              "threshold_k": 310.928,
+              "threshold_f": 100.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 316.483,
+              "threshold_f": 110.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 322.039,
+              "threshold_f": 120.0,
+              "probability": 0.0
+            }
+          ],
+          "selected_probability": 100.0,
+          "selected_probability_key": "prob_heat_impact_2"
+        },
+        {
+          "fxx": 60,
+          "valid_utc": "2026-06-12T00:00:00Z",
+          "window_kind": "max",
+          "temp_f": 89.6,
+          "heat_thresholds": {
+            "2": 71.0,
+            "3": 90.0,
+            "4": 96.0,
+            "5": null
+          },
+          "impact_level": 2,
+          "risk": 2,
+          "probabilities": {
+            "prob_heat_impact_2": 100.0,
+            "prob_heat_impact_3": 47.0,
+            "prob_heat_impact_4": 18.8
+          },
+          "native_cold_probability_thresholds": [
+            {
+              "threshold_k": 255.372,
+              "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 270.928,
+              "threshold_f": 28.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 273.15,
+              "threshold_f": 32.0,
+              "probability": 0.0
+            }
+          ],
+          "native_heat_probability_thresholds": [
+            {
+              "threshold_k": 299.817,
+              "threshold_f": 80.0,
+              "probability": 99.0
+            },
+            {
+              "threshold_k": 305.372,
+              "threshold_f": 90.0,
+              "probability": 47.0
+            },
+            {
+              "threshold_k": 310.928,
+              "threshold_f": 100.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 316.483,
+              "threshold_f": 110.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 322.039,
+              "threshold_f": 120.0,
+              "probability": 0.0
+            }
+          ],
+          "selected_probability": 100.0,
+          "selected_probability_key": "prob_heat_impact_2"
+        },
+        {
           "fxx": 24,
           "valid_utc": "2026-06-10T12:00:00Z",
-          "window_kind": "max",
-          "temp_f": null,
+          "window_kind": "min",
+          "temp_f": 52.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 89.0,
@@ -581,17 +711,64 @@
           },
           "impact_level": 1,
           "risk": 1,
-          "probabilities": {},
-          "native_cold_probability_thresholds": [],
-          "native_heat_probability_thresholds": [],
+          "probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_40_f": 0.0
+          },
+          "native_cold_probability_thresholds": [
+            {
+              "threshold_k": 255.372,
+              "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 270.928,
+              "threshold_f": 28.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 273.15,
+              "threshold_f": 32.0,
+              "probability": 0.0
+            }
+          ],
+          "native_heat_probability_thresholds": [
+            {
+              "threshold_k": 299.817,
+              "threshold_f": 80.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 305.372,
+              "threshold_f": 90.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 310.928,
+              "threshold_f": 100.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 316.483,
+              "threshold_f": 110.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 322.039,
+              "threshold_f": 120.0,
+              "probability": 0.0
+            }
+          ],
           "selected_probability": 0.0,
           "selected_probability_key": null
         },
         {
           "fxx": 48,
           "valid_utc": "2026-06-11T12:00:00Z",
-          "window_kind": "max",
-          "temp_f": null,
+          "window_kind": "min",
+          "temp_f": 55.5,
           "heat_thresholds": {
             "2": 71.0,
             "3": 90.0,
@@ -600,36 +777,64 @@
           },
           "impact_level": 1,
           "risk": 1,
-          "probabilities": {},
-          "native_cold_probability_thresholds": [],
-          "native_heat_probability_thresholds": [],
+          "probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_40_f": 0.0
+          },
+          "native_cold_probability_thresholds": [
+            {
+              "threshold_k": 255.372,
+              "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 270.928,
+              "threshold_f": 28.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 273.15,
+              "threshold_f": 32.0,
+              "probability": 0.0
+            }
+          ],
+          "native_heat_probability_thresholds": [
+            {
+              "threshold_k": 299.817,
+              "threshold_f": 80.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 305.372,
+              "threshold_f": 90.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 310.928,
+              "threshold_f": 100.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 316.483,
+              "threshold_f": 110.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 322.039,
+              "threshold_f": 120.0,
+              "probability": 0.0
+            }
+          ],
           "selected_probability": 0.0,
           "selected_probability_key": null
         },
         {
           "fxx": 72,
           "valid_utc": "2026-06-12T12:00:00Z",
-          "window_kind": "max",
-          "temp_f": null,
-          "heat_thresholds": {
-            "2": 71.0,
-            "3": 90.0,
-            "4": 96.0,
-            "5": null
-          },
-          "impact_level": 1,
-          "risk": 1,
-          "probabilities": {},
-          "native_cold_probability_thresholds": [],
-          "native_heat_probability_thresholds": [],
-          "selected_probability": 0.0,
-          "selected_probability_key": null
-        },
-        {
-          "fxx": 36,
-          "valid_utc": "2026-06-11T00:00:00Z",
           "window_kind": "min",
-          "temp_f": null,
+          "temp_f": 60.2,
           "heat_thresholds": {
             "2": 71.0,
             "3": 90.0,
@@ -638,32 +843,71 @@
           },
           "impact_level": 1,
           "risk": 1,
-          "probabilities": {},
-          "native_cold_probability_thresholds": [],
-          "native_heat_probability_thresholds": [],
-          "selected_probability": 0.0,
-          "selected_probability_key": null
-        },
-        {
-          "fxx": 60,
-          "valid_utc": "2026-06-12T00:00:00Z",
-          "window_kind": "min",
-          "temp_f": null,
-          "heat_thresholds": {
-            "2": 71.0,
-            "3": 90.0,
-            "4": 96.0,
-            "5": null
+          "probabilities": {
+            "prob_lt_10_f": 0.0,
+            "prob_lt_20_f": 0.0,
+            "prob_lt_32_f": 0.0,
+            "prob_lt_40_f": 0.0
           },
-          "impact_level": 1,
-          "risk": 1,
-          "probabilities": {},
-          "native_cold_probability_thresholds": [],
-          "native_heat_probability_thresholds": [],
+          "native_cold_probability_thresholds": [
+            {
+              "threshold_k": 255.372,
+              "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 270.928,
+              "threshold_f": 28.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 273.15,
+              "threshold_f": 32.0,
+              "probability": 0.0
+            }
+          ],
+          "native_heat_probability_thresholds": [
+            {
+              "threshold_k": 299.817,
+              "threshold_f": 80.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 305.372,
+              "threshold_f": 90.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 310.928,
+              "threshold_f": 100.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 316.483,
+              "threshold_f": 110.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 322.039,
+              "threshold_f": 120.0,
+              "probability": 0.0
+            }
+          ],
           "selected_probability": 0.0,
           "selected_probability_key": null
         }
       ],
+      "summary_fxx_by_kind": {
+        "max": [
+          36,
+          60
+        ],
+        "min": [
+          24,
+          48,
+          72
+        ]
+      },
       "peak_valid_start_utc": "2026-06-11T21:00:00Z",
       "peak_valid_end_utc": "2026-06-12T00:00:00Z",
       "peak_timing_source": "3-hour temperature timeline block",
@@ -716,9 +960,9 @@
     },
     {
       "id": "TEMPERATURE",
-      "risk": 1,
-      "probability": 0.0,
-      "level": 1
+      "risk": 2,
+      "probability": 100.0,
+      "level": 2
     }
   ],
   "methodology": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
