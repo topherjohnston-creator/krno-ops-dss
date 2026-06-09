@@ -15,10 +15,10 @@ from typing import Iterable
 
 RISK_MATRIX = {
     "very_likely": {1: 1, 2: 2, 3: 3, 4: 4, 5: 5},
-    "likely": {1: 1, 2: 2, 3: 2, 4: 3, 5: 4},
-    "as_likely_as_not": {1: 1, 2: 1, 3: 2, 4: 3, 5: 4},
+    "likely": {1: 1, 2: 2, 3: 3, 4: 4, 5: 4},
+    "as_likely_as_not": {1: 1, 2: 2, 3: 2, 4: 3, 5: 4},
     "unlikely": {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
-    "extremely_unlikely": {1: 1, 2: 1, 3: 1, 4: 2, 5: 2},
+    "extremely_unlikely": {1: 1, 2: 1, 3: 2, 4: 2, 5: 3},
 }
 
 RISK_LABELS = {

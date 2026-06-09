@@ -50,7 +50,7 @@ export const DEFAULT_RISK_MATRIX = {
     Unlikely: "Minor",
     "About as Likely as Not": "Moderate",
     Likely: "Major",
-    "Very Likely": "Extreme"
+    "Very Likely": "Major"
   },
   5: {
     "Extremely Unlikely": "Moderate",
