@@ -1805,7 +1805,14 @@
       { key: "Unlikely", short: "10-32%", min: 10, max: 32 },
       { key: "Extremely Unlikely", short: "<10%", min: 0, max: 9 }
     ];
-    const matrixImpactLabels = ["Minimal", "Low", "Medium", "High", "Highest"];
+    const matrixImpactLabels = ["1", "2", "3", "4", "5"];
+    const matrixRiskColors = {
+      "Little to None": "#aef4a0",
+      Minor: "#e7c875",
+      Moderate: "#dd7d4d",
+      Major: "#bd3557",
+      Extreme: "#9220a9"
+    };
     const riskMatrixLookup = {
       1: {
         "Extremely Unlikely": "Little to None",
@@ -1815,7 +1822,7 @@
         "Very Likely": "Little to None"
       },
       2: {
-        "Extremely Unlikely": "Little to None",
+        "Extremely Unlikely": "Minor",
         "Unlikely": "Little to None",
         "About as Likely as Not": "Minor",
         "Likely": "Minor",
@@ -1833,7 +1840,7 @@
         "Unlikely": "Minor",
         "About as Likely as Not": "Moderate",
         "Likely": "Major",
-        "Very Likely": "Extreme"
+        "Very Likely": "Major"
       },
       5: {
         "Extremely Unlikely": "Moderate",
@@ -1841,6 +1848,64 @@
         "About as Likely as Not": "Major",
         "Likely": "Major",
         "Very Likely": "Extreme"
+      }
+    };
+    const hazardImpactThresholds = {
+      WIND: {
+        1: "<30 mph",
+        2: "30-45 mph",
+        3: "45-58 mph",
+        4: "58-65 mph",
+        5: ">65 mph"
+      },
+      LIGHTNING: {
+        1: "<5% chance",
+        2: "5-25% chance",
+        3: "25-50% chance",
+        4: "50-75% chance",
+        5: ">75% chance"
+      },
+      SNOW: {
+        1: "0 in",
+        2: "Trace-0.5 in/hr",
+        3: "0.5-1 in/hr",
+        4: "1-2 in/hr",
+        5: ">2 in/hr"
+      },
+      VISIBILITY: {
+        1: ">5 SM",
+        2: "3-5 SM",
+        3: "1-3 SM",
+        4: "0.50-1 SM",
+        5: "<0.50 SM"
+      },
+      FZRA: {
+        1: "None",
+        2: "Trace",
+        3: "Trace-0.01 in",
+        4: "0.01-0.10 in",
+        5: ">0.10 in"
+      },
+      FLASH_FREEZE: {
+        1: "Dry and >32°F",
+        2: "Wet + <=36°F",
+        3: "Wet + <=32°F",
+        4: "Wet + <=28°F",
+        5: "Wet + <=25°F"
+      },
+      RAIN: {
+        1: "<0.10 in/hr",
+        2: "0.10-0.25 in/hr",
+        3: "0.25-0.50 in/hr",
+        4: "0.50-1.00 in/hr",
+        5: ">1.00 in/hr"
+      },
+      TEMPERATURE: {
+        1: "Cold >=40°F / Heat below local threshold",
+        2: "Cold 32-40°F / HeatRisk threshold 2",
+        3: "Cold 20-32°F / HeatRisk threshold 3",
+        4: "Cold 10-20°F / HeatRisk threshold 4",
+        5: "Cold <10°F / HeatRisk threshold 5"
       }
     };
     let latestObsSummary = "Obs Fresh";
@@ -2277,6 +2342,23 @@
       };
     }
 
+    function impactThresholdFor(source, impact, detail = {}) {
+      const key = String(source || "").toUpperCase();
+      const value = hazardImpactThresholds[key]?.[impact];
+      if (key === "TEMPERATURE") {
+        const heatThreshold = detail?.values?.heat_thresholds?.[String(impact)];
+        const coldText = {
+          1: "Cold >=40°F",
+          2: "Cold 32-40°F",
+          3: "Cold 20-32°F",
+          4: "Cold 10-20°F",
+          5: "Cold <10°F"
+        }[impact];
+        if (heatThreshold != null) return `${coldText} / Heat >=${Math.round(Number(heatThreshold))}°F`;
+      }
+      return value || "";
+    }
+
     function matrixHtml(info) {
       if (!info?.impact || !info?.likelihood) return "";
       const cells = matrixLikelihoodRows.map(row => {
@@ -2284,9 +2366,9 @@
         const matrixCells = [1, 2, 3, 4, 5].map(impact => {
           const risk = riskMatrixLookup[impact]?.[row.key] || "Little to None";
           const selected = impact === info.impact && row.key === info.likelihood;
-          const color = riskColors[risk] || riskColors.None;
+          const color = matrixRiskColors[risk] || riskColors[risk] || riskColors.None;
           const impactLabel = matrixImpactLabels[impact - 1] || "Impact";
-          return `<div class="tooltip-matrix-cell" style="background:${color}" aria-label="${escapeHtml(row.key)} ${escapeHtml(impactLabel)} impact: ${escapeHtml(risk)}">${selected ? '<span class="tooltip-matrix-x">X</span>' : ""}</div>`;
+          return `<div class="tooltip-matrix-cell" style="background:${color}" aria-label="${escapeHtml(row.key)} impact ${escapeHtml(impactLabel)}: ${escapeHtml(risk)}">${selected ? '<span class="tooltip-matrix-x">X</span>' : ""}</div>`;
         }).join("");
         return `${label}${matrixCells}`;
       }).join("");
@@ -2669,6 +2751,7 @@
 
     function tooltipLinesFor(hazard, block, risk, detail) {
       const confidence = hazardConfidence({ source: hazard.source, risk }, detail);
+      const matrix = matrixInfoFor(detail, { source: hazard.source, risk });
       const lines = [
         ["Risk", risk],
         confidenceLine(confidence)
@@ -2687,6 +2770,10 @@
       }
       if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} °F`]);
       if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
+      if (matrix.impact && matrix.likelihood) {
+        lines.push(["Matrix Pick", `Impact ${matrix.impact} / ${matrix.likelihood}`]);
+        lines.push(["Impact Threshold", impactThresholdFor(hazard.source, matrix.impact, detail)]);
+      }
       lines.push(
         ["Airport Impact", operationalImpact(hazard.source, risk)],
         ["Action", operationalAction(risk)]
@@ -2901,17 +2988,19 @@
       return "72-hour summary";
     }
 
-    function concernTooltipLines(item, details) {
+    function concernTooltipLines(item, details, detail = null) {
       const metric = compactConcernMetric(item) || item.metric || "No signal";
       const confidence = hazardConfidence(item);
       const rank = rankFromCategory(item.risk);
       const probability = Number(item.probability ?? item.prob);
-      const matrix = matrixInfoFor({}, item);
+      const matrix = matrixInfoFor(detail || {}, item);
       return [
         ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
         confidenceLine(confidence),
         Number.isFinite(probability) ? ["NBM Probability", `${Math.round(probability)}%`] : null,
         matrix.likelihood ? ["Likelihood", matrix.likelihood] : null,
+        matrix.impact && matrix.likelihood ? ["Matrix Pick", `Impact ${matrix.impact} / ${matrix.likelihood}`] : null,
+        matrix.impact ? ["Impact Threshold", impactThresholdFor(item.source, matrix.impact, detail || {})] : null,
         ["Timing", rank > 1 ? (item.peak || "Peak window TBD") : ""],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
         ["72-hr Method", summaryMethodText[item.source] || "Highest hazard risk in the 72-hour DSS window."],
@@ -3052,7 +3141,7 @@
         attachTooltip(chip, {
           title: `${item.name} - ${item.risk}`,
           subtitle: value,
-          lines: concernTooltipLines(item, value),
+          lines: concernTooltipLines(item, value, bestDetail),
           risk: item.risk,
           matrixInfo
         });

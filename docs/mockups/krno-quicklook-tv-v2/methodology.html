@@ -17,11 +17,11 @@
       --blue: #0a4595;
       --blue-2: #177ed8;
       --none: #2d3745;
-      --little: #4f677d;
-      --minor: #d7bc4a;
-      --moderate: #d98c33;
-      --major: #d25555;
-      --extreme: #b44fd4;
+      --little: #aef4a0;
+      --minor: #e7c875;
+      --moderate: #dd7d4d;
+      --major: #bd3557;
+      --extreme: #9220a9;
     }
 
     * {
@@ -235,7 +235,7 @@
 
     <section>
       <h2>Displayed Risk Categories</h2>
-      <p>The partner-facing dashboard only displays category words: <strong>Little to None</strong>, <strong>Minor</strong>, <strong>Moderate</strong>, <strong>Major</strong>, and <strong>Extreme</strong>. Internally, model thresholds are evaluated as increasing operational impact bins and then combined with NBM probability using the Weather Risk Matrix below.</p>
+      <p>The dashboard displays category words: <strong>Little to None</strong>, <strong>Minor</strong>, <strong>Moderate</strong>, <strong>Major</strong>, and <strong>Extreme</strong>. Internally, each weather hazard has five locally configured impact levels. Those impact levels are different for each hazard, then combined with NBM probability using the Weather Risk Matrix below.</p>
     </section>
 
     <section>
@@ -244,17 +244,17 @@
       <div class="matrix-wrap" aria-label="Weather Risk Matrix">
         <div class="risk-matrix">
           <div></div>
-          <div class="matrix-head">Minimal Impact</div>
-          <div class="matrix-head">Low Impact</div>
-          <div class="matrix-head">Medium Impact</div>
-          <div class="matrix-head">High Impact</div>
-          <div class="matrix-head">Highest Impact</div>
+          <div class="matrix-head">1</div>
+          <div class="matrix-head">2</div>
+          <div class="matrix-head">3</div>
+          <div class="matrix-head">4</div>
+          <div class="matrix-head">5</div>
 
           <div class="matrix-label">Very Likely<br>&gt;90%</div>
           <div class="matrix-cell little">Little to None</div>
           <div class="matrix-cell minor">Minor</div>
           <div class="matrix-cell moderate">Moderate</div>
-          <div class="matrix-cell extreme">Extreme</div>
+          <div class="matrix-cell major">Major</div>
           <div class="matrix-cell extreme">Extreme</div>
 
           <div class="matrix-label">Likely<br>67-90%</div>
@@ -280,13 +280,104 @@
 
           <div class="matrix-label">Extremely Unlikely<br>&lt;10%</div>
           <div class="matrix-cell little">Little to None</div>
-          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
           <div class="matrix-cell minor">Minor</div>
           <div class="matrix-cell minor">Minor</div>
           <div class="matrix-cell moderate">Moderate</div>
         </div>
       </div>
       <p class="muted">On the TV page, hover over a timeline block or hazard summary card to see the selected matrix position when the generated NBM JSON includes both probability and impact metadata.</p>
+    </section>
+
+    <section>
+      <h2>Hazard-Specific Impact Levels</h2>
+      <p>The impact axis is not one-size-fits-all. Each hazard uses its own locally configured KRNO Airport Operations thresholds. The Weather Risk Matrix then combines that hazard-specific impact level with NBM probability.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Weather Hazard</th>
+            <th>Impact 1</th>
+            <th>Impact 2</th>
+            <th>Impact 3</th>
+            <th>Impact 4</th>
+            <th>Impact 5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Snow</td>
+            <td>0 in</td>
+            <td>Trace-0.5 in/hr</td>
+            <td>0.5-1 in/hr</td>
+            <td>1-2 in/hr</td>
+            <td>&gt;2 in/hr</td>
+          </tr>
+          <tr>
+            <td>Flash Freeze</td>
+            <td>Dry and &gt;32°F</td>
+            <td>Wet + &lt;=36°F</td>
+            <td>Wet + &lt;=32°F</td>
+            <td>Wet + &lt;=28°F</td>
+            <td>Wet + &lt;=25°F</td>
+          </tr>
+          <tr>
+            <td>Lightning</td>
+            <td>&lt;5% chance</td>
+            <td>5-25% chance</td>
+            <td>25-50% chance</td>
+            <td>50-75% chance</td>
+            <td>&gt;75% chance</td>
+          </tr>
+          <tr>
+            <td>Wind</td>
+            <td>&lt;30 mph</td>
+            <td>30-45 mph</td>
+            <td>45-58 mph</td>
+            <td>58-65 mph</td>
+            <td>&gt;65 mph</td>
+          </tr>
+          <tr>
+            <td>Visibility</td>
+            <td>&gt;5 SM</td>
+            <td>3-5 SM</td>
+            <td>1-3 SM</td>
+            <td>0.50-1 SM</td>
+            <td>&lt;0.50 SM</td>
+          </tr>
+          <tr>
+            <td>Cold Temperature</td>
+            <td>&gt;=40°F</td>
+            <td>32-40°F</td>
+            <td>20-32°F</td>
+            <td>10-20°F</td>
+            <td>&lt;10°F</td>
+          </tr>
+          <tr>
+            <td>Heat Temperature</td>
+            <td>Below local heat threshold</td>
+            <td>Date-specific HeatRisk 2 threshold</td>
+            <td>Date-specific HeatRisk 3 threshold</td>
+            <td>Date-specific HeatRisk 4 threshold</td>
+            <td>Date-specific HeatRisk 5 threshold</td>
+          </tr>
+          <tr>
+            <td>Rain / Flooding</td>
+            <td>&lt;0.10 in/hr</td>
+            <td>0.10-0.25 in/hr</td>
+            <td>0.25-0.50 in/hr</td>
+            <td>0.50-1.00 in/hr</td>
+            <td>&gt;1.00 in/hr</td>
+          </tr>
+          <tr>
+            <td>Freezing Rain</td>
+            <td>None</td>
+            <td>Trace</td>
+            <td>Trace-0.01 in</td>
+            <td>0.01-0.10 in</td>
+            <td>&gt;0.10 in</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
