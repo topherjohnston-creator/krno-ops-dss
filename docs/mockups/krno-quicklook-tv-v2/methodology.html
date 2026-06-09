@@ -7,13 +7,25 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #151b25;
-      --panel: #202938;
-      --line: #405063;
+      --bg: #111722;
+      --panel: #1b2431;
+      --panel-2: #222c39;
+      --line: #334255;
       --text: #edf3fa;
       --body: #cbd7e5;
-      --muted: #9aaabe;
-      --blue: #1976d2;
+      --muted: #94a3b8;
+      --blue: #0a4595;
+      --blue-2: #177ed8;
+      --none: #2d3745;
+      --little: #4f677d;
+      --minor: #d7bc4a;
+      --moderate: #d98c33;
+      --major: #d25555;
+      --extreme: #b44fd4;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
@@ -25,9 +37,10 @@
     }
 
     header {
-      padding: 22px 28px;
-      background: linear-gradient(90deg, #17408d, #177ed8);
+      padding: 22px 32px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-2));
       color: var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.16);
     }
 
     h1 {
@@ -37,37 +50,173 @@
       letter-spacing: 0;
     }
 
+    header div {
+      margin-top: 4px;
+      font-size: 18px;
+      color: rgba(255,255,255,0.82);
+    }
+
     main {
-      max-width: 980px;
-      padding: 26px 28px 42px;
+      max-width: 1320px;
+      padding: 26px 32px 48px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: #9fd1ff;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
     }
 
     section {
       margin-bottom: 18px;
-      padding: 18px 20px;
+      padding: 20px 22px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: var(--panel);
     }
 
     h2 {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       color: var(--text);
-      font-size: 22px;
+      font-size: 24px;
+      font-weight: 640;
+    }
+
+    h3 {
+      margin: 18px 0 8px;
+      color: var(--text);
+      font-size: 19px;
       font-weight: 650;
     }
 
     p,
     li {
-      font-size: 18px;
+      font-size: 17px;
     }
 
     a {
-      color: #8fc8ff;
+      color: #9fd1ff;
     }
 
     .muted {
       color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .callout {
+      border-left: 6px solid var(--blue-2);
+      background: rgba(34, 44, 57, 0.75);
+    }
+
+    .matrix-wrap {
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: 180px repeat(5, minmax(112px, 1fr));
+      gap: 3px;
+      min-width: 760px;
+      align-items: stretch;
+    }
+
+    .matrix-label,
+    .matrix-head,
+    .matrix-cell {
+      min-height: 58px;
+      border-radius: 5px;
+      display: grid;
+      align-items: center;
+      padding: 8px 10px;
+      font-weight: 650;
+    }
+
+    .matrix-label {
+      justify-items: end;
+      color: var(--body);
+      text-align: right;
+      background: var(--panel-2);
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .matrix-head {
+      justify-items: center;
+      color: var(--text);
+      text-align: center;
+      background: #263241;
+      font-size: 14px;
+    }
+
+    .matrix-cell {
+      justify-items: center;
+      color: #111722;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .little { background: var(--little); color: #f3f7fb; }
+    .minor { background: var(--minor); }
+    .moderate { background: var(--moderate); color: #fff; }
+    .major { background: var(--major); color: #fff; }
+    .extreme { background: var(--extreme); color: #fff; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    th,
+    td {
+      border-top: 1px solid rgba(148, 163, 184, 0.24);
+      padding: 9px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: var(--text);
+      font-weight: 650;
+      background: rgba(38, 50, 65, 0.82);
+    }
+
+    td:first-child {
+      color: var(--text);
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    code {
+      color: #dbeafe;
+      background: rgba(148, 163, 184, 0.14);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 20px 18px 40px;
+      }
     }
   </style>
 </head>
@@ -77,34 +226,191 @@
     <div>KRNO Airport Ground Operations DSS draft v2</div>
   </header>
   <main>
-    <p><a href="./index.html">Back to dashboard</a></p>
+    <a class="back" href="./index.html">Back to dashboard</a>
 
-    <section>
+    <section class="callout">
       <h2>Purpose</h2>
-      <p>This quicklook page is a partner-facing situational awareness display for Reno-Tahoe International Airport ground operations. It is designed to summarize operational weather risk quickly, not replace official forecasts, warnings, or local decision procedures.</p>
+      <p>This page explains how the KRNO quicklook dashboard turns NBM guidance, observations, radar, lightning proximity, and NWS alerts into partner-facing operational risk categories. The TV dashboard is a situational awareness tool for airport ground operations. It does not replace official forecasts, warnings, or local airport procedures.</p>
     </section>
 
     <section>
-      <h2>Risk Categories</h2>
-      <p>Displayed risk categories are locally configured for decision support: Little to None, Minor, Moderate, Major, and Extreme. These categories are mapped from available forecast probabilities, thresholds, and operational impacts.</p>
+      <h2>Displayed Risk Categories</h2>
+      <p>The partner-facing dashboard only displays category words: <strong>Little to None</strong>, <strong>Minor</strong>, <strong>Moderate</strong>, <strong>Major</strong>, and <strong>Extreme</strong>. Internally, model thresholds are evaluated as increasing operational impact bins and then combined with NBM probability using the Weather Risk Matrix below.</p>
     </section>
 
     <section>
-      <h2>Hazards</h2>
-      <p>The dashboard supports wind, visibility, snow, rain, lightning, flash freeze, temperature, and freezing rain. The quicklook page emphasizes the highest operational concerns while keeping lower-risk hazards visible.</p>
+      <h2>Weather Risk Matrix</h2>
+      <p>For probabilistic hazards, the dashboard evaluates the probability of exceeding a locally configured threshold. That probability becomes a likelihood category. The likelihood category and the operational impact bin are then mapped to the displayed risk category.</p>
+      <div class="matrix-wrap" aria-label="Weather Risk Matrix">
+        <div class="risk-matrix">
+          <div></div>
+          <div class="matrix-head">Minimal Impact</div>
+          <div class="matrix-head">Low Impact</div>
+          <div class="matrix-head">Medium Impact</div>
+          <div class="matrix-head">High Impact</div>
+          <div class="matrix-head">Highest Impact</div>
+
+          <div class="matrix-label">Very Likely<br>&gt;90%</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell moderate">Moderate</div>
+          <div class="matrix-cell extreme">Extreme</div>
+          <div class="matrix-cell extreme">Extreme</div>
+
+          <div class="matrix-label">Likely<br>67-90%</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell moderate">Moderate</div>
+          <div class="matrix-cell major">Major</div>
+          <div class="matrix-cell major">Major</div>
+
+          <div class="matrix-label">About as Likely as Not<br>33-66%</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell moderate">Moderate</div>
+          <div class="matrix-cell major">Major</div>
+
+          <div class="matrix-label">Unlikely<br>10-32%</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell moderate">Moderate</div>
+
+          <div class="matrix-label">Extremely Unlikely<br>&lt;10%</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell little">Little to None</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell minor">Minor</div>
+          <div class="matrix-cell moderate">Moderate</div>
+        </div>
+      </div>
+      <p class="muted">On the TV page, hover over a timeline block or hazard summary card to see the selected matrix position when the generated NBM JSON includes both probability and impact metadata.</p>
     </section>
 
     <section>
-      <h2>Data Inputs</h2>
-      <p>Values are based on available model guidance, generated JSON products, current KRNO observations, NWS alerts, radar imagery, and lightning proximity data where available. If a field is missing, stale, or unavailable, the dashboard should not imply all-clear conditions.</p>
+      <h2>72-Hour Risk Summary Cards</h2>
+      <p>The Weather Risk Summary cards answer: “What is the highest operational risk for this hazard somewhere in the next 72 hours?” These cards use the best available NBM summary product for each hazard, including QMD fields where they are the correct temporal product.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Hazard</th>
+            <th>72-hour summary method</th>
+            <th>Primary display value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wind</td>
+            <td>Uses NBM QMD 24-hour maximum 10 m wind gust probability-of-threshold exceedance for the 0-24, 24-48, and 48-72 hour windows. The highest risk window drives the card.</td>
+            <td>Maximum gust and peak window.</td>
+          </tr>
+          <tr>
+            <td>Lightning</td>
+            <td>Uses the highest NBM 3-hour thunder probability over the 72-hour board and maps that probability through the lightning thresholds and Weather Risk Matrix.</td>
+            <td>Peak thunder probability and timing.</td>
+          </tr>
+          <tr>
+            <td>Rain / Drainage</td>
+            <td>Uses NBM precipitation guidance, with QMD 6-hour precipitation used for summary risk when available. The risk is based on probability of exceeding rain/drainage thresholds.</td>
+            <td>72-hour total or highest meaningful rain window.</td>
+          </tr>
+          <tr>
+            <td>Snow / Winter Ops</td>
+            <td>Uses NBM snow amount/probability guidance over the 72-hour window. Native 1-hour, 6-hour, or longer NBM snow windows are used depending on product availability.</td>
+            <td>72-hour snow total and highest snow window.</td>
+          </tr>
+          <tr>
+            <td>Freezing Rain</td>
+            <td>Uses NBM freezing-rain amount/probability guidance. Native 1-hour or 6-hour freezing-rain windows are used depending on product availability.</td>
+            <td>72-hour freezing-rain amount and highest icing window.</td>
+          </tr>
+          <tr>
+            <td>Visibility</td>
+            <td>Uses NBM visibility and low-visibility probability guidance. The lowest visibility or highest probability of crossing a visibility threshold drives the summary.</td>
+            <td>Minimum visibility and timing.</td>
+          </tr>
+          <tr>
+            <td>Flash Freeze</td>
+            <td>Uses a joint wet-surface and cold-temperature signal. The wet component comes from precipitation/freezing-rain probability; the cold component comes from NBM temperature probabilities.</td>
+            <td>Wet-surface freeze probability and timing.</td>
+          </tr>
+          <tr>
+            <td>Temperature</td>
+            <td>Uses NBM QMD max/min temperature probabilities for 0-24, 24-48, and 48-72 hour windows. Heat uses date-specific KRNO HeatRisk thresholds; cold uses configured cold thresholds.</td>
+            <td>Max/min temperature and peak heat or cold window.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2>Stale Or Missing Data</h2>
-      <p>Stale observations and missing lightning/radar data are displayed as degraded data states. Stale or unavailable data should not be interpreted as safe, all clear, or operationally current.</p>
+      <h2>3-Hour Weather Risk Timeline</h2>
+      <p>The Weather Risk Timeline answers: “When does the operational risk occur?” Blocks are displayed every 3 hours through 72 hours. Each block is calculated from the NBM product that best represents that hazard in that time window.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Hazard</th>
+            <th>3-hour block method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Wind</td>
+            <td>Uses NBM QMD wind gust percentiles and probability-of-threshold exceedance. The display value is a high-end expected gust, while the risk category comes from threshold probability and the Weather Risk Matrix.</td>
+          </tr>
+          <tr>
+            <td>Lightning</td>
+            <td>Uses NBM 3-hour thunder probability for the block. This is forecast lightning/thunder risk, separate from observed GOES GLM lightning proximity.</td>
+          </tr>
+          <tr>
+            <td>Rain / Drainage</td>
+            <td>Uses NBM core precipitation amount/rate in the block, with measurable rain probability included where available. Summary rain may use a different native QMD window.</td>
+          </tr>
+          <tr>
+            <td>Snow / Winter Ops</td>
+            <td>Uses NBM snow amount/probability in the native product window that overlaps the displayed block.</td>
+          </tr>
+          <tr>
+            <td>Freezing Rain</td>
+            <td>Uses NBM freezing-rain amount/probability in the native product window that overlaps the displayed block.</td>
+          </tr>
+          <tr>
+            <td>Visibility</td>
+            <td>Uses NBM visibility and low-visibility probability guidance. The block value shows the lowest visibility signal available for that time.</td>
+          </tr>
+          <tr>
+            <td>Flash Freeze</td>
+            <td>Uses joint probability: wet-surface signal multiplied or combined conservatively with NBM temperature probabilities below the configured freeze thresholds.</td>
+          </tr>
+          <tr>
+            <td>Temperature</td>
+            <td>Uses NBM temperature probabilities in the block. Heat thresholds are date-specific for KRNO; cold thresholds are fixed operational thresholds.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
-    <p class="muted">Phase 2 can expand this page with the full threshold table and probability methodology.</p>
+    <section>
+      <h2>Forecast Confidence</h2>
+      <p>Confidence is not the same thing as probability. Probability answers “What is the chance of crossing this threshold?” Confidence answers “How reliable is this assigned risk?” The current V2 page uses NBM data health, probability clarity, spread agreement when available, timing persistence, and a neutral run-consistency score when previous cycles are not available. The partner-facing page only displays High, Medium, or Low.</p>
+    </section>
+
+    <section>
+      <h2>Observations, Radar, Lightning, And Alerts</h2>
+      <ul>
+        <li><strong>Current Conditions:</strong> KRNO observations are shown as current only when fresh. Stale observations are visibly flagged and should not be treated as operationally current.</li>
+        <li><strong>Radar:</strong> Radar imagery is situational awareness context for nearby precipitation. Scan time must be available before the panel can imply current radar status.</li>
+        <li><strong>GLM Lightning:</strong> GOES GLM detects total lightning groups, not a ground-strike network. The dashboard treats stale or missing lightning data as unavailable, not all clear.</li>
+        <li><strong>NWS Alerts:</strong> Official alerts are shown separately from local DSS risk. No active NWS alerts does not mean no local operational risk.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Phase 2 Admin Page</h2>
+      <p>Phase 2 will build a forecaster-facing admin page that lets a user select any supported NBM 5.0 probabilistic variable, including QMD products, assign local impact thresholds, choose an observation station, preview the Weather Risk Matrix result, and generate reusable DSS pages for other partners or events.</p>
+    </section>
   </main>
 </body>
 </html>

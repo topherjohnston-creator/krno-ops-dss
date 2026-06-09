@@ -1256,7 +1256,7 @@
     .timeline-tooltip {
       position: fixed;
       z-index: 2200;
-      width: min(430px, calc(100vw - 32px));
+      width: min(520px, calc(100vw - 32px));
       padding: 13px 14px 14px;
       border: 1px solid var(--line-strong);
       border-left: 7px solid var(--little);
@@ -1313,6 +1313,71 @@
       font-weight: 600;
       text-align: right;
       overflow-wrap: anywhere;
+    }
+
+    .tooltip-matrix {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(51, 66, 85, 0.72);
+    }
+
+    .tooltip-matrix-title {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .tooltip-matrix-grid {
+      display: grid;
+      grid-template-columns: 88px repeat(5, 1fr);
+      gap: 2px;
+      align-items: stretch;
+    }
+
+    .tooltip-matrix-cell {
+      position: relative;
+      min-height: 22px;
+      border-radius: 3px;
+      display: grid;
+      place-items: center;
+      color: #0f1720;
+      font-size: 10px;
+      font-weight: 760;
+      line-height: 1;
+    }
+
+    .tooltip-matrix-label {
+      min-height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 5px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.05;
+      text-align: right;
+    }
+
+    .tooltip-matrix-head {
+      justify-content: center;
+      padding-right: 0;
+      color: var(--text-body);
+      text-align: center;
+    }
+
+    .tooltip-matrix-x {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      text-shadow: 0 1px 3px #000, 0 0 8px #000;
     }
 
     .mono {
@@ -1733,6 +1798,51 @@
       Medium: "#d7bc4a",
       Low: "#d25555"
     };
+    const matrixLikelihoodRows = [
+      { key: "Very Likely", short: ">90%", min: 91, max: 100 },
+      { key: "Likely", short: "67-90%", min: 67, max: 90 },
+      { key: "About as Likely as Not", short: "33-66%", min: 33, max: 66 },
+      { key: "Unlikely", short: "10-32%", min: 10, max: 32 },
+      { key: "Extremely Unlikely", short: "<10%", min: 0, max: 9 }
+    ];
+    const matrixImpactLabels = ["Minimal", "Low", "Medium", "High", "Highest"];
+    const riskMatrixLookup = {
+      1: {
+        "Extremely Unlikely": "Little to None",
+        "Unlikely": "Little to None",
+        "About as Likely as Not": "Little to None",
+        "Likely": "Little to None",
+        "Very Likely": "Little to None"
+      },
+      2: {
+        "Extremely Unlikely": "Little to None",
+        "Unlikely": "Little to None",
+        "About as Likely as Not": "Minor",
+        "Likely": "Minor",
+        "Very Likely": "Minor"
+      },
+      3: {
+        "Extremely Unlikely": "Minor",
+        "Unlikely": "Minor",
+        "About as Likely as Not": "Minor",
+        "Likely": "Moderate",
+        "Very Likely": "Moderate"
+      },
+      4: {
+        "Extremely Unlikely": "Minor",
+        "Unlikely": "Minor",
+        "About as Likely as Not": "Moderate",
+        "Likely": "Major",
+        "Very Likely": "Extreme"
+      },
+      5: {
+        "Extremely Unlikely": "Moderate",
+        "Unlikely": "Moderate",
+        "About as Likely as Not": "Major",
+        "Likely": "Major",
+        "Very Likely": "Extreme"
+      }
+    };
     let latestObsSummary = "Obs Fresh";
     let latestModelSummary = "NBM 18Z";
     let latestBuildSummary = "Build --";
@@ -2091,6 +2201,8 @@
     }
 
     function detailProbability(detail = {}, item = {}) {
+      detail = detail || {};
+      item = item || {};
       const values = detail?.values || {};
       const candidates = [
         item.probability,
@@ -2107,6 +2219,87 @@
         if (Number.isFinite(value)) return value;
       }
       return null;
+    }
+
+    function likelihoodCategory(probability) {
+      const value = Number(probability);
+      if (!Number.isFinite(value)) return "";
+      if (value < 10) return "Extremely Unlikely";
+      if (value < 33) return "Unlikely";
+      if (value <= 66) return "About as Likely as Not";
+      if (value <= 90) return "Likely";
+      return "Very Likely";
+    }
+
+    function normalizeLikelihoodLabel(value, probability = null) {
+      const text = String(value || "").replace(/_/g, " ").trim().toLowerCase();
+      if (text.includes("very likely")) return "Very Likely";
+      if (text.includes("about")) return "About as Likely as Not";
+      if (text.includes("extremely")) return "Extremely Unlikely";
+      if (text === "likely") return "Likely";
+      if (text === "unlikely") return "Unlikely";
+      return likelihoodCategory(probability);
+    }
+
+    function detailImpact(detail = {}, item = {}) {
+      detail = detail || {};
+      item = item || {};
+      const values = detail?.values || {};
+      const candidates = [
+        values.impact_level,
+        detail.impact_level,
+        detail.impactLevel,
+        item.impact_level,
+        item.impactLevel
+      ];
+      for (const candidate of candidates) {
+        const value = Number(candidate);
+        if (Number.isFinite(value)) return Math.max(1, Math.min(5, Math.round(value)));
+      }
+      return null;
+    }
+
+    function matrixInfoFor(detail = {}, item = {}) {
+      detail = detail || {};
+      item = item || {};
+      const probability = detailProbability(detail, item);
+      const impact = detailImpact(detail, item);
+      const likelihood = normalizeLikelihoodLabel(
+        detail?.values?.likelihood_category || detail?.likelihood_category || item.likelihood,
+        probability
+      );
+      const risk = impact && likelihood ? riskMatrixLookup[impact]?.[likelihood] : "";
+      return {
+        probability,
+        impact,
+        likelihood,
+        risk: risk || normalizeForecastRisk(item.risk || detail.risk_label || categoryFromRank(detail.risk ?? detail.risk_level))
+      };
+    }
+
+    function matrixHtml(info) {
+      if (!info?.impact || !info?.likelihood) return "";
+      const cells = matrixLikelihoodRows.map(row => {
+        const label = `<div class="tooltip-matrix-label">${escapeHtml(row.key)}<br>${escapeHtml(row.short)}</div>`;
+        const matrixCells = [1, 2, 3, 4, 5].map(impact => {
+          const risk = riskMatrixLookup[impact]?.[row.key] || "Little to None";
+          const selected = impact === info.impact && row.key === info.likelihood;
+          const color = riskColors[risk] || riskColors.None;
+          const impactLabel = matrixImpactLabels[impact - 1] || "Impact";
+          return `<div class="tooltip-matrix-cell" style="background:${color}" aria-label="${escapeHtml(row.key)} ${escapeHtml(impactLabel)} impact: ${escapeHtml(risk)}">${selected ? '<span class="tooltip-matrix-x">X</span>' : ""}</div>`;
+        }).join("");
+        return `${label}${matrixCells}`;
+      }).join("");
+      return `
+        <div class="tooltip-matrix" aria-label="Weather Risk Matrix">
+          <div class="tooltip-matrix-title">Weather Risk Matrix</div>
+          <div class="tooltip-matrix-grid">
+            <div></div>
+            ${matrixImpactLabels.map(label => `<div class="tooltip-matrix-label tooltip-matrix-head">${escapeHtml(label)}</div>`).join("")}
+            ${cells}
+          </div>
+        </div>
+      `;
     }
 
     function spreadAgreementScore(detail = {}) {
@@ -2507,6 +2700,7 @@
       const localWindow = `${formatTooltipLocal(validStart)} - ${formatTooltipLocal(validEnd)}`;
       const utcWindow = `${formatTooltipUtc(validStart)}-${formatTooltipUtc(validEnd)}`;
       const lines = tooltipLinesFor(hazard, block, risk, detail);
+      const matrix = matrixInfoFor(detail, { source: hazard.source, risk });
       return `
         <div class="tooltip-title">${escapeHtml(hazard.name)} - ${escapeHtml(risk)}</div>
         <div class="tooltip-time">${escapeHtml(localWindow)} / ${escapeHtml(utcWindow)}</div>
@@ -2525,6 +2719,7 @@
           `;
           }).join("")}
         </div>
+        ${matrixHtml(matrix)}
       `;
     }
 
@@ -2554,7 +2749,7 @@
       tooltip.hidden = true;
     }
 
-    function tooltipCardHtml(title, subtitle, lines = []) {
+    function tooltipCardHtml(title, subtitle, lines = [], matrixInfo = null) {
       return `
         <div class="tooltip-title">${escapeHtml(title)}</div>
         ${subtitle ? `<div class="tooltip-time">${escapeHtml(subtitle)}</div>` : ""}
@@ -2566,16 +2761,17 @@
             </div>
           `).join("")}
         </div>
+        ${matrixHtml(matrixInfo)}
       `;
     }
 
-    function attachTooltip(element, { title, subtitle = "", lines = [], risk = "Little to None" } = {}) {
+    function attachTooltip(element, { title, subtitle = "", lines = [], risk = "Little to None", matrixInfo = null } = {}) {
       if (!element) return;
       element.classList.add("has-tooltip");
       if (!element.hasAttribute("tabindex")) element.tabIndex = 0;
       element.tooltipPayload = {
         risk,
-        html: tooltipCardHtml(title, subtitle, lines)
+        html: tooltipCardHtml(title, subtitle, lines, matrixInfo)
       };
       if (element.dataset.tooltipBound === "true") return;
       element.dataset.tooltipBound = "true";
@@ -2709,14 +2905,20 @@
       const metric = compactConcernMetric(item) || item.metric || "No signal";
       const confidence = hazardConfidence(item);
       const rank = rankFromCategory(item.risk);
+      const probability = Number(item.probability ?? item.prob);
+      const matrix = matrixInfoFor({}, item);
       return [
         ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
         confidenceLine(confidence),
+        Number.isFinite(probability) ? ["NBM Probability", `${Math.round(probability)}%`] : null,
+        matrix.likelihood ? ["Likelihood", matrix.likelihood] : null,
         ["Timing", rank > 1 ? (item.peak || "Peak window TBD") : ""],
         ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
+        ["72-hr Method", summaryMethodText[item.source] || "Highest hazard risk in the 72-hour DSS window."],
+        ["3-hr Method", timelineMethodText[item.source] || "Block risk from available NBM guidance."],
         ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
         ["Action", item.action || operationalAction(item.risk)]
-      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rank <= 1));
+      ].filter(line => line && line[1] && !(line[0] === "Timing" && /no signal/i.test(line[1]) && rank <= 1));
     }
 
     function renderTopHazards(items) {
@@ -2834,6 +3036,8 @@
         const value = stripValueFor(item);
         const riskColor = riskColors[item.risk] || riskColors.None;
         const valueColor = summaryValueColor(item, value);
+        const bestDetail = bestTimelineDetailFor(item.source, item.risk, latestForecastRawTimeline || {});
+        const matrixInfo = matrixInfoFor(bestDetail || {}, item);
         const valueHtml = item.source === "TEMPERATURE" && /\/|max|min/i.test(value)
           ? temperaturePairHtml(value)
           : escapeHtml(value);
@@ -2849,7 +3053,8 @@
           title: `${item.name} - ${item.risk}`,
           subtitle: value,
           lines: concernTooltipLines(item, value),
-          risk: item.risk
+          risk: item.risk,
+          matrixInfo
         });
         strip.appendChild(chip);
       });
@@ -2932,6 +3137,8 @@
           risk,
           metric: displayMetric,
           probability: detailProbability(bestDetail, item),
+          impactLevel: bestDetail?.values?.impact_level || bestDetail?.impact_level || item.impact_level,
+          likelihood: bestDetail?.values?.likelihood_category || bestDetail?.likelihood_category || item.likelihood_category,
           peak: windowText || (rankFromCategory(risk) > 1 ? shortPeak(bestDetail?.peak_valid_utc || item.peak_valid_utc) : ""),
           impact: operationalImpact(source, risk),
           action: operationalAction(risk),
@@ -2960,6 +3167,9 @@
           name,
           risk,
           metric: displayMetric,
+          probability: item.probability ?? item.prob,
+          impactLevel: item.impact_level,
+          likelihood: item.likelihood_category,
           peak: windowText || shortPeak(item.peak_valid_utc),
           impact: operationalImpact(source, risk),
           action: operationalAction(risk),
