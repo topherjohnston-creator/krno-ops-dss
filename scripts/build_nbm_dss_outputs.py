@@ -1680,9 +1680,20 @@ def qmd_temp_line_matches_window(line: str, fxx: int, window_kind: str = "instan
     return f":{fxx} hour fcst:" in line
 
 
-def qmd_temp_probability_threshold_k(line: str, fxx: int, window_kind: str = "instant") -> tuple[str, float] | None:
-    if not qmd_temp_line_matches_window(line, fxx, window_kind):
-        return None
+def qmd_temp_window_rows(rows: list[dict[str, Any]], fxx: int, window_kind: str = "instant") -> list[dict[str, Any]]:
+    if window_kind == "instant":
+        return [row for row in rows if qmd_temp_line_matches_window(row["line"], fxx, "instant")]
+
+    explicit_rows = [row for row in rows if qmd_temp_line_matches_window(row["line"], fxx, window_kind)]
+    if explicit_rows:
+        return explicit_rows
+
+    # Some QMD cycles publish max/min summary probability distributions as plain
+    # "<fxx> hour fcst" TMP rows instead of explicit "<start>-<end> hour max/min".
+    return [row for row in rows if qmd_temp_line_matches_window(row["line"], fxx, "instant")]
+
+
+def qmd_temp_probability_threshold_k(line: str) -> tuple[str, float] | None:
     match = re.search(r":TMP:2 m above ground:.*:prob ([<>])([0-9.]+):prob fcst", line)
     if not match:
         return None
@@ -1694,8 +1705,8 @@ def qmd_temp_probability_threshold_k(line: str, fxx: int, window_kind: str = "in
 
 def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, operator: str, window_kind: str = "instant") -> list[dict[str, Any]]:
     selected: list[dict[str, Any]] = []
-    for row in rows:
-        parsed = qmd_temp_probability_threshold_k(row["line"], fxx, window_kind)
+    for row in qmd_temp_window_rows(rows, fxx, window_kind):
+        parsed = qmd_temp_probability_threshold_k(row["line"])
         if parsed is None:
             continue
         row_operator, threshold_k = parsed
@@ -1711,9 +1722,9 @@ def select_qmd_temp_probability_rows(rows: list[dict[str, Any]], fxx: int, opera
 
 def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percentile: float, window_kind: str = "instant") -> dict[str, Any] | None:
     selected: list[dict[str, Any]] = []
-    for row in rows:
+    for row in qmd_temp_window_rows(rows, fxx, window_kind):
         line = row["line"]
-        if not qmd_temp_line_matches_window(line, fxx, window_kind) or "% level" not in line:
+        if "% level" not in line:
             continue
         row_percentile = percentile_from_idx_line(line)
         if row_percentile is None:
@@ -1727,11 +1738,11 @@ def select_qmd_temp_percentile_row(rows: list[dict[str, Any]], fxx: int, percent
 
 
 def select_qmd_temp_mean_row(rows: list[dict[str, Any]], fxx: int, window_kind: str = "instant") -> dict[str, Any] | None:
-    return select_first_row(
-        rows,
-        lambda line: qmd_temp_line_matches_window(line, fxx, window_kind)
-        and (":ens mean" in line or line.endswith("fcst:")),
-    )
+    for row in qmd_temp_window_rows(rows, fxx, window_kind):
+        line = row["line"]
+        if ":ens mean" in line or line.endswith("fcst:"):
+            return row
+    return None
 
 
 def interpolate_probability_at_temperature(probability_rows: list[dict[str, float]], threshold_f: float) -> float | None:
@@ -2492,27 +2503,48 @@ def format_temperature_summary_display(max_row: dict[str, Any] | None, min_row: 
     return "Max / Min", f"{max_text} / {min_text}", f"Max {max_text} / Min {min_text}"
 
 
+def qmd_temperature_summary_fxx(cycle: datetime) -> dict[str, list[int]]:
+    """Return QMD f-hours that represent daily max/min windows for a cycle.
+
+    NBM QMD alternates explicit max/min summary windows by cycle time. The
+    completed 06Z/00Z-style cycles line up max windows at f024/f048/f072 and
+    min windows at f036/f060. The 18Z/12Z-style cycles line up overnight min
+    windows at f024/f048/f072 and afternoon max windows at f036/f060. Some
+    cycles label those rows as plain "<fxx> hour fcst", so the row selector
+    handles both explicit and plain labels.
+    """
+    if cycle.hour in (12, 18):
+        return {"max": [36, 60], "min": [24, 48, 72]}
+    return {"max": [24, 48, 72], "min": [36, 60]}
+
+
 def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[str, Any]) -> None:
     qmd_cycle = find_latest_available_cycle("qmd", [24, 36, 48, 60, 72])
     source = f"NOAA NBM QMD AWS {qmd_cycle:%HZ}"
     daily_values: list[dict[str, Any]] = []
+    fxx_by_kind = qmd_temperature_summary_fxx(qmd_cycle)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
-        for fxx in [24, 48, 72]:
+        for fxx in fxx_by_kind["max"]:
             row = qmd_temperature_window_value(qmd_cycle, fxx, "max", tmp)
             if row:
                 daily_values.append(row)
-        for fxx in [36, 60]:
+        for fxx in fxx_by_kind["min"]:
             row = qmd_temperature_window_value(qmd_cycle, fxx, "min", tmp)
             if row:
                 daily_values.append(row)
 
-    if not daily_values:
+    live_daily_values = [
+        row
+        for row in daily_values
+        if row.get("temp_f") is not None or row.get("probabilities")
+    ]
+    if not live_daily_values:
         return
 
     peak = max(
-        daily_values,
+        live_daily_values,
         key=lambda row: (
             row.get("risk", 1),
             row.get("selected_probability", 0.0),
@@ -2522,8 +2554,8 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
     impact = int(peak.get("impact_level") or 1)
     risk = int(peak.get("risk") or 1)
     probability = float(peak.get("selected_probability") or max(peak.get("probabilities", {}).values() or [0.0]))
-    max_rows = [row for row in daily_values if row.get("window_kind") == "max" and row.get("temp_f") is not None]
-    min_rows = [row for row in daily_values if row.get("window_kind") == "min" and row.get("temp_f") is not None]
+    max_rows = [row for row in live_daily_values if row.get("window_kind") == "max" and row.get("temp_f") is not None]
+    min_rows = [row for row in live_daily_values if row.get("window_kind") == "min" and row.get("temp_f") is not None]
     max_temp = min(max_rows, key=lambda row: int(row["fxx"]), default=None)
     min_temp = min(min_rows, key=lambda row: int(row["fxx"]), default=None)
     display_label, display_value, metric = format_temperature_summary_display(max_temp, min_temp)
@@ -2551,7 +2583,8 @@ def apply_qmd_temperature_card(timeline: dict[str, Any], threats_payload: dict[s
             "data_status": "live",
             "method": QMD_SOURCE_METHOD,
             "source": source,
-            "daily_values": daily_values,
+            "daily_values": live_daily_values,
+            "summary_fxx_by_kind": fxx_by_kind,
         }
     )
     for hazard in threats_payload["hazards"]:
