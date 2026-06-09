@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRNO DSS Thresholds / Methodology</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #151b25;
+      --panel: #202938;
+      --line: #405063;
+      --text: #edf3fa;
+      --body: #cbd7e5;
+      --muted: #9aaabe;
+      --blue: #1976d2;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--body);
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 22px 28px;
+      background: linear-gradient(90deg, #17408d, #177ed8);
+      color: var(--text);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 360;
+      letter-spacing: 0;
+    }
+
+    main {
+      max-width: 980px;
+      padding: 26px 28px 42px;
+    }
+
+    section {
+      margin-bottom: 18px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      color: var(--text);
+      font-size: 22px;
+      font-weight: 650;
+    }
+
+    p,
+    li {
+      font-size: 18px;
+    }
+
+    a {
+      color: #8fc8ff;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Thresholds / Methodology</h1>
+    <div>KRNO Airport Ground Operations DSS draft v2</div>
+  </header>
+  <main>
+    <p><a href="./index.html">Back to dashboard</a></p>
+
+    <section>
+      <h2>Purpose</h2>
+      <p>This quicklook page is a partner-facing situational awareness display for Reno-Tahoe International Airport ground operations. It is designed to summarize operational weather risk quickly, not replace official forecasts, warnings, or local decision procedures.</p>
+    </section>
+
+    <section>
+      <h2>Risk Categories</h2>
+      <p>Displayed risk categories are locally configured for decision support: Little to None, Minor, Moderate, Major, and Extreme. These categories are mapped from available forecast probabilities, thresholds, and operational impacts.</p>
+    </section>
+
+    <section>
+      <h2>Hazards</h2>
+      <p>The dashboard supports wind, visibility, snow, rain, lightning, flash freeze, temperature, and freezing rain. The quicklook page emphasizes the highest operational concerns while keeping lower-risk hazards visible.</p>
+    </section>
+
+    <section>
+      <h2>Data Inputs</h2>
+      <p>Values are based on available model guidance, generated JSON products, current KRNO observations, NWS alerts, radar imagery, and lightning proximity data where available. If a field is missing, stale, or unavailable, the dashboard should not imply all-clear conditions.</p>
+    </section>
+
+    <section>
+      <h2>Stale Or Missing Data</h2>
+      <p>Stale observations and missing lightning/radar data are displayed as degraded data states. Stale or unavailable data should not be interpreted as safe, all clear, or operationally current.</p>
+    </section>
+
+    <p class="muted">Phase 2 can expand this page with the full threshold table and probability methodology.</p>
+  </main>
+</body>
+</html>

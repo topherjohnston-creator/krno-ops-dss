@@ -1,0 +1,4194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RNO Wx DSS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-page: #151b25;
+      --bg-panel: #202938;
+      --bg-panel-2: #263244;
+      --bg-panel-3: #2d3a4f;
+      --border: #485663;
+      --border-soft: #35414e;
+      --text-main: #edf3fa;
+      --text-body: #cbd7e5;
+      --text-muted: #9aaabe;
+      --text-dim: #6f8095;
+      --accent-blue: #1976d2;
+      --accent-blue-soft: #2196f3;
+      --risk-none: #2d3745;
+      --risk-little: #4f677d;
+      --risk-minor: #d7bc4a;
+      --risk-moderate: #d98c33;
+      --risk-major: #d25555;
+      --risk-extreme: #b44fd4;
+      --success: #34c38f;
+      --desi-blue-1: #17408d;
+      --desi-blue-2: #0f5bab;
+      --desi-blue-3: #177ed8;
+      --broadcast-cyan: #4fc3ff;
+      --broadcast-orange: #f26a22;
+      --bg: var(--bg-page);
+      --panel: var(--bg-panel);
+      --panel-2: var(--bg-panel-2);
+      --line: rgba(51, 66, 85, 0.72);
+      --line-strong: rgba(68, 84, 106, 0.94);
+      --text: var(--text-main);
+      --soft: var(--text-body);
+      --muted: var(--text-muted);
+      --fresh: var(--success);
+      --none: var(--risk-none);
+      --little: var(--risk-little);
+      --minor: var(--risk-minor);
+      --moderate: var(--risk-moderate);
+      --major: var(--risk-major);
+      --extreme: var(--risk-extreme);
+      --radius: 12px;
+      --page-pad: 18px;
+      --panel-pad: 18px;
+      --gap-main: 14px;
+      --gap-small: 10px;
+      --font: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      --title-font: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% -20%, rgba(41, 128, 212, 0.22), transparent 34%),
+        linear-gradient(180deg, #1c2430, #151b25 52%, #121821),
+        var(--bg-page);
+    }
+
+    .app {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 72px 88px 86px minmax(0, 1fr) 250px;
+      gap: var(--gap-main);
+      padding: 0 var(--page-pad) var(--page-pad);
+      overflow: hidden;
+    }
+
+    .panel,
+    .header,
+    .concern {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(39, 50, 68, 0.98), rgba(28, 37, 51, 0.99)),
+        var(--bg-panel);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      margin-inline: calc(-1 * var(--page-pad));
+      padding: 8px 42px;
+      border: 0;
+      border-radius: 0;
+      background: linear-gradient(90deg, var(--desi-blue-1) 0%, var(--desi-blue-2) 56%, var(--desi-blue-3) 100%);
+      box-shadow: none;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .seal {
+      display: block;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      object-fit: contain;
+      box-shadow: 0 2px 9px rgba(0, 0, 0, 0.25);
+    }
+
+    .title h1 {
+      margin: 0;
+      color: #f2f6fb;
+      font-family: var(--title-font);
+      font-size: 35px;
+      line-height: 1.04;
+      font-weight: 300;
+      letter-spacing: 0;
+      text-shadow: none;
+    }
+
+    .title div {
+      display: block;
+      margin-top: 5px;
+      color: rgba(242, 246, 251, 0.82);
+      font-family: var(--title-font);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 9px;
+      border: 1px solid rgba(235, 244, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(20, 41, 72, 0.26);
+      color: rgba(242, 246, 251, 0.9);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .badge strong {
+      color: #ffffff;
+      margin-left: 5px;
+      font-weight: 650;
+    }
+
+    .badge.fresh {
+      border-color: rgba(93, 211, 158, 0.44);
+      background: rgba(33, 92, 68, 0.32);
+      color: #c4f3de;
+    }
+
+    .badge.aging {
+      border-color: rgba(231, 198, 77, 0.46);
+      background: rgba(118, 91, 18, 0.32);
+      color: #ffe9a3;
+    }
+
+    .badge.stale {
+      border-color: rgba(217, 78, 70, 0.52);
+      background: rgba(112, 31, 31, 0.34);
+      color: #ffd0cc;
+    }
+
+    .badge.beta {
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .badge.methodology {
+      color: rgba(242, 246, 251, 0.76);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 520;
+    }
+
+    .badge.methodology:hover,
+    .badge.methodology:focus-visible {
+      color: #fff;
+      border-color: rgba(139, 184, 245, 0.66);
+      outline: none;
+    }
+
+    .has-tooltip {
+      cursor: help;
+    }
+
+    .has-tooltip:focus-visible,
+    .impact-cell:focus-visible {
+      outline: 3px solid rgba(139, 184, 245, 0.88);
+      outline-offset: 2px;
+    }
+
+    .concern {
+      display: grid;
+      grid-template-columns: 14px minmax(0, 1fr);
+      align-items: center;
+      min-height: 0;
+      background:
+        linear-gradient(90deg, rgba(42, 51, 63, 0.98), rgba(29, 39, 55, 0.99) 60%, rgba(35, 48, 65, 0.98)),
+        var(--bg-panel);
+    }
+
+    .concern-accent {
+      width: 100%;
+      height: 100%;
+      background: var(--moderate);
+      box-shadow: 0 0 24px rgba(216, 188, 74, 0.24);
+    }
+
+    .concern-main {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+      align-items: center;
+      gap: 18px;
+      padding: 12px 24px;
+      overflow: hidden;
+    }
+
+    .concern-label {
+      color: var(--text-muted);
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .concern-title {
+      margin-top: 4px;
+      color: var(--text-main);
+      font-size: 42px;
+      line-height: 0.95;
+      font-weight: 720;
+      white-space: nowrap;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.24);
+    }
+
+    .concern-detail {
+      margin-top: 0;
+      color: var(--text-body);
+      font-size: 27px;
+      line-height: 1.15;
+      font-weight: 520;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .concern-pills {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .concern-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 11px;
+      border: 1px solid color-mix(in srgb, var(--pill-color, #8ba6ca) 70%, transparent);
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--pill-color, #8ba6ca) 26%, rgba(38, 50, 68, 0.94)), rgba(28, 37, 51, 0.84));
+      color: #f2f6fb;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 560;
+      text-transform: capitalize;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .concern-pill.peak { --pill-color: #4fc3ff; }
+    .concern-pill.impact { --pill-color: var(--pill-risk-color, var(--minor)); }
+    .concern-pill.action { --pill-color: var(--accent-blue-soft); }
+    .concern-pill.confidence { --pill-color: var(--success); }
+    .concern-pill.confidence.medium { --pill-color: var(--minor); color: #fff7d6; }
+    .concern-pill.confidence.low { --pill-color: var(--major); }
+
+    .hazard-strip {
+      display: grid;
+      grid-template-columns: 176px repeat(8, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 8px;
+      min-height: 0;
+      padding: 10px 12px;
+      background:
+        linear-gradient(180deg, rgba(38, 50, 68, 0.94), rgba(28, 37, 51, 0.98)),
+        var(--bg-panel);
+    }
+
+    .strip-label {
+      display: grid;
+      align-content: center;
+      padding: 0 12px;
+      border-right: 1px solid rgba(72, 86, 99, 0.55);
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.08;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .summary-chip {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      align-content: center;
+      gap: 3px;
+      min-height: 0;
+      padding: 6px 8px 6px 10px;
+      border: 1px solid rgba(65, 82, 105, 0.66);
+      border-left: 6px solid var(--none);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(44, 57, 75, 0.74), rgba(31, 41, 56, 0.76));
+      overflow: hidden;
+    }
+
+    .summary-chip[data-active="false"] {
+      border-color: rgba(55, 70, 91, 0.42);
+      border-left-color: rgba(79, 103, 125, 0.58);
+      background: linear-gradient(180deg, rgba(34, 45, 60, 0.54), rgba(25, 34, 46, 0.58));
+      opacity: 0.72;
+    }
+
+    .summary-chip[data-active="true"] {
+      background: linear-gradient(180deg, rgba(55, 68, 87, 0.86), rgba(36, 47, 64, 0.8));
+      box-shadow: 0 0 0 1px rgba(235, 244, 255, 0.06), 0 10px 22px rgba(0, 0, 0, 0.14);
+    }
+
+    .summary-hazard {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-risk {
+      color: var(--text-body);
+      font-size: 16px;
+      line-height: 1.02;
+      font-weight: 620;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-value {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.08;
+      font-weight: 500;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .metric-separator,
+    .obs-separator {
+      color: var(--text-muted);
+    }
+
+    .timeline-panel {
+      display: grid;
+      grid-template-rows: 42px minmax(0, 1fr) 30px;
+      min-height: 0;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 var(--panel-pad);
+      border-bottom: 1px solid rgba(55, 75, 99, 0.66);
+      background: linear-gradient(90deg, rgba(30, 41, 57, 0.94), rgba(38, 50, 68, 0.74));
+      overflow: hidden;
+    }
+
+    .panel-title {
+      color: var(--text-main);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .timeline-note {
+      color: var(--text-muted);
+      font-size: 18px;
+      font-weight: 520;
+      white-space: nowrap;
+    }
+
+    .matrix {
+      position: relative;
+      display: grid;
+      grid-template-columns: 184px repeat(24, minmax(0, 1fr));
+      grid-template-rows: 56px repeat(var(--timeline-rows, 8), minmax(0, 1fr));
+      gap: 2px;
+      min-height: 0;
+      padding: 10px 14px 6px;
+      overflow: hidden;
+    }
+
+    .corner,
+    .time-cell,
+    .row-label,
+    .impact-cell {
+      border: 1px solid rgba(51, 66, 85, 0.42);
+      background: rgba(24, 33, 46, 0.72);
+    }
+
+    .corner {
+      display: flex;
+      align-items: end;
+      padding: 0 0 8px 10px;
+      color: var(--text-dim);
+      font-size: 15px;
+      font-weight: 520;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .time-cell {
+      display: grid;
+      place-items: center;
+      padding: 3px 1px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 0.98;
+      font-weight: 560;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .time-cell > div {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .time-cell strong {
+      display: block;
+      color: var(--text-body);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .time-cell.quiet {
+      color: rgba(148, 163, 184, 0.22);
+    }
+
+    .time-cell.day-start,
+    .impact-cell.day-start {
+      border-left-color: rgba(139, 184, 245, 0.92);
+      border-left-width: 3px;
+    }
+
+    .time-cell.night,
+    .impact-cell.night {
+      box-shadow: inset 0 0 0 999px rgba(8, 13, 20, 0.18);
+    }
+
+    .row-label {
+      display: grid;
+      place-items: center start;
+      align-items: center;
+      padding: 0 12px;
+      border-left: 5px solid rgba(47, 120, 209, 0.56);
+      color: var(--text-main);
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 640;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .row-label span {
+      display: none;
+    }
+
+    .impact-cell {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 0;
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 620;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+      overflow: hidden;
+    }
+
+    .impact-cell[data-risk="None"] {
+      background: var(--none);
+      color: transparent;
+      opacity: 0.54;
+    }
+
+    .impact-cell[data-risk="Little to None"] {
+      background: var(--little);
+      color: transparent;
+      opacity: 0.62;
+    }
+
+    .impact-cell[data-risk="Minor"] {
+      background: var(--minor);
+      color: #241f0b;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+    }
+
+    .impact-cell[data-risk="Moderate"] {
+      background: var(--moderate);
+      color: #24170a;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 0 12px rgba(217, 140, 51, 0.22);
+    }
+
+    .impact-cell[data-risk="Major"] {
+      background: var(--major);
+      color: #fff2f0;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 0 14px rgba(210, 85, 85, 0.3);
+    }
+
+    .impact-cell[data-risk="Extreme"] {
+      background: var(--extreme);
+      color: #fff0ff;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2), 0 0 16px rgba(180, 79, 212, 0.34);
+    }
+
+    .now-line {
+      position: absolute;
+      top: 10px;
+      bottom: 6px;
+      left: calc(14px + 184px);
+      width: 3px;
+      background: var(--accent-blue-soft);
+      box-shadow: 0 0 0 1px rgba(17, 23, 34, 0.78), 0 0 12px rgba(58, 134, 224, 0.35);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .now-tag {
+      position: absolute;
+      top: 54px;
+      left: calc(14px + 184px);
+      z-index: 6;
+      translate: -50% 0;
+      padding: 2px 7px;
+      border: 1px solid rgba(139, 184, 245, 0.72);
+      border-radius: 999px;
+      background: #19375c;
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 0 12px 2px;
+      overflow: hidden;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 26px;
+      height: 13px;
+      border: 1px solid rgba(231, 237, 245, 0.16);
+      border-radius: 2px;
+    }
+
+    .no-signal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: 0 16px 2px;
+      color: var(--text-muted);
+      font-size: 17px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .no-signal[hidden] {
+      display: none;
+    }
+
+    .no-signal strong {
+      color: var(--text-body);
+      font-weight: 580;
+    }
+
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1.06fr 1.18fr 1.10fr;
+      gap: var(--gap-main);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .bottom-panel {
+      display: grid;
+      grid-template-rows: 42px minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .bottom-body {
+      min-height: 0;
+      overflow: hidden;
+      padding: 10px 14px;
+    }
+
+    .obs-body {
+      display: grid;
+      grid-template-columns: 188px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    .wind-rose {
+      width: 184px;
+      height: 184px;
+      display: block;
+    }
+
+    .obs-lines {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px 12px;
+      align-content: center;
+    }
+
+    .wind-big {
+      grid-column: 1 / -1;
+      color: var(--text-main);
+      font-size: 39px;
+      line-height: 1;
+      font-weight: 660;
+      white-space: nowrap;
+    }
+
+    .obs-line {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      color: var(--text-muted);
+      font-size: 19px;
+      line-height: 1.05;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .obs-line strong {
+      color: var(--text-body);
+      font-size: 22px;
+      font-weight: 600;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: nowrap;
+    }
+
+    .obs-line.wide {
+      grid-column: 1 / -1;
+    }
+
+    .hazard-table {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+      height: 100%;
+      gap: 9px;
+    }
+
+    .hazard-row {
+      display: grid;
+      align-content: center;
+      gap: 3px;
+      min-height: 0;
+      padding: 6px 10px;
+      border: 1px solid rgba(51, 66, 85, 0.5);
+      border-left: 6px solid var(--none);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(42, 55, 73, 0.72), rgba(31, 42, 58, 0.68));
+      overflow: hidden;
+    }
+
+    .hazard-row[data-active="true"] {
+      background: linear-gradient(180deg, rgba(52, 66, 83, 0.86), rgba(35, 45, 60, 0.78));
+      box-shadow: inset 0 0 0 1px rgba(237, 243, 250, 0.05);
+    }
+
+    .hazard-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .hazard-name {
+      color: var(--text-main);
+      font-size: 17px;
+      line-height: 1.05;
+      font-weight: 600;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .hazard-name::after {
+      content: "";
+    }
+
+    .hazard-risk {
+      font-size: 17px;
+      line-height: 1.05;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .hazard-summary {
+      color: var(--text-body);
+      font-size: 15px;
+      line-height: 1.08;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hazard-dash {
+      color: var(--text-dim);
+      font-size: 16px;
+      font-weight: 480;
+    }
+
+    [data-current-obs].obs-stale {
+      position: relative;
+      border-color: rgba(217, 78, 70, 0.56);
+      box-shadow: inset 0 0 0 1px rgba(217, 78, 70, 0.12);
+    }
+
+    [data-current-obs].obs-stale .wind-rose,
+    [data-current-obs].obs-stale .wind-big,
+    [data-current-obs].obs-stale .obs-line {
+      opacity: 0.54;
+    }
+
+    .obs-stale-warning {
+      display: none;
+      position: absolute;
+      left: 238px;
+      right: 14px;
+      bottom: 10px;
+      z-index: 4;
+      padding: 7px 9px;
+      border: 1px solid rgba(217, 78, 70, 0.48);
+      border-left: 5px solid var(--major);
+      border-radius: 7px;
+      background: rgba(92, 32, 34, 0.38);
+      color: #ffd7d3;
+      font-size: 14px;
+      line-height: 1.12;
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .obs-stale-warning span {
+      display: block;
+      margin-top: 2px;
+      color: #f1b5ae;
+      font-size: 12px;
+      font-weight: 540;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    [data-current-obs].obs-stale .obs-stale-warning {
+      display: block;
+    }
+
+    .radar-body {
+      display: grid;
+      grid-template-columns: minmax(0, 282px) minmax(120px, 0.82fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .radar-map {
+      position: relative;
+      min-height: 0;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border: 1px solid rgba(80, 97, 121, 0.72);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(51, 75, 92, 0.64), rgba(19, 27, 38, 0.86)),
+        #182536;
+    }
+
+    .radar-basemap,
+    .radar-reflectivity {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: fill;
+    }
+
+    .radar-map.leaflet-container {
+      background: #121a25;
+      font-family: var(--font);
+    }
+
+    .radar-map.no-leaflet > .radar-basemap,
+    .radar-map.no-leaflet > .radar-reflectivity {
+      object-fit: fill;
+    }
+
+    .radar-map.leaflet-ready > .radar-basemap,
+    .radar-map.leaflet-ready > .radar-reflectivity,
+    .radar-map.leaflet-ready > .range-ring,
+    .radar-map.leaflet-ready > .airport-marker,
+    .radar-map.leaflet-ready > .lightning-layer,
+    .radar-map.leaflet-ready > .lightning-dot,
+    .radar-map.leaflet-ready > .map-label.range {
+      display: none;
+    }
+
+    .radar-map .leaflet-control-container {
+      display: none;
+    }
+
+    .radar-map .leaflet-tile {
+      filter: saturate(1) contrast(1.08) brightness(1);
+    }
+
+    .radar-map .leaflet-overlay-pane {
+      mix-blend-mode: normal;
+    }
+
+    .radar-basemap {
+      z-index: 0;
+      opacity: 0.6;
+      filter: saturate(0.82) contrast(1.08) brightness(0.62);
+    }
+
+    .radar-reflectivity {
+      z-index: 1;
+      opacity: 0.6;
+      mix-blend-mode: screen;
+      filter: saturate(1.12) contrast(1.12) brightness(0.95);
+    }
+
+    .radar-map::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(18, 26, 37, 0.06), rgba(18, 26, 37, 0.32)),
+        radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(10, 16, 24, 0.24) 100%);
+      pointer-events: none;
+    }
+
+    .range-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+      border: 2px solid rgba(235, 244, 255, 0.5);
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(10, 16, 24, 0.42);
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .range-ring.r10 { height: 33.333%; aspect-ratio: 1; }
+    .range-ring.r15 { display: none; }
+    .range-ring.r20 { display: none; }
+    .range-ring.r25 { display: none; }
+
+    .airport-marker {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      translate: -50% -50%;
+      border-radius: 50%;
+      z-index: 5;
+      background: var(--airport-marker-color, var(--success));
+      box-shadow:
+        0 0 0 3px rgba(14, 20, 29, 0.78),
+        0 0 18px color-mix(in srgb, var(--airport-marker-color, var(--success)) 70%, transparent);
+    }
+
+    .airport-marker::after {
+      content: none;
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      translate: 0 -50%;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(13, 20, 30, 0.78);
+      color: #f4f8ff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .lightning-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .lightning-strike {
+      position: absolute;
+      translate: -50% -50%;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      color: var(--strike-color, #34c38f);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 800;
+      text-shadow:
+        0 0 4px rgba(8, 12, 18, 0.96),
+        0 0 10px color-mix(in srgb, var(--strike-color, #34c38f) 80%, transparent);
+      z-index: 6;
+    }
+
+    .lightning-strike::before {
+      content: "+";
+    }
+
+    .lightning-dot[hidden],
+    .lightning-layer[hidden] {
+      display: none;
+    }
+
+    .map-label {
+      position: absolute;
+      z-index: 7;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(18, 27, 39, 0.78);
+      color: var(--text-body);
+      font-size: 13px;
+      font-weight: 620;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .map-label.source {
+      left: 8px;
+      bottom: 8px;
+    }
+
+    .map-label.range {
+      display: none;
+    }
+
+    .quicklook-lightning-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #ff4b22;
+      box-shadow: 0 0 0 4px rgba(14, 20, 29, 0.72), 0 0 19px rgba(255, 75, 34, 0.9);
+    }
+
+    .leaflet-airport-marker {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--airport-marker-color, var(--success));
+      box-shadow:
+        0 0 0 3px rgba(14, 20, 29, 0.84),
+        0 0 18px color-mix(in srgb, var(--airport-marker-color, var(--success)) 70%, transparent);
+    }
+
+    .leaflet-lightning-strike {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      color: var(--strike-color, #34c38f);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 850;
+      text-shadow:
+        0 0 3px rgba(0, 0, 0, 0.95),
+        0 0 7px currentColor;
+    }
+
+    .map-label.radar-time {
+      position: static;
+      max-width: 54%;
+      color: var(--text-main);
+      background: rgba(18, 27, 39, 0.68);
+      border: 1px solid rgba(74, 99, 127, 0.55);
+      font-size: 12px;
+      padding: 3px 7px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .map-label.lightning-clear {
+      right: 8px;
+      top: 8px;
+      max-width: 52%;
+      color: var(--text-body);
+      text-align: right;
+    }
+
+    .lightning-status {
+      display: grid;
+      align-content: center;
+      gap: 9px;
+      min-height: 0;
+    }
+
+    .lightning-pill {
+      display: grid;
+      place-items: center;
+      min-height: 64px;
+      padding: 8px 12px;
+      border: 1px solid rgba(52, 195, 143, 0.58);
+      border-radius: 999px;
+      background: rgba(52, 195, 143, 0.22);
+      color: #d8f5e7;
+      font-size: 25px;
+      line-height: 1.05;
+      font-weight: 650;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 26px rgba(0,0,0,0.16);
+    }
+
+    .lightning-pill.yellow {
+      background: rgba(215, 188, 74, 0.28);
+      color: #fff5bf;
+      border-color: rgba(215, 188, 74, 0.58);
+    }
+
+    .lightning-pill.orange {
+      background: rgba(217, 140, 51, 0.30);
+      color: #ffe2c3;
+      border-color: rgba(217, 140, 51, 0.62);
+    }
+
+    .lightning-pill.red {
+      background: rgba(210, 85, 85, 0.34);
+      color: #ffe3e3;
+      border-color: rgba(210, 85, 85, 0.66);
+    }
+
+    .lightning-pill.purple {
+      background: rgba(180, 79, 212, 0.34);
+      color: #fce8ff;
+      border-color: rgba(180, 79, 212, 0.7);
+    }
+
+    .lightning-pill.unavailable {
+      background: rgba(148, 163, 184, 0.16);
+      color: #d8e0ea;
+      border-color: rgba(148, 163, 184, 0.48);
+    }
+
+    .lightning-subtext {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.16;
+      font-weight: 520;
+      text-align: center;
+    }
+
+    .trigger-line {
+      display: grid;
+      grid-template-columns: 116px minmax(0, 1fr);
+      gap: 10px;
+      align-items: baseline;
+      min-height: 0;
+    }
+
+    .trigger-label {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 620;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .trigger-value {
+      color: var(--text-main);
+      font-size: 23px;
+      line-height: 1.05;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .trigger-action {
+      margin-top: 2px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--text-main);
+      background: rgba(255,255,255,0.07);
+      font-size: 19px;
+      line-height: 1.15;
+      font-weight: 500;
+    }
+
+    .trigger-action:empty {
+      display: none;
+    }
+
+    .alerts-data {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      gap: var(--gap-small);
+      height: 100%;
+    }
+
+    .alert-clear {
+      padding: 12px 14px;
+      border: 1px solid rgba(93, 211, 158, 0.34);
+      border-left: 7px solid var(--fresh);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(48, 100, 82, 0.22), rgba(31, 48, 54, 0.72));
+      display: grid;
+      align-content: center;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .alert-clear.active {
+      border-color: rgba(238, 138, 51, 0.45);
+      border-left-color: var(--moderate);
+      background: rgba(102, 55, 21, 0.22);
+    }
+
+    .alert-title {
+      color: #d8f5e7;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 650;
+    }
+
+    .alert-text {
+      margin-top: 5px;
+      color: var(--text-body);
+      font-size: 19px;
+      line-height: 1.15;
+      font-weight: 520;
+      white-space: normal;
+    }
+
+    .data-summary {
+      color: var(--text-muted);
+      font-size: 18px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 4px;
+    }
+
+    .timeline-tooltip {
+      position: fixed;
+      z-index: 2200;
+      width: min(430px, calc(100vw - 32px));
+      padding: 13px 14px 14px;
+      border: 1px solid var(--line-strong);
+      border-left: 7px solid var(--little);
+      border-radius: 10px;
+      background: rgba(27, 36, 49, 0.98);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+      color: var(--text-body);
+      font-size: 16px;
+      line-height: 1.25;
+      pointer-events: none;
+    }
+
+    .timeline-tooltip[hidden] {
+      display: none;
+    }
+
+    .tooltip-title {
+      color: var(--text-main);
+      font-size: 20px;
+      font-weight: 650;
+      text-transform: uppercase;
+    }
+
+    .tooltip-time {
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .tooltip-lines {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .tooltip-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border-top: 1px solid rgba(51, 66, 85, 0.58);
+      padding-top: 5px;
+    }
+
+    .tooltip-line span {
+      color: var(--text-muted);
+      font-weight: 500;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .tooltip-line strong {
+      color: var(--text-main);
+      font-weight: 600;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .mono {
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1500px) {
+      .app {
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .header {
+        grid-template-columns: auto 1fr auto;
+      }
+
+      .seal {
+        width: 38px;
+        height: 38px;
+      }
+
+      .title h1 {
+        font-size: 29px;
+      }
+
+      .badge {
+        font-size: 14px;
+        min-height: 30px;
+        padding: 5px 8px;
+      }
+
+      .concern-title {
+        font-size: 42px;
+      }
+
+      .concern-detail {
+        font-size: 21px;
+      }
+
+      .hazard-strip {
+        grid-template-columns: 142px repeat(8, minmax(0, 1fr));
+        gap: 5px;
+        padding: 8px;
+      }
+
+      .strip-label {
+        padding: 0 8px;
+        font-size: 13px;
+      }
+
+      .summary-chip {
+        padding: 5px 6px 5px 8px;
+      }
+
+      .summary-hazard {
+        font-size: 11px;
+      }
+
+      .summary-risk {
+        font-size: 15px;
+      }
+
+      .summary-value {
+        font-size: 12px;
+      }
+
+      .bottom-row {
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr) minmax(0, 0.82fr);
+      }
+
+      .bottom-body {
+        padding: 10px 12px 12px;
+      }
+
+      .obs-body {
+        grid-template-columns: 168px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .wind-rose {
+        width: 166px;
+        height: 166px;
+      }
+
+      .obs-lines {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .wind-big {
+        font-size: 32px;
+      }
+
+      .obs-line,
+      .obs-line strong {
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .obs-line {
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .hazard-table {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .hazard-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 8px;
+      }
+
+      .hazard-top {
+        min-width: 0;
+      }
+
+      .hazard-name,
+      .hazard-risk {
+        font-size: 15px;
+      }
+
+      .hazard-summary {
+        justify-self: end;
+        max-width: none;
+        font-size: 14px;
+        text-align: right;
+      }
+    }
+
+    @media (max-height: 850px) {
+      .app {
+        grid-template-rows: 70px 82px 76px minmax(0, 1fr) 220px;
+        gap: 8px;
+        padding-bottom: 10px;
+      }
+
+      .timeline-panel {
+        grid-template-rows: 38px minmax(0, 1fr) 24px;
+      }
+
+      .matrix {
+        grid-template-rows: 34px repeat(var(--timeline-rows, 8), minmax(14px, 1fr));
+        gap: 1px;
+        padding: 7px 14px 4px;
+      }
+
+      .time-cell {
+        font-size: 12px;
+      }
+
+      .time-cell strong {
+        font-size: 13px;
+      }
+
+      .row-label {
+        font-size: 12px;
+      }
+
+      .impact-cell {
+        font-size: 12px;
+      }
+
+      .legend {
+        min-height: 24px;
+        padding-top: 3px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header" aria-label="Airport weather DSS header">
+      <div class="brand" aria-label="NOAA and National Weather Service branding">
+        <img class="seal" src="../assets/noaa-emblem-circle.png" alt="NOAA">
+        <img class="seal" src="../assets/nws-logo-2021.png" alt="National Weather Service">
+      </div>
+      <div class="title">
+        <h1>Weather Decision Support Dashboard</h1>
+        <div>Reno-Tahoe International Airport Ground Operations</div>
+      </div>
+      <div class="badges">
+        <div class="badge" id="updated-badge">Updated <strong id="updated-local">2:55 PM PDT</strong></div>
+        <div class="badge mono" id="updated-utc">2155Z</div>
+        <div class="badge fresh" id="obs-badge">Obs <strong id="obs-state">Fresh</strong></div>
+        <div class="badge" id="model-badge">NBM Cycle: <strong id="model-cycle">18Z</strong></div>
+        <a class="badge methodology" href="./methodology.html">Thresholds / Methodology</a>
+        <div class="badge beta" id="beta-badge">Beta / Internal Use</div>
+      </div>
+    </header>
+
+    <section class="concern" id="primary-concern" data-primary-concern aria-label="Primary operational concern">
+      <div class="concern-accent" id="primary-accent"></div>
+      <div class="concern-main">
+        <div>
+          <div class="concern-label">Primary Concern</div>
+          <div class="concern-title" id="primary-title">MODERATE - LIGHTNING</div>
+        </div>
+        <div class="concern-detail concern-pills" id="primary-detail">
+          <span class="concern-pill peak">Peak Thu 5 PM</span>
+          <span class="concern-pill impact">Ramp Lightning</span>
+          <span class="concern-pill action">Monitor</span>
+          <span class="concern-pill confidence high">Confidence High</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel hazard-strip" aria-label="72-hour hazard summary">
+      <div class="strip-label">Weather Risk Summary</div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Lightning</div>
+        <div class="summary-risk">Moderate</div>
+        <div class="summary-value">Peak Thu 3 PM-6 PM</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Wind</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">Gust 26 mph</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Rain</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">0.02 in</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Visibility</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">6+ mi</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Snow</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Freezing Rain</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Flash Freeze</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+      <div class="summary-chip" data-summary-placeholder>
+        <div class="summary-hazard">Temperature</div>
+        <div class="summary-risk">Little to None</div>
+        <div class="summary-value">No signal</div>
+      </div>
+    </section>
+
+    <section class="panel timeline-panel" aria-label="72-hour impact timeline">
+      <div class="panel-head">
+        <div class="panel-title">Weather Risk Timeline</div>
+      </div>
+      <div class="matrix" id="timeline-matrix">
+        <div class="now-line" aria-hidden="true"></div>
+        <div class="now-tag">NOW</div>
+      </div>
+      <div class="no-signal" id="no-signal-line" hidden></div>
+      <div class="legend" id="legend" aria-label="Impact category legend"></div>
+    </section>
+
+    <section class="bottom-row" aria-label="Quick-look bottom row">
+      <section class="panel bottom-panel" data-current-obs aria-labelledby="obs-title">
+        <div class="panel-head">
+          <div class="panel-title" id="obs-title">Current Conditions</div>
+        </div>
+        <div class="bottom-body obs-body">
+          <svg class="wind-rose" id="wind-rose" viewBox="0 0 220 220" role="img" aria-label="Wind rose">
+            <defs>
+              <filter id="windShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
+              </filter>
+            </defs>
+            <circle cx="110" cy="110" r="96" fill="#222c39" stroke="rgba(148,163,184,0.3)" stroke-width="2"></circle>
+            <circle cx="110" cy="110" r="67" fill="none" stroke="rgba(148,163,184,0.17)" stroke-width="1" stroke-dasharray="4 5"></circle>
+            <circle cx="110" cy="110" r="36" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="1"></circle>
+            <line x1="110" y1="18" x2="110" y2="202" stroke="rgba(148,163,184,0.2)" stroke-width="1"></line>
+            <line x1="18" y1="110" x2="202" y2="110" stroke="rgba(148,163,184,0.2)" stroke-width="1"></line>
+            <line x1="45" y1="45" x2="175" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
+            <line x1="175" y1="45" x2="45" y2="175" stroke="rgba(148,163,184,0.12)" stroke-width="1"></line>
+            <text x="110" y="17" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">N</text>
+            <text x="205" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">E</text>
+            <text x="110" y="216" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">S</text>
+            <text x="15" y="115" text-anchor="middle" fill="#c7d2df" font-size="14" font-weight="600">W</text>
+            <g id="wind-arrow" transform="rotate(100 110 110)" filter="url(#windShadow)">
+              <line x1="110" y1="110" x2="110" y2="35" stroke="#d7bc4a" stroke-width="8" stroke-linecap="round"></line>
+              <polygon points="110,20 98,46 122,46" fill="#d7bc4a"></polygon>
+              <circle cx="110" cy="110" r="8" fill="#d7bc4a" stroke="#111722" stroke-width="3"></circle>
+            </g>
+          </svg>
+          <div class="obs-lines">
+            <div class="wind-big" id="wind-line" data-wind-value>280&deg; 13 mph</div>
+            <div class="obs-line" id="vis-item">VISIBILITY:<strong id="vis-line">10+ SM</strong></div>
+            <div class="obs-line wide" id="sky-item">SKY:<strong id="sky-line">BKN023 / BKN055</strong></div>
+            <div class="obs-line" id="temp-item">T/TD:<strong id="temp-line">46 / 37&deg;F</strong></div>
+            <div class="obs-line" id="wx-item">WX:<strong id="wx-line">None</strong></div>
+            <div class="obs-line wide" id="rain-item">RAIN 1HR:<strong id="rain-line">0.00 in</strong></div>
+            <div class="obs-line wide" id="obs-time-item">Obs:<strong id="obs-time">2:55 PM PDT</strong></div>
+            <div class="obs-stale-warning" id="obs-stale-warning">OBS STALE<span id="obs-stale-time">Last KRNO obs: --</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel bottom-panel radar-panel" aria-labelledby="radar-title">
+        <div class="panel-head">
+          <div class="panel-title" id="radar-title">Radar / Lightning</div>
+          <div class="map-label radar-time" id="radar-time">Scan --</div>
+        </div>
+        <div class="bottom-body radar-body">
+          <div class="radar-map" id="radar-map">
+            <img id="radar-basemap" class="radar-basemap" alt="" aria-hidden="true">
+            <img id="radar-img" class="radar-reflectivity" alt="Animated reflectivity loop near KRNO">
+            <div class="range-ring r10"></div>
+            <div class="range-ring r15"></div>
+            <div class="range-ring r20"></div>
+            <div class="range-ring r25"></div>
+            <div class="airport-marker" id="airport-marker" aria-label="KRNO"></div>
+            <div class="lightning-layer" id="lightning-layer" hidden></div>
+            <div class="lightning-dot" id="lightning-dot" hidden></div>
+            <div class="map-label range">25 NM</div>
+          </div>
+          <div class="lightning-status" id="lightning-panel">
+            <div class="lightning-pill unavailable" id="lightning-pill">Lightning data loading</div>
+            <div class="lightning-subtext" id="lightning-subtext">Scan time unavailable</div>
+            <div class="trigger-action" id="lightning-action"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel bottom-panel" aria-labelledby="alerts-title">
+        <div class="panel-head">
+          <div class="panel-title" id="alerts-title">NWS Alerts</div>
+        </div>
+        <div class="bottom-body alerts-data">
+          <div class="alert-clear" id="alert-box">
+            <div class="alert-title">No active NWS alerts</div>
+            <div class="alert-text">for KRNO<br>Local DSS risk may still exist</div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+  <div class="timeline-tooltip" id="timeline-tooltip" role="tooltip" hidden></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const forecastCategories = ["Little to None", "Minor", "Moderate", "Major", "Extreme"];
+    const riskRank = {
+      "None": 0,
+      "Little to None": 1,
+      "Minor": 2,
+      "Moderate": 3,
+      "Major": 4,
+      "Extreme": 5
+    };
+    const riskColors = {
+      "None": "#2d3745",
+      "Little to None": "#4f677d",
+      "Minor": "#d7bc4a",
+      "Moderate": "#d98c33",
+      "Major": "#d25555",
+      "Extreme": "#b44fd4"
+    };
+    const impactCellText = {
+      "None": "",
+      "Little to None": "",
+      "Minor": "MINOR",
+      "Moderate": "MOD",
+      "Major": "MAJOR",
+      "Extreme": "EXTREME"
+    };
+    const coreTimelineSources = new Set(["WIND", "LIGHTNING", "RAIN", "VISIBILITY"]);
+    const hazards = [
+      { id: "WIND", row: "WIND", cell: "WIND", name: "Wind", source: "WIND" },
+      { id: "LTNG", row: "LIGHTNING", cell: "LTNG", name: "Lightning", source: "LIGHTNING" },
+      { id: "SNOW", row: "SNOW", cell: "SNOW", name: "Snow", source: "SNOW" },
+      { id: "VIS", row: "VISIBILITY", cell: "VIS", name: "Visibility", source: "VISIBILITY" },
+      { id: "FZRA", row: "FREEZING RAIN", cell: "FZRA", name: "Freezing Rain", source: "FZRA" },
+      { id: "FLASHFZ", row: "FLASH FREEZE", cell: "FL FZ", name: "Flash Freeze", source: "FLASH_FREEZE" },
+      { id: "RAIN", row: "RAIN", cell: "RAIN", name: "Rain", source: "RAIN" },
+      { id: "TEMP", row: "TEMPERATURE", cell: "TEMP", name: "Temperature", source: "TEMPERATURE" }
+    ];
+    const hazardPriority = ["TEMPERATURE", "RAIN", "VISIBILITY", "WIND", "LIGHTNING", "SNOW", "FZRA", "FLASH_FREEZE"];
+    const hazardNames = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.name]));
+    const hazardIdBySource = Object.fromEntries(hazards.map(hazard => [hazard.source, hazard.id]));
+    const timelineMethodText = {
+      WIND: "Timeline: NBM QMD P90 10 m wind gust display with probability-of-threshold risk in each 3-hour block.",
+      LIGHTNING: "Timeline: maximum NBM 3-hour thunder probability in each 3-hour block.",
+      RAIN: "Timeline: NBM hourly rain amount/rate mapped into each 3-hour block.",
+      VISIBILITY: "Timeline: lowest NBM visibility / low-visibility probability in each 3-hour block.",
+      SNOW: "Timeline: NBM snow amount/probability in the native 1-hour or 6-hour snow window.",
+      FZRA: "Timeline: NBM freezing-rain amount/probability in the native 1-hour or 6-hour window.",
+      FLASH_FREEZE: "Timeline: NBM temperature plus wet-surface signal in each block.",
+      TEMPERATURE: "Timeline: NBM temperature in each 3-hour block."
+    };
+    const summaryMethodText = {
+      WIND: "Summary: NBM QMD 24-hour max gust probability for the 0-24, 24-48, and 48-72 hour windows.",
+      LIGHTNING: "Summary: highest 3-hour NBM thunder probability risk during the 72-hour board.",
+      RAIN: "Summary: highest rain/drainage risk; QMD 6-hour precipitation supports accumulation guidance when available.",
+      VISIBILITY: "Summary: lowest visibility / highest low-visibility probability risk during the 72-hour board.",
+      SNOW: "Summary: highest snow risk and 72-hour total where available.",
+      FZRA: "Summary: highest freezing-rain risk and 72-hour total where available.",
+      FLASH_FREEZE: "Summary: highest temperature plus wet-surface freeze signal during the 72-hour board.",
+      TEMPERATURE: "Summary: max/min temperature risk during the 72-hour board."
+    };
+    const metricLineLabels = new Set([
+      "Block Value", "Max Gust", "Chance", "Rain", "Snow",
+      "Freezing Rain", "Visibility", "Temperature", "Wet Surface"
+    ]);
+    const confidenceColors = {
+      High: "#34c38f",
+      Medium: "#d7bc4a",
+      Low: "#d25555"
+    };
+    let latestObsSummary = "Obs Fresh";
+    let latestModelSummary = "NBM 18Z";
+    let latestBuildSummary = "Build --";
+    let latestForecastConfidence = {
+      label: "Medium",
+      reason: "Live NBM data are loading"
+    };
+    let latestForecastRawTimeline = null;
+    let latestTimelineDetails = {};
+    let currentPrimaryItem = null;
+    let latestObsMs = 0;
+    let latestForecastTimeline = null;
+    let latestTimelineBlocks = [];
+    let latestLightningPayload = null;
+    let radarCacheBust = Date.now();
+    let radarFrameIndex = 0;
+    let radarBbox = "";
+    let radarWidth = 760;
+    let radarHeight = 430;
+    let radarAspect = radarWidth / radarHeight;
+    let radarBounds = null;
+    let quicklookMap = null;
+    let quicklookRadarLayer = null;
+    let quicklookLightningLayer = null;
+    let quicklookAirportMarker = null;
+    let quicklookMapReady = false;
+    const krnoPoint = { lat: 39.4991, lon: -119.7681 };
+    const radarHalfSpanNm = 15;
+    const metersPerNm = 1852;
+    const mercatorLimit = 20037508.342789244;
+    const decisionRadiiNm = [10];
+    const radarFrames = [
+      { ageMinutes: 20, layer: "nexrad-n0q-900913-m20m" },
+      { ageMinutes: 15, layer: "nexrad-n0q-900913-m15m" },
+      { ageMinutes: 10, layer: "nexrad-n0q-900913-m10m" },
+      { ageMinutes: 5, layer: "nexrad-n0q-900913-m05m" },
+      { ageMinutes: 0, layer: "nexrad-n0q-900913" }
+    ];
+    const mockRows = {
+      WIND: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      LTNG: ["Minor","Moderate","Moderate","Minor","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Minor","Minor","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      SNOW: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      VIS: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      FZRA: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      FLASHFZ: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      RAIN: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"],
+      TEMP: ["Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None","Little to None"]
+    };
+    const topHazards = [
+      { source: "LIGHTNING", name: "Lightning", risk: "Moderate", metric: "Thunder 17%", peak: "Peak Thu 3 PM-6 PM", impact: "Ramp lightning", action: "Monitor" },
+      { source: "WIND", name: "Wind", risk: "Little to None", metric: "Gust 26 mph", peak: "Peak Fri 8 PM-11 PM", impact: "Ramp wind", action: "Awareness" },
+      { source: "RAIN", name: "Rain", risk: "Little to None", metric: "0.02 in", peak: "Peak Thu 2 PM-5 PM", impact: "Drainage", action: "Awareness" },
+      { source: "VISIBILITY", name: "Visibility", risk: "Little to None", metric: "6+ mi", peak: "Min Fri 8 AM-11 AM", impact: "Visibility", action: "Awareness" },
+      { source: "SNOW", name: "Snow", risk: "Little to None", metric: "0.00 in", peak: "No signal", impact: "Snow crew", action: "Awareness" },
+      { source: "FZRA", name: "Freezing Rain", risk: "Little to None", metric: "0.00 in", peak: "No signal", impact: "Icing", action: "Awareness" },
+      { source: "FLASH_FREEZE", name: "Flash Freeze", risk: "Little to None", metric: "No freeze signal", peak: "No signal", impact: "Pavement freeze", action: "Awareness" },
+      { source: "TEMPERATURE", name: "Temperature", risk: "Little to None", metric: "No temp signal", peak: "No signal", impact: "Heat/cold", action: "Awareness" }
+    ];
+
+    function categoryFromRank(value) {
+      const rank = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
+      if (rank <= 1) return "Little to None";
+      return ({ 2: "Minor", 3: "Moderate", 4: "Major", 5: "Extreme" })[rank] || "Little to None";
+    }
+
+    function rankFromCategory(category) {
+      return riskRank[category] ?? 1;
+    }
+
+    function normalizeForecastRisk(category) {
+      const rank = rankFromCategory(category);
+      return rank <= 1 ? "Little to None" : category;
+    }
+
+    function hazardPriorityIndex(source) {
+      const index = hazardPriority.indexOf(source);
+      return index === -1 ? 99 : index;
+    }
+
+    function compareHazardItems(a, b) {
+      const riskDelta = rankFromCategory(b.risk) - rankFromCategory(a.risk);
+      if (riskDelta) return riskDelta;
+      return hazardPriorityIndex(a.source) - hazardPriorityIndex(b.source);
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function colorFromStops(value, stops, fallback = "#c7d2df") {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return fallback;
+      for (const [limit, color] of stops) {
+        if (numeric <= limit) return color;
+      }
+      return stops[stops.length - 1]?.[1] || fallback;
+    }
+
+    function windColor(mph) {
+      return colorFromStops(mph, [
+        [5, "#c9dde6"], [10, "#8fb5c9"], [15, "#63a8aa"], [20, "#477b84"],
+        [25, "#fff579"], [30, "#ffd41f"], [40, "#f39b18"], [50, "#d84c46"],
+        [60, "#ab2727"], [70, "#7a0d32"], [80, "#65103b"], [90, "#442061"],
+        [100, "#b65cf2"]
+      ]);
+    }
+
+    function lightningColor(prob) {
+      return colorFromStops(prob, [
+        [10, "#f8d4e8"], [20, "#f4a2e7"], [30, "#f067df"], [40, "#eb3fd2"],
+        [50, "#e31cca"], [60, "#d30fc5"], [70, "#bd00ad"], [80, "#a00098"],
+        [90, "#78007c"], [100, "#5f006b"]
+      ]);
+    }
+
+    function visibilityColor(mi) {
+      const value = Number(mi);
+      if (!Number.isFinite(value)) return "#c7d2df";
+      if (value <= 0.1) return "#050505";
+      if (value <= 0.25) return "#5b0825";
+      if (value <= 0.5) return "#7c1c50";
+      if (value <= 1) return "#aa27a8";
+      if (value <= 2) return "#ee1111";
+      if (value <= 3) return "#ff5b5b";
+      if (value <= 4) return "#fff200";
+      if (value <= 5) return "#ffff91";
+      if (value <= 7) return "#8a8f95";
+      return "#8da2bd";
+    }
+
+    function precipColor(inches) {
+      return colorFromStops(inches, [
+        [0, "#6f8095"], [0.05, "#c4e6bd"], [0.15, "#9fd390"], [0.25, "#3ba65f"],
+        [0.75, "#fff46d"], [1.5, "#ff8a3d"], [2.5, "#d7191c"], [3.5, "#7b113f"],
+        [5, "#60128b"], [99, "#b7b9ff"]
+      ]);
+    }
+
+    function snowColor(inches) {
+      return colorFromStops(inches, [
+        [0, "#6f8095"], [0.1, "#cde7ef"], [0.2, "#8bc0d7"], [0.3, "#4f9dc4"],
+        [0.5, "#1f78b4"], [0.75, "#1b4f9c"], [1, "#253e93"], [1.25, "#fff579"],
+        [1.5, "#ffbe18"], [1.75, "#ff7a00"], [2, "#e21a1c"], [2.5, "#b70018"],
+        [3, "#7a0000"]
+      ]);
+    }
+
+    function fzraColor(inches) {
+      return colorFromStops(inches, [
+        [0, "#6f8095"], [0.05, "#fff33d"], [0.1, "#ffc000"], [0.15, "#f20d0d"],
+        [0.2, "#c70000"], [0.25, "#9d6af0"], [0.3, "#7b00ba"], [99, "#2f095f"]
+      ]);
+    }
+
+    function tempColor(f) {
+      return colorFromStops(f, [
+        [-60, "#b1004a"], [-50, "#df1678"], [-40, "#f061c9"], [-30, "#ffffff"],
+        [-20, "#c9c9e6"], [-10, "#7d68ab"], [0, "#1b0a8f"], [10, "#1266ba"],
+        [20, "#4bc1e8"], [30, "#a9f2ef"], [40, "#0a8f7f"], [50, "#12833b"],
+        [60, "#78c878"], [70, "#d8f7c1"], [80, "#fff3b0"], [90, "#ffb02c"],
+        [100, "#ff3a22"], [110, "#b5002f"], [120, "#59002f"]
+      ]);
+    }
+
+    function cloudColor(text) {
+      const value = String(text || "");
+      if (/OVC|BKN|VV/.test(value)) return "#b7c0ca";
+      if (/SCT/.test(value)) return "#8ea7bd";
+      if (/FEW/.test(value)) return "#6f9dcc";
+      if (/CLR|SKC/.test(value)) return "#4e93da";
+      return "#94a3b8";
+    }
+
+    function numberFromText(value) {
+      const match = String(value ?? "").match(/-?\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : null;
+    }
+
+    function metricNumberFor(source, value, label = "") {
+      const text = String(value ?? "");
+      const precip = text.match(/(-?\d+(?:\.\d+)?)\s*(?:"|in\b)/i);
+      const wind = text.match(/(-?\d+(?:\.\d+)?)\s*mph\b/i);
+      const lightning = text.match(/(-?\d+(?:\.\d+)?)\s*%/);
+      const visibility = text.match(/(-?\d+(?:\.\d+)?)\s*(?:mi|sm)\b/i);
+      const temp = text.match(/(-?\d+(?:\.\d+)?)\s*(?:°F|°F|F)\b/i);
+      if (source === "RAIN" || source === "SNOW" || source === "FZRA" || /rain|snow|freezing rain|fzra/i.test(label)) {
+        return precip ? Number(precip[1]) : numberFromText(text);
+      }
+      if (source === "WIND" || /gust|wind/i.test(label)) return wind ? Number(wind[1]) : numberFromText(text);
+      if (source === "LIGHTNING" || /thunder|probability|chance/i.test(label)) return lightning ? Number(lightning[1]) : numberFromText(text);
+      if (source === "VISIBILITY" || /visibility/i.test(label)) return visibility ? Number(visibility[1]) : numberFromText(text);
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return temp ? Number(temp[1]) : numberFromText(text);
+      return numberFromText(text);
+    }
+
+    function metricColorFor(source, value, label = "") {
+      const numeric = metricNumberFor(source, value, label);
+      if (source === "WIND" || /gust|wind/i.test(label)) return windColor(numeric);
+      if (source === "LIGHTNING" || /thunder|probability|chance/i.test(label)) return lightningColor(numeric);
+      if (source === "VISIBILITY" || /visibility/i.test(label)) return visibilityColor(numeric);
+      if (source === "RAIN" || /rain/i.test(label)) return precipColor(numeric);
+      if (source === "SNOW" || /snow/i.test(label)) return snowColor(numeric);
+      if (source === "FZRA" || /freezing rain|fzra/i.test(label)) return fzraColor(numeric);
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE" || /temperature|temp/i.test(label)) return tempColor(numeric);
+      return null;
+    }
+
+    function compactModelCycle(cycle) {
+      const text = String(cycle || "").trim();
+      if (!text) return "Unavailable";
+      const match = text.match(/\b(?:NBM\s*)?(\d{2})Z\b/i);
+      return match ? `${match[1]}Z` : text.replace(/^NBM\s+/i, "");
+    }
+
+    function titleCaseDisplay(value) {
+      return String(value ?? "")
+        .toLowerCase()
+        .replace(/\b([a-z])/g, letter => letter.toUpperCase())
+        .replace(/\bNm\b/g, "NM")
+        .replace(/\bAm\b/g, "AM")
+        .replace(/\bPm\b/g, "PM")
+        .replace(/\bPdt\b/g, "PDT")
+        .replace(/\bPst\b/g, "PST");
+    }
+
+    function temperaturePairHtml(value) {
+      const text = String(value ?? "");
+      const matches = [...text.matchAll(/(-?\d+(?:\.\d+)?)\s*(?:°F|F)\b/gi)];
+      if (matches.length < 2) return escapeHtml(text);
+      const first = Math.round(Number(matches[0][1]));
+      const second = Math.round(Number(matches[1][1]));
+      if (!Number.isFinite(first) || !Number.isFinite(second)) return escapeHtml(text);
+      return `<span style="color:${tempColor(first)}">${first}&deg;F</span><span class="metric-separator"> / </span><span style="color:${tempColor(second)}">${second}&deg;F</span>`;
+    }
+
+    function summaryValueColor(item, value) {
+      const rank = rankFromCategory(item?.risk);
+      if (rank <= 1) return "var(--text-muted)";
+      return riskColors[item?.risk] || riskColors.None;
+    }
+
+    const hiddenAlertPatterns = [
+      /lake wind advisory/i,
+      /red flag warning/i,
+      /fire weather watch/i
+    ];
+
+    function alertDisplayText(alert) {
+      if (!alert) return "";
+      const props = alert.properties || {};
+      return [
+        alert.event,
+        alert.headline,
+        alert.title,
+        alert.description,
+        alert.instruction,
+        props.event,
+        props.headline,
+        props.description,
+        props.instruction
+      ].filter(Boolean).join(" ");
+    }
+
+    function visibleNwsAlerts(alerts = []) {
+      return alerts.filter(alert => !hiddenAlertPatterns.some(pattern => pattern.test(alertDisplayText(alert))));
+    }
+
+    function confidenceFromScore(score) {
+      if (score >= 80) return "High";
+      if (score >= 55) return "Medium";
+      return "Low";
+    }
+
+    function confidenceRank(label) {
+      return ({ Low: 1, Medium: 2, High: 3 })[label] || 2;
+    }
+
+    function lowestConfidence(...labels) {
+      return labels
+        .filter(Boolean)
+        .reduce((lowest, label) => confidenceRank(label) < confidenceRank(lowest) ? label : lowest, "High");
+    }
+
+    function buildAgeHours(iso) {
+      const date = new Date(iso);
+      return Number.isFinite(date.getTime()) ? (Date.now() - date.getTime()) / 3600000 : Infinity;
+    }
+
+    function boundedScore(value, fallback = 55) {
+      const score = Number(value);
+      if (!Number.isFinite(score)) return fallback;
+      return clamp(score, 0, 100);
+    }
+
+    function probabilityClarityScore(probability) {
+      const probabilityNumber = Number(probability);
+      if (!Number.isFinite(probabilityNumber)) return null;
+      const edges = [10, 33, 66, 90];
+      const minDistance = Math.min(...edges.map(edge => Math.abs(probabilityNumber - edge)));
+      if (minDistance >= 15) return 95;
+      if (minDistance >= 8) return 80;
+      if (minDistance >= 4) return 65;
+      return 45;
+    }
+
+    function deterministicThresholds(source) {
+      return {
+        WIND: [30, 45, 58, 65],
+        VISIBILITY: [0.5, 1, 3, 5],
+        FLASH_FREEZE: [25, 28, 32, 36],
+        TEMPERATURE: [10, 20, 32, 40, 90, 95, 100, 105]
+      }[source] || [];
+    }
+
+    function deterministicValueForConfidence(source, item = {}, detail = null) {
+      const values = detail?.values || {};
+      if (source === "WIND") return Number(values.gust_max_mph ?? values.peak_gust_mph ?? item.gust_mph ?? numberFromText(item.metric));
+      if (source === "VISIBILITY") return Number(values.visibility_mi ?? values.visibility_sm ?? numberFromText(item.metric));
+      if (source === "FLASH_FREEZE" || source === "TEMPERATURE") return Number(values.temp_f ?? item.temp_f ?? numberFromText(item.metric));
+      return Number(values.value ?? item.value ?? numberFromText(item.metric));
+    }
+
+    function deterministicClarityScore(source, item = {}, detail = null) {
+      const value = deterministicValueForConfidence(source, item, detail);
+      const thresholds = deterministicThresholds(source);
+      if (!Number.isFinite(value) || !thresholds.length) return 55;
+      const distance = Math.min(...thresholds.map(threshold => Math.abs(value - threshold)));
+      if (source === "WIND") {
+        if (distance >= 10) return 95;
+        if (distance >= 5) return 80;
+        if (distance >= 2) return 65;
+        return 45;
+      }
+      if (source === "VISIBILITY") {
+        if (distance >= 2) return 95;
+        if (distance >= 1) return 80;
+        if (distance >= 0.5) return 65;
+        return 45;
+      }
+      if (distance >= 10) return 95;
+      if (distance >= 5) return 80;
+      if (distance >= 2) return 65;
+      return 45;
+    }
+
+    function dataHealthScore(timeline = latestForecastRawTimeline) {
+      const buildIso = timeline?.generated_utc || timeline?.updated_utc || timeline?.cycle_utc_iso;
+      const age = buildAgeHours(buildIso);
+      const blocks = Array.isArray(timeline?.blocks) ? timeline.blocks.slice(0, 24) : [];
+      const blockHazards = Array.isArray(timeline?.block_hazards) ? timeline.block_hazards.slice(0, 24) : [];
+      if (!buildIso || !Number.isFinite(age) || !blocks.length || !blockHazards.length) return 10;
+      if (blocks.length < 24 || blockHazards.length < 24) return 45;
+      if (age > 12) return 30;
+      if (age > 8) return 70;
+      return 100;
+    }
+
+    function detailProbability(detail = {}, item = {}) {
+      const values = detail?.values || {};
+      const candidates = [
+        item.probability,
+        item.prob,
+        detail.probability,
+        detail.prob,
+        values.probability,
+        values.prob,
+        values.prob_gt_trace,
+        values.prob_lt_5mi
+      ];
+      for (const candidate of candidates) {
+        const value = Number(candidate);
+        if (Number.isFinite(value)) return value;
+      }
+      return null;
+    }
+
+    function spreadAgreementScore(detail = {}) {
+      const values = detail?.values || {};
+      const low = Number(values.p10 ?? values.percentile_10 ?? detail.p10);
+      const mid = Number(values.p50 ?? values.percentile_50 ?? detail.p50);
+      const high = Number(values.p90 ?? values.percentile_90 ?? detail.p90);
+      if (![low, mid, high].every(Number.isFinite)) return 55;
+      const thresholds = deterministicThresholds(detail.id || detail.source || "");
+      if (!thresholds.length) return 55;
+      const categories = [low, mid, high].map(value => thresholds.filter(threshold => value >= threshold).length);
+      const spread = Math.max(...categories) - Math.min(...categories);
+      if (spread <= 0) return 90;
+      if (spread === 1) return 70;
+      return 40;
+    }
+
+    function timingPersistenceScore(source, risk) {
+      const hazardId = hazardIdBySource[source];
+      const details = latestTimelineDetails[hazardId] || [];
+      const target = rankFromCategory(risk);
+      const ranks = details.map(detail => rankFromCategory(categoryFromRank(detail?.risk ?? detail?.risk_level ?? 0)));
+      if (!ranks.length) return 45;
+      if (target <= 1) return ranks.every(rank => rank <= 1) ? 85 : 65;
+      let longest = 0;
+      let current = 0;
+      ranks.forEach(rank => {
+        if (rank >= target) {
+          current += 1;
+          longest = Math.max(longest, current);
+        } else {
+          current = 0;
+        }
+      });
+      if (longest >= 3) return 90;
+      if (longest === 2) return 70;
+      if (longest === 1) return 45;
+      return 40;
+    }
+
+    function runConsistencyScore() {
+      return 55;
+    }
+
+    function obsConfidence() {
+      const age = latestObsMs ? (Date.now() - latestObsMs) / 60000 : Infinity;
+      if (age <= 15) return { label: "High", reason: "observations are fresh" };
+      if (age <= 30) return { label: "Medium", reason: "observations are aging" };
+      return { label: "Low", reason: "observations are stale" };
+    }
+
+    function forecastConfidence(timeline) {
+      const score = dataHealthScore(timeline);
+      return { label: confidenceFromScore(score), score, reason: "forecast data health component" };
+    }
+
+    function hazardConfidence(item = {}, detail = null) {
+      const source = item.source || item;
+      const risk = item.risk || "Little to None";
+      const hazardId = hazardIdBySource[source];
+      const details = latestTimelineDetails[hazardId] || [];
+      const bestDetail = detail || details.find(row => rankFromCategory(categoryFromRank(row?.risk ?? row?.risk_level ?? 0)) === rankFromCategory(risk)) || details[0] || {};
+      const probability = detailProbability(bestDetail, item);
+      const probabilityScore = probabilityClarityScore(probability) ?? deterministicClarityScore(source, item, bestDetail);
+      let spreadScore = spreadAgreementScore({ ...bestDetail, source });
+      const timingScore = timingPersistenceScore(source, risk);
+      const dataScore = dataHealthScore();
+      let runScore = runConsistencyScore();
+      const quietSignal = rankFromCategory(risk) <= 1;
+      if (quietSignal && probabilityScore >= 80 && timingScore >= 85 && dataScore >= 70) {
+        if (runScore === 55) runScore = 80;
+        if (spreadScore === 55) spreadScore = 80;
+      }
+      const score =
+        0.30 * boundedScore(probabilityScore) +
+        0.25 * boundedScore(runScore) +
+        0.20 * boundedScore(spreadScore) +
+        0.15 * boundedScore(timingScore) +
+        0.10 * boundedScore(dataScore);
+      return {
+        label: confidenceFromScore(score),
+        score: Math.round(score),
+        components: {
+          probabilityClarity: Math.round(probabilityScore),
+          runConsistency: Math.round(runScore),
+          spreadAgreement: Math.round(spreadScore),
+          timingPersistence: Math.round(timingScore),
+          dataHealth: Math.round(dataScore)
+        },
+        reason: "NBM confidence score"
+      };
+    }
+
+    function confidenceLine(confidence) {
+      return ["Confidence", confidence?.label || "Medium", confidenceColors[confidence?.label] || confidenceColors.Medium];
+    }
+
+    function refreshConfidenceDisplays() {
+      if (latestForecastTimeline) {
+        latestForecastConfidence = forecastConfidence(latestForecastTimeline);
+      }
+      updateDataSummary();
+      if (currentPrimaryItem) updatePrimaryConcern(currentPrimaryItem);
+    }
+
+    function setValueColor(id, html, color) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = html;
+      el.style.color = color || "";
+    }
+
+    function shortPeak(iso) {
+      if (!iso) return "Peak window TBD";
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "Peak window TBD";
+      const day = date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" });
+      const time = date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true });
+      return `Peak ${day} ${time}`;
+    }
+
+    function localDay(iso) {
+      return new Date(iso).toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" });
+    }
+
+    function localTime(iso) {
+      return new Date(iso).toLocaleTimeString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).replace(":00", "");
+    }
+
+    function formatLocalWindow(startIso, endIso) {
+      if (!startIso || !endIso) return "";
+      const start = new Date(startIso);
+      const end = new Date(endIso);
+      if (!Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime())) return "";
+      const startDay = localDay(startIso);
+      const endDay = localDay(endIso);
+      const startText = localTime(startIso);
+      const endText = localTime(endIso);
+      if (startDay === endDay) return `${startDay} ${startText}-${endText}`;
+      return `${startDay} ${startText}-${endDay} ${endText}`;
+    }
+
+    function timingPrefix(source) {
+      if (source === "VISIBILITY" || source === "FLASH_FREEZE") return "Min";
+      return "Peak";
+    }
+
+    function timingPrefixForDetail(source, detail = null) {
+      if (source === "TEMPERATURE") {
+        const values = detail?.values || {};
+        const key = String(detail?.selected_probability_key || values.selected_probability_key || "");
+        const kind = String(detail?.timing_kind || values.timing_kind || "");
+        return key.startsWith("prob_lt") || kind === "min" ? "Min" : "Peak";
+      }
+      return timingPrefix(source);
+    }
+
+    function detailWindowText(source, detail = null) {
+      if (!detail) return "";
+      const start = detail.valid_start_utc || detail.values?.valid_start_utc;
+      const end = detail.valid_end_utc || detail.values?.valid_end_utc;
+      if (!start || !end) return "";
+      const window = formatLocalWindow(start, end);
+      return window ? `${timingPrefixForDetail(source, detail)} ${window}` : "";
+    }
+
+    function impactWindowFromBlocks(source, risk, blocks = []) {
+      const target = rankFromCategory(risk);
+      if (target <= 1 || !Array.isArray(blocks)) return "";
+      let best = null;
+      let current = null;
+      blocks.forEach((block, index) => {
+        const isTarget = Number(block?.[source]) === target;
+        if (isTarget) {
+          const window = normalizedBlockWindow(block, blocks[0]?.valid_start_utc, index);
+          if (!current) {
+            current = {
+              startIndex: index,
+              endIndex: index,
+              start: Number.isFinite(window.start.getTime()) ? window.start.toISOString() : block.valid_start_utc,
+              end: Number.isFinite(window.end.getTime()) ? window.end.toISOString() : block.valid_end_utc
+            };
+          } else {
+            current.endIndex = index;
+            current.end = Number.isFinite(window.end.getTime()) ? window.end.toISOString() : block.valid_end_utc;
+          }
+        } else if (current) {
+          if (!best || current.endIndex - current.startIndex > best.endIndex - best.startIndex) best = current;
+          current = null;
+        }
+      });
+      if (current && (!best || current.endIndex - current.startIndex > best.endIndex - best.startIndex)) best = current;
+      return best ? `${timingPrefix(source)} ${formatLocalWindow(best.start, best.end)}` : "";
+    }
+
+    function operationalImpact(source, category = "None") {
+      if (rankFromCategory(category) <= 1) {
+        const lowImpacts = {
+          LIGHTNING: "Storm watch",
+          WIND: "Ramp wind",
+          SNOW: "Snow crew",
+          FZRA: "Icing",
+          FLASH_FREEZE: "Pavement freeze",
+          RAIN: "Drainage",
+          VISIBILITY: "Visibility",
+          TEMPERATURE: "Heat/cold"
+        };
+        return lowImpacts[source] || "No action";
+      }
+      const impacts = {
+        LIGHTNING: "Ramp lightning",
+        WIND: "Ramp wind",
+        SNOW: "Snow crew",
+        FZRA: "Icing",
+        FLASH_FREEZE: "Pavement freeze",
+        RAIN: "Drainage",
+        VISIBILITY: "Low visibility",
+        TEMPERATURE: "Heat/cold"
+      };
+      return impacts[source] || "Ops awareness";
+    }
+
+    function operationalAction(category) {
+      const rank = rankFromCategory(category);
+      if (rank >= 4) return "Act";
+      if (rank >= 3) return "Monitor closely";
+      if (rank >= 2) return "Monitor";
+      if (rank >= 1) return "Awareness";
+      return "No action";
+    }
+
+    function makeTimeBlocks(startDate) {
+      const start = startDate ? new Date(startDate) : new Date("2026-05-28T21:00:00Z");
+      const blocks = [];
+      for (let i = 0; i < 24; i += 1) {
+        const hourOffset = i * 3;
+        const displayOffset = i === 23 ? 72 : hourOffset;
+        const date = new Date(start.getTime() + hourOffset * 60 * 60 * 1000);
+        blocks.push({
+          offset: displayOffset,
+          day: date.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
+          hour: date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", ""),
+          validStartUtc: date.toISOString(),
+          validEndUtc: new Date(date.getTime() + 3 * 60 * 60 * 1000).toISOString(),
+          night: isNightHour(date),
+          dayStart: i === 0 || date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }) === "00"
+        });
+      }
+      return blocks;
+    }
+
+    function normalizedBlockWindow(block, fallbackStart, index) {
+      const startFxx = Number(block?.start_fxx);
+      const endFxx = Number(block?.end_fxx);
+      const expectedHours = Number.isFinite(startFxx) && Number.isFinite(endFxx)
+        ? Math.max(1, endFxx - startFxx + 1)
+        : 3;
+      let start = new Date(block?.valid_start_utc || fallbackStart);
+      let end = new Date(block?.valid_end_utc || "");
+      if (!Number.isFinite(start.getTime()) && fallbackStart) {
+        start = new Date(new Date(fallbackStart).getTime() + index * 3 * 3600000);
+      }
+      if (!Number.isFinite(end.getTime()) && Number.isFinite(start.getTime())) {
+        end = new Date(start.getTime() + expectedHours * 3600000);
+      }
+      const durationHours = Number.isFinite(start.getTime()) && Number.isFinite(end.getTime())
+        ? (end.getTime() - start.getTime()) / 3600000
+        : expectedHours;
+      if (Number.isFinite(end.getTime()) && durationHours > 0 && durationHours < expectedHours - 0.25) {
+        start = new Date(end.getTime() - expectedHours * 3600000);
+      }
+      return { start, end };
+    }
+
+    function timeBlocksFromTimeline(sourceBlocks, fallbackStart) {
+      if (!Array.isArray(sourceBlocks) || !sourceBlocks.length) return makeTimeBlocks(fallbackStart);
+      const selected = sourceBlocks.slice(0, 24);
+      const firstWindow = normalizedBlockWindow(selected[0], fallbackStart, 0);
+      const firstStart = firstWindow.start.getTime();
+      return selected.map((block, index) => {
+        const { start, end } = normalizedBlockWindow(block, fallbackStart, index);
+        const hourOffset = Number.isFinite(firstStart) && Number.isFinite(start.getTime())
+          ? Math.max(0, Math.round((start.getTime() - firstStart) / 3600000))
+          : index * 3;
+        const displayOffset = index === selected.length - 1 ? 72 : hourOffset;
+        return {
+          offset: displayOffset,
+          day: start.toLocaleDateString("en-US", { timeZone: "America/Los_Angeles", weekday: "short" }),
+          hour: start.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: true }).replace(" ", ""),
+          validStartUtc: Number.isFinite(start.getTime()) ? start.toISOString() : block.valid_start_utc,
+          validEndUtc: Number.isFinite(end.getTime()) ? end.toISOString() : block.valid_end_utc,
+          night: isNightHour(start),
+          dayStart: index === 0 || start.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }) === "00"
+        };
+      });
+    }
+
+    function isNightHour(date) {
+      const hour = Number(date.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", hour12: false }));
+      return hour < 6 || hour >= 21;
+    }
+
+    function rowRisksFor(hazard, rows) {
+      const source = rows[hazard.id] || mockRows[hazard.id] || [];
+      return Array.from({ length: 24 }, (_, index) => {
+        const value = source[index];
+        return value in riskRank ? normalizeForecastRisk(value) : categoryFromRank(value);
+      });
+    }
+
+    function maxRankFor(hazard, rows) {
+      return Math.max(...rowRisksFor(hazard, rows).map(rankFromCategory));
+    }
+
+    function updateNowMarker(blocks = latestTimelineBlocks) {
+      const matrix = document.getElementById("timeline-matrix");
+      const line = matrix?.querySelector(".now-line");
+      const tag = matrix?.querySelector(".now-tag");
+      if (!matrix || !line || !tag || !Array.isArray(blocks) || !blocks.length) return;
+      const start = new Date(blocks[0].validStartUtc).getTime();
+      const end = new Date(blocks[blocks.length - 1].validEndUtc).getTime();
+      const now = Date.now();
+      if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) return;
+      const visible = now >= start && now <= end;
+      line.hidden = !visible;
+      tag.hidden = !visible;
+      if (!visible) return;
+      const labelWidth = 184;
+      const padX = 14;
+      const fraction = clamp((now - start) / (end - start), 0, 1);
+      const left = padX + labelWidth + (matrix.clientWidth - padX * 2 - labelWidth) * fraction;
+      line.style.left = `${left}px`;
+      tag.style.left = `${left}px`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatTooltipLocal(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "TBD";
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        weekday: "short",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      }).replace(":00", "");
+    }
+
+    function formatTooltipUtc(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return "TBD";
+      return `${String(date.getUTCHours()).padStart(2, "0")}${String(date.getUTCMinutes()).padStart(2, "0")}Z`;
+    }
+
+    function tooltipLinesFor(hazard, block, risk, detail) {
+      const confidence = hazardConfidence({ source: hazard.source, risk }, detail);
+      const lines = [
+        ["Risk", risk],
+        confidenceLine(confidence)
+      ];
+      const values = detail?.values || {};
+      const valueLineCount = lines.length;
+      if (hazard.source === "WIND" && values.gust_max_mph != null) lines.push(["Max Gust", `${Math.round(values.gust_max_mph)} mph`]);
+      if (hazard.source === "LIGHTNING" && values.prob != null) lines.push(["Chance", `${Math.round(values.prob)}%`]);
+      if (hazard.source === "RAIN" && values.rain_in != null) lines.push(["Rain", `${Number(values.rain_in).toFixed(2)} in`]);
+      if (hazard.source === "SNOW" && values.snow_in != null) lines.push(["Snow", `${Number(values.snow_in).toFixed(2)} in`]);
+      if (hazard.source === "FZRA" && values.fzra_in != null) lines.push(["Freezing Rain", `${Number(values.fzra_in).toFixed(2)} in`]);
+      if (hazard.source === "VISIBILITY" && values.visibility_mi != null) lines.push(["Visibility", `${Number(values.visibility_mi).toFixed(1)} mi`]);
+      if (hazard.source === "FLASH_FREEZE") {
+        if (values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} °F`]);
+        if (values.rain_in != null) lines.push(["Wet Surface", `${Number(values.rain_in).toFixed(2)} in rain`]);
+      }
+      if (hazard.source === "TEMPERATURE" && values.temp_f != null) lines.push(["Temperature", `${Math.round(values.temp_f)} °F`]);
+      if (lines.length === valueLineCount && detail?.metric) lines.push(["Block Value", detail.metric]);
+      lines.push(
+        ["Airport Impact", operationalImpact(hazard.source, risk)],
+        ["Action", operationalAction(risk)]
+      );
+      return lines;
+    }
+
+    function tooltipHtml(hazard, block, risk, detail) {
+      const validStart = block.validStartUtc || detail?.valid_start_utc;
+      const validEnd = block.validEndUtc || detail?.valid_end_utc;
+      const localWindow = `${formatTooltipLocal(validStart)} - ${formatTooltipLocal(validEnd)}`;
+      const utcWindow = `${formatTooltipUtc(validStart)}-${formatTooltipUtc(validEnd)}`;
+      const lines = tooltipLinesFor(hazard, block, risk, detail);
+      return `
+        <div class="tooltip-title">${escapeHtml(hazard.name)} - ${escapeHtml(risk)}</div>
+        <div class="tooltip-time">${escapeHtml(localWindow)} / ${escapeHtml(utcWindow)}</div>
+        <div class="tooltip-lines">
+          ${lines.map(([label, value]) => {
+            const color = label === "Risk"
+              ? (riskColors[value] || "")
+              : metricLineLabels.has(label)
+                ? metricColorFor(hazard.source, value, label)
+                : "";
+            return `
+            <div class="tooltip-line">
+              <span>${escapeHtml(label)}</span>
+              <strong${color ? ` style="color:${color}"` : ""}>${escapeHtml(value)}</strong>
+            </div>
+          `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function positionTooltip(x, y) {
+      const tooltip = document.getElementById("timeline-tooltip");
+      const margin = 14;
+      const rect = tooltip.getBoundingClientRect();
+      let left = x + 18;
+      let top = y + 18;
+      if (left + rect.width + margin > window.innerWidth) left = x - rect.width - 18;
+      if (top + rect.height + margin > window.innerHeight) top = y - rect.height - 18;
+      tooltip.style.left = `${Math.max(margin, left)}px`;
+      tooltip.style.top = `${Math.max(margin, top)}px`;
+    }
+
+    function showTimelineTooltip(cell, x, y) {
+      const tooltip = document.getElementById("timeline-tooltip");
+      if (!cell.tooltipPayload) return;
+      tooltip.innerHTML = cell.tooltipPayload.html;
+      tooltip.style.borderLeftColor = riskColors[cell.tooltipPayload.risk] || riskColors.None;
+      tooltip.hidden = false;
+      positionTooltip(x, y);
+    }
+
+    function hideTimelineTooltip() {
+      const tooltip = document.getElementById("timeline-tooltip");
+      tooltip.hidden = true;
+    }
+
+    function tooltipCardHtml(title, subtitle, lines = []) {
+      return `
+        <div class="tooltip-title">${escapeHtml(title)}</div>
+        ${subtitle ? `<div class="tooltip-time">${escapeHtml(subtitle)}</div>` : ""}
+        <div class="tooltip-lines">
+          ${lines.filter(line => line && line[1] != null && line[1] !== "").map(([label, value, color]) => `
+            <div class="tooltip-line">
+              <span>${escapeHtml(label)}</span>
+              <strong${color ? ` style="color:${color}"` : ""}>${escapeHtml(value)}</strong>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function attachTooltip(element, { title, subtitle = "", lines = [], risk = "Little to None" } = {}) {
+      if (!element) return;
+      element.classList.add("has-tooltip");
+      if (!element.hasAttribute("tabindex")) element.tabIndex = 0;
+      element.tooltipPayload = {
+        risk,
+        html: tooltipCardHtml(title, subtitle, lines)
+      };
+      if (element.dataset.tooltipBound === "true") return;
+      element.dataset.tooltipBound = "true";
+      element.addEventListener("mouseover", event => showTimelineTooltip(element, event.clientX, event.clientY));
+      element.addEventListener("mouseenter", event => showTimelineTooltip(element, event.clientX, event.clientY));
+      element.addEventListener("mousemove", event => {
+        showTimelineTooltip(element, event.clientX, event.clientY);
+      });
+      element.addEventListener("mouseout", hideTimelineTooltip);
+      element.addEventListener("mouseleave", hideTimelineTooltip);
+      element.addEventListener("focus", () => {
+        const rect = element.getBoundingClientRect();
+        showTimelineTooltip(element, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      });
+      element.addEventListener("blur", hideTimelineTooltip);
+    }
+
+    function renderTimeline(blocks, rows, details = {}) {
+      const matrix = document.getElementById("timeline-matrix");
+      latestTimelineBlocks = blocks;
+      matrix.querySelectorAll(".corner,.time-cell,.row-label,.impact-cell").forEach(node => node.remove());
+      const rankedHazards = hazards.map(hazard => ({
+        hazard,
+        maxRank: maxRankFor(hazard, rows)
+      }));
+      const visibleHazards = rankedHazards
+        .sort((a, b) => {
+          const riskDelta = b.maxRank - a.maxRank;
+          if (riskDelta) return riskDelta;
+          return hazardPriorityIndex(a.hazard.source) - hazardPriorityIndex(b.hazard.source);
+        });
+
+      matrix.style.setProperty("--timeline-rows", String(Math.max(1, visibleHazards.length)));
+
+      const corner = document.createElement("div");
+      corner.className = "corner";
+      corner.textContent = "Hazard";
+      matrix.appendChild(corner);
+      blocks.forEach(block => {
+        const cell = document.createElement("div");
+        cell.className = `time-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
+        const offsetLabel = block.offset === 0 ? "Now" : `+${block.offset}h`;
+        cell.innerHTML = `<div><strong>${block.day}</strong><span>${offsetLabel}</span><span>${block.hour}</span></div>`;
+        matrix.appendChild(cell);
+      });
+      visibleHazards.forEach(({ hazard }) => {
+        const label = document.createElement("div");
+        label.className = "row-label";
+        label.textContent = hazard.row;
+        matrix.appendChild(label);
+        rowRisksFor(hazard, rows).slice(0, blocks.length).forEach((risk, index) => {
+          const block = blocks[index];
+          const detail = details[hazard.id]?.[index] || null;
+          const cell = document.createElement("div");
+          cell.className = `impact-cell${block.night ? " night" : ""}${block.dayStart ? " day-start" : ""}`;
+          cell.dataset.risk = risk;
+          cell.textContent = impactCellText[risk] || "";
+          cell.tabIndex = 0;
+          cell.setAttribute("aria-label", `${hazard.name}, ${block.day} ${block.hour}, ${risk}`);
+          cell.tooltipPayload = {
+            risk,
+            html: tooltipHtml(hazard, block, risk, detail)
+          };
+          cell.addEventListener("mouseover", event => showTimelineTooltip(cell, event.clientX, event.clientY));
+          cell.addEventListener("mouseenter", event => showTimelineTooltip(cell, event.clientX, event.clientY));
+          cell.addEventListener("mousemove", event => {
+            showTimelineTooltip(cell, event.clientX, event.clientY);
+          });
+          cell.addEventListener("mouseout", hideTimelineTooltip);
+          cell.addEventListener("mouseleave", hideTimelineTooltip);
+          cell.addEventListener("focus", () => {
+            const rect = cell.getBoundingClientRect();
+            showTimelineTooltip(cell, rect.left + rect.width / 2, rect.top + rect.height / 2);
+          });
+          cell.addEventListener("blur", hideTimelineTooltip);
+          matrix.appendChild(cell);
+        });
+      });
+
+      const noSignal = document.getElementById("no-signal-line");
+      noSignal.hidden = true;
+      noSignal.textContent = "";
+      requestAnimationFrame(() => updateNowMarker(blocks));
+    }
+
+    function renderLegend() {
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      forecastCategories.forEach(category => {
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        item.innerHTML = `<span class="legend-swatch" style="background:${riskColors[category]}"></span>${category}`;
+        attachTooltip(item, {
+          title: `${category} Risk`,
+          subtitle: "Impact category",
+          lines: [["Meaning", operationalAction(category)], ["Used By", "Timeline and hazards"]],
+          risk: category
+        });
+        legend.appendChild(item);
+      });
+    }
+
+    function compactConcernMetric(item) {
+      const metric = String(item.metric || "").trim();
+      if (!metric || /no signal/i.test(metric)) return "";
+      if (item.source === "WIND") return /gust/i.test(metric) ? metric : `Gust ${metric}`;
+      if (item.source === "VISIBILITY") return metric.replace(/^Visibility\s+/i, "").replace(/\.0(?=\s)/, "");
+      if (item.source === "RAIN") {
+        const cleaned = metric.replace(/^Rain\s+/i, "");
+        return /^72-hr/i.test(cleaned) ? cleaned : `72-hr ${cleaned}`;
+      }
+      if (item.source === "LIGHTNING") return metric.replace(/^Thunder\s+/i, "Thunder ");
+      if (item.source === "TEMPERATURE") return metric.replace(/^Temp\s+/i, "");
+      return metric;
+    }
+
+    function riskWindowLabel(item) {
+      const method = String(item.riskMethod || item.methodology || "");
+      if (item.source === "RAIN" && /qmd_6hr/i.test(method)) return "Highest rain window";
+      if (item.source === "SNOW") return "Highest snow window";
+      if (item.source === "FZRA") return "Freezing rain window";
+      if (item.source === "WIND" && /24hr_max_gust/i.test(method)) return "Highest forecast gust";
+      if (item.source === "TEMPERATURE" && /qmd_max_min/i.test(method)) return "Forecast high/low";
+      if (item.source === "LIGHTNING") return "3-hour lightning chance";
+      if (item.source === "VISIBILITY") return "Lowest visibility window";
+      if (item.source === "FLASH_FREEZE") return "Wet pavement freeze signal";
+      return "72-hour summary";
+    }
+
+    function concernTooltipLines(item, details) {
+      const metric = compactConcernMetric(item) || item.metric || "No signal";
+      const confidence = hazardConfidence(item);
+      const rank = rankFromCategory(item.risk);
+      return [
+        ["Risk", item.risk, riskColors[item.risk] || riskColors.None],
+        confidenceLine(confidence),
+        ["Timing", rank > 1 ? (item.peak || "Peak window TBD") : ""],
+        ["Key Value", metric, metricColorFor(item.source, metric, item.name)],
+        ["Airport Ops", item.impact || operationalImpact(item.source, item.risk)],
+        ["Action", item.action || operationalAction(item.risk)]
+      ].filter(([label, value]) => value && !(label === "Timing" && /no signal/i.test(value) && rank <= 1));
+    }
+
+    function renderTopHazards(items) {
+      const table = document.getElementById("hazard-table");
+      if (!table) return;
+      table.innerHTML = "";
+      items.slice(0, 8).forEach(item => {
+        const row = document.createElement("div");
+        row.className = "hazard-row";
+        row.dataset.hazardStatus = item.source || item.name || "";
+        row.style.borderLeftColor = riskColors[item.risk] || riskColors.None;
+        const rank = rankFromCategory(item.risk);
+        row.dataset.active = String(rank >= 2);
+        const riskTextColor = rank <= 1 ? "#c7d2df" : (riskColors[item.risk] || riskColors.None);
+        const metric = compactConcernMetric(item);
+        const metricColor = metricColorFor(item.source, metric || item.metric, item.name);
+        const details = String((rank >= 2 ? item.peak : metric) || metric || item.impact || "No signal").replace(/^Peak\s+/i, "");
+        const summaryColor = details === metric ? metricColor : "";
+        row.innerHTML = `
+          <div class="hazard-top">
+            <div class="hazard-name">${escapeHtml(item.name)}</div>
+            <div class="hazard-dash">-</div>
+            <div class="hazard-risk" style="color:${riskTextColor}">${escapeHtml(item.risk)}</div>
+          </div>
+          <div class="hazard-summary"${summaryColor ? ` style="color:${summaryColor}"` : ""}>${escapeHtml(details)}</div>
+        `;
+        attachTooltip(row, {
+          title: `${item.name} - ${item.risk}`,
+          subtitle: details || item.peak || "",
+          lines: concernTooltipLines(item, details),
+          risk: item.risk
+        });
+        table.appendChild(row);
+      });
+    }
+
+    function orderedHazardItems(items = []) {
+      const bySource = new Map(items.map(item => [item.source, item]));
+      const fallback = new Map(topHazards.map(item => [item.source, item]));
+      return hazards
+        .map(hazard => bySource.get(hazard.source) || fallback.get(hazard.source))
+        .filter(Boolean)
+        .sort(compareHazardItems);
+    }
+
+    function stripValueFor(item) {
+      const metric = compactConcernMetric(item) || item.metric || "";
+      const peak = item.peak || "";
+      const rank = rankFromCategory(item.risk);
+      if (rank >= 2 && peak && !/no signal|tbd/i.test(peak)) {
+        return peak.replace(/^Peak\s+/i, "Peak ").replace(/^Min\s+/i, "Min ");
+      }
+      return metric && !/no signal/i.test(metric) ? metric : "No signal";
+    }
+
+    function primaryHazardName(item) {
+      const name = String(item?.name || "Weather");
+      if (item?.source === "TEMPERATURE") {
+        const text = `${item.metric || ""} ${item.impact || ""} ${item.action || ""}`;
+        const maxMatch = text.match(/max\s*(-?\d+(?:\.\d+)?)/i);
+        const minMatch = text.match(/min\s*(-?\d+(?:\.\d+)?)/i);
+        const maxTemp = maxMatch ? Number(maxMatch[1]) : NaN;
+        const minTemp = minMatch ? Number(minMatch[1]) : NaN;
+        if (Number.isFinite(maxTemp) && maxTemp >= 80) return "Heat";
+        if (Number.isFinite(minTemp) && minTemp <= 40) return "Cold";
+        if (/heat|high/.test(text.toLowerCase())) return "Heat";
+        if (/cold|freeze|low/.test(text.toLowerCase())) return "Cold";
+      }
+      return name;
+    }
+
+    function primaryDriverMetric(item) {
+      const metric = compactConcernMetric(item);
+      if (item?.source !== "TEMPERATURE") return metric;
+      const name = primaryHazardName(item);
+      const maxMatch = metric.match(/max\s*(-?\d+(?:\.\d+)?\s*°?F?)/i);
+      const minMatch = metric.match(/min\s*(-?\d+(?:\.\d+)?\s*°?F?)/i);
+      if (name === "Heat" && maxMatch) return `${maxMatch[1].replace(/\s+/g, "")}`;
+      if (name === "Cold" && minMatch) return `${minMatch[1].replace(/\s+/g, "")}`;
+      return metric;
+    }
+
+    function shortOpsTag(item) {
+      const source = item?.source;
+      const risk = normalizeForecastRisk(item?.risk || "Little to None");
+      if (source === "LIGHTNING") return riskRank[risk] >= 3 ? "Restrictions Possible" : "Ramp Monitor";
+      if (source === "WIND") return "Crosswind/Gusts";
+      if (source === "VISIBILITY") return "Low Visibility";
+      if (source === "RAIN") return "Drainage";
+      if (source === "SNOW") return "Winter Ops";
+      if (source === "FZRA") return "Icing";
+      if (source === "FLASH_FREEZE") return "Flash Freeze";
+      if (source === "TEMPERATURE") return "Heat/Cold";
+      return "Ramp Monitor";
+    }
+
+    function compactPeakChip(item) {
+      const metric = primaryDriverMetric(item);
+      const peak = String(item?.peak || "Peak window TBD").replace(/^Peak\s+/i, "").replace(/^Min\s+/i, "");
+      if (!metric || /no signal/i.test(metric)) return `Peak ${peak}`;
+      if (item.source === "TEMPERATURE") return `Peak ${metric} ${peak}`.replace(/\s+/g, " ");
+      if (item.source === "WIND") return `${metric} ${peak}`.replace(/^Gust\s/i, "Gusts ").replace(/\s+/g, " ");
+      if (item.source === "VISIBILITY") return `Vis ${metric} ${peak}`.replace(/\s+/g, " ");
+      if (item.source === "LIGHTNING") return `${metric} ${peak}`.replace(/\s+/g, " ");
+      return `Peak ${peak}`;
+    }
+
+    function renderHazardSummaryStrip(items) {
+      const strip = document.querySelector(".hazard-strip");
+      if (!strip) return;
+      strip.querySelectorAll(".summary-chip").forEach(node => node.remove());
+      orderedHazardItems(items).forEach(item => {
+        const chip = document.createElement("div");
+        const rank = rankFromCategory(item.risk);
+        const value = stripValueFor(item);
+        const riskColor = riskColors[item.risk] || riskColors.None;
+        const valueColor = summaryValueColor(item, value);
+        const valueHtml = item.source === "TEMPERATURE" && /\/|max|min/i.test(value)
+          ? temperaturePairHtml(value)
+          : escapeHtml(value);
+        chip.className = "summary-chip";
+        chip.dataset.active = String(rank >= 2);
+        chip.style.borderLeftColor = riskColor;
+        chip.innerHTML = `
+          <div class="summary-hazard">${escapeHtml(item.name)}</div>
+          <div class="summary-risk" style="color:${rank >= 2 ? riskColor : "var(--text-body)"}">${escapeHtml(item.risk)}</div>
+          <div class="summary-value" style="color:${valueColor}">${valueHtml}</div>
+        `;
+        attachTooltip(chip, {
+          title: `${item.name} - ${item.risk}`,
+          subtitle: value,
+          lines: concernTooltipLines(item, value),
+          risk: item.risk
+        });
+        strip.appendChild(chip);
+      });
+    }
+
+    function updatePrimaryConcern(item) {
+      if (!item) return;
+      currentPrimaryItem = item;
+      const risk = normalizeForecastRisk(item.risk || "Little to None");
+      const name = item.name || "Weather";
+      const color = riskColors[risk] || riskColors.None;
+      const rank = rankFromCategory(risk);
+      const noConcern = rank <= 1;
+      const impact = item.impact || operationalImpact(item.source);
+      const action = item.action || operationalAction(risk);
+      const confidence = hazardConfidence({ ...item, risk });
+      const displayName = primaryHazardName({ ...item, risk });
+      const primaryTitle = noConcern ? "NO WEATHER CONCERNS" : `${risk.toUpperCase()} - ${displayName.toUpperCase()}`;
+      document.getElementById("primary-title").textContent = primaryTitle;
+      const confidenceClass = String(confidence.label || "Medium").toLowerCase();
+      const pills = noConcern
+        ? [
+          { text: "Next 72 Hours", className: "peak" },
+          { text: "Routine Operations", className: "impact", style: `--pill-risk-color: ${color}` },
+          { text: `${confidence.label} Confidence`, className: `confidence ${confidenceClass}` }
+        ]
+        : [
+          { text: compactPeakChip(item), className: "peak" },
+          { text: shortOpsTag(item), className: "impact", style: `--pill-risk-color: ${color}` },
+          { text: `${confidence.label} Confidence`, className: `confidence ${confidenceClass}` }
+        ];
+      document.getElementById("primary-detail").innerHTML = pills.map(pill => {
+        const style = pill.style ? ` style="${pill.style}"` : "";
+        return `<span class="concern-pill ${pill.className}"${style}>${escapeHtml(titleCaseDisplay(pill.text))}</span>`;
+      }).join("");
+      document.getElementById("primary-accent").style.background = color;
+      attachTooltip(document.getElementById("primary-concern"), {
+        title: noConcern ? "No Weather Concerns" : `${name} - ${risk}`,
+        subtitle: noConcern ? "No operational weather signal in the next 72 hours" : item.peak || "Peak window TBD",
+        lines: concernTooltipLines({ ...item, impact: noConcern ? "Routine operations" : impact, action: noConcern ? "No action" : action }, ""),
+        risk
+      });
+    }
+
+    function bestTimelineDetailFor(source, risk, timeline = {}) {
+      const target = rankFromCategory(risk);
+      const hazardBlocks = Array.isArray(timeline.block_hazards) ? timeline.block_hazards : [];
+      const candidates = hazardBlocks
+        .map((block, index) => ({ detail: block?.[source] || null, index }))
+        .filter(({ detail }) => detail && rankFromCategory(categoryFromRank(detail.risk ?? detail.risk_level)) === target);
+      if (!candidates.length) return null;
+      return candidates.sort((a, b) => {
+        const av = Number(a.detail?.timing_value ?? a.detail?.probability ?? a.detail?.prob ?? a.detail?.values?.value ?? 0);
+        const bv = Number(b.detail?.timing_value ?? b.detail?.probability ?? b.detail?.prob ?? b.detail?.values?.value ?? 0);
+        return bv - av;
+      })[0].detail;
+    }
+
+    function timelineRowsFromData(threatMap, timeline = {}) {
+      const blocks = Array.isArray(timeline.blocks) ? timeline.blocks : [];
+      const hazardBlocks = Array.isArray(timeline.block_hazards) ? timeline.block_hazards : [];
+      return hazardPriority.map(source => {
+        const item = threatMap?.[source] || {};
+        const timelineMax = Math.max(
+          0,
+          ...blocks.map(block => Number(block?.[source] ?? 0)).filter(Number.isFinite),
+          ...hazardBlocks.map(block => Number(block?.[source]?.risk ?? block?.[source]?.risk_level ?? 0)).filter(Number.isFinite)
+        );
+        const risk = categoryFromRank(timelineMax || item.risk_level || item.risk || 0);
+        const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
+        const bestDetail = bestTimelineDetailFor(source, risk, timeline);
+        const windowText = detailWindowText(source, bestDetail) || impactWindowFromBlocks(source, risk, blocks);
+        const detailMetric = bestDetail?.metric || bestDetail?.display_value || bestDetail?.values?.label;
+        const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
+          ? (detailMetric || item.metric || item.display_value || "No signal")
+          : (detailMetric || item.display_value || item.metric || "No signal");
+        return {
+          source,
+          name,
+          risk,
+          metric: displayMetric,
+          probability: detailProbability(bestDetail, item),
+          peak: windowText || (rankFromCategory(risk) > 1 ? shortPeak(bestDetail?.peak_valid_utc || item.peak_valid_utc) : ""),
+          impact: operationalImpact(source, risk),
+          action: operationalAction(risk),
+          methodology: bestDetail?.methodology || bestDetail?.driver || item.methodology || item.driver || "",
+          dataSource: bestDetail?.source || item.source || "",
+          displayLabel: item.display_label || bestDetail?.label || "",
+          riskMethod: bestDetail?.risk_method || bestDetail?.method || item.risk_method || ""
+        };
+      }).sort(compareHazardItems);
+    }
+
+    function threatRowsFromData(threatMap, blocks = []) {
+      return hazardPriority.map(source => {
+        const item = threatMap?.[source] || {};
+        const risk = normalizeForecastRisk(item.risk_label || categoryFromRank(item.risk_level ?? item.risk));
+        const name = hazardNames[source] || item.name || source.replace(/_/g, " ");
+        const detailWindow = item.peak_valid_start_utc && item.peak_valid_end_utc
+          ? `${timingPrefixForDetail(source, item)} ${formatLocalWindow(item.peak_valid_start_utc, item.peak_valid_end_utc)}`
+          : "";
+        const windowText = detailWindow || impactWindowFromBlocks(source, risk, blocks);
+        const displayMetric = ["WIND", "RAIN", "SNOW", "FZRA", "TEMPERATURE"].includes(source)
+          ? (item.metric || item.display_value || "No signal")
+          : (item.display_value || item.metric || "No signal");
+        return {
+          source,
+          name,
+          risk,
+          metric: displayMetric,
+          peak: windowText || shortPeak(item.peak_valid_utc),
+          impact: operationalImpact(source, risk),
+          action: operationalAction(risk),
+          methodology: item.methodology || item.driver || "",
+          dataSource: item.source || "",
+          displayLabel: item.display_label || "",
+          riskMethod: item.risk_method || ""
+        };
+      }).sort(compareHazardItems);
+    }
+
+    function formatLocal(iso, options = {}) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return date.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
+        ...options
+      });
+    }
+
+    function formatUtc(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return `${String(date.getUTCHours()).padStart(2, "0")}${String(date.getUTCMinutes()).padStart(2, "0")}Z`;
+    }
+
+    function formatObsClock(iso) {
+      const date = new Date(iso);
+      if (!Number.isFinite(date.getTime())) return null;
+      return date.toLocaleTimeString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit"
+      });
+    }
+
+    function updateHeaderClock() {
+      const now = new Date();
+      const localText = now.toLocaleTimeString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      });
+      const utcText = `${String(now.getUTCHours()).padStart(2, "0")}${String(now.getUTCMinutes()).padStart(2, "0")}Z`;
+      document.getElementById("updated-local").textContent = localText;
+      document.getElementById("updated-utc").textContent = utcText;
+      attachTooltip(document.getElementById("updated-badge"), {
+        title: "Dashboard Clock",
+        subtitle: `${localText} / ${utcText}`,
+        lines: [
+          ["Meaning", "Page check time"],
+          ["Refresh", "Clock every minute"],
+          ["Forecast", "Reloads every 2 min"],
+          ["Obs", "Reloads every 1 min"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("updated-utc"), {
+        title: "UTC Time",
+        subtitle: utcText,
+        lines: [["Meaning", "Current Z time"]],
+        risk: "Little to None"
+      });
+      updateNowMarker();
+    }
+
+    function skyFromSynopticSummary(value) {
+      const text = String(value || "").trim().toLowerCase();
+      if (!text) return "";
+      if (text.includes("clear")) return "Clear";
+      if (text.includes("few")) return "Few";
+      if (text.includes("scattered")) return "Scattered";
+      if (text.includes("broken")) return "Broken";
+      if (text.includes("overcast")) return "Overcast";
+      return displayWeatherText(text);
+    }
+
+    function updateWindRose(deg) {
+      const arrow = document.getElementById("wind-arrow");
+      if (arrow && Number.isFinite(Number(deg))) {
+        const windToDirection = (Math.round(Number(deg)) + 180) % 360;
+        arrow.setAttribute("transform", `rotate(${windToDirection} 110 110)`);
+        arrow.style.opacity = "1";
+      } else if (arrow) {
+        arrow.style.opacity = "0.22";
+      }
+    }
+
+    function displayWeatherText(value) {
+      if (!value) return "None";
+      return String(value).replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function wetBulbF(tempF, rh) {
+      const tempC = (Number(tempF) - 32) * 5 / 9;
+      const humidity = Number(rh);
+      if (!Number.isFinite(tempC) || !Number.isFinite(humidity)) return null;
+      const wbC = tempC * Math.atan(0.151977 * Math.sqrt(humidity + 8.313659))
+        + Math.atan(tempC + humidity)
+        - Math.atan(humidity - 1.676331)
+        + 0.00391838 * Math.pow(humidity, 1.5) * Math.atan(0.023101 * humidity)
+        - 4.686035;
+      return wbC * 9 / 5 + 32;
+    }
+
+    function formatWindValue(directionText, speed, gust) {
+      if (speed <= 1 && (!Number.isFinite(gust) || gust <= 1)) return "CALM";
+      if (Number.isFinite(gust) && gust > speed) return `${directionText} ${speed}G${Math.round(gust)} mph`;
+      return `${directionText} ${speed} mph`;
+    }
+
+    function mphValue(mphValue, ktValue) {
+      const mph = Number(mphValue);
+      if (Number.isFinite(mph)) return mph;
+      const kt = Number(ktValue);
+      return Number.isFinite(kt) ? kt * 1.15078 : 0;
+    }
+
+    function cToF(value) {
+      const c = Number(value);
+      return Number.isFinite(c) ? c * 9 / 5 + 32 : null;
+    }
+
+    function kphToMph(value) {
+      const kph = Number(value);
+      return Number.isFinite(kph) ? kph * 0.621371 : null;
+    }
+
+    function metersToSm(value) {
+      const meters = Number(value);
+      return Number.isFinite(meters) ? meters / 1609.344 : null;
+    }
+
+    function mmToIn(value) {
+      const mm = Number(value);
+      return Number.isFinite(mm) ? mm / 25.4 : null;
+    }
+
+    function rawObservationMap(obs) {
+      return obs.raw?.OBSERVATIONS || obs.raw?.synoptic?.OBSERVATIONS || {};
+    }
+
+    function rawObservationEntry(obs, prefixes) {
+      const observations = rawObservationMap(obs);
+      for (const prefix of prefixes) {
+        const match = Object.entries(observations).find(([key]) => key.startsWith(prefix));
+        if (match) return match[1];
+      }
+      return null;
+    }
+
+    function staleRawObservation(obs, prefixes, referenceIso, maxAgeMinutes) {
+      const entry = rawObservationEntry(obs, prefixes);
+      if (!entry?.date_time || !referenceIso) return false;
+      const ageMinutes = (new Date(referenceIso).getTime() - new Date(entry.date_time).getTime()) / 60000;
+      return Number.isFinite(ageMinutes) && ageMinutes > maxAgeMinutes;
+    }
+
+    function updateDataSummary({ obs, model, buildUtc } = {}) {
+      if (obs) latestObsSummary = obs;
+      if (model) latestModelSummary = model;
+      if (buildUtc) {
+        const build = formatUtc(buildUtc);
+        latestBuildSummary = build ? `Build ${build}` : `Build ${buildUtc}`;
+      }
+      attachTooltip(document.getElementById("model-badge"), {
+        title: "Forecast Data",
+        subtitle: latestModelSummary,
+        lines: [
+          ["Model", latestModelSummary],
+          ["Build", latestBuildSummary],
+          ["Timeline", "3-hour block risk"],
+          ["Hazards", "72-hr summary"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("beta-badge"), {
+        title: "Internal Use",
+        subtitle: "KRNO ground operations DSS",
+        lines: [
+          ["Purpose", "Situational awareness"],
+          ["Display", "Quick-look TV view"]
+        ],
+        risk: "Little to None"
+      });
+      const summary = document.getElementById("data-summary");
+      if (summary) summary.textContent = `${latestObsSummary} | ${latestModelSummary} | ${latestBuildSummary}`;
+    }
+
+    function obsAgeMinutes(obsIso) {
+      const obsDate = new Date(obsIso);
+      return Number.isFinite(obsDate.getTime()) ? (Date.now() - obsDate.getTime()) / 60000 : Infinity;
+    }
+
+    function updateObsFreshness(obsIso) {
+      const obsDate = new Date(obsIso);
+      const ageMinutes = obsAgeMinutes(obsIso);
+      if (Number.isFinite(obsDate.getTime())) latestObsMs = Math.max(latestObsMs, obsDate.getTime());
+      let state = "Fresh";
+      let className = "fresh";
+      if (ageMinutes > 75) {
+        state = "Stale";
+        className = "stale";
+      } else if (ageMinutes > 20) {
+        state = "Aging";
+        className = "aging";
+      }
+      const badge = document.getElementById("obs-badge");
+      const label = document.getElementById("obs-state");
+      if (badge) badge.className = `badge ${className}`;
+      if (label) label.textContent = state;
+      const obsPanel = document.querySelector("[data-current-obs]");
+      const staleTime = document.getElementById("obs-stale-time");
+      if (obsPanel) obsPanel.classList.toggle("obs-stale", state === "Stale");
+      if (staleTime) staleTime.textContent = `Last KRNO obs: ${formatObsClock(obsIso) || "Unavailable"}`;
+      attachTooltip(badge, {
+        title: "Observation Status",
+        subtitle: `Obs ${state}`,
+        lines: [
+          ["Age", Number.isFinite(ageMinutes) ? `${Math.round(ageMinutes)} min` : "Unknown"],
+          ["Fresh", "<= 20 min"],
+          ["Aging", "21-75 min"],
+          ["Stale", "> 75 min"]
+        ],
+        risk: state === "Stale" ? "Major" : state === "Aging" ? "Minor" : "Little to None"
+      });
+      latestObsSummary = `Obs ${state}`;
+      refreshConfidenceDisplays();
+    }
+
+    async function fetchJson(path) {
+      const separator = path.includes("?") ? "&" : "?";
+      const response = await fetch(`${path}${separator}t=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Unable to load ${path}`);
+      return response.json();
+    }
+
+    let configPromise = null;
+
+    async function appConfig() {
+      if (!configPromise) {
+        configPromise = fetchJson("../../config.json").catch(() => ({}));
+      }
+      return configPromise;
+    }
+
+    function synopticEntry(observations, prefixes) {
+      if (!observations) return null;
+      for (const prefix of prefixes) {
+        const entry = Object.entries(observations).find(([key]) => key.startsWith(prefix));
+        if (entry) return entry[1];
+      }
+      return null;
+    }
+
+    function synopticValue(observations, prefixes) {
+      const entry = synopticEntry(observations, prefixes);
+      return entry && entry.value != null ? entry.value : null;
+    }
+
+    function synopticObservedTime(observations) {
+      const entries = Object.values(observations || {}).filter(entry => entry?.date_time);
+      if (!entries.length) return null;
+      return entries
+        .map(entry => entry.date_time)
+        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+    }
+
+    function synopticPayloadToObs(payload) {
+      const stations = Array.isArray(payload?.STATION) ? payload.STATION : [];
+      const station = stations.find(item => item?.STID === "KRNO") || stations[0];
+      if (!station) return null;
+      const observations = station.OBSERVATIONS || {};
+      const obsIso = synopticObservedTime(observations);
+      if (!obsIso) return null;
+      const windSpeed = Number(synopticValue(observations, ["wind_speed"]));
+      const windGust = Number(synopticValue(observations, ["wind_gust"]));
+      return {
+        site: "KRNO",
+        source: "Synoptic API live browser refresh",
+        status: "ok",
+        station: station.STID || "KRNO",
+        name: station.NAME,
+        latitude: station.LATITUDE,
+        longitude: station.LONGITUDE,
+        elevation_ft: station.ELEVATION,
+        observed_utc: new Date(obsIso).toISOString(),
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: synopticValue(observations, ["wind_direction"]),
+        wind_speed_mph: Number.isFinite(windSpeed) ? windSpeed : null,
+        wind_gust_mph: Number.isFinite(windGust) ? windGust : null,
+        wind_speed_kt: Number.isFinite(windSpeed) ? windSpeed / 1.15078 : null,
+        wind_gust_kt: Number.isFinite(windGust) ? windGust / 1.15078 : null,
+        visibility_sm: synopticValue(observations, ["visibility"]),
+        temperature_f: synopticValue(observations, ["air_temp"]),
+        dewpoint_f: synopticValue(observations, ["dew_point_temperature"]),
+        relative_humidity: synopticValue(observations, ["relative_humidity"]),
+        precip_1hr_in: synopticValue(observations, ["precip_accum_one_hour", "precip_accum"]),
+        sky_condition: skyFromSynopticSummary(synopticValue(observations, ["weather_summary"])),
+        present_weather: displayWeatherText(synopticValue(observations, ["weather_condition"])) || "None",
+        raw: { synoptic: station }
+      };
+    }
+
+    function signedMetarTemp(token) {
+      if (!token || token === "//") return null;
+      return token.startsWith("M") ? -Number(token.slice(1)) : Number(token);
+    }
+
+    function parseMetarVisibility(rawOb) {
+      const text = String(rawOb || "");
+      const mixed = text.match(/\b(\d{1,2})\s+(\d)\/(\d)SM\b/);
+      if (mixed) return Number(mixed[1]) + Number(mixed[2]) / Number(mixed[3]);
+      const fraction = text.match(/\b(M?)(\d)\/(\d)SM\b/);
+      if (fraction) return Number(fraction[2]) / Number(fraction[3]);
+      const whole = text.match(/\b(P?)(\d{1,2})SM\b/);
+      if (whole) return Number(whole[2]);
+      return null;
+    }
+
+    function parseMetarSky(rawOb) {
+      const layers = String(rawOb || "").match(/\b(?:FEW|SCT|BKN|OVC)\d{3}(?:CB|TCU)?\b/g);
+      if (layers?.length) return layers.join(" / ");
+      if (/\b(?:SKC|CLR|NSC|NCD)\b/.test(String(rawOb || ""))) return "CLR";
+      return null;
+    }
+
+    function parseMetarPresentWeather(rawOb) {
+      const weatherTokens = String(rawOb || "").match(/\b(?:[-+]?TSRA|[-+]?TS|[-+]?RA|[-+]?SN|[-+]?DZ|FZRA|FZDZ|FG|BR|HZ|FU|DU|SQ|GR|GS|PL|BLSN|RASN)\b/g);
+      return weatherTokens?.length ? weatherTokens.join(" ") : "None";
+    }
+
+    function rhFromTempDewpoint(tempF, dewpointF) {
+      const tempC = (Number(tempF) - 32) * 5 / 9;
+      const dewC = (Number(dewpointF) - 32) * 5 / 9;
+      if (!Number.isFinite(tempC) || !Number.isFinite(dewC)) return null;
+      const e = Math.exp(17.625 * dewC / (243.04 + dewC));
+      const es = Math.exp(17.625 * tempC / (243.04 + tempC));
+      return Math.max(0, Math.min(100, Math.round(100 * e / es)));
+    }
+
+    function tgftpMetarToObs(text) {
+      const lines = String(text || "").trim().split(/\n+/).map(line => line.trim()).filter(Boolean);
+      if (lines.length < 2) return null;
+      const timeLine = lines[0];
+      const rawOb = lines.slice(1).join(" ");
+      const timeMatch = timeLine.match(/^(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);
+      if (!timeMatch || !rawOb.includes("KRNO")) return null;
+      const [, year, month, day, hour, minute] = timeMatch;
+      const obsIso = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))).toISOString();
+      const windMatch = rawOb.match(/\b(00000|(?:\d{3}|VRB)\d{2,3}(?:G\d{2,3})?)KT\b/);
+      let windDir = null;
+      let windSpeedKt = null;
+      let windGustKt = null;
+      if (windMatch) {
+        const token = windMatch[1];
+        if (token === "00000") {
+          windDir = 0;
+          windSpeedKt = 0;
+        } else {
+          const parsed = token.match(/^(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?$/);
+          if (parsed) {
+            windDir = parsed[1] === "VRB" ? "VRB" : Number(parsed[1]);
+            windSpeedKt = Number(parsed[2]);
+            windGustKt = parsed[3] ? Number(parsed[3]) : null;
+          }
+        }
+      }
+      const tempMatch = rawOb.match(/\b(M?\d{2})\/(M?\d{2}|\/\/)\b/);
+      const tempC = tempMatch ? signedMetarTemp(tempMatch[1]) : null;
+      const dewC = tempMatch ? signedMetarTemp(tempMatch[2]) : null;
+      const temperatureF = tempC == null ? null : tempC * 9 / 5 + 32;
+      const dewpointF = dewC == null ? null : dewC * 9 / 5 + 32;
+      const visibility = parseMetarVisibility(rawOb);
+      const sky = parseMetarSky(rawOb);
+      const presentWeather = parseMetarPresentWeather(rawOb);
+      return {
+        site: "KRNO",
+        source: "TGFTP METAR live browser refresh",
+        status: "ok",
+        station: "KRNO",
+        observed_utc: obsIso,
+        generated_utc: new Date().toISOString(),
+        wind_dir_deg: windDir,
+        wind_speed_kt: windSpeedKt,
+        wind_gust_kt: windGustKt,
+        wind_speed_mph: windSpeedKt == null ? null : windSpeedKt * 1.15078,
+        wind_gust_mph: windGustKt == null ? null : windGustKt * 1.15078,
+        visibility_sm: visibility,
+        temperature_f: temperatureF,
+        dewpoint_f: dewpointF,
+        relative_humidity: rhFromTempDewpoint(temperatureF, dewpointF),
+        precip_1hr_in: 0,
+        sky_condition: sky,
+        present_weather: presentWeather,
+        metar: rawOb,
+        raw: { tgftp: text }
+      };
+    }
+
+    function updateObsTooltips(obs, values) {
+      const rh = Number(obs.relative_humidity ?? obs.raw?.OBSERVATIONS?.relative_humidity_value_1?.value);
+      const wb = wetBulbF(obs.temperature_f, rh);
+      const observed = values.obsIso ? `${formatTooltipLocal(values.obsIso)} / ${formatTooltipUtc(values.obsIso)}` : "Observation time unknown";
+      const retrievedIso = obs.generated_utc || obs.retrieved_utc;
+      const retrieved = retrievedIso ? `${formatTooltipLocal(retrievedIso)} / ${formatTooltipUtc(retrievedIso)}` : "Retrieval time unknown";
+      const ageNow = values.obsIso ? obsAgeMinutes(values.obsIso) : Infinity;
+      const ageAtBuild = Number(obs.age_minutes_at_build);
+      const obsTimeLines = [
+        ["Observed", observed],
+        ["Retrieved", retrieved],
+        ["Age Now", Number.isFinite(ageNow) ? `${Math.round(ageNow)} min` : "Unknown"],
+        ["Age At Build", Number.isFinite(ageAtBuild) ? `${Math.round(ageAtBuild)} min` : "Unknown"],
+        ["Source", obs.source || "Observation feed"]
+      ];
+      const fieldTimes = obs.field_times_utc || {};
+      const windFieldTime = fieldTimes.wind_speed_value_1 || fieldTimes.wind_speed_value_1d;
+      const tempFieldTime = fieldTimes.air_temp_value_1 || fieldTimes.air_temp_value_1d;
+      if (windFieldTime) obsTimeLines.push(["Wind Field", `${formatTooltipLocal(windFieldTime)} / ${formatTooltipUtc(windFieldTime)}`]);
+      if (tempFieldTime) obsTimeLines.push(["Temp Field", `${formatTooltipLocal(tempFieldTime)} / ${formatTooltipUtc(tempFieldTime)}`]);
+      attachTooltip(document.getElementById("wind-rose"), {
+        title: "Wind Rose",
+        subtitle: values.windText,
+        lines: [
+          ["Direction", values.dirText],
+          ["Speed", `${values.speed} mph`, windColor(values.speed)],
+          ["Gust", values.gustText, windColor(values.gust)],
+          ["Meaning", "Arrow shows wind flow"]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("wind-line"), {
+        title: "Surface Wind",
+        subtitle: values.windText,
+        lines: [
+          ["Direction", values.dirText],
+          ["Speed", `${values.speed} mph`, windColor(values.speed)],
+          ["Gust", values.gustText, windColor(values.gust)],
+          ["Ops", values.gust > 25 ? "Ramp wind watch" : "Routine wind watch"]
+        ],
+        risk: values.gust > 35 ? "Moderate" : values.gust > 25 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("vis-item"), {
+        title: "Visibility",
+        subtitle: values.visText,
+        lines: [["Observed", values.visText, visibilityColor(values.vis)], ["Ops", values.vis < 5 ? "Low-vis watch" : "Routine visibility"]],
+        risk: values.vis < 3 ? "Moderate" : values.vis < 5 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("sky-item"), {
+        title: "Sky Condition",
+        subtitle: values.sky,
+        lines: [["Clouds", values.sky, cloudColor(values.sky)], ["Source", obs.source || "Observation feed"]],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("temp-item"), {
+        title: "Temperature / Moisture",
+        subtitle: values.tempText,
+        lines: [
+          ["Temp / Dew Point", values.tempText, tempColor(obs.temperature_f)],
+          ["RH", Number.isFinite(rh) ? `${Math.round(rh)}%` : "Not reported"],
+          ["Wet Bulb", wb == null ? "Not calculated" : `${Math.round(wb)} °F`, wb == null ? "" : tempColor(wb)]
+        ],
+        risk: "Little to None"
+      });
+      attachTooltip(document.getElementById("wx-item"), {
+        title: "Present Weather",
+        subtitle: values.wx,
+        lines: [["Observed", values.wx], ["Ops", values.wx === "None" ? "No active weather" : "Monitor field impacts"]],
+        risk: values.wx === "None" ? "None" : "Minor"
+      });
+      attachTooltip(document.getElementById("rain-item"), {
+        title: "1-Hour Rain",
+        subtitle: values.rainText,
+        lines: [["Observed", values.rainText, precipColor(values.rain)], ["Ops", values.rain >= 0.1 ? "Drainage watch" : "Routine drainage"]],
+        risk: values.rain >= 0.3 ? "Moderate" : values.rain >= 0.1 ? "Minor" : "Little to None"
+      });
+      attachTooltip(document.getElementById("obs-time-item"), {
+        title: "Observation Time",
+        subtitle: observed,
+        lines: obsTimeLines,
+        risk: "Little to None"
+      });
+    }
+
+    function updateObsDisplay(obs) {
+      const obsIso = obs.observed_utc || obs.generated_utc;
+      const local = formatObsClock(obsIso);
+      if (local) document.getElementById("obs-time").textContent = local;
+      updateObsFreshness(obsIso);
+      const rawDir = obs.wind_dir_deg;
+      const numericDir = Number(rawDir);
+      const dir = Number.isFinite(numericDir) ? Math.round(numericDir) : null;
+      const dirText = dir == null ? (String(rawDir || "").toUpperCase() === "VRB" ? "VRB" : "--") : `${dir}&deg;`;
+      const speed = Math.round(mphValue(obs.wind_speed_mph, obs.wind_speed_kt));
+      let gust = mphValue(obs.wind_gust_mph, obs.wind_gust_kt);
+      if (staleRawObservation(obs, ["wind_gust"], obsIso, 15)) gust = NaN;
+      const windText = formatWindValue(dirText, speed, gust);
+      const windTooltipText = windText.replaceAll("&deg;", "°");
+      setValueColor("wind-line", windText, windColor(speed));
+      updateWindRose(dir);
+      const gustText = Number.isFinite(gust) && gust > speed ? `${Math.round(gust)} mph` : "--";
+      const vis = Number(obs.visibility_sm);
+      const visText = Number.isFinite(vis) ? (vis >= 10 ? "10+ SM" : `${vis.toFixed(1)} SM`) : "--";
+      setValueColor("vis-line", visText, visibilityColor(vis));
+      const skyRaw = staleRawObservation(obs, ["weather_summary"], obsIso, 20)
+        ? null
+        : obs.raw?.OBSERVATIONS?.weather_summary_value_1d?.value;
+      const sky = obs.sky_condition || skyFromSynopticSummary(skyRaw) || "Not reported";
+      setValueColor("sky-line", sky, cloudColor(sky));
+      let tempText = "--";
+      let tempTooltipText = "--";
+      if (obs.temperature_f != null && obs.dewpoint_f != null) {
+        const temp = Math.round(obs.temperature_f);
+        const dewpoint = Math.round(obs.dewpoint_f);
+        tempText = `<span style="color:${tempColor(temp)}">${temp}</span><span class="obs-separator"> / </span><span style="color:${tempColor(dewpoint)}">${dewpoint}</span><span class="obs-separator">&deg;F</span>`;
+        tempTooltipText = `${temp} / ${dewpoint}°F`;
+        setValueColor("temp-line", tempText, "");
+      }
+      const wxRaw = staleRawObservation(obs, ["weather_condition"], obsIso, 20)
+        ? null
+        : obs.raw?.OBSERVATIONS?.weather_condition_value_1d?.value;
+      const wx = obs.present_weather || displayWeatherText(wxRaw) || "None";
+      setValueColor("wx-line", wx, wx === "None" ? "var(--text-body)" : precipColor(0.1));
+      const rain = Number(obs.precip_1hr_in || 0);
+      const rainText = rain.toFixed(2) + " in";
+      setValueColor("rain-line", rainText, precipColor(rain));
+      updateObsTooltips(obs, { obsIso, dir, dirText: dirText.replace("&deg;", "°"), speed, gust, windText: windTooltipText, gustText, vis, visText, sky, tempText: tempTooltipText, wx, rain, rainText });
+    }
+
+    async function fetchSynopticLiveFallback() {
+      const config = await appConfig();
+      const proxyUrl = String(config.synoptic_proxy_url || "").trim();
+      const token = String(config.synoptic_token || "").trim();
+      let url = "";
+      if (proxyUrl) {
+        url = `${proxyUrl}${proxyUrl.includes("?") ? "&" : "?"}stid=KRNO&t=${Date.now()}`;
+      } else if (token) {
+        const params = new URLSearchParams({
+          stid: "KRNO",
+          token,
+          units: "english",
+          output: "json",
+          vars: [
+            "air_temp",
+            "dew_point_temperature",
+            "relative_humidity",
+            "wind_speed",
+            "wind_direction",
+            "wind_gust",
+            "visibility",
+            "weather_condition",
+            "weather_summary",
+            "precip_accum_one_hour"
+          ].join(","),
+          t: String(Date.now())
+        });
+        url = `https://api.synopticdata.com/v2/stations/latest?${params.toString()}`;
+      } else {
+        return false;
+      }
+
+      const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error("Synoptic live observation unavailable");
+      const obs = synopticPayloadToObs(await response.json());
+      if (!obs) return false;
+      const obsMs = new Date(obs.observed_utc).getTime();
+      if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+        updateObsDisplay(obs);
+        return true;
+      }
+      return false;
+    }
+
+    async function fetchTgftpMetarFallback() {
+      const baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/KRNO.TXT";
+      const urls = [
+        `${baseUrl}?t=${Date.now()}`,
+        `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`
+      ];
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+          if (!response.ok) continue;
+          const obs = tgftpMetarToObs(await response.text());
+          if (!obs) continue;
+          const obsMs = new Date(obs.observed_utc).getTime();
+          if (Number.isFinite(obsMs) && obsMs >= latestObsMs) {
+            updateObsDisplay(obs);
+            return true;
+          }
+        } catch (error) {
+          console.info("Unable to refresh one TGFTP METAR endpoint.", error);
+        }
+      }
+      return false;
+    }
+
+    async function loadObsData() {
+      updateHeaderClock();
+      let primaryObs = null;
+      let loadedPrimaryObs = false;
+      try {
+        const obs = await fetchJson("../../observations.json");
+        if (obs.status === "ok") {
+          primaryObs = obs;
+          loadedPrimaryObs = true;
+          const obsMs = new Date(obs.observed_utc || obs.generated_utc).getTime();
+          if (!latestObsMs || !Number.isFinite(obsMs) || obsMs >= latestObsMs) {
+            updateObsDisplay(obs);
+          }
+        }
+      } catch (error) {
+        console.info("Unable to refresh observations.", error);
+      }
+      const fallbackLoaders = [
+        ["Synoptic live observation refresh", fetchSynopticLiveFallback],
+        ["TGFTP METAR live refresh", fetchTgftpMetarFallback]
+      ];
+      for (const [label, loader] of fallbackLoaders) {
+        try {
+          const updated = await loader();
+          if (updated) return;
+        } catch (error) {
+          console.info(`Unable to refresh ${label}.`, error);
+        }
+      }
+      if (loadedPrimaryObs && obsAgeMinutes(primaryObs?.observed_utc || primaryObs?.generated_utc) <= 8) return;
+    }
+
+    function destinationPoint(lat, lon, distanceNm, bearingDegrees) {
+      const radiusMeters = 6371008.8;
+      const distance = Number(distanceNm) * metersPerNm;
+      const bearing = Number(bearingDegrees) * Math.PI / 180;
+      const phi1 = Number(lat) * Math.PI / 180;
+      const lambda1 = Number(lon) * Math.PI / 180;
+      const angular = distance / radiusMeters;
+      const phi2 = Math.asin(Math.sin(phi1) * Math.cos(angular) + Math.cos(phi1) * Math.sin(angular) * Math.cos(bearing));
+      const lambda2 = lambda1 + Math.atan2(
+        Math.sin(bearing) * Math.sin(angular) * Math.cos(phi1),
+        Math.cos(angular) - Math.sin(phi1) * Math.sin(phi2)
+      );
+      return {
+        lat: phi2 * 180 / Math.PI,
+        lon: ((lambda2 * 180 / Math.PI + 540) % 360) - 180
+      };
+    }
+
+    function initQuicklookMap() {
+      const mapEl = document.getElementById("radar-map");
+      if (quicklookMapReady || !window.L) return Boolean(quicklookMap);
+      if (mapEl) mapEl.classList.add("no-leaflet");
+      if (!mapEl) return false;
+      mapEl.classList.remove("no-leaflet");
+      mapEl.classList.add("leaflet-ready");
+      quicklookMap = L.map(mapEl, {
+        center: [krnoPoint.lat, krnoPoint.lon],
+        zoom: 9,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        tap: false
+      });
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+        opacity: 1,
+        subdomains: "abcd"
+      }).addTo(quicklookMap);
+      decisionRadiiNm.forEach(limit => {
+        L.circle([krnoPoint.lat, krnoPoint.lon], {
+          radius: limit * metersPerNm,
+          color: "rgba(235,244,255,0.62)",
+          weight: limit === 10 ? 2 : 1,
+          opacity: 0.78,
+          fill: false,
+          interactive: false
+        }).addTo(quicklookMap);
+      });
+      quicklookMap.fitBounds([
+        [39.27, -120.02],
+        [39.73, -119.48]
+      ], { padding: [8, 8], animate: false });
+      quicklookAirportMarker = L.marker([krnoPoint.lat, krnoPoint.lon], {
+        interactive: false,
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="leaflet-airport-marker"></div>',
+          iconSize: [14, 14],
+          iconAnchor: [7, 7]
+        })
+      }).addTo(quicklookMap);
+      quicklookLightningLayer = L.layerGroup().addTo(quicklookMap);
+      quicklookMapReady = true;
+      return true;
+    }
+
+    function setQuicklookRadarLayer(frame = radarFrames[radarFrameIndex]) {
+      if (!quicklookMap) return;
+      if (quicklookRadarLayer) quicklookMap.removeLayer(quicklookRadarLayer);
+      quicklookRadarLayer = L.tileLayer.wms("https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi", {
+        layers: frame.layer,
+        format: "image/png",
+        transparent: true,
+        opacity: 0.6,
+        version: "1.1.1"
+      }).addTo(quicklookMap);
+    }
+
+    function radarMapDimensions() {
+      const map = document.getElementById("radar-map");
+      return {
+        width: Math.max(320, Math.round(map?.clientWidth || radarWidth || 760)),
+        height: Math.max(180, Math.round(map?.clientHeight || radarHeight || 430))
+      };
+    }
+
+    function mercatorProject(lat, lon) {
+      const latitude = clamp(Number(lat), -85.05112878, 85.05112878);
+      const longitude = clamp(Number(lon), -180, 180);
+      const x = longitude * mercatorLimit / 180;
+      const y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) * mercatorLimit / Math.PI;
+      return { x, y };
+    }
+
+    function radarBoundsForElement(width, height) {
+      const aspect = Math.max(1, width / Math.max(1, height));
+      const center = mercatorProject(krnoPoint.lat, krnoPoint.lon);
+      const localScale = 1 / Math.cos(krnoPoint.lat * Math.PI / 180);
+      const halfY = radarHalfSpanNm * metersPerNm * localScale;
+      const halfX = halfY * aspect;
+      return {
+        minX: center.x - halfX,
+        minY: center.y - halfY,
+        maxX: center.x + halfX,
+        maxY: center.y + halfY,
+        centerX: center.x,
+        centerY: center.y,
+        localScale
+      };
+    }
+
+    function projectedToRadarPct(point) {
+      if (!radarBounds || !point) return null;
+      const left = ((point.x - radarBounds.minX) / (radarBounds.maxX - radarBounds.minX)) * 100;
+      const top = ((radarBounds.maxY - point.y) / (radarBounds.maxY - radarBounds.minY)) * 100;
+      return { left, top };
+    }
+
+    function coordinateToRadarPct(lat, lon) {
+      if (!radarBounds) return null;
+      const latitude = Number(lat);
+      const longitude = Number(lon);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+      return projectedToRadarPct(mercatorProject(latitude, longitude));
+    }
+
+    function distanceNmBetween(lat1, lon1, lat2, lon2) {
+      const radiusNm = 3440.065;
+      const phi1 = Number(lat1) * Math.PI / 180;
+      const phi2 = Number(lat2) * Math.PI / 180;
+      const dPhi = (Number(lat2) - Number(lat1)) * Math.PI / 180;
+      const dLambda = (Number(lon2) - Number(lon1)) * Math.PI / 180;
+      const a = Math.sin(dPhi / 2) ** 2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLambda / 2) ** 2;
+      return 2 * radiusNm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function syncRadarGeometry() {
+      const { width, height } = radarMapDimensions();
+      radarWidth = width;
+      radarHeight = height;
+      radarAspect = Math.max(1, width / Math.max(1, height));
+      radarBounds = radarBoundsForElement(width, height);
+      radarBbox = [
+        radarBounds.minX.toFixed(2),
+        radarBounds.minY.toFixed(2),
+        radarBounds.maxX.toFixed(2),
+        radarBounds.maxY.toFixed(2)
+      ].join(",");
+      [10, 15, 20, 25].forEach(limit => {
+        const ring = document.querySelector(`.range-ring.r${limit}`);
+        if (ring) ring.style.height = `${(limit / radarHalfSpanNm) * 100}%`;
+      });
+      renderLightningStrikes(latestLightningPayload);
+    }
+
+    function radarImageUrl(frame = radarFrames[radarFrameIndex]) {
+      if (!radarBbox) syncRadarGeometry();
+      const params = new URLSearchParams({
+        SERVICE: "WMS",
+        VERSION: "1.1.1",
+        REQUEST: "GetMap",
+        LAYERS: frame.layer,
+        STYLES: "",
+        SRS: "EPSG:3857",
+        BBOX: radarBbox,
+        WIDTH: String(radarWidth),
+        HEIGHT: String(radarHeight),
+        FORMAT: "image/png",
+        TRANSPARENT: "TRUE",
+        t: String(radarCacheBust)
+      });
+      return `https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi?${params.toString()}`;
+    }
+
+    function radarBasemapUrl() {
+      if (!radarBbox) syncRadarGeometry();
+      const params = new URLSearchParams({
+        bbox: radarBbox,
+        bboxSR: "3857",
+        imageSR: "3857",
+        size: `${radarWidth},${radarHeight}`,
+        format: "png32",
+        transparent: "false",
+        f: "image",
+        t: String(Math.floor(radarCacheBust / (15 * 60 * 1000)))
+      });
+      return `https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?${params.toString()}`;
+    }
+
+    function formatRadarClock(frame) {
+      const scanTime = new Date(Date.now() - Number(frame.ageMinutes || 0) * 60000);
+      const local = scanTime.toLocaleTimeString("en-US", {
+        timeZone: "America/Los_Angeles",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      });
+      return frame.ageMinutes ? `Scan ~${local} (-${frame.ageMinutes}m)` : `Scan ~${local}`;
+    }
+
+    function updateRadarFrameInfo(frame) {
+      const label = document.getElementById("radar-time");
+      if (label) label.textContent = formatRadarClock(frame);
+      attachTooltip(document.getElementById("radar-map"), {
+        title: "Radar / Lightning Map",
+        subtitle: formatRadarClock(frame),
+        lines: [
+          ["Radar", "Reflectivity loop"],
+          ["Loop", "Last 20 minutes"],
+          ["Ring", "10 nm from KRNO"],
+          ["Map", "CARTO dark road basemap"],
+          ["Lightning", "Closest GOES GLM group"],
+          ["Use", "Situational awareness"]
+        ],
+        risk: "Little to None"
+      });
+    }
+
+    function preloadRadarFrames() {
+      if (quicklookMap) return;
+      radarFrames.forEach(frame => {
+        const image = new Image();
+        image.src = radarImageUrl(frame);
+      });
+    }
+
+    function renderRadarFrame() {
+      const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
+      if (initQuicklookMap()) {
+        setQuicklookRadarLayer(frame);
+        updateRadarFrameInfo(frame);
+        return;
+      }
+      const image = document.getElementById("radar-img");
+      if (!image) return;
+      image.src = radarImageUrl(frame);
+      image.dataset.ageMinutes = String(frame.ageMinutes);
+      updateRadarFrameInfo(frame);
+    }
+
+    function advanceRadarFrame() {
+      radarFrameIndex = (radarFrameIndex + 1) % radarFrames.length;
+      renderRadarFrame();
+    }
+
+    function refreshRadarImage() {
+      radarCacheBust = Date.now();
+      if (initQuicklookMap()) {
+        const frame = radarFrames[radarFrameIndex] || radarFrames[radarFrames.length - 1];
+        setQuicklookRadarLayer(frame);
+        updateRadarFrameInfo(frame);
+        quicklookMap.invalidateSize();
+        return;
+      }
+      syncRadarGeometry();
+      const basemap = document.getElementById("radar-basemap");
+      if (basemap) basemap.src = radarBasemapUrl();
+      preloadRadarFrames();
+      renderRadarFrame();
+    }
+
+    function lightningRisk(level) {
+      if (level === "inside_10_nm") return "Major";
+      if (level === "monitor_15_nm") return "Moderate";
+      if (level === "monitor_20_nm" || level === "monitor_25_nm") return "Minor";
+      if (level === "error" || level === "unavailable") return "Minor";
+      return "None";
+    }
+
+    function ringCount(lightning, limit) {
+      return Number(lightning?.rings?.[`within_${limit}_nm`]?.count || 0);
+    }
+
+    function lightningDataAgeMinutes(lightning) {
+      const iso = lightning?.generated_utc || lightning?.updated_utc || lightning?.latest_file_utc;
+      const date = new Date(iso);
+      return Number.isFinite(date.getTime()) ? (Date.now() - date.getTime()) / 60000 : Infinity;
+    }
+
+    function lightningFeedUsable(lightning) {
+      if (!lightning || lightning.status === "unavailable" || lightning.alert_level === "unavailable") return false;
+      if (String(lightning.status || "").toLowerCase() && String(lightning.status || "").toLowerCase() !== "ok") return false;
+      return lightningDataAgeMinutes(lightning) <= 45;
+    }
+
+    function radarScanAvailable() {
+      const text = document.getElementById("radar-time")?.textContent || "";
+      return /^Scan\s+~?\d/.test(text);
+    }
+
+    function formatStrikeAge(strike) {
+      if (!strike) return "";
+      const age = Number(strike.age_minutes);
+      return Number.isFinite(age) ? `${Math.round(age)} min ago` : "";
+    }
+
+    function lightningPillClassForDistance(distance) {
+      if (!Number.isFinite(distance)) return "green";
+      if (distance <= 10) return "purple";
+      if (distance <= 20) return "red";
+      if (distance <= 30) return "orange";
+      if (distance <= 40) return "yellow";
+      return "green";
+    }
+
+    function lightningThreatColor(className) {
+      return {
+        purple: "var(--risk-extreme)",
+        red: "var(--risk-major)",
+        orange: "var(--risk-moderate)",
+        yellow: "var(--risk-minor)",
+        green: "var(--success)"
+      }[className || "green"] || "var(--success)";
+    }
+
+    function lightningStrikeColor(strike) {
+      const age = Number(strike?.age_minutes);
+      if (!Number.isFinite(age)) return "var(--success)";
+      if (age <= 2) return "var(--risk-extreme)";
+      if (age <= 5) return "var(--risk-major)";
+      if (age <= 10) return "var(--risk-moderate)";
+      if (age <= 15) return "var(--risk-minor)";
+      return "var(--success)";
+    }
+
+    function strikeLatLng(strike) {
+      if (!strike) return null;
+      if (Number.isFinite(Number(strike.lat)) && Number.isFinite(Number(strike.lon))) {
+        return { lat: Number(strike.lat), lon: Number(strike.lon) };
+      }
+      if (Number.isFinite(Number(strike.distance_nm)) && Number.isFinite(Number(strike.bearing_degrees))) {
+        return destinationPoint(krnoPoint.lat, krnoPoint.lon, Number(strike.distance_nm), Number(strike.bearing_degrees));
+      }
+      return null;
+    }
+
+    function strikeMapPoint(strike) {
+      const location = strikeLatLng(strike);
+      return location ? coordinateToRadarPct(location.lat, location.lon) : null;
+    }
+
+    function renderLightningStrikes(lightning) {
+      const layer = document.getElementById("lightning-layer");
+      const oldDot = document.getElementById("lightning-dot");
+      if (oldDot) oldDot.hidden = true;
+      if (quicklookMap && quicklookLightningLayer && window.L) {
+        quicklookLightningLayer.clearLayers();
+      }
+      if (layer) layer.innerHTML = "";
+      const strikes = Array.isArray(lightning?.strikes) && lightning.strikes.length
+        ? lightning.strikes
+        : [lightning?.nearest_strike].filter(Boolean);
+      if (!strikes.length) {
+        if (layer) layer.hidden = true;
+        return;
+      }
+      if (quicklookMap && quicklookLightningLayer && window.L) {
+        strikes.slice(0, 25).forEach(strike => {
+          const location = strikeLatLng(strike);
+          if (!location) return;
+          const title = `${Number(strike.distance_nm).toFixed(1)} nm ${strike.bearing_cardinal || ""} ${formatStrikeAge(strike)}`.trim();
+          const marker = L.marker([location.lat, location.lon], {
+            interactive: false,
+            icon: L.divIcon({
+              className: "",
+              html: `<div class="leaflet-lightning-strike" style="--strike-color: ${lightningStrikeColor(strike)}" title="${title}">+</div>`,
+              iconSize: [22, 22],
+              iconAnchor: [11, 11]
+            })
+          });
+          quicklookLightningLayer.addLayer(marker);
+        });
+        if (layer) layer.hidden = true;
+        return;
+      }
+      if (!layer || !radarBounds) return;
+      layer.hidden = false;
+      strikes.slice(0, 25).forEach(strike => {
+        const point = strikeMapPoint(strike);
+        if (!point || point.left < -2 || point.left > 102 || point.top < -2 || point.top > 102) return;
+        const marker = document.createElement("div");
+        marker.className = "lightning-strike";
+        marker.style.left = `${point.left}%`;
+        marker.style.top = `${point.top}%`;
+        marker.style.setProperty("--strike-color", lightningStrikeColor(strike));
+        marker.title = `${Number(strike.distance_nm).toFixed(1)} nm ${strike.bearing_cardinal || ""} ${formatStrikeAge(strike)}`.trim();
+        layer.appendChild(marker);
+      });
+      layer.hidden = layer.childElementCount === 0;
+    }
+
+    function updateAirportMarker(className) {
+      const marker = document.getElementById("airport-marker");
+      const color = lightningThreatColor(className);
+      if (marker) marker.style.setProperty("--airport-marker-color", color);
+      if (quicklookAirportMarker?._icon) {
+        quicklookAirportMarker._icon.style.setProperty("--airport-marker-color", color);
+      }
+    }
+
+    function updateLightningDisplay(lightning) {
+      latestLightningPayload = lightning || null;
+      const risk = lightningRisk(lightning?.alert_level);
+      const nearest = lightning?.nearest_strike || null;
+      const pill = document.getElementById("lightning-pill");
+      const subtext = document.getElementById("lightning-subtext");
+      const action = document.getElementById("lightning-action");
+      const panel = document.getElementById("lightning-panel");
+      const label = lightning?.alert_label || "No GLM lightning detected";
+      const ring20Count = ringCount(lightning, 20);
+      const ring10Count = ringCount(lightning, 10);
+      const scanText = (document.getElementById("radar-time")?.textContent || "Scan --")
+        .replace(/^Scan ~?/, "")
+        .replace(/\s+\(-\d+m\)/, "");
+      const distance = nearest ? Number(nearest.distance_nm) : NaN;
+      const ageText = nearest ? formatStrikeAge(nearest) : "";
+      const feedUsable = lightningFeedUsable(lightning);
+      const scanUsable = radarScanAvailable();
+      const windowMinutes = Number(lightning?.window_minutes) || 15;
+      const searchRadius = Number(lightning?.search_radius_nm) || 25;
+      let pillClass = feedUsable && scanUsable ? "green" : "unavailable";
+      let pillText = feedUsable && scanUsable
+        ? `No lightning within ${searchRadius} NM`
+        : "Lightning data unavailable";
+      let subtextText = feedUsable && scanUsable
+        ? `Last ${windowMinutes} min`
+        : scanUsable ? "GLM feed stale or unavailable" : "Radar scan unavailable";
+      if (feedUsable && scanUsable && Number.isFinite(distance)) {
+        pillClass = lightningPillClassForDistance(distance);
+        pillText = `Lightning detected within ${searchRadius} NM`;
+        subtextText = `${distance.toFixed(1)} nm ${nearest.bearing_cardinal || ""}${ageText ? ` / ${ageText}` : ""}`.trim();
+      }
+      if (pill) {
+        pill.className = `lightning-pill${pillClass ? ` ${pillClass}` : ""}`;
+        pill.textContent = pillText;
+      }
+      updateAirportMarker(pillClass);
+      if (subtext) subtext.textContent = subtextText;
+      if (action) {
+        action.textContent = !feedUsable || !scanUsable ? "Do not infer all clear." : nearest ? "Ramp Monitor" : "";
+        action.style.borderLeftColor = riskColors[risk] || "var(--broadcast-cyan)";
+      }
+      if (panel) {
+        attachTooltip(panel, {
+          title: "Radar / Lightning Trigger",
+          subtitle: feedUsable && scanUsable ? label : "Data unavailable",
+          lines: [
+            ["20 NM", feedUsable ? (ring20Count > 0 ? "Strike detected" : "Clear") : "Unavailable"],
+            ["10 NM", feedUsable ? (ring10Count > 0 ? "Strike detected" : "Clear") : "Unavailable"],
+            ["Closest Strike", feedUsable ? (nearest ? `${nearest.distance_nm} nm ${nearest.bearing_cardinal}` : `None within ${searchRadius} nm`) : "Unavailable"],
+            ["Strike Age", nearest ? formatStrikeAge(nearest) || "--" : "--"],
+            ["Window", feedUsable ? `Last ${windowMinutes} min` : "Unavailable"],
+            ["Radar", scanUsable ? scanText : "Scan time unavailable"],
+            ["Source", "GOES-18 GLM"],
+            ["Note", "Total lightning proxy, not exact CG strike"]
+          ],
+          risk: feedUsable && scanUsable ? risk : "Minor"
+        });
+      }
+      renderLightningStrikes(feedUsable ? lightning : null);
+    }
+
+    async function loadLightningData() {
+      try {
+        const lightning = await fetchJson("../../lightning.json");
+        updateLightningDisplay(lightning);
+      } catch (error) {
+        console.info("Unable to refresh lightning data.", error);
+        updateLightningDisplay({ alert_level: "unavailable", alert_label: "GLM feed unavailable" });
+      }
+    }
+
+    async function loadForecastData() {
+      try {
+        const [timeline, threats] = await Promise.all([
+          fetchJson("../../nbm_timeline.json"),
+          fetchJson("../../nbm_threats.json")
+        ]);
+        const start = timeline?.valid_period?.start_utc || timeline?.blocks?.[0]?.valid_start_utc;
+        const sourceBlocks = (timeline.blocks || []).slice(0, 24);
+        const blocks = timeBlocksFromTimeline(sourceBlocks, start);
+        const rows = {};
+        const details = {};
+        hazards.forEach(hazard => {
+          const source = hazard.source;
+          rows[hazard.id] = sourceBlocks.map(block => categoryFromRank(block[source]));
+          details[hazard.id] = (timeline.block_hazards || []).slice(0, 24).map(block => block?.[source] || null);
+        });
+        renderTimeline(blocks, rows, details);
+        if (timeline.cycle) {
+          document.getElementById("model-cycle").textContent = compactModelCycle(timeline.cycle);
+        }
+        latestForecastTimeline = timeline;
+        latestForecastRawTimeline = timeline;
+        latestTimelineDetails = details;
+        latestForecastConfidence = forecastConfidence(timeline);
+        updateDataSummary({
+          model: timeline.cycle || "NBM",
+          buildUtc: timeline.generated_utc || timeline.updated_utc || timeline.cycle_utc_iso
+        });
+
+        const threatRows = threatRowsFromData(threats.threats || {}, timeline.blocks || []);
+        if (threatRows.length) {
+          renderTopHazards(threatRows);
+          renderHazardSummaryStrip(threatRows);
+          updatePrimaryConcern(threatRows[0]);
+        }
+      } catch (error) {
+        console.info("Unable to refresh forecast data.", error);
+      }
+    }
+
+    async function loadAlertsData() {
+      try {
+        const alerts = await fetchJson("../../alerts.json");
+        const alertBox = document.getElementById("alert-box");
+        const activeAlerts = visibleNwsAlerts(Array.isArray(alerts.alerts) ? alerts.alerts : []);
+        if (activeAlerts.length) {
+          alertBox.classList.add("active");
+          alertBox.innerHTML = `
+            <div class="alert-title">${activeAlerts.length} Active Alert${activeAlerts.length > 1 ? "s" : ""}</div>
+            <div class="alert-text">Review official products for KRNO</div>
+          `;
+          attachTooltip(alertBox, {
+            title: "NWS Alerts",
+            subtitle: `${activeAlerts.length} active`,
+            lines: [
+              ["Status", "Active alerts"],
+              ["Action", "Review official products"],
+              ["Scope", "KRNO area"]
+            ],
+            risk: "Moderate"
+          });
+        } else {
+          alertBox.classList.remove("active");
+          alertBox.innerHTML = `
+            <div class="alert-title">No active NWS alerts</div>
+            <div class="alert-text">for KRNO<br>Local DSS risk may still exist</div>
+          `;
+          attachTooltip(alertBox, {
+            title: "NWS Alerts",
+            subtitle: "No active NWS alerts",
+            lines: [
+              ["Status", "No active official alerts"],
+              ["Scope", "KRNO area"],
+              ["Action", "Routine monitoring"]
+            ],
+            risk: "None"
+          });
+        }
+      } catch (error) {
+        console.info("Unable to refresh alerts.", error);
+      }
+    }
+
+    async function loadLocalData() {
+      await Promise.allSettled([
+        loadObsData(),
+        loadForecastData(),
+        loadAlertsData(),
+        loadLightningData()
+      ]);
+    }
+
+    renderTimeline(makeTimeBlocks(), mockRows);
+    renderLegend();
+    renderTopHazards(topHazards);
+    renderHazardSummaryStrip(topHazards);
+    updatePrimaryConcern(topHazards[0]);
+    updateHeaderClock();
+    updateDataSummary();
+    refreshRadarImage();
+    loadLocalData();
+    setInterval(updateHeaderClock, 60 * 1000);
+    setInterval(loadObsData, 60 * 1000);
+    setInterval(loadForecastData, 2 * 60 * 1000);
+    setInterval(loadAlertsData, 5 * 60 * 1000);
+    setInterval(loadLightningData, 60 * 1000);
+    setInterval(advanceRadarFrame, 1200);
+    setInterval(refreshRadarImage, 5 * 60 * 1000);
+    window.addEventListener("resize", () => {
+      updateNowMarker();
+      refreshRadarImage();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) loadLocalData();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") hideTimelineTooltip();
+    });
+  </script>
+</body>
+</html>
