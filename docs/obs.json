@@ -1,21 +1,162 @@
 {
   "site": "KRNO",
   "source": "Synoptic API",
-  "generated_utc": "2026-06-11T01:43:20Z",
-  "status": "error",
-  "message": "Synoptic API fetch failed: HTTPSConnectionPool(host='api.synopticdata.com', port=443): Max retries exceeded with url: /v2/stations/latest?stid=KRNO&token=b5956ebcbf8b4ea391e5b00a3c21f3bf&units=english&output=json&vars=air_temp%2Cdew_point_temperature%2Crelative_humidity%2Cwind_speed%2Cwind_direction%2Cwind_gust%2Cvisibility%2Cmetar%2Cweather_condition%2Cweather_summary%2Cprecip_accum_one_hour (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.synopticdata.com', port=443) at 0x7f64a5fa8810>, 'Connection to api.synopticdata.com timed out. (connect timeout=30)'))",
+  "generated_utc": "2026-06-11T05:02:15Z",
+  "status": "ok",
   "station": "KRNO",
-  "observed_utc": null,
-  "wind_dir_deg": null,
-  "wind_speed_kt": null,
+  "name": "Reno, Reno Tahoe International Airport",
+  "latitude": "39.50776",
+  "longitude": "-119.76819",
+  "elevation_ft": "4403.0",
+  "observed_utc": "2026-06-11T04:55:00Z",
+  "wind_dir_deg": 350.0,
+  "wind_speed_kt": 5,
   "wind_gust_kt": null,
-  "visibility_sm": null,
-  "temperature_f": null,
-  "dewpoint_f": null,
-  "relative_humidity": null,
+  "wind_speed_mph": 6.0,
+  "wind_gust_mph": null,
+  "visibility_sm": 10.0,
+  "temperature_f": 73.04,
+  "dewpoint_f": 26.06,
+  "relative_humidity": 17.3,
   "precip_1hr_in": null,
-  "sky_condition": null,
+  "sky_condition": "Clear",
   "present_weather": "None",
-  "metar": null,
-  "raw": {}
+  "metar": "KRNO 110455Z 35006KT 10SM CLR 23/M03 A3009 RMK AO2 SLP141  T02281033",
+  "field_times_utc": {
+    "air_temp_value_1": "2026-06-11T04:55:00Z",
+    "relative_humidity_value_1": "2026-06-11T04:55:00Z",
+    "wind_speed_value_1": "2026-06-11T04:55:00Z",
+    "wind_direction_value_1": "2026-06-11T04:55:00Z",
+    "wind_gust_value_1": "2026-06-11T04:15:00Z",
+    "precip_accum_one_hour_value_1": "2026-06-09T00:55:00Z",
+    "visibility_value_1": "2026-06-11T04:55:00Z",
+    "metar_value_1": "2026-06-11T04:55:00Z",
+    "weather_condition_value_1d": "2026-06-09T00:40:00Z",
+    "weather_summary_value_1d": "2026-06-11T04:55:00Z",
+    "dew_point_temperature_value_1d": "2026-06-11T04:55:00Z"
+  },
+  "age_minutes_at_build": 7.2,
+  "refresh_note": "Synoptic latest endpoint queried by GitHub Actions. No secondary observation fallback is used.",
+  "raw": {
+    "ID": "352",
+    "STID": "KRNO",
+    "NAME": "Reno, Reno Tahoe International Airport",
+    "ELEVATION": "4403.0",
+    "LATITUDE": "39.50776",
+    "LONGITUDE": "-119.76819",
+    "STATUS": "ACTIVE",
+    "MNET_ID": "1",
+    "STATE": "NV",
+    "COUNTRY": "US",
+    "TIMEZONE": "America/Los_Angeles",
+    "ELEV_DEM": "4416.0",
+    "PERIOD_OF_RECORD": {
+      "start": "1997-01-01T00:00:00Z",
+      "end": "2026-06-11T04:30:00Z"
+    },
+    "UNITS": {
+      "position": "ft",
+      "elevation": "ft"
+    },
+    "OBSERVATIONS": {
+      "air_temp_value_1": {
+        "value": 73.04,
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "relative_humidity_value_1": {
+        "value": 17.3,
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "wind_speed_value_1": {
+        "value": 6.0,
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "wind_direction_value_1": {
+        "value": 350.0,
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "wind_gust_value_1": {
+        "value": 15.0,
+        "date_time": "2026-06-11T04:15:00Z"
+      },
+      "precip_accum_one_hour_value_1": {
+        "value": 0.001,
+        "date_time": "2026-06-09T00:55:00Z"
+      },
+      "visibility_value_1": {
+        "value": 10.0,
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "metar_value_1": {
+        "value": "KRNO 110455Z 35006KT 10SM CLR 23/M03 A3009 RMK AO2 SLP141  T02281033",
+        "date_time": "2026-06-11T04:55:00Z"
+      },
+      "weather_condition_value_1d": {
+        "date_time": "2026-06-09T00:40:00Z",
+        "value": "light rain"
+      },
+      "weather_summary_value_1d": {
+        "date_time": "2026-06-11T04:55:00Z",
+        "value": "clear"
+      },
+      "dew_point_temperature_value_1d": {
+        "date_time": "2026-06-11T04:55:00Z",
+        "value": 26.06
+      }
+    },
+    "SENSOR_VARIABLES": {
+      "air_temp": {
+        "air_temp_value_1": {}
+      },
+      "relative_humidity": {
+        "relative_humidity_value_1": {}
+      },
+      "wind_speed": {
+        "wind_speed_value_1": {}
+      },
+      "wind_direction": {
+        "wind_direction_value_1": {}
+      },
+      "wind_gust": {
+        "wind_gust_value_1": {}
+      },
+      "precip_accum_one_hour": {
+        "precip_accum_one_hour_value_1": {}
+      },
+      "visibility": {
+        "visibility_value_1": {}
+      },
+      "metar": {
+        "metar_value_1": {}
+      },
+      "weather_condition": {
+        "weather_condition_value_1d": {
+          "derived_from": [
+            "weather_cond_code_value_1"
+          ]
+        }
+      },
+      "weather_summary": {
+        "weather_summary_value_1d": {
+          "derived_from": [
+            "weather_cond_code_value_1",
+            "cloud_layer_3_code_value_1",
+            "cloud_layer_2_code_value_1",
+            "cloud_layer_1_code_value_1"
+          ]
+        }
+      },
+      "dew_point_temperature": {
+        "dew_point_temperature_value_1d": {
+          "derived_from": [
+            "air_temp_value_1",
+            "relative_humidity_value_1"
+          ]
+        }
+      }
+    },
+    "QC_FLAGGED": false,
+    "RESTRICTED": false,
+    "RESTRICTED_METADATA": false
+  }
 }
