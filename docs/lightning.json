@@ -6,15 +6,13 @@
   "source": "NOAA GOES-18 GLM-L2-LCFA",
   "satellite": "GOES-18",
   "product": "GLM-L2-LCFA",
-  "generated_utc": "2026-06-18T21:53:25Z",
-  "status": "ok",
-  "message": null,
+  "generated_utc": "2026-06-18T23:00:37Z",
+  "status": "error",
+  "message": "No recent GOES-18 GLM files found in AWS.",
   "window_minutes": 15,
-  "scan_lookback_minutes": 20,
   "search_radius_nm": 25,
-  "alert_level": "none",
-  "alert_label": "No GLM lightning detected",
-  "total_count": 0,
+  "alert_level": "unavailable",
+  "alert_label": "GLM feed unavailable",
   "last_strike": null,
   "nearest_strike": null,
   "rings": {
@@ -36,13 +34,9 @@
     }
   },
   "counts": {
-    "groups": 79096,
-    "flashes": 9677,
-    "events": 158750
+    "groups": 0,
+    "flashes": 0,
+    "events": 0
   },
-  "processed_file_count": 55,
-  "latest_file": "GLM-L2-LCFA/2026/169/21/OR_GLM-L2-LCFA_G18_s20261692152400_e20261692153000_c20261692153015.nc",
-  "errors": [],
-  "strikes": [],
-  "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
+  "methodology": "NOAA GOES GLM total-lightning groups are counted inside KRNO proximity rings. GLM is not a ground-strike network."
 }
