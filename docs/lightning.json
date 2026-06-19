@@ -6,17 +6,35 @@
   "source": "NOAA GOES-18 GLM-L2-LCFA",
   "satellite": "GOES-18",
   "product": "GLM-L2-LCFA",
-  "generated_utc": "2026-06-19T19:01:36Z",
+  "generated_utc": "2026-06-19T20:09:00Z",
   "status": "ok",
   "message": null,
   "window_minutes": 15,
   "scan_lookback_minutes": 20,
   "search_radius_nm": 25,
-  "alert_level": "none",
-  "alert_label": "No GLM lightning detected",
-  "total_count": 0,
-  "last_strike": null,
-  "nearest_strike": null,
+  "alert_level": "monitor_20_nm",
+  "alert_label": "GLM lightning inside 20 nm",
+  "total_count": 27,
+  "last_strike": {
+    "datetime": "2026-06-19T20:07:16Z",
+    "age_minutes": 1.7,
+    "distance_nm": 20.0,
+    "bearing_degrees": 141,
+    "bearing_cardinal": "SE",
+    "source_type": "GLM group",
+    "quality": 0,
+    "energy_j": 5.184561615201484e-15
+  },
+  "nearest_strike": {
+    "datetime": "2026-06-19T20:07:16Z",
+    "age_minutes": 1.7,
+    "distance_nm": 19.9,
+    "bearing_degrees": 141,
+    "bearing_cardinal": "SE",
+    "source_type": "GLM group",
+    "quality": 0,
+    "energy_j": 2.0849339067003075e-15
+  },
   "rings": {
     "within_10_nm": {
       "count": 0,
@@ -27,22 +45,273 @@
       "last_utc": null
     },
     "within_20_nm": {
-      "count": 0,
-      "last_utc": null
+      "count": 11,
+      "last_utc": "2026-06-19T20:07:16Z"
     },
     "within_25_nm": {
-      "count": 0,
-      "last_utc": null
+      "count": 27,
+      "last_utc": "2026-06-19T20:07:16Z"
     }
   },
   "counts": {
-    "groups": 6381,
-    "flashes": 638,
-    "events": 13516
+    "groups": 62183,
+    "flashes": 7063,
+    "events": 126804
   },
-  "processed_file_count": 3,
-  "latest_file": "GLM-L2-LCFA/2026/170/19/OR_GLM-L2-LCFA_G18_s20261701900400_e20261701901000_c20261701901019.nc",
+  "processed_file_count": 26,
+  "latest_file": "GLM-L2-LCFA/2026/170/20/OR_GLM-L2-LCFA_G18_s20261702008200_e20261702008400_c20261702008415.nc",
   "errors": [],
-  "strikes": [],
+  "strikes": [
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 5.184561615201484e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 19.9,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 5.8844776450119214e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 19.9,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 6.484405670563725e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 3.484765966321182e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 2.8848379407693785e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 7.684261721667331e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 19.9,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.8849578981830397e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.228370991756449e-14
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.7,
+      "bearing_degrees": 138,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 7.884237730184599e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 3.484765966321182e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 19.9,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 2.0849339067003075e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.4,
+      "bearing_degrees": 139,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.3283589960150829e-14
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 22.5,
+      "bearing_degrees": 133,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.228370991756449e-14
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 23.2,
+      "bearing_degrees": 131,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 4.584633589649681e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 23.2,
+      "bearing_degrees": 131,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.784969893924406e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 23.2,
+      "bearing_degrees": 131,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 5.08457361094285e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 22.0,
+      "bearing_degrees": 134,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 6.484405670563725e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 20.9,
+      "bearing_degrees": 137,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 8.284189747219135e-15
+    },
+    {
+      "datetime": "2026-06-19T20:07:16Z",
+      "age_minutes": 1.7,
+      "distance_nm": 21.5,
+      "bearing_degrees": 136,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 3.984705564097878e-15
+    },
+    {
+      "datetime": "2026-06-19T20:05:44Z",
+      "age_minutes": 3.3,
+      "distance_nm": 20.0,
+      "bearing_degrees": 141,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 2.484885923734843e-15
+    },
+    {
+      "datetime": "2026-06-19T20:05:44Z",
+      "age_minutes": 3.3,
+      "distance_nm": 20.6,
+      "bearing_degrees": 138,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 8.484165755736402e-15
+    },
+    {
+      "datetime": "2026-06-19T20:04:45Z",
+      "age_minutes": 4.2,
+      "distance_nm": 23.0,
+      "bearing_degrees": 130,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 2.484885923734843e-15
+    },
+    {
+      "datetime": "2026-06-19T20:04:45Z",
+      "age_minutes": 4.2,
+      "distance_nm": 23.1,
+      "bearing_degrees": 130,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 3.18480195354528e-15
+    },
+    {
+      "datetime": "2026-06-19T20:04:45Z",
+      "age_minutes": 4.2,
+      "distance_nm": 23.0,
+      "bearing_degrees": 130,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 2.9848259450280124e-15
+    },
+    {
+      "datetime": "2026-06-19T20:04:45Z",
+      "age_minutes": 4.2,
+      "distance_nm": 23.0,
+      "bearing_degrees": 130,
+      "bearing_cardinal": "SE",
+      "source_type": "GLM group",
+      "quality": 0,
+      "energy_j": 1.9849459024416736e-15
+    }
+  ],
   "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
 }
