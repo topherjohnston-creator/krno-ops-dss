@@ -1227,6 +1227,19 @@
       background: rgba(102, 55, 21, 0.22);
     }
 
+    .alert-clear.warning {
+      border-color: rgba(210, 85, 85, 0.54);
+      border-left-color: var(--major);
+      background: rgba(108, 38, 42, 0.28);
+    }
+
+    .alert-clear.airport-warning {
+      border-color: rgba(180, 79, 212, 0.62);
+      border-left-color: var(--extreme);
+      background: rgba(83, 46, 114, 0.34);
+      box-shadow: inset 0 0 0 1px rgba(228, 180, 255, 0.08);
+    }
+
     .alert-title {
       color: #d8f5e7;
       font-size: 27px;
@@ -1241,6 +1254,11 @@
       line-height: 1.15;
       font-weight: 520;
       white-space: normal;
+    }
+
+    .alert-clear.warning .alert-title,
+    .alert-clear.airport-warning .alert-title {
+      color: #ffffff;
     }
 
     .data-summary {
@@ -2155,6 +2173,11 @@
       /fire weather watch/i
     ];
 
+    const KRNO_ALERT_POINT = "39.4986,-119.7681";
+    const NWS_ALERTS_POINT_URL = `https://api.weather.gov/alerts/active?point=${KRNO_ALERT_POINT}`;
+    const NWS_AWW_PRODUCTS_URL = "https://api.weather.gov/products/types/AWW";
+    const AWW_LOOKBACK_HOURS = 8;
+
     function alertDisplayText(alert) {
       if (!alert) return "";
       const props = alert.properties || {};
@@ -2173,6 +2196,131 @@
 
     function visibleNwsAlerts(alerts = []) {
       return alerts.filter(alert => !hiddenAlertPatterns.some(pattern => pattern.test(alertDisplayText(alert))));
+    }
+
+    function normalizeCapAlert(feature) {
+      const props = feature?.properties || feature || {};
+      const event = props.event || feature?.event || "NWS Alert";
+      const ends = props.ends || props.expires || feature?.ends || feature?.expires || null;
+      const sent = props.sent || props.effective || feature?.sent || null;
+      return {
+        id: feature?.id || props.id || props["@id"] || `${event}-${sent || ""}`,
+        event,
+        headline: props.headline || feature?.headline || event,
+        description: props.description || feature?.description || "",
+        instruction: props.instruction || feature?.instruction || "",
+        sent,
+        effective: props.effective || feature?.effective || sent,
+        expires: ends,
+        ends,
+        source: "NWS CAP"
+      };
+    }
+
+    function parseAwwExpiration(productText, issuanceTime) {
+      const match = String(productText || "").match(/\b[A-Z]{2}[CZ]\d{3}(?:-\d{3})*-(\d{2})(\d{2})(\d{2})-/);
+      const issued = new Date(issuanceTime);
+      if (!match || !Number.isFinite(issued.getTime())) return null;
+      const day = Number(match[1]);
+      const hour = Number(match[2]);
+      const minute = Number(match[3]);
+      if (![day, hour, minute].every(Number.isFinite)) return null;
+      const expires = new Date(Date.UTC(issued.getUTCFullYear(), issued.getUTCMonth(), day, hour, minute));
+      if (expires.getTime() + 15 * 86400000 < issued.getTime()) expires.setUTCMonth(expires.getUTCMonth() + 1);
+      return expires.toISOString();
+    }
+
+    function normalizeAwwProduct(product, detail = {}) {
+      const text = detail.productText || "";
+      const issuanceTime = detail.issuanceTime || product.issuanceTime;
+      const expires = parseAwwExpiration(text, issuanceTime);
+      const hazardLines = text
+        .split(/\n+/)
+        .map(line => line.trim())
+        .filter(line => /lightning|wind gust|hail|torrential rainfall|airport weather warning/i.test(line))
+        .slice(0, 5);
+      return {
+        id: detail.id || product.id,
+        event: "Airport Weather Warning",
+        headline: "Airport Weather Warning for Reno-Tahoe International Airport",
+        description: hazardLines.join(" "),
+        instruction: "Review airport weather warning and local ramp procedures.",
+        sent: issuanceTime,
+        effective: issuanceTime,
+        expires,
+        ends: expires,
+        source: "NWS AWW",
+        productText: text
+      };
+    }
+
+    function isAwwForKrno(productText = "") {
+      return /AWWRNO|Reno-Tahoe International Airport|\/RNO\/|KRNO/i.test(productText);
+    }
+
+    function isAlertCurrentlyRelevant(alert) {
+      const now = Date.now();
+      const sent = new Date(alert?.sent || alert?.effective || 0).getTime();
+      const ends = new Date(alert?.ends || alert?.expires || 0).getTime();
+      if (Number.isFinite(ends) && ends > now) return true;
+      if (/airport weather warning/i.test(alert?.event || "") && Number.isFinite(sent)) {
+        return now - sent <= AWW_LOOKBACK_HOURS * 3600000;
+      }
+      return !Number.isFinite(ends);
+    }
+
+    async function fetchLiveCapAlerts() {
+      const data = await fetchJson(NWS_ALERTS_POINT_URL);
+      return (data.features || []).map(normalizeCapAlert);
+    }
+
+    async function fetchAirportWeatherWarnings() {
+      const data = await fetchJson(NWS_AWW_PRODUCTS_URL);
+      const products = (data["@graph"] || [])
+        .filter(product => product.productCode === "AWW" && product.issuingOffice === "KREV")
+        .filter(product => {
+          const issued = new Date(product.issuanceTime).getTime();
+          return Number.isFinite(issued) && Date.now() - issued <= AWW_LOOKBACK_HOURS * 3600000;
+        })
+        .slice(0, 4);
+      const details = await Promise.allSettled(products.map(product => fetchJson(`https://api.weather.gov/products/${product.id}`)));
+      return details
+        .map((result, index) => result.status === "fulfilled" ? normalizeAwwProduct(products[index], result.value) : null)
+        .filter(alert => alert && isAwwForKrno(alert.productText) && isAlertCurrentlyRelevant(alert));
+    }
+
+    function mergeAlerts(...groups) {
+      const merged = new Map();
+      groups.flat().filter(Boolean).forEach(alert => {
+        const key = alert.id || `${alert.event}-${alert.sent || alert.effective || ""}`;
+        if (!merged.has(key)) merged.set(key, alert);
+      });
+      return [...merged.values()].sort((a, b) => alertPriority(b) - alertPriority(a));
+    }
+
+    function alertPriority(alert) {
+      const text = alertDisplayText(alert);
+      if (/airport weather warning/i.test(text)) return 100;
+      if (/severe thunderstorm warning|tornado warning|flash flood warning|snow squall warning/i.test(text)) return 90;
+      if (/warning/i.test(text)) return 70;
+      if (/watch/i.test(text)) return 50;
+      if (/advisory|special weather statement/i.test(text)) return 30;
+      return 10;
+    }
+
+    function formatAlertEnd(alert) {
+      const end = new Date(alert?.ends || alert?.expires || "");
+      if (!Number.isFinite(end.getTime())) return "Until further notice";
+      return `Until ${end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+    }
+
+    function alertsPayloadAgeMinutes(payload) {
+      const date = new Date(payload?.generated_utc || payload?.updated_utc || "");
+      return Number.isFinite(date.getTime()) ? (Date.now() - date.getTime()) / 60000 : Infinity;
+    }
+
+    function alertsPayloadFresh(payload) {
+      return alertsPayloadAgeMinutes(payload) <= 20;
     }
 
     function confidenceFromScore(score) {
@@ -4411,46 +4559,122 @@
     }
 
     async function loadAlertsData() {
-      try {
-        const alerts = await fetchJson("../../alerts.json");
-        const alertBox = document.getElementById("alert-box");
-        const activeAlerts = visibleNwsAlerts(Array.isArray(alerts.alerts) ? alerts.alerts : []);
-        if (activeAlerts.length) {
-          alertBox.classList.add("active");
-          alertBox.innerHTML = `
-            <div class="alert-title">${activeAlerts.length} Active Alert${activeAlerts.length > 1 ? "s" : ""}</div>
-            <div class="alert-text">Review official products for KRNO</div>
-          `;
-          attachTooltip(alertBox, {
-            title: "NWS Alerts",
-            subtitle: `${activeAlerts.length} active`,
-            lines: [
-              ["Status", "Active alerts"],
-              ["Action", "Review official products"],
-              ["Scope", "KRNO area"]
-            ],
-            risk: "Moderate"
-          });
-        } else {
-          alertBox.classList.remove("active");
-          alertBox.innerHTML = `
-            <div class="alert-title">No active NWS alerts</div>
-            <div class="alert-text">for KRNO<br>Local DSS risk may still exist</div>
-          `;
-          attachTooltip(alertBox, {
-            title: "NWS Alerts",
-            subtitle: "No active NWS alerts",
-            lines: [
-              ["Status", "No active official alerts"],
-              ["Scope", "KRNO area"],
-              ["Action", "Routine monitoring"]
-            ],
-            risk: "None"
-          });
-        }
-      } catch (error) {
-        console.info("Unable to refresh alerts.", error);
+      const alertBox = document.getElementById("alert-box");
+      if (!alertBox) return;
+
+      const [capResult, awwResult, staticResult] = await Promise.allSettled([
+        fetchLiveCapAlerts(),
+        fetchAirportWeatherWarnings(),
+        fetchJson("../../alerts.json")
+      ]);
+
+      const liveCapAlerts = capResult.status === "fulfilled" ? capResult.value : [];
+      const airportWarnings = awwResult.status === "fulfilled" ? awwResult.value : [];
+      const staticPayload = staticResult.status === "fulfilled" ? staticResult.value : null;
+      const staticAlerts = staticResult.status === "fulfilled" && Array.isArray(staticResult.value?.alerts)
+        ? staticResult.value.alerts.map(normalizeCapAlert)
+        : [];
+      const capChecked = capResult.status === "fulfilled";
+      const awwChecked = awwResult.status === "fulfilled";
+      const staticChecked = staticResult.status === "fulfilled";
+      const staticFresh = alertsPayloadFresh(staticPayload);
+
+      if (!capChecked) console.info("Unable to refresh live point alerts.", capResult.reason);
+      if (!awwChecked) console.info("Unable to refresh airport weather warnings.", awwResult.reason);
+      if (staticResult.status !== "fulfilled") console.info("Unable to refresh static alerts fallback.", staticResult.reason);
+
+      const activeAlerts = visibleNwsAlerts(
+        mergeAlerts(liveCapAlerts, airportWarnings, staticAlerts).filter(isAlertCurrentlyRelevant)
+      );
+
+      alertBox.classList.remove("active", "warning", "airport-warning");
+
+      if (activeAlerts.length) {
+        const topAlert = activeAlerts[0];
+        const hasAirportWarning = activeAlerts.some(alert => /airport weather warning/i.test(alertDisplayText(alert)));
+        const hasWarning = activeAlerts.some(alert => alertPriority(alert) >= 70);
+        const summary = activeAlerts.slice(0, 2)
+          .map(alert => `${escapeHtml(alert.event || "NWS Alert")} &middot; ${escapeHtml(formatAlertEnd(alert))}`)
+          .join("<br>");
+
+        alertBox.classList.add("active");
+        if (hasAirportWarning) alertBox.classList.add("airport-warning");
+        else if (hasWarning) alertBox.classList.add("warning");
+
+        alertBox.innerHTML = `
+          <div class="alert-title">${escapeHtml(activeAlerts.length === 1 ? topAlert.event : `${activeAlerts.length} Active Alerts`)}</div>
+          <div class="alert-text">${summary}</div>
+        `;
+        attachTooltip(alertBox, {
+          title: "NWS Alerts",
+          subtitle: activeAlerts.length === 1 ? topAlert.event : `${activeAlerts.length} active`,
+          lines: [
+            ...activeAlerts.slice(0, 5).flatMap(alert => [
+              [alert.event || "NWS Alert", formatAlertEnd(alert)],
+              ["Source", alert.source || "NWS"],
+              ["Headline", alert.headline || alert.description || "Review official product"]
+            ]),
+            ["Airport Warning Feed", awwChecked || staticChecked ? "Checked" : "Unavailable"],
+            ["Action", "Review official products and local airport procedures"]
+          ],
+          risk: hasAirportWarning ? "Extreme" : hasWarning ? "Major" : "Moderate"
+        });
+        return;
       }
+
+      if (!capChecked && !awwChecked && !staticFresh) {
+        alertBox.classList.add("warning");
+        alertBox.innerHTML = `
+          <div class="alert-title">Alerts unavailable</div>
+          <div class="alert-text">Unable to check NWS alerts</div>
+        `;
+        attachTooltip(alertBox, {
+          title: "NWS Alerts",
+          subtitle: "Unavailable",
+          lines: [
+            ["Status", "Live NWS alert check failed"],
+            ["Action", "Check official NWS products directly"]
+          ],
+          risk: "Moderate"
+        });
+        return;
+      }
+
+      if (!awwChecked && !staticFresh) {
+        alertBox.classList.add("warning");
+        alertBox.innerHTML = `
+          <div class="alert-title">Airport warnings unavailable</div>
+          <div class="alert-text">NWS point alerts checked</div>
+        `;
+        attachTooltip(alertBox, {
+          title: "NWS Alerts",
+          subtitle: "Partially checked",
+          lines: [
+            ["Point Alerts", capChecked ? "Checked" : "Unavailable"],
+            ["Airport Weather Warnings", "Unavailable"],
+            ["Action", "Check official NWS products directly"]
+          ],
+          risk: "Minor"
+        });
+        return;
+      }
+
+      alertBox.innerHTML = `
+        <div class="alert-title">No active NWS alerts</div>
+        <div class="alert-text">for KRNO<br>Local DSS risk may still exist</div>
+      `;
+      attachTooltip(alertBox, {
+        title: "NWS Alerts",
+        subtitle: "No active NWS alerts",
+        lines: [
+          ["Status", "No active official alerts"],
+          ["Airport Warning Feed", awwChecked || staticFresh ? "Checked" : "Unavailable"],
+          ["Generated Alerts", staticFresh ? "Fresh" : staticChecked ? "Stale" : "Unavailable"],
+          ["Scope", "KRNO area"],
+          ["Action", "Routine monitoring"]
+        ],
+        risk: "None"
+      });
     }
 
     async function loadLocalData() {

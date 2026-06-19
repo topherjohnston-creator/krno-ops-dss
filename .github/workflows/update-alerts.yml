@@ -1,0 +1,60 @@
+name: Update KRNO NWS Alerts
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions schedules are not exact; stagger five-minute schedules to
+    # attempt frequent short-fused warning and airport weather warning refreshes.
+    - cron: "0-59/5 * * * *"
+    - cron: "1-59/5 * * * *"
+    - cron: "2-59/5 * * * *"
+    - cron: "3-59/5 * * * *"
+    - cron: "4-59/5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-krno-alerts
+  cancel-in-progress: true
+
+jobs:
+  update-alerts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Sync latest repository state
+        run: |
+          git pull --ff-only origin main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Extract official NWS alerts
+        run: |
+          python scripts/extract_nws_alerts.py
+
+      - name: Validate generated JSON
+        run: |
+          python -m json.tool docs/alerts.json > /dev/null
+          python -m json.tool data/alerts.json > /dev/null
+
+      - name: Commit updated alerts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs/alerts.json
+          git add data/alerts.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update KRNO NWS alerts"
+            git push
+          fi
