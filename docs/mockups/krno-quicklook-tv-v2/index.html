@@ -1234,10 +1234,35 @@
     }
 
     .alert-clear.airport-warning {
-      border-color: rgba(180, 79, 212, 0.62);
+      border-color: rgba(215, 126, 255, 0.88);
       border-left-color: var(--extreme);
-      background: rgba(83, 46, 114, 0.34);
-      box-shadow: inset 0 0 0 1px rgba(228, 180, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(118, 55, 160, 0.62), rgba(62, 31, 86, 0.76)),
+        rgba(83, 46, 114, 0.48);
+      box-shadow:
+        inset 0 0 0 1px rgba(244, 203, 255, 0.16),
+        0 0 0 1px rgba(180, 79, 212, 0.32),
+        0 0 24px rgba(180, 79, 212, 0.34);
+      animation: airportWarningPulse 900ms ease-in-out infinite alternate;
+    }
+
+    @keyframes airportWarningPulse {
+      from {
+        border-color: rgba(215, 126, 255, 0.78);
+        box-shadow:
+          inset 0 0 0 1px rgba(244, 203, 255, 0.12),
+          0 0 0 1px rgba(180, 79, 212, 0.28),
+          0 0 18px rgba(180, 79, 212, 0.26);
+        filter: brightness(0.96);
+      }
+      to {
+        border-color: rgba(252, 218, 255, 1);
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 235, 255, 0.26),
+          0 0 0 2px rgba(215, 126, 255, 0.55),
+          0 0 34px rgba(215, 126, 255, 0.58);
+        filter: brightness(1.14);
+      }
     }
 
     .alert-title {
@@ -1259,6 +1284,25 @@
     .alert-clear.warning .alert-title,
     .alert-clear.airport-warning .alert-title {
       color: #ffffff;
+    }
+
+    .alert-clear.airport-warning .alert-title {
+      font-size: 30px;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      text-shadow: 0 0 14px rgba(255, 221, 255, 0.42);
+    }
+
+    .alert-clear.airport-warning .alert-text {
+      color: #f7ddff;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .alert-clear.airport-warning {
+        animation: none;
+      }
     }
 
     .data-summary {
@@ -4593,6 +4637,9 @@
         const topAlert = activeAlerts[0];
         const hasAirportWarning = activeAlerts.some(alert => /airport weather warning/i.test(alertDisplayText(alert)));
         const hasWarning = activeAlerts.some(alert => alertPriority(alert) >= 70);
+        const alertTitle = hasAirportWarning
+          ? "Airport Weather Warning"
+          : activeAlerts.length === 1 ? topAlert.event : `${activeAlerts.length} Active Alerts`;
         const summary = activeAlerts.slice(0, 2)
           .map(alert => `${escapeHtml(alert.event || "NWS Alert")} &middot; ${escapeHtml(formatAlertEnd(alert))}`)
           .join("<br>");
@@ -4602,7 +4649,7 @@
         else if (hasWarning) alertBox.classList.add("warning");
 
         alertBox.innerHTML = `
-          <div class="alert-title">${escapeHtml(activeAlerts.length === 1 ? topAlert.event : `${activeAlerts.length} Active Alerts`)}</div>
+          <div class="alert-title">${escapeHtml(alertTitle)}</div>
           <div class="alert-text">${summary}</div>
         `;
         attachTooltip(alertBox, {
