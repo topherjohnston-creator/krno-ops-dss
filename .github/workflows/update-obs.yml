@@ -4,19 +4,16 @@ on:
   workflow_dispatch:
   schedule:
     # GitHub Actions schedules are not guaranteed to fire exactly on time.
-    # Use staggered five-minute schedules to attempt a Synoptic refresh every minute.
-    - cron: "0-59/5 * * * *"
-    - cron: "1-59/5 * * * *"
-    - cron: "2-59/5 * * * *"
-    - cron: "3-59/5 * * * *"
-    - cron: "4-59/5 * * * *"
+    # Keep this to one five-minute cadence so a new run does not cancel the
+    # previous run before it can commit fresh observations.
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
 
 concurrency:
   group: update-krno-observations
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   update-obs:
@@ -65,5 +62,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update KRNO observations"
+            git pull --rebase origin main
             git push
           fi
