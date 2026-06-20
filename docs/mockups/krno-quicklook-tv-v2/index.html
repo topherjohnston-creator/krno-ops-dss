@@ -1233,6 +1233,12 @@
       background: rgba(108, 38, 42, 0.28);
     }
 
+    .alert-clear.aging {
+      border-color: rgba(215, 188, 74, 0.48);
+      border-left-color: var(--minor);
+      background: rgba(94, 77, 32, 0.26);
+    }
+
     .alert-clear.airport-warning {
       border-color: rgba(215, 126, 255, 0.88);
       border-left-color: var(--extreme);
@@ -1282,6 +1288,7 @@
     }
 
     .alert-clear.warning .alert-title,
+    .alert-clear.aging .alert-title,
     .alert-clear.airport-warning .alert-title {
       color: #ffffff;
     }
@@ -2365,6 +2372,28 @@
 
     function alertsPayloadFresh(payload) {
       return alertsPayloadAgeMinutes(payload) <= 20;
+    }
+
+    function alertsPayloadUsable(payload) {
+      return Number.isFinite(alertsPayloadAgeMinutes(payload));
+    }
+
+    function alertCheckAgeLabel(payload) {
+      const age = alertsPayloadAgeMinutes(payload);
+      if (!Number.isFinite(age)) return "not checked";
+      if (age < 1) return "just now";
+      if (age < 90) return `${Math.round(age)} min ago`;
+      const hours = age / 60;
+      if (hours < 24) return `${Math.round(hours)} hr ago`;
+      return `${Math.round(hours / 24)} days ago`;
+    }
+
+    function alertCheckState(payload) {
+      const age = alertsPayloadAgeMinutes(payload);
+      if (!Number.isFinite(age)) return "Unavailable";
+      if (age <= 20) return "Fresh";
+      if (age <= 90) return "Aging";
+      return "Stale";
     }
 
     function confidenceFromScore(score) {
@@ -4622,6 +4651,9 @@
       const awwChecked = awwResult.status === "fulfilled";
       const staticChecked = staticResult.status === "fulfilled";
       const staticFresh = alertsPayloadFresh(staticPayload);
+      const staticUsable = alertsPayloadUsable(staticPayload);
+      const alertCheckStateText = alertCheckState(staticPayload);
+      const alertCheckAgeText = alertCheckAgeLabel(staticPayload);
 
       if (!capChecked) console.info("Unable to refresh live point alerts.", capResult.reason);
       if (!awwChecked) console.info("Unable to refresh airport weather warnings.", awwResult.reason);
@@ -4631,7 +4663,7 @@
         mergeAlerts(liveCapAlerts, airportWarnings, staticAlerts).filter(isAlertCurrentlyRelevant)
       );
 
-      alertBox.classList.remove("active", "warning", "airport-warning");
+      alertBox.classList.remove("active", "warning", "airport-warning", "aging");
 
       if (activeAlerts.length) {
         const topAlert = activeAlerts[0];
@@ -4669,7 +4701,7 @@
         return;
       }
 
-      if (!capChecked && !awwChecked && !staticFresh) {
+      if (!capChecked && !awwChecked && !staticUsable) {
         alertBox.classList.add("warning");
         alertBox.innerHTML = `
           <div class="alert-title">Alerts unavailable</div>
@@ -4687,40 +4719,24 @@
         return;
       }
 
-      if (!awwChecked && !staticFresh) {
-        alertBox.classList.add("warning");
-        alertBox.innerHTML = `
-          <div class="alert-title">Airport warnings unavailable</div>
-          <div class="alert-text">NWS point alerts checked</div>
-        `;
-        attachTooltip(alertBox, {
-          title: "NWS Alerts",
-          subtitle: "Partially checked",
-          lines: [
-            ["Point Alerts", capChecked ? "Checked" : "Unavailable"],
-            ["Airport Weather Warnings", "Unavailable"],
-            ["Action", "Check official NWS products directly"]
-          ],
-          risk: "Minor"
-        });
-        return;
-      }
+      if (staticUsable && !staticFresh) alertBox.classList.add("aging");
 
       alertBox.innerHTML = `
         <div class="alert-title">No active NWS alerts</div>
-        <div class="alert-text">for KRNO<br>Local DSS risk may still exist</div>
+        <div class="alert-text">for KRNO<br>Last checked ${escapeHtml(alertCheckAgeText)}</div>
       `;
       attachTooltip(alertBox, {
         title: "NWS Alerts",
         subtitle: "No active NWS alerts",
         lines: [
           ["Status", "No active official alerts"],
-          ["Airport Warning Feed", awwChecked || staticFresh ? "Checked" : "Unavailable"],
-          ["Generated Alerts", staticFresh ? "Fresh" : staticChecked ? "Stale" : "Unavailable"],
+          ["Live Point Alerts", capChecked ? "Checked" : "Browser check unavailable"],
+          ["Airport Warning Feed", awwChecked || staticUsable ? "Checked via generated file" : "Unavailable"],
+          ["Generated Alerts", `${alertCheckStateText} / ${alertCheckAgeText}`],
           ["Scope", "KRNO area"],
           ["Action", "Routine monitoring"]
         ],
-        risk: "None"
+        risk: staticUsable && !staticFresh ? "Minor" : "None"
       });
     }
 
