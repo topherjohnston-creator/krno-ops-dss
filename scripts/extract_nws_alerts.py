@@ -114,8 +114,8 @@ def aww_alert(product: dict[str, Any], detail: dict[str, Any]) -> dict[str, Any]
 def is_current(alert: dict[str, Any], now: datetime) -> bool:
     ends = parse_time(alert.get("ends") or alert.get("expires"))
     sent = parse_time(alert.get("sent") or alert.get("effective"))
-    if ends and ends > now:
-        return True
+    if ends:
+        return ends > now
     if alert.get("event") == "Airport Weather Warning" and sent:
         return now - sent <= timedelta(hours=AWW_LOOKBACK_HOURS)
     return ends is None

@@ -2306,7 +2306,7 @@
       const now = Date.now();
       const sent = new Date(alert?.sent || alert?.effective || 0).getTime();
       const ends = new Date(alert?.ends || alert?.expires || 0).getTime();
-      if (Number.isFinite(ends) && ends > now) return true;
+      if (Number.isFinite(ends)) return ends > now;
       if (/airport weather warning/i.test(alert?.event || "") && Number.isFinite(sent)) {
         return now - sent <= AWW_LOOKBACK_HOURS * 3600000;
       }
