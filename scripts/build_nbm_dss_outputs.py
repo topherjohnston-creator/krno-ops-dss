@@ -1331,14 +1331,14 @@ def apply_core_remaining_hazards(timeline: dict[str, Any], threats_payload: dict
 
         tstm_prob = float(row.get("tstm", 0.0) or 0.0)
         ltg_impact = lightning_impact_level(tstm_prob)
-        ltg_risk = risk_from_matrix(ltg_impact)
+        ltg_risk = risk_from_matrix(ltg_impact, tstm_prob)
         set_hazard_live(
             timeline,
             bi,
             "LIGHTNING",
             ltg_risk,
             f"Thunder {tstm_prob:.0f}%",
-            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": ltg_impact, "risk_method": "krno_lightning_probability_threshold_core", "likelihood_category": likelihood_bin(tstm_prob), "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
+            {"fxx": fxx, "valid_utc": valid_utc, "impact_level": ltg_impact, "risk_method": "krno_threshold_probability_matrix_core", "likelihood_category": likelihood_bin(tstm_prob), "probability": round(tstm_prob, 1), "prob": round(tstm_prob, 1), "value": round(tstm_prob, 1), "unit": "%"},
             [
                 {
                     "fxx": int(src["fxx"]),
