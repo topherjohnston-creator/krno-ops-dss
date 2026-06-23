@@ -3,8 +3,8 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 00Z",
-  "generated_utc": "2026-06-23T01:48:20Z",
+  "source": "NBM/QMD schema scaffold",
+  "generated_utc": "2026-06-23T05:52:59Z",
   "cycle_utc_iso": "2026-06-23T00:00:00Z",
   "cycle": "NBM 00Z",
   "valid_period": {
@@ -15,8 +15,8 @@
   "threats": {
     "WIND": {
       "id": "WIND",
-      "title": "Wind",
-      "name": "Wind",
+      "title": "WIND",
+      "name": "WIND",
       "prob": 68.3913043478261,
       "probability": 68.3913043478261,
       "risk": 2,
@@ -53,7 +53,6 @@
       "likelihood_category": "likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-06-23T00:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
@@ -1261,5 +1260,8 @@
       "hazards": "Enabled variables, row order, labels, thresholds, tooltips",
       "timeline": "Horizon, native windows, display windows, card aggregation rules"
     }
+  },
+  "extraction_errors": {
+    "WIND": "503 Server Error: Service Unavailable for url: https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20260623/00/core/blend.t00z.core.f047.co.grib2.idx"
   }
 }
