@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 12Z",
-  "generated_utc": "2026-06-25T16:06:04Z",
+  "generated_utc": "2026-06-25T17:34:27Z",
   "cycle_utc_iso": "2026-06-25T12:00:00Z",
   "cycle": "NBM 12Z",
   "valid_period": {
@@ -12780,8 +12780,8 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "Temp 67\u00b0F",
-        "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 60,
+        "driver": "NBM core temperature with measurable precipitation/freezing-rain probability as wet-surface joint-probability proxy",
+        "source_fxx": 54,
         "peak_valid_utc": "2026-06-27T18:00:00Z",
         "valid_start_utc": "2026-06-27T15:00:00Z",
         "valid_end_utc": "2026-06-27T18:00:00Z",
@@ -12789,57 +12789,41 @@
         "end_fxx": 54,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "method": "nbm_core_aws_gridpoint",
+        "source": "NOAA NBM core AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 54,
             "valid_utc": "2026-06-27T18:00:00Z",
-            "temp_f": 66.9,
+            "temp_f": 66.8,
+            "rain_in": 0.0,
+            "fzra_in": 0.0,
             "wet_probability": 0.0,
-            "temp_probabilities": {
-              "prob_lt_10_f": 0.0,
-              "prob_lt_20_f": 0.0,
-              "prob_lt_25_f": 0.0,
-              "prob_lt_28_f": 0.0,
-              "prob_lt_32_f": 0.0,
-              "prob_lt_36_f": 0.0,
-              "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 0.0,
-              "prob_heat_impact_3": 0.0,
-              "prob_heat_impact_4": 0.0
-            },
+            "wet_surface": false,
             "joint_probabilities": {
               "joint_wet_temp_le_36_f": 0.0,
               "joint_wet_temp_le_32_f": 0.0,
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 66.9,
+            "impact_level": 1,
+            "value": 66.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
         "likelihood_category": "extremely_unlikely",
-        "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
+        "risk_method": "krno_joint_probability_wet_surface_temperature_proxy",
         "values": {
+          "fxx": 54,
+          "valid_utc": "2026-06-27T18:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 66.9,
+          "risk_method": "krno_joint_probability_wet_surface_temperature_proxy",
+          "likelihood_category": "extremely_unlikely",
+          "temp_f": 66.8,
+          "wet_surface": false,
           "wet_probability": 0.0,
-          "temp_probabilities": {
-            "prob_lt_10_f": 0.0,
-            "prob_lt_20_f": 0.0,
-            "prob_lt_25_f": 0.0,
-            "prob_lt_28_f": 0.0,
-            "prob_lt_32_f": 0.0,
-            "prob_lt_36_f": 0.0,
-            "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 0.0,
-            "prob_heat_impact_3": 0.0,
-            "prob_heat_impact_4": 0.0
-          },
           "joint_probabilities": {
             "joint_wet_temp_le_36_f": 0.0,
             "joint_wet_temp_le_32_f": 0.0,
@@ -12847,27 +12831,9 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 66.9,
+          "value": 66.8,
           "unit": "\u00b0F"
-        },
-        "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
-        "native_cold_probability_thresholds": [
-          {
-            "threshold_k": 255.372,
-            "threshold_f": -0.0,
-            "probability": 0.0
-          },
-          {
-            "threshold_k": 270.928,
-            "threshold_f": 28.0,
-            "probability": 0.0
-          },
-          {
-            "threshold_k": 273.15,
-            "threshold_f": 32.0,
-            "probability": 0.0
-          }
-        ]
+        }
       },
       "RAIN": {
         "id": "RAIN",
