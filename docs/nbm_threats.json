@@ -3,8 +3,8 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NBM/QMD schema scaffold",
-  "generated_utc": "2026-06-26T01:30:07Z",
+  "source": "NOAA NBM core AWS 00Z",
+  "generated_utc": "2026-06-26T05:46:51Z",
   "cycle_utc_iso": "2026-06-26T00:00:00Z",
   "cycle": "NBM 00Z",
   "valid_period": {
@@ -15,8 +15,8 @@
   "threats": {
     "WIND": {
       "id": "WIND",
-      "title": "WIND",
-      "name": "WIND",
+      "title": "Wind",
+      "name": "Wind",
       "prob": 92.8913043478261,
       "probability": 92.8913043478261,
       "risk": 2,
@@ -53,6 +53,7 @@
       "likelihood_category": "very_likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
+      "source_cycle_utc_iso": "2026-06-26T00:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
@@ -267,7 +268,7 @@
       "window": "72 hr",
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
-      "source_fxx": 15,
+      "source_fxx": 9,
       "peak_valid_utc": "2026-06-26T03:00:00Z",
       "driver": "NBM QMD temperature probability and wet-surface probability at KRNO",
       "methodology": "Flash-freeze summary uses the highest 3-hour joint probability of wet surface and cold temperature threshold.",
@@ -289,7 +290,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-      "source": "NOAA NBM QMD AWS 12Z"
+      "source": "NOAA NBM QMD AWS 18Z"
     },
     "RAIN": {
       "id": "RAIN",
@@ -543,7 +544,7 @@
       "window": "72 hr",
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
-      "source_fxx": 15,
+      "source_fxx": 9,
       "peak_valid_utc": "2026-06-26T03:00:00Z",
       "driver": "NBM QMD 24-hour max/min temperature probabilities at KRNO",
       "methodology": "Temperature summary uses QMD 24-hour max-temperature and min-temperature probability-of-threshold exceedance for cold and date-specific KRNO heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix.",
@@ -1260,8 +1261,5 @@
       "hazards": "Enabled variables, row order, labels, thresholds, tooltips",
       "timeline": "Horizon, native windows, display windows, card aggregation rules"
     }
-  },
-  "extraction_errors": {
-    "WIND": "503 Server Error: Service Unavailable for url: https://noaa-nbm-grib2-pds.s3.amazonaws.com/blend.20260626/00/core/blend.t00z.core.f043.co.grib2"
   }
 }
