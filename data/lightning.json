@@ -6,7 +6,7 @@
   "source": "NOAA GOES-18 GLM-L2-LCFA",
   "satellite": "GOES-18",
   "product": "GLM-L2-LCFA",
-  "generated_utc": "2026-06-26T17:18:41Z",
+  "generated_utc": "2026-06-26T19:10:12Z",
   "status": "ok",
   "message": null,
   "window_minutes": 15,
@@ -36,13 +36,15 @@
     }
   },
   "counts": {
-    "groups": 19875,
-    "flashes": 1615,
-    "events": 55734
+    "groups": 23512,
+    "flashes": 2709,
+    "events": 49980
   },
-  "processed_file_count": 54,
-  "latest_file": "GLM-L2-LCFA/2026/177/17/OR_GLM-L2-LCFA_G18_s20261771717400_e20261771718000_c20261771718015.nc",
-  "errors": [],
+  "processed_file_count": 28,
+  "latest_file": "GLM-L2-LCFA/2026/177/19/OR_GLM-L2-LCFA_G18_s20261771909200_e20261771909400_c20261771909414.nc",
+  "errors": [
+    "OR_GLM-L2-LCFA_G18_s20261771906000_e20261771906200_c20261771906215.nc: HTTP Error 503: Service Unavailable"
+  ],
   "strikes": [],
   "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
 }
