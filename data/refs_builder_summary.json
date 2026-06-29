@@ -3,9 +3,9 @@
   "site_name": "KRNO Ops",
   "lat": 39.4991,
   "lon": -119.7681,
-  "generated_utc": "2026-06-28T06:47:52Z",
-  "cycle_utc_iso": "2026-06-28T00:00:00Z",
-  "selected_prefix": "rrfs_a/refs.20260628/00/enspost/",
+  "generated_utc": "2026-06-29T05:12:39Z",
+  "cycle_utc_iso": "2026-06-29T00:00:00Z",
+  "selected_prefix": "rrfs_a/refs.20260629/00/enspost/",
   "builder_mode": "refs_point_extraction",
   "candidate_file_count": 960,
   "products": {
@@ -1054,9 +1054,9 @@
         60
       ],
       "sample_lines": [
-        "17:18714947:d=2026062800:UGRD:10 m above ground:1 hour fcst:wt ens mean",
-        "18:21096564:d=2026062800:VGRD:10 m above ground:1 hour fcst:wt ens mean",
-        "19:23478181:d=2026062800:UGRD:250 mb:1 hour fcst:wt ens mean"
+        "17:20214446:d=2026062900:UGRD:10 m above ground:1 hour fcst:wt ens mean",
+        "18:22596063:d=2026062900:VGRD:10 m above ground:1 hour fcst:wt ens mean",
+        "19:24977680:d=2026062900:UGRD:250 mb:1 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "desi_refs_time_lagged_gust",
@@ -1065,9 +1065,9 @@
       "mean_wind_proxy_allowed": false,
       "ok_mean_hours": 0,
       "ok_probability_hours": 60,
-      "ok_gust_values": 779,
+      "ok_gust_values": 780,
       "mean_wind_60hr_max_mph": null,
-      "mean_member_max_gust_mph": 29.7,
+      "mean_member_max_gust_mph": 29.2,
       "members_found": [
         "HRRR",
         "HRRR-6",
@@ -1085,7 +1085,7 @@
         "RRFS-6"
       ],
       "threshold_probabilities_60hr": {
-        "gt_30_mph": 50.0,
+        "gt_30_mph": 42.9,
         "gt_45_mph": 0.0,
         "gt_58_mph": 0.0,
         "gt_65_mph": 0.0
@@ -1193,14 +1193,14 @@
         60
       ],
       "sample_lines": [
-        "1:0:d=2026062800:CAPE:90-0 mb above ground:1 hour fcst:wt ens mean",
-        "2:803288:d=2026062800:CAPE:180-0 mb above ground:1 hour fcst:wt ens mean",
-        "3:1690698:d=2026062800:CAPE:surface:1 hour fcst:wt ens mean"
+        "1:0:d=2026062900:CAPE:90-0 mb above ground:1 hour fcst:wt ens mean",
+        "2:780887:d=2026062900:CAPE:180-0 mb above ground:1 hour fcst:wt ens mean",
+        "3:1645169:d=2026062900:CAPE:surface:1 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
       "source_fxx": 25,
-      "probability": 2.5,
+      "probability": 1.5,
       "metric": "thunder probability"
     },
     "SNOW": {
@@ -1223,9 +1223,9 @@
         60
       ],
       "sample_lines": [
-        "54:62877182:d=2026062800:WEASD:surface:0-1 hour acc fcst:wt ens mean",
-        "55:62924154:d=2026062800:ASNOW:surface:0-1 hour acc fcst:wt ens mean",
-        "60:63250250:d=2026062800:CSNOW:surface:1 hour fcst:wt ens mean"
+        "54:63943486:d=2026062900:WEASD:surface:0-1 hour acc fcst:wt ens mean",
+        "55:63996376:d=2026062900:ASNOW:surface:0-1 hour acc fcst:wt ens mean",
+        "60:64297135:d=2026062900:CSNOW:surface:1 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
@@ -1234,8 +1234,8 @@
       "metric": "No signal"
     },
     "VISIBILITY": {
-      "risk": 0,
-      "risk_label": "None",
+      "risk": 3,
+      "risk_label": "Moderate",
       "field_map_matches": 104,
       "mapped_hours": [
         1,
@@ -1253,15 +1253,15 @@
         60
       ],
       "sample_lines": [
-        "46:50426050:d=2026062800:VIS:surface:1 hour fcst:wt ens mean",
-        "46:49263773:d=2026062800:VIS:surface:2 hour fcst:wt ens mean",
-        "49:51299458:d=2026062800:VIS:surface:3 hour fcst:wt ens mean"
+        "46:51987916:d=2026062900:VIS:surface:1 hour fcst:wt ens mean",
+        "46:50898954:d=2026062900:VIS:surface:2 hour fcst:wt ens mean",
+        "49:51319981:d=2026062900:VIS:surface:3 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
-      "source_fxx": 11,
-      "probability": 0.0,
-      "metric": "No signal"
+      "source_fxx": 21,
+      "probability": 100.0,
+      "metric": "<=3 mi"
     },
     "FZRA": {
       "risk": 0,
@@ -1283,9 +1283,9 @@
         60
       ],
       "sample_lines": [
-        "58:63249631:d=2026062800:CFRZR:surface:1 hour fcst:wt ens mean",
-        "59:63249989:d=2026062800:CICEP:surface:1 hour fcst:wt ens mean",
-        "58:61907093:d=2026062800:CFRZR:surface:2 hour fcst:wt ens mean"
+        "58:64296469:d=2026062900:CFRZR:surface:1 hour fcst:wt ens mean",
+        "59:64296869:d=2026062900:CICEP:surface:1 hour fcst:wt ens mean",
+        "58:63001805:d=2026062900:CFRZR:surface:2 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
@@ -1313,9 +1313,9 @@
         60
       ],
       "sample_lines": [
-        "32:36258438:d=2026062800:TMP:250 mb:1 hour fcst:wt ens mean",
-        "33:36933943:d=2026062800:TMP:500 mb:1 hour fcst:wt ens mean",
-        "34:37663124:d=2026062800:TMP:700 mb:1 hour fcst:wt ens mean"
+        "32:37761063:d=2026062900:TMP:250 mb:1 hour fcst:wt ens mean",
+        "33:38431697:d=2026062900:TMP:500 mb:1 hour fcst:wt ens mean",
+        "34:39153732:d=2026062900:TMP:700 mb:1 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
@@ -1343,14 +1343,14 @@
         60
       ],
       "sample_lines": [
-        "1:0:d=2026062800:APCP:surface:0-1 hour acc fcst:wt ens mean:process=193",
-        "1:0:d=2026062800:APCP:surface:1-2 hour acc fcst:wt ens mean:process=193",
-        "1:0:d=2026062800:APCP:surface:2-3 hour acc fcst:wt ens mean:process=193"
+        "1:0:d=2026062900:APCP:surface:0-1 hour acc fcst:wt ens mean:process=193",
+        "1:0:d=2026062900:APCP:surface:1-2 hour acc fcst:wt ens mean:process=193",
+        "1:0:d=2026062900:APCP:surface:2-3 hour acc fcst:wt ens mean:process=193"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
-      "source_fxx": 12,
-      "probability": 64.5,
+      "source_fxx": 47,
+      "probability": 15.5,
       "metric": "rain type"
     },
     "TEMPERATURE": {
@@ -1373,13 +1373,13 @@
         60
       ],
       "sample_lines": [
-        "32:36258438:d=2026062800:TMP:250 mb:1 hour fcst:wt ens mean",
-        "33:36933943:d=2026062800:TMP:500 mb:1 hour fcst:wt ens mean",
-        "34:37663124:d=2026062800:TMP:700 mb:1 hour fcst:wt ens mean"
+        "32:37761063:d=2026062900:TMP:250 mb:1 hour fcst:wt ens mean",
+        "33:38431697:d=2026062900:TMP:500 mb:1 hour fcst:wt ens mean",
+        "34:39153732:d=2026062900:TMP:700 mb:1 hour fcst:wt ens mean"
       ],
       "status": "ok",
       "method": "refs_idx_byte_range_secondary_hazards",
-      "source_fxx": 47,
+      "source_fxx": 46,
       "probability": 0.0,
       "metric": "No signal"
     }
