@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-06-29T22:16:41Z",
+  "generated_utc": "2026-06-29T23:16:59Z",
   "cycle_utc_iso": "2026-06-29T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -1512,8 +1512,8 @@
         "prob": 0.0,
         "probability": 0.0,
         "metric": "Temp 77\u00b0F",
-        "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 12,
+        "driver": "NBM core temperature with measurable precipitation/freezing-rain probability as wet-surface joint-probability proxy",
+        "source_fxx": 6,
         "peak_valid_utc": "2026-06-30T00:00:00Z",
         "valid_start_utc": "2026-06-29T21:00:00Z",
         "valid_end_utc": "2026-06-30T00:00:00Z",
@@ -1521,57 +1521,81 @@
         "end_fxx": 6,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "method": "nbm_core_aws_gridpoint",
+        "source": "NOAA NBM core AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 12,
-            "valid_utc": "2026-06-30T00:00:00Z",
-            "temp_f": 77.1,
+            "fxx": 4,
+            "valid_utc": "2026-06-29T22:00:00Z",
+            "temp_f": 75.3,
+            "rain_in": 0.0,
+            "fzra_in": 0.0,
             "wet_probability": 1.0,
-            "temp_probabilities": {
-              "prob_lt_10_f": 0.0,
-              "prob_lt_20_f": 0.0,
-              "prob_lt_25_f": 0.0,
-              "prob_lt_28_f": 0.0,
-              "prob_lt_32_f": 0.0,
-              "prob_lt_36_f": 0.0,
-              "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 3.8,
-              "prob_heat_impact_3": 0.0,
-              "prob_heat_impact_4": 0.0
-            },
+            "wet_surface": false,
             "joint_probabilities": {
               "joint_wet_temp_le_36_f": 0.0,
               "joint_wet_temp_le_32_f": 0.0,
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 77.1,
+            "impact_level": 1,
+            "value": 75.3,
             "unit": "\u00b0F",
             "label": "temp",
-            "window_hours": 3
+            "window_hours": 1
+          },
+          {
+            "fxx": 5,
+            "valid_utc": "2026-06-29T23:00:00Z",
+            "temp_f": 76.6,
+            "rain_in": 0.0,
+            "fzra_in": 0.0,
+            "wet_probability": 1.0,
+            "wet_surface": false,
+            "joint_probabilities": {
+              "joint_wet_temp_le_36_f": 0.0,
+              "joint_wet_temp_le_32_f": 0.0,
+              "joint_wet_temp_le_28_f": 0.0,
+              "joint_wet_temp_le_25_f": 0.0
+            },
+            "impact_level": 1,
+            "value": 76.6,
+            "unit": "\u00b0F",
+            "label": "temp",
+            "window_hours": 1
+          },
+          {
+            "fxx": 6,
+            "valid_utc": "2026-06-30T00:00:00Z",
+            "temp_f": 76.9,
+            "rain_in": 0.0,
+            "fzra_in": 0.0,
+            "wet_probability": 1.0,
+            "wet_surface": false,
+            "joint_probabilities": {
+              "joint_wet_temp_le_36_f": 0.0,
+              "joint_wet_temp_le_32_f": 0.0,
+              "joint_wet_temp_le_28_f": 0.0,
+              "joint_wet_temp_le_25_f": 0.0
+            },
+            "impact_level": 1,
+            "value": 76.9,
+            "unit": "\u00b0F",
+            "label": "temp",
+            "window_hours": 1
           }
         ],
         "likelihood_category": "extremely_unlikely",
-        "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
+        "risk_method": "krno_joint_probability_wet_surface_temperature_proxy",
         "values": {
+          "fxx": 6,
+          "valid_utc": "2026-06-30T00:00:00Z",
           "impact_level": 1,
-          "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 77.1,
+          "risk_method": "krno_joint_probability_wet_surface_temperature_proxy",
+          "likelihood_category": "extremely_unlikely",
+          "temp_f": 76.9,
+          "wet_surface": false,
           "wet_probability": 1.0,
-          "temp_probabilities": {
-            "prob_lt_10_f": 0.0,
-            "prob_lt_20_f": 0.0,
-            "prob_lt_25_f": 0.0,
-            "prob_lt_28_f": 0.0,
-            "prob_lt_32_f": 0.0,
-            "prob_lt_36_f": 0.0,
-            "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 3.8,
-            "prob_heat_impact_3": 0.0,
-            "prob_heat_impact_4": 0.0
-          },
           "joint_probabilities": {
             "joint_wet_temp_le_36_f": 0.0,
             "joint_wet_temp_le_32_f": 0.0,
@@ -1579,27 +1603,9 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 77.1,
+          "value": 76.9,
           "unit": "\u00b0F"
-        },
-        "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
-        "native_cold_probability_thresholds": [
-          {
-            "threshold_k": 255.372,
-            "threshold_f": -0.0,
-            "probability": 0.0
-          },
-          {
-            "threshold_k": 270.928,
-            "threshold_f": 28.0,
-            "probability": 0.0
-          },
-          {
-            "threshold_k": 273.15,
-            "threshold_f": 32.0,
-            "probability": 0.0
-          }
-        ]
+        }
       },
       "RAIN": {
         "id": "RAIN",
