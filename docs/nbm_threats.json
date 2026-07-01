@@ -3,14 +3,14 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-06-30T23:41:59Z",
-  "cycle_utc_iso": "2026-06-30T18:00:00Z",
-  "cycle": "NBM 18Z",
+  "source": "NOAA NBM core AWS 00Z",
+  "generated_utc": "2026-07-01T01:57:04Z",
+  "cycle_utc_iso": "2026-07-01T00:00:00Z",
+  "cycle": "NBM 00Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-06-30T18:00:00Z",
-    "end_utc": "2026-07-03T18:00:00Z"
+    "start_utc": "2026-07-01T00:00:00Z",
+    "end_utc": "2026-07-04T00:00:00Z"
   },
   "threats": {
     "WIND": {
@@ -53,7 +53,7 @@
       "likelihood_category": "likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-06-30T18:00:00Z",
+      "source_cycle_utc_iso": "2026-07-01T00:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
@@ -108,10 +108,10 @@
       "display_label": "Peak 3-hour thunder probability",
       "display_value": "Thunder 5%",
       "window": "72 hr",
-      "peak_start_fxx": 28,
-      "peak_end_fxx": 30,
-      "source_fxx": 30,
-      "peak_valid_utc": "2026-07-02T00:00:00Z",
+      "peak_start_fxx": 25,
+      "peak_end_fxx": 27,
+      "source_fxx": 27,
+      "peak_valid_utc": "2026-07-02T03:00:00Z",
       "driver": "NBM core 3-hour thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -126,7 +126,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 18Z"
+      "source": "NOAA NBM core AWS 00Z"
     },
     "SNOW": {
       "id": "SNOW",
@@ -146,7 +146,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-06-30T21:00:00Z",
+      "peak_valid_utc": "2026-07-01T03:00:00Z",
       "driver": "NBM core snow amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -167,7 +167,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 18Z"
+      "source": "NOAA NBM core AWS 00Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
@@ -187,7 +187,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-06-30T21:00:00Z",
+      "peak_valid_utc": "2026-07-01T03:00:00Z",
       "driver": "NBM core visibility at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -208,7 +208,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 18Z"
+      "source": "NOAA NBM core AWS 00Z"
     },
     "FZRA": {
       "id": "FZRA",
@@ -228,7 +228,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-06-30T21:00:00Z",
+      "peak_valid_utc": "2026-07-01T03:00:00Z",
       "driver": "NBM core fzra amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -249,7 +249,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 18Z"
+      "source": "NOAA NBM core AWS 00Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
@@ -268,8 +268,8 @@
       "window": "72 hr",
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
-      "source_fxx": 9,
-      "peak_valid_utc": "2026-06-30T21:00:00Z",
+      "source_fxx": 15,
+      "peak_valid_utc": "2026-07-01T03:00:00Z",
       "driver": "NBM QMD temperature probability and wet-surface probability at KRNO",
       "methodology": "Flash-freeze summary uses the highest 3-hour joint probability of wet surface and cold temperature threshold.",
       "data_status": "live",
@@ -542,10 +542,10 @@
       "display_label": "Max / Min",
       "display_value": "83\u00b0F / 53\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 52,
-      "peak_end_fxx": 54,
-      "source_fxx": 60,
-      "peak_valid_utc": "2026-07-03T00:00:00Z",
+      "peak_start_fxx": 70,
+      "peak_end_fxx": 72,
+      "source_fxx": 84,
+      "peak_valid_utc": "2026-07-04T00:00:00Z",
       "driver": "NBM QMD 24-hour max/min temperature probabilities at KRNO",
       "methodology": "Temperature summary uses QMD 24-hour max-temperature and min-temperature probability-of-threshold exceedance for cold and date-specific KRNO heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix.",
       "data_status": "live",
@@ -908,8 +908,8 @@
           72
         ]
       },
-      "peak_valid_start_utc": "2026-07-02T21:00:00Z",
-      "peak_valid_end_utc": "2026-07-03T00:00:00Z",
+      "peak_valid_start_utc": "2026-07-03T21:00:00Z",
+      "peak_valid_end_utc": "2026-07-04T00:00:00Z",
       "peak_timing_source": "3-hour temperature timeline block",
       "selected_probability_key": "prob_heat_impact_2",
       "timing_kind": "peak"
