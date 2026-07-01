@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 12Z",
-  "generated_utc": "2026-07-01T17:28:26Z",
+  "generated_utc": "2026-07-01T19:16:40Z",
   "cycle_utc_iso": "2026-07-01T12:00:00Z",
   "cycle": "NBM 12Z",
   "valid_period": {
@@ -797,7 +797,7 @@
         "probability": 0.0,
         "metric": "Temp 62\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 9,
+        "source_fxx": 3,
         "peak_valid_utc": "2026-07-01T15:00:00Z",
         "valid_start_utc": "2026-07-01T12:00:00Z",
         "valid_end_utc": "2026-07-01T15:00:00Z",
@@ -806,12 +806,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 9,
+            "fxx": 3,
             "valid_utc": "2026-07-01T15:00:00Z",
-            "temp_f": 62.1,
+            "temp_f": 61.8,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -831,7 +831,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 62.1,
+            "value": 61.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -842,7 +842,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 62.1,
+          "temp_f": 61.8,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -863,7 +863,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 62.1,
+          "value": 61.8,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -974,7 +974,7 @@
         "probability": 0.0,
         "metric": "Temp 62\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 9,
+        "source_fxx": 3,
         "peak_valid_utc": "2026-07-01T15:00:00Z",
         "valid_start_utc": "2026-07-01T12:00:00Z",
         "valid_end_utc": "2026-07-01T15:00:00Z",
@@ -983,12 +983,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 9,
+            "fxx": 3,
             "valid_utc": "2026-07-01T15:00:00Z",
-            "temp_f": 62.1,
+            "temp_f": 61.8,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -1007,7 +1007,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 62.1,
+            "value": 61.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -1018,7 +1018,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 62.1,
+          "temp_f": 61.8,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -1040,7 +1040,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 62.1,
+          "value": 61.8,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -1513,7 +1513,7 @@
         "probability": 0.0,
         "metric": "Temp 73\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 12,
+        "source_fxx": 6,
         "peak_valid_utc": "2026-07-01T18:00:00Z",
         "valid_start_utc": "2026-07-01T15:00:00Z",
         "valid_end_utc": "2026-07-01T18:00:00Z",
@@ -1522,12 +1522,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 12,
+            "fxx": 6,
             "valid_utc": "2026-07-01T18:00:00Z",
-            "temp_f": 73.3,
+            "temp_f": 73.0,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -1547,7 +1547,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 73.3,
+            "value": 73.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -1558,7 +1558,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 73.3,
+          "temp_f": 73.0,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -1579,7 +1579,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 73.3,
+          "value": 73.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -1690,7 +1690,7 @@
         "probability": 0.0,
         "metric": "Temp 73\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 12,
+        "source_fxx": 6,
         "peak_valid_utc": "2026-07-01T18:00:00Z",
         "valid_start_utc": "2026-07-01T15:00:00Z",
         "valid_end_utc": "2026-07-01T18:00:00Z",
@@ -1699,12 +1699,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 12,
+            "fxx": 6,
             "valid_utc": "2026-07-01T18:00:00Z",
-            "temp_f": 73.3,
+            "temp_f": 73.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -1723,7 +1723,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 73.3,
+            "value": 73.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -1734,7 +1734,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 73.3,
+          "temp_f": 73.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -1756,7 +1756,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 73.3,
+          "value": 73.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -2229,7 +2229,7 @@
         "probability": 0.0,
         "metric": "Temp 81\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 15,
+        "source_fxx": 9,
         "peak_valid_utc": "2026-07-01T21:00:00Z",
         "valid_start_utc": "2026-07-01T18:00:00Z",
         "valid_end_utc": "2026-07-01T21:00:00Z",
@@ -2238,12 +2238,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 15,
+            "fxx": 9,
             "valid_utc": "2026-07-01T21:00:00Z",
-            "temp_f": 80.9,
+            "temp_f": 80.8,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -2263,7 +2263,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 80.9,
+            "value": 80.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -2274,7 +2274,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 80.9,
+          "temp_f": 80.8,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -2295,7 +2295,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 80.9,
+          "value": 80.8,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -2406,7 +2406,7 @@
         "probability": 100.0,
         "metric": "Temp 81\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 15,
+        "source_fxx": 9,
         "peak_valid_utc": "2026-07-01T21:00:00Z",
         "valid_start_utc": "2026-07-01T18:00:00Z",
         "valid_end_utc": "2026-07-01T21:00:00Z",
@@ -2415,12 +2415,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 15,
+            "fxx": 9,
             "valid_utc": "2026-07-01T21:00:00Z",
-            "temp_f": 80.9,
+            "temp_f": 80.8,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -2439,7 +2439,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 80.9,
+            "value": 80.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -2450,7 +2450,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 80.9,
+          "temp_f": 80.8,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -2472,7 +2472,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 80.9,
+          "value": 80.8,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -2499,7 +2499,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 80.0
+            "probability": 78.0
           },
           {
             "threshold_k": 305.372,
@@ -2945,7 +2945,7 @@
         "probability": 0.0,
         "metric": "Temp 83\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 18,
+        "source_fxx": 12,
         "peak_valid_utc": "2026-07-02T00:00:00Z",
         "valid_start_utc": "2026-07-01T21:00:00Z",
         "valid_end_utc": "2026-07-02T00:00:00Z",
@@ -2954,12 +2954,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 18,
+            "fxx": 12,
             "valid_utc": "2026-07-02T00:00:00Z",
-            "temp_f": 82.7,
+            "temp_f": 82.6,
             "wet_probability": 2.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -2979,7 +2979,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 82.7,
+            "value": 82.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -2990,7 +2990,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 82.7,
+          "temp_f": 82.6,
           "wet_probability": 2.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -3011,7 +3011,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 82.7,
+          "value": 82.6,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -3122,7 +3122,7 @@
         "probability": 100.0,
         "metric": "Temp 83\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 18,
+        "source_fxx": 12,
         "peak_valid_utc": "2026-07-02T00:00:00Z",
         "valid_start_utc": "2026-07-01T21:00:00Z",
         "valid_end_utc": "2026-07-02T00:00:00Z",
@@ -3131,12 +3131,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 18,
+            "fxx": 12,
             "valid_utc": "2026-07-02T00:00:00Z",
-            "temp_f": 82.7,
+            "temp_f": 82.6,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -3155,7 +3155,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 82.7,
+            "value": 82.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -3166,7 +3166,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 82.7,
+          "temp_f": 82.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -3188,7 +3188,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 82.7,
+          "value": 82.6,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -3215,7 +3215,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 94.0
+            "probability": 92.0
           },
           {
             "threshold_k": 305.372,
@@ -3661,7 +3661,7 @@
         "probability": 0.0,
         "metric": "Temp 77\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 21,
+        "source_fxx": 15,
         "peak_valid_utc": "2026-07-02T03:00:00Z",
         "valid_start_utc": "2026-07-02T00:00:00Z",
         "valid_end_utc": "2026-07-02T03:00:00Z",
@@ -3670,12 +3670,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 21,
+            "fxx": 15,
             "valid_utc": "2026-07-02T03:00:00Z",
-            "temp_f": 76.7,
+            "temp_f": 77.0,
             "wet_probability": 1.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -3695,7 +3695,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 76.7,
+            "value": 77.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -3706,7 +3706,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 76.7,
+          "temp_f": 77.0,
           "wet_probability": 1.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -3727,7 +3727,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 76.7,
+          "value": 77.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -3838,7 +3838,7 @@
         "probability": 0.0,
         "metric": "Temp 77\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 21,
+        "source_fxx": 15,
         "peak_valid_utc": "2026-07-02T03:00:00Z",
         "valid_start_utc": "2026-07-02T00:00:00Z",
         "valid_end_utc": "2026-07-02T03:00:00Z",
@@ -3847,12 +3847,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 21,
+            "fxx": 15,
             "valid_utc": "2026-07-02T03:00:00Z",
-            "temp_f": 76.7,
+            "temp_f": 77.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -3871,7 +3871,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 76.7,
+            "value": 77.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -3882,7 +3882,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 76.7,
+          "temp_f": 77.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -3904,7 +3904,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 76.7,
+          "value": 77.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -4377,7 +4377,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 24,
+        "source_fxx": 18,
         "peak_valid_utc": "2026-07-02T06:00:00Z",
         "valid_start_utc": "2026-07-02T03:00:00Z",
         "valid_end_utc": "2026-07-02T06:00:00Z",
@@ -4386,12 +4386,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 24,
+            "fxx": 18,
             "valid_utc": "2026-07-02T06:00:00Z",
-            "temp_f": 68.0,
+            "temp_f": 68.3,
             "wet_probability": 1.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -4411,7 +4411,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 68.0,
+            "value": 68.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -4422,7 +4422,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 68.0,
+          "temp_f": 68.3,
           "wet_probability": 1.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -4443,7 +4443,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 68.0,
+          "value": 68.3,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -4554,7 +4554,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 24,
+        "source_fxx": 18,
         "peak_valid_utc": "2026-07-02T06:00:00Z",
         "valid_start_utc": "2026-07-02T03:00:00Z",
         "valid_end_utc": "2026-07-02T06:00:00Z",
@@ -4563,12 +4563,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 24,
+            "fxx": 18,
             "valid_utc": "2026-07-02T06:00:00Z",
-            "temp_f": 68.0,
+            "temp_f": 68.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -4587,7 +4587,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 68.0,
+            "value": 68.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -4598,7 +4598,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 68.0,
+          "temp_f": 68.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -4620,7 +4620,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 68.0,
+          "value": 68.3,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -5093,7 +5093,7 @@
         "probability": 0.0,
         "metric": "Temp 61\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 27,
+        "source_fxx": 21,
         "peak_valid_utc": "2026-07-02T09:00:00Z",
         "valid_start_utc": "2026-07-02T06:00:00Z",
         "valid_end_utc": "2026-07-02T09:00:00Z",
@@ -5102,12 +5102,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 27,
+            "fxx": 21,
             "valid_utc": "2026-07-02T09:00:00Z",
-            "temp_f": 60.9,
+            "temp_f": 61.4,
             "wet_probability": 1.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -5127,7 +5127,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 60.9,
+            "value": 61.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -5138,7 +5138,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 60.9,
+          "temp_f": 61.4,
           "wet_probability": 1.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -5159,7 +5159,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 60.9,
+          "value": 61.4,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -5270,7 +5270,7 @@
         "probability": 0.0,
         "metric": "Temp 61\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 27,
+        "source_fxx": 21,
         "peak_valid_utc": "2026-07-02T09:00:00Z",
         "valid_start_utc": "2026-07-02T06:00:00Z",
         "valid_end_utc": "2026-07-02T09:00:00Z",
@@ -5279,12 +5279,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 27,
+            "fxx": 21,
             "valid_utc": "2026-07-02T09:00:00Z",
-            "temp_f": 60.9,
+            "temp_f": 61.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -5303,7 +5303,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 60.9,
+            "value": 61.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -5314,7 +5314,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 60.9,
+          "temp_f": 61.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -5336,7 +5336,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 60.9,
+          "value": 61.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -5809,7 +5809,7 @@
         "probability": 0.0,
         "metric": "Temp 56\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 30,
+        "source_fxx": 24,
         "peak_valid_utc": "2026-07-02T12:00:00Z",
         "valid_start_utc": "2026-07-02T09:00:00Z",
         "valid_end_utc": "2026-07-02T12:00:00Z",
@@ -5818,12 +5818,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 30,
+            "fxx": 24,
             "valid_utc": "2026-07-02T12:00:00Z",
-            "temp_f": 55.6,
+            "temp_f": 56.0,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -5843,7 +5843,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 55.6,
+            "value": 56.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -5854,7 +5854,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 55.6,
+          "temp_f": 56.0,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -5875,7 +5875,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 55.6,
+          "value": 56.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -5986,7 +5986,7 @@
         "probability": 0.0,
         "metric": "Temp 56\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 30,
+        "source_fxx": 24,
         "peak_valid_utc": "2026-07-02T12:00:00Z",
         "valid_start_utc": "2026-07-02T09:00:00Z",
         "valid_end_utc": "2026-07-02T12:00:00Z",
@@ -5995,12 +5995,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 30,
+            "fxx": 24,
             "valid_utc": "2026-07-02T12:00:00Z",
-            "temp_f": 55.6,
+            "temp_f": 56.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -6019,7 +6019,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 55.6,
+            "value": 56.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -6030,7 +6030,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 55.6,
+          "temp_f": 56.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -6052,7 +6052,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 55.6,
+          "value": 56.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -6523,9 +6523,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 64\u00b0F",
+        "metric": "Temp 65\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 33,
+        "source_fxx": 27,
         "peak_valid_utc": "2026-07-02T15:00:00Z",
         "valid_start_utc": "2026-07-02T12:00:00Z",
         "valid_end_utc": "2026-07-02T15:00:00Z",
@@ -6534,12 +6534,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 33,
+            "fxx": 27,
             "valid_utc": "2026-07-02T15:00:00Z",
-            "temp_f": 64.4,
+            "temp_f": 65.0,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -6559,7 +6559,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 64.4,
+            "value": 65.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -6570,7 +6570,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 64.4,
+          "temp_f": 65.0,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -6591,7 +6591,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 64.4,
+          "value": 65.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -6700,9 +6700,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 64\u00b0F",
+        "metric": "Temp 65\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 33,
+        "source_fxx": 27,
         "peak_valid_utc": "2026-07-02T15:00:00Z",
         "valid_start_utc": "2026-07-02T12:00:00Z",
         "valid_end_utc": "2026-07-02T15:00:00Z",
@@ -6711,12 +6711,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 33,
+            "fxx": 27,
             "valid_utc": "2026-07-02T15:00:00Z",
-            "temp_f": 64.4,
+            "temp_f": 65.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -6735,7 +6735,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 64.4,
+            "value": 65.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -6746,7 +6746,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 64.4,
+          "temp_f": 65.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -6768,7 +6768,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 64.4,
+          "value": 65.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -7241,7 +7241,7 @@
         "probability": 0.0,
         "metric": "Temp 76\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 36,
+        "source_fxx": 30,
         "peak_valid_utc": "2026-07-02T18:00:00Z",
         "valid_start_utc": "2026-07-02T15:00:00Z",
         "valid_end_utc": "2026-07-02T18:00:00Z",
@@ -7250,10 +7250,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 36,
+            "fxx": 30,
             "valid_utc": "2026-07-02T18:00:00Z",
             "temp_f": 76.3,
             "wet_probability": 0.0,
@@ -7418,7 +7418,7 @@
         "probability": 0.0,
         "metric": "Temp 76\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 36,
+        "source_fxx": 30,
         "peak_valid_utc": "2026-07-02T18:00:00Z",
         "valid_start_utc": "2026-07-02T15:00:00Z",
         "valid_end_utc": "2026-07-02T18:00:00Z",
@@ -7427,10 +7427,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 36,
+            "fxx": 30,
             "valid_utc": "2026-07-02T18:00:00Z",
             "temp_f": 76.3,
             "heat_thresholds": {
@@ -7957,7 +7957,7 @@
         "probability": 0.0,
         "metric": "Temp 84\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 39,
+        "source_fxx": 33,
         "peak_valid_utc": "2026-07-02T21:00:00Z",
         "valid_start_utc": "2026-07-02T18:00:00Z",
         "valid_end_utc": "2026-07-02T21:00:00Z",
@@ -7966,12 +7966,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 39,
+            "fxx": 33,
             "valid_utc": "2026-07-02T21:00:00Z",
-            "temp_f": 84.1,
+            "temp_f": 84.0,
             "wet_probability": 1.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -7991,7 +7991,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 84.1,
+            "value": 84.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8002,7 +8002,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 84.1,
+          "temp_f": 84.0,
           "wet_probability": 1.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -8023,7 +8023,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 84.1,
+          "value": 84.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -8134,7 +8134,7 @@
         "probability": 100.0,
         "metric": "Temp 84\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 39,
+        "source_fxx": 33,
         "peak_valid_utc": "2026-07-02T21:00:00Z",
         "valid_start_utc": "2026-07-02T18:00:00Z",
         "valid_end_utc": "2026-07-02T21:00:00Z",
@@ -8143,12 +8143,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 39,
+            "fxx": 33,
             "valid_utc": "2026-07-02T21:00:00Z",
-            "temp_f": 84.1,
+            "temp_f": 84.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -8167,7 +8167,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 84.1,
+            "value": 84.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8178,7 +8178,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 84.1,
+          "temp_f": 84.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -8200,7 +8200,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 84.1,
+          "value": 84.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -8227,7 +8227,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 97.0
+            "probability": 98.0
           },
           {
             "threshold_k": 305.372,
@@ -8673,7 +8673,7 @@
         "probability": 0.0,
         "metric": "Temp 86\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 42,
+        "source_fxx": 36,
         "peak_valid_utc": "2026-07-03T00:00:00Z",
         "valid_start_utc": "2026-07-02T21:00:00Z",
         "valid_end_utc": "2026-07-03T00:00:00Z",
@@ -8682,12 +8682,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 42,
+            "fxx": 36,
             "valid_utc": "2026-07-03T00:00:00Z",
-            "temp_f": 85.6,
+            "temp_f": 85.9,
             "wet_probability": 3.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -8707,7 +8707,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 85.6,
+            "value": 85.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8718,7 +8718,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 85.6,
+          "temp_f": 85.9,
           "wet_probability": 3.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -8739,7 +8739,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 85.6,
+          "value": 85.9,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -8850,7 +8850,7 @@
         "probability": 100.0,
         "metric": "Temp 86\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 42,
+        "source_fxx": 36,
         "peak_valid_utc": "2026-07-03T00:00:00Z",
         "valid_start_utc": "2026-07-02T21:00:00Z",
         "valid_end_utc": "2026-07-03T00:00:00Z",
@@ -8859,12 +8859,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 42,
+            "fxx": 36,
             "valid_utc": "2026-07-03T00:00:00Z",
-            "temp_f": 85.6,
+            "temp_f": 85.9,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -8883,7 +8883,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 85.6,
+            "value": 85.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8894,7 +8894,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 85.6,
+          "temp_f": 85.9,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -8916,7 +8916,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 85.6,
+          "value": 85.9,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -9387,9 +9387,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 79\u00b0F",
+        "metric": "Temp 80\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 45,
+        "source_fxx": 39,
         "peak_valid_utc": "2026-07-03T03:00:00Z",
         "valid_start_utc": "2026-07-03T00:00:00Z",
         "valid_end_utc": "2026-07-03T03:00:00Z",
@@ -9398,12 +9398,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 45,
+            "fxx": 39,
             "valid_utc": "2026-07-03T03:00:00Z",
-            "temp_f": 79.4,
+            "temp_f": 79.5,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -9413,7 +9413,7 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 64.6,
+              "prob_heat_impact_2": 70.3,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
@@ -9423,7 +9423,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 79.4,
+            "value": 79.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -9434,7 +9434,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 79.4,
+          "temp_f": 79.5,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -9444,7 +9444,7 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 64.6,
+            "prob_heat_impact_2": 70.3,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
@@ -9455,7 +9455,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 79.4,
+          "value": 79.5,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -9562,11 +9562,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 64.6,
-        "probability": 64.6,
-        "metric": "Temp 79\u00b0F",
+        "prob": 70.3,
+        "probability": 70.3,
+        "metric": "Temp 80\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 45,
+        "source_fxx": 39,
         "peak_valid_utc": "2026-07-03T03:00:00Z",
         "valid_start_utc": "2026-07-03T00:00:00Z",
         "valid_end_utc": "2026-07-03T03:00:00Z",
@@ -9575,12 +9575,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 45,
+            "fxx": 39,
             "valid_utc": "2026-07-03T03:00:00Z",
-            "temp_f": 79.4,
+            "temp_f": 79.5,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -9595,22 +9595,22 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 64.6,
+              "prob_heat_impact_2": 70.3,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 79.4,
+            "value": 79.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
           }
         ],
-        "likelihood_category": "about_as_likely_as_not",
+        "likelihood_category": "likely",
         "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 79.4,
+          "temp_f": 79.5,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -9625,14 +9625,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 64.6,
+            "prob_heat_impact_2": 70.3,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 64.6,
-          "value": 79.4,
+          "probability": 70.3,
+          "value": 79.5,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -9659,7 +9659,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 34.0
+            "probability": 37.0
           },
           {
             "threshold_k": 305.372,
@@ -10105,7 +10105,7 @@
         "probability": 0.0,
         "metric": "Temp 70\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 48,
+        "source_fxx": 42,
         "peak_valid_utc": "2026-07-03T06:00:00Z",
         "valid_start_utc": "2026-07-03T03:00:00Z",
         "valid_end_utc": "2026-07-03T06:00:00Z",
@@ -10114,12 +10114,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 48,
+            "fxx": 42,
             "valid_utc": "2026-07-03T06:00:00Z",
-            "temp_f": 70.3,
+            "temp_f": 70.4,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -10139,7 +10139,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 70.3,
+            "value": 70.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -10150,7 +10150,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 70.3,
+          "temp_f": 70.4,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -10171,7 +10171,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 70.3,
+          "value": 70.4,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -10282,7 +10282,7 @@
         "probability": 0.0,
         "metric": "Temp 70\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 48,
+        "source_fxx": 42,
         "peak_valid_utc": "2026-07-03T06:00:00Z",
         "valid_start_utc": "2026-07-03T03:00:00Z",
         "valid_end_utc": "2026-07-03T06:00:00Z",
@@ -10291,12 +10291,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 48,
+            "fxx": 42,
             "valid_utc": "2026-07-03T06:00:00Z",
-            "temp_f": 70.3,
+            "temp_f": 70.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -10315,7 +10315,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 70.3,
+            "value": 70.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -10326,7 +10326,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 70.3,
+          "temp_f": 70.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -10348,7 +10348,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 70.3,
+          "value": 70.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -10821,7 +10821,7 @@
         "probability": 0.0,
         "metric": "Temp 63\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 51,
+        "source_fxx": 45,
         "peak_valid_utc": "2026-07-03T09:00:00Z",
         "valid_start_utc": "2026-07-03T06:00:00Z",
         "valid_end_utc": "2026-07-03T09:00:00Z",
@@ -10830,12 +10830,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 51,
+            "fxx": 45,
             "valid_utc": "2026-07-03T09:00:00Z",
-            "temp_f": 63.2,
+            "temp_f": 63.3,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -10855,7 +10855,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 63.2,
+            "value": 63.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -10866,7 +10866,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 63.2,
+          "temp_f": 63.3,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -10887,7 +10887,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 63.2,
+          "value": 63.3,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -10998,7 +10998,7 @@
         "probability": 0.0,
         "metric": "Temp 63\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 51,
+        "source_fxx": 45,
         "peak_valid_utc": "2026-07-03T09:00:00Z",
         "valid_start_utc": "2026-07-03T06:00:00Z",
         "valid_end_utc": "2026-07-03T09:00:00Z",
@@ -11007,12 +11007,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 51,
+            "fxx": 45,
             "valid_utc": "2026-07-03T09:00:00Z",
-            "temp_f": 63.2,
+            "temp_f": 63.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -11031,7 +11031,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 63.2,
+            "value": 63.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -11042,7 +11042,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 63.2,
+          "temp_f": 63.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -11064,7 +11064,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 63.2,
+          "value": 63.3,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -11537,7 +11537,7 @@
         "probability": 0.0,
         "metric": "Temp 58\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 54,
+        "source_fxx": 48,
         "peak_valid_utc": "2026-07-03T12:00:00Z",
         "valid_start_utc": "2026-07-03T09:00:00Z",
         "valid_end_utc": "2026-07-03T12:00:00Z",
@@ -11546,12 +11546,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 54,
+            "fxx": 48,
             "valid_utc": "2026-07-03T12:00:00Z",
-            "temp_f": 58.0,
+            "temp_f": 58.4,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -11571,7 +11571,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 58.0,
+            "value": 58.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -11582,7 +11582,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 58.0,
+          "temp_f": 58.4,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -11603,7 +11603,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 58.0,
+          "value": 58.4,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -11714,7 +11714,7 @@
         "probability": 0.0,
         "metric": "Temp 58\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 54,
+        "source_fxx": 48,
         "peak_valid_utc": "2026-07-03T12:00:00Z",
         "valid_start_utc": "2026-07-03T09:00:00Z",
         "valid_end_utc": "2026-07-03T12:00:00Z",
@@ -11723,12 +11723,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 54,
+            "fxx": 48,
             "valid_utc": "2026-07-03T12:00:00Z",
-            "temp_f": 58.0,
+            "temp_f": 58.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -11747,7 +11747,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 58.0,
+            "value": 58.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -11758,7 +11758,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 58.0,
+          "temp_f": 58.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -11780,7 +11780,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 58.0,
+          "value": 58.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -12171,7 +12171,7 @@
         "probability": 0.0,
         "metric": "Temp 67\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 57,
+        "source_fxx": 51,
         "peak_valid_utc": "2026-07-03T15:00:00Z",
         "valid_start_utc": "2026-07-03T12:00:00Z",
         "valid_end_utc": "2026-07-03T15:00:00Z",
@@ -12180,12 +12180,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 57,
+            "fxx": 51,
             "valid_utc": "2026-07-03T15:00:00Z",
-            "temp_f": 66.9,
+            "temp_f": 67.0,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -12205,7 +12205,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 66.9,
+            "value": 67.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12216,7 +12216,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 66.9,
+          "temp_f": 67.0,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -12237,7 +12237,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 66.9,
+          "value": 67.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -12324,7 +12324,7 @@
         "probability": 0.0,
         "metric": "Temp 67\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 57,
+        "source_fxx": 51,
         "peak_valid_utc": "2026-07-03T15:00:00Z",
         "valid_start_utc": "2026-07-03T12:00:00Z",
         "valid_end_utc": "2026-07-03T15:00:00Z",
@@ -12333,12 +12333,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 57,
+            "fxx": 51,
             "valid_utc": "2026-07-03T15:00:00Z",
-            "temp_f": 66.9,
+            "temp_f": 67.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -12357,7 +12357,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 66.9,
+            "value": 67.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12368,7 +12368,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 66.9,
+          "temp_f": 67.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -12390,7 +12390,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 66.9,
+          "value": 67.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -12781,7 +12781,7 @@
         "probability": 0.0,
         "metric": "Temp 79\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 60,
+        "source_fxx": 54,
         "peak_valid_utc": "2026-07-03T18:00:00Z",
         "valid_start_utc": "2026-07-03T15:00:00Z",
         "valid_end_utc": "2026-07-03T18:00:00Z",
@@ -12790,12 +12790,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 54,
             "valid_utc": "2026-07-03T18:00:00Z",
-            "temp_f": 78.8,
+            "temp_f": 79.0,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -12805,7 +12805,7 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 22.8,
+              "prob_heat_impact_2": 15.2,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
@@ -12815,7 +12815,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 78.8,
+            "value": 79.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12826,7 +12826,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 78.8,
+          "temp_f": 79.0,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -12836,7 +12836,7 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 22.8,
+            "prob_heat_impact_2": 15.2,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
@@ -12847,7 +12847,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 78.8,
+          "value": 79.0,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -12930,11 +12930,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 22.8,
-        "probability": 22.8,
+        "prob": 15.2,
+        "probability": 15.2,
         "metric": "Temp 79\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 60,
+        "source_fxx": 54,
         "peak_valid_utc": "2026-07-03T18:00:00Z",
         "valid_start_utc": "2026-07-03T15:00:00Z",
         "valid_end_utc": "2026-07-03T18:00:00Z",
@@ -12943,12 +12943,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 54,
             "valid_utc": "2026-07-03T18:00:00Z",
-            "temp_f": 78.8,
+            "temp_f": 79.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -12963,11 +12963,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 22.8,
+              "prob_heat_impact_2": 15.2,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 78.8,
+            "value": 79.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12978,7 +12978,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 78.8,
+          "temp_f": 79.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -12993,14 +12993,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 22.8,
+            "prob_heat_impact_2": 15.2,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 22.8,
-          "value": 78.8,
+          "probability": 15.2,
+          "value": 79.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -13027,7 +13027,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 12.0
+            "probability": 8.0
           },
           {
             "threshold_k": 305.372,
@@ -13391,7 +13391,7 @@
         "probability": 0.0,
         "metric": "Temp 87\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 63,
+        "source_fxx": 57,
         "peak_valid_utc": "2026-07-03T21:00:00Z",
         "valid_start_utc": "2026-07-03T18:00:00Z",
         "valid_end_utc": "2026-07-03T21:00:00Z",
@@ -13400,12 +13400,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 63,
+            "fxx": 57,
             "valid_utc": "2026-07-03T21:00:00Z",
-            "temp_f": 87.0,
+            "temp_f": 87.1,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -13416,8 +13416,8 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 3.0,
-              "prob_heat_impact_4": 0.6
+              "prob_heat_impact_3": 2.0,
+              "prob_heat_impact_4": 0.4
             },
             "joint_probabilities": {
               "joint_wet_temp_le_36_f": 0.0,
@@ -13425,7 +13425,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 87.0,
+            "value": 87.1,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -13436,7 +13436,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 87.0,
+          "temp_f": 87.1,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -13447,8 +13447,8 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 3.0,
-            "prob_heat_impact_4": 0.6
+            "prob_heat_impact_3": 2.0,
+            "prob_heat_impact_4": 0.4
           },
           "joint_probabilities": {
             "joint_wet_temp_le_36_f": 0.0,
@@ -13457,7 +13457,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 87.0,
+          "value": 87.1,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -13544,7 +13544,7 @@
         "probability": 100.0,
         "metric": "Temp 87\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 63,
+        "source_fxx": 57,
         "peak_valid_utc": "2026-07-03T21:00:00Z",
         "valid_start_utc": "2026-07-03T18:00:00Z",
         "valid_end_utc": "2026-07-03T21:00:00Z",
@@ -13553,12 +13553,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 63,
+            "fxx": 57,
             "valid_utc": "2026-07-03T21:00:00Z",
-            "temp_f": 87.0,
+            "temp_f": 87.1,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -13574,10 +13574,10 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 3.0,
-              "prob_heat_impact_4": 0.6
+              "prob_heat_impact_3": 2.0,
+              "prob_heat_impact_4": 0.4
             },
-            "value": 87.0,
+            "value": 87.1,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -13588,7 +13588,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 87.0,
+          "temp_f": 87.1,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -13604,13 +13604,13 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 3.0,
-            "prob_heat_impact_4": 0.6
+            "prob_heat_impact_3": 2.0,
+            "prob_heat_impact_4": 0.4
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 87.0,
+          "value": 87.1,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -13642,7 +13642,7 @@
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 6.0
+            "probability": 4.0
           },
           {
             "threshold_k": 310.928,
@@ -13670,12 +13670,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Gust 10 mph",
-        "driver": "NBM core deterministic wind/gust at KRNO",
-        "source_fxx": 60,
+        "impact_level": 2,
+        "prob": 0.9782608695652175,
+        "probability": 0.9782608695652175,
+        "metric": "P90 gust 17 mph",
+        "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
+        "source_fxx": 66,
         "peak_valid_utc": "2026-07-04T00:00:00Z",
         "valid_start_utc": "2026-07-03T21:00:00Z",
         "valid_end_utc": "2026-07-04T00:00:00Z",
@@ -13683,35 +13683,97 @@
         "end_fxx": 60,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 12Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 06Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 66,
             "valid_utc": "2026-07-04T00:00:00Z",
-            "gust_mph": 10.5,
-            "wind_mph": null,
-            "direction_deg": null,
-            "gust_max_mph": 10.5,
-            "value": 10.5,
+            "p90_gust_mph": 16.8,
+            "gust_mph": 16.8,
+            "probabilities": {
+              "prob_gt_30_mph": 1.0,
+              "prob_gt_45_mph": 0.0,
+              "prob_gt_58_mph": 0.0,
+              "prob_gt_65_mph": 0.0
+            },
+            "value": 16.8,
             "unit": "mph",
-            "label": "gust",
+            "label": "P90 gust",
             "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
-        "gust_max_mph": 10.5,
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+        "gust_max_mph": 16.8,
         "values": {
-          "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "peak_gust_mph": 10.5,
-          "gust_max_mph": 10.5,
-          "wind_mph": null,
-          "direction_deg": null,
-          "value": 10.5,
+          "impact_level": 2,
+          "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+          "peak_gust_mph": 16.8,
+          "gust_max_mph": 16.8,
+          "p90_gust_mph": 16.8,
+          "probabilities": {
+            "prob_gt_30_mph": 1.0,
+            "prob_gt_45_mph": 0.0,
+            "prob_gt_58_mph": 0.0,
+            "prob_gt_65_mph": 0.0
+          },
+          "probability": 0.9782608695652175,
+          "value": 16.8,
           "unit": "mph"
-        }
+        },
+        "display_label": "P90 gust",
+        "display_value": "17 mph",
+        "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
+        "p90_gust_mph": 16.8,
+        "probabilities": {
+          "prob_gt_30_mph": 1.0,
+          "prob_gt_45_mph": 0.0,
+          "prob_gt_58_mph": 0.0,
+          "prob_gt_65_mph": 0.0
+        },
+        "native_probability_thresholds": [
+          {
+            "threshold_mps": 8.746,
+            "threshold_mph": 19.6,
+            "probability": 8.0
+          },
+          {
+            "threshold_mps": 11.318,
+            "threshold_mph": 25.3,
+            "probability": 2.0
+          },
+          {
+            "threshold_mps": 15.433,
+            "threshold_mph": 34.5,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 17.491,
+            "threshold_mph": 39.1,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 21.092,
+            "threshold_mph": 47.2,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 24.693,
+            "threshold_mph": 55.2,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 28.809,
+            "threshold_mph": 64.4,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 32.924,
+            "threshold_mph": 73.6,
+            "probability": 0.0
+          }
+        ]
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
@@ -13937,9 +13999,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 89\u00b0F",
+        "metric": "Temp 90\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 66,
+        "source_fxx": 60,
         "peak_valid_utc": "2026-07-04T00:00:00Z",
         "valid_start_utc": "2026-07-03T21:00:00Z",
         "valid_end_utc": "2026-07-04T00:00:00Z",
@@ -13948,12 +14010,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 66,
+            "fxx": 60,
             "valid_utc": "2026-07-04T00:00:00Z",
-            "temp_f": 89.2,
+            "temp_f": 89.5,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -13964,8 +14026,8 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 12.4,
-              "prob_heat_impact_4": 3.1
+              "prob_heat_impact_3": 13.6,
+              "prob_heat_impact_4": 3.4
             },
             "joint_probabilities": {
               "joint_wet_temp_le_36_f": 0.0,
@@ -13973,7 +14035,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 89.2,
+            "value": 89.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -13984,7 +14046,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 89.2,
+          "temp_f": 89.5,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -13995,8 +14057,8 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 12.4,
-            "prob_heat_impact_4": 3.1
+            "prob_heat_impact_3": 13.6,
+            "prob_heat_impact_4": 3.4
           },
           "joint_probabilities": {
             "joint_wet_temp_le_36_f": 0.0,
@@ -14005,7 +14067,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 89.2,
+          "value": 89.5,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -14090,9 +14152,9 @@
         "impact_level": 2,
         "prob": 100.0,
         "probability": 100.0,
-        "metric": "Temp 89\u00b0F",
+        "metric": "Temp 90\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 66,
+        "source_fxx": 60,
         "peak_valid_utc": "2026-07-04T00:00:00Z",
         "valid_start_utc": "2026-07-03T21:00:00Z",
         "valid_end_utc": "2026-07-04T00:00:00Z",
@@ -14101,12 +14163,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 66,
+            "fxx": 60,
             "valid_utc": "2026-07-04T00:00:00Z",
-            "temp_f": 89.2,
+            "temp_f": 89.5,
             "heat_thresholds": {
               "2": 71.0,
               "3": 96.0,
@@ -14122,10 +14184,10 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 12.4,
-              "prob_heat_impact_4": 3.1
+              "prob_heat_impact_3": 13.6,
+              "prob_heat_impact_4": 3.4
             },
-            "value": 89.2,
+            "value": 89.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -14136,7 +14198,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 89.2,
+          "temp_f": 89.5,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -14152,13 +14214,13 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 12.4,
-            "prob_heat_impact_4": 3.1
+            "prob_heat_impact_3": 13.6,
+            "prob_heat_impact_4": 3.4
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 89.2,
+          "value": 89.5,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -14190,7 +14252,7 @@
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 31.0
+            "probability": 34.0
           },
           {
             "threshold_k": 310.928,
@@ -14549,7 +14611,7 @@
         "probability": 0.0,
         "metric": "Temp 84\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 69,
+        "source_fxx": 63,
         "peak_valid_utc": "2026-07-04T03:00:00Z",
         "valid_start_utc": "2026-07-04T00:00:00Z",
         "valid_end_utc": "2026-07-04T03:00:00Z",
@@ -14558,12 +14620,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 69,
+            "fxx": 63,
             "valid_utc": "2026-07-04T03:00:00Z",
-            "temp_f": 84.0,
+            "temp_f": 84.2,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -14583,7 +14645,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 84.0,
+            "value": 84.2,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -14594,7 +14656,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 84.0,
+          "temp_f": 84.2,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -14615,7 +14677,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 84.0,
+          "value": 84.2,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -14702,7 +14764,7 @@
         "probability": 100.0,
         "metric": "Temp 84\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 69,
+        "source_fxx": 63,
         "peak_valid_utc": "2026-07-04T03:00:00Z",
         "valid_start_utc": "2026-07-04T00:00:00Z",
         "valid_end_utc": "2026-07-04T03:00:00Z",
@@ -14711,12 +14773,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 69,
+            "fxx": 63,
             "valid_utc": "2026-07-04T03:00:00Z",
-            "temp_f": 84.0,
+            "temp_f": 84.2,
             "heat_thresholds": {
               "2": 71.0,
               "3": 96.0,
@@ -14735,7 +14797,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 84.0,
+            "value": 84.2,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -14746,7 +14808,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 84.0,
+          "temp_f": 84.2,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -14768,7 +14830,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 84.0,
+          "value": 84.2,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -14795,7 +14857,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 99.0
+            "probability": 97.0
           },
           {
             "threshold_k": 305.372,
@@ -15159,7 +15221,7 @@
         "probability": 0.0,
         "metric": "Temp 74\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 72,
+        "source_fxx": 66,
         "peak_valid_utc": "2026-07-04T06:00:00Z",
         "valid_start_utc": "2026-07-04T03:00:00Z",
         "valid_end_utc": "2026-07-04T06:00:00Z",
@@ -15168,12 +15230,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 72,
+            "fxx": 66,
             "valid_utc": "2026-07-04T06:00:00Z",
-            "temp_f": 74.2,
+            "temp_f": 74.3,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -15183,7 +15245,7 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_2": 0.0,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
@@ -15193,7 +15255,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 74.2,
+            "value": 74.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -15204,7 +15266,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 74.2,
+          "temp_f": 74.3,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -15214,7 +15276,7 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_2": 0.0,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
@@ -15225,7 +15287,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 74.2,
+          "value": 74.3,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -15307,12 +15369,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 2,
-        "prob": 1.9,
-        "probability": 1.9,
+        "impact_level": 1,
+        "prob": 0.0,
+        "probability": 0.0,
         "metric": "Temp 74\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 72,
+        "source_fxx": 66,
         "peak_valid_utc": "2026-07-04T06:00:00Z",
         "valid_start_utc": "2026-07-04T03:00:00Z",
         "valid_end_utc": "2026-07-04T06:00:00Z",
@@ -15321,12 +15383,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 72,
+            "fxx": 66,
             "valid_utc": "2026-07-04T06:00:00Z",
-            "temp_f": 74.2,
+            "temp_f": 74.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 96.0,
@@ -15341,11 +15403,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 1.9,
+              "prob_heat_impact_2": 0.0,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 74.2,
+            "value": 74.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -15354,9 +15416,9 @@
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
         "values": {
-          "impact_level": 2,
+          "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 74.2,
+          "temp_f": 74.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -15371,17 +15433,17 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 1.9,
+            "prob_heat_impact_2": 0.0,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
-          "selected_probability_key": "prob_heat_impact_2",
+          "selected_probability_key": null,
           "timing_kind": "peak",
-          "probability": 1.9,
-          "value": 74.2,
+          "probability": 0.0,
+          "value": 74.3,
           "unit": "\u00b0F"
         },
-        "selected_probability_key": "prob_heat_impact_2",
+        "selected_probability_key": null,
         "timing_kind": "peak",
         "methodology": "Temperature timeline uses QMD hourly/3-hourly TMP probabilities and date-specific KRNO heat thresholds from the heat table.",
         "native_cold_probability_thresholds": [
@@ -15405,7 +15467,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 1.0
+            "probability": 0.0
           },
           {
             "threshold_k": 305.372,
@@ -15767,9 +15829,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 67\u00b0F",
+        "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 75,
+        "source_fxx": 69,
         "peak_valid_utc": "2026-07-04T09:00:00Z",
         "valid_start_utc": "2026-07-04T06:00:00Z",
         "valid_end_utc": "2026-07-04T09:00:00Z",
@@ -15778,12 +15840,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 75,
+            "fxx": 69,
             "valid_utc": "2026-07-04T09:00:00Z",
-            "temp_f": 67.1,
+            "temp_f": 67.5,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -15803,7 +15865,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 67.1,
+            "value": 67.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -15814,7 +15876,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 67.1,
+          "temp_f": 67.5,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -15835,7 +15897,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 67.1,
+          "value": 67.5,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -15920,9 +15982,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 67\u00b0F",
+        "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 75,
+        "source_fxx": 69,
         "peak_valid_utc": "2026-07-04T09:00:00Z",
         "valid_start_utc": "2026-07-04T06:00:00Z",
         "valid_end_utc": "2026-07-04T09:00:00Z",
@@ -15931,12 +15993,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 75,
+            "fxx": 69,
             "valid_utc": "2026-07-04T09:00:00Z",
-            "temp_f": 67.1,
+            "temp_f": 67.5,
             "heat_thresholds": {
               "2": 71.0,
               "3": 96.0,
@@ -15955,7 +16017,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 67.1,
+            "value": 67.5,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -15966,7 +16028,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 67.1,
+          "temp_f": 67.5,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -15988,7 +16050,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 67.1,
+          "value": 67.5,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -16379,7 +16441,7 @@
         "probability": 0.0,
         "metric": "Temp 62\u00b0F",
         "driver": "NBM QMD temperature probability combined with measurable precipitation/freezing-rain probability",
-        "source_fxx": 78,
+        "source_fxx": 72,
         "peak_valid_utc": "2026-07-04T12:00:00Z",
         "valid_start_utc": "2026-07-04T09:00:00Z",
         "valid_end_utc": "2026-07-04T12:00:00Z",
@@ -16388,12 +16450,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 78,
+            "fxx": 72,
             "valid_utc": "2026-07-04T12:00:00Z",
-            "temp_f": 61.8,
+            "temp_f": 61.9,
             "wet_probability": 0.0,
             "temp_probabilities": {
               "prob_lt_10_f": 0.0,
@@ -16413,7 +16475,7 @@
               "joint_wet_temp_le_28_f": 0.0,
               "joint_wet_temp_le_25_f": 0.0
             },
-            "value": 61.8,
+            "value": 61.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -16424,7 +16486,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-          "temp_f": 61.8,
+          "temp_f": 61.9,
           "wet_probability": 0.0,
           "temp_probabilities": {
             "prob_lt_10_f": 0.0,
@@ -16445,7 +16507,7 @@
             "joint_wet_temp_le_25_f": 0.0
           },
           "probability": 0.0,
-          "value": 61.8,
+          "value": 61.9,
           "unit": "\u00b0F"
         },
         "methodology": "Flash-freeze risk uses QMD temperature probability thresholds and a conservative joint probability with wet-surface probability: min(P(wet), P(temp <= threshold)).",
@@ -16532,7 +16594,7 @@
         "probability": 0.0,
         "metric": "Temp 62\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 78,
+        "source_fxx": 72,
         "peak_valid_utc": "2026-07-04T12:00:00Z",
         "valid_start_utc": "2026-07-04T09:00:00Z",
         "valid_end_utc": "2026-07-04T12:00:00Z",
@@ -16541,12 +16603,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 06Z",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 78,
+            "fxx": 72,
             "valid_utc": "2026-07-04T12:00:00Z",
-            "temp_f": 61.8,
+            "temp_f": 61.9,
             "heat_thresholds": {
               "2": 71.0,
               "3": 96.0,
@@ -16565,7 +16627,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 61.8,
+            "value": 61.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -16576,7 +16638,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 61.8,
+          "temp_f": 61.9,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -16598,7 +16660,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 61.8,
+          "value": 61.9,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
