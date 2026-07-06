@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-07-06T20:15:41Z",
+  "generated_utc": "2026-07-06T21:47:33Z",
   "cycle_utc_iso": "2026-07-06T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -2533,71 +2533,109 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": null,
-        "probability": null,
-        "metric": "Gust 14 mph",
-        "driver": "NBM core deterministic wind/gust at KRNO",
-        "source_fxx": 10,
-        "peak_valid_utc": "2026-07-07T04:00:00Z",
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "P90 gust 10 mph",
+        "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
+        "source_fxx": 18,
+        "peak_valid_utc": "2026-07-07T06:00:00Z",
         "valid_start_utc": "2026-07-07T03:00:00Z",
         "valid_end_utc": "2026-07-07T06:00:00Z",
         "start_fxx": 10,
         "end_fxx": 12,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_core_aws_gridpoint",
-        "source": "NOAA NBM core AWS 18Z",
+        "method": "nbm_qmd_aws_gridpoint",
+        "source": "NOAA NBM QMD AWS 12Z",
         "hourly_values": [
           {
-            "fxx": 10,
-            "valid_utc": "2026-07-07T04:00:00Z",
-            "gust_mph": 13.9,
-            "wind_mph": null,
-            "direction_deg": null,
-            "gust_max_mph": 13.9,
-            "value": 13.9,
-            "unit": "mph",
-            "label": "gust",
-            "window_hours": 1
-          },
-          {
-            "fxx": 11,
-            "valid_utc": "2026-07-07T05:00:00Z",
-            "gust_mph": 10.7,
-            "wind_mph": null,
-            "direction_deg": null,
-            "gust_max_mph": 10.7,
-            "value": 10.7,
-            "unit": "mph",
-            "label": "gust",
-            "window_hours": 1
-          },
-          {
-            "fxx": 12,
+            "fxx": 18,
             "valid_utc": "2026-07-07T06:00:00Z",
-            "gust_mph": 8.3,
-            "wind_mph": null,
-            "direction_deg": null,
-            "gust_max_mph": 8.3,
-            "value": 8.3,
+            "p90_gust_mph": 10.5,
+            "gust_mph": 10.5,
+            "probabilities": {
+              "prob_gt_30_mph": 0.0,
+              "prob_gt_45_mph": 0.0,
+              "prob_gt_58_mph": 0.0,
+              "prob_gt_65_mph": 0.0
+            },
+            "value": 10.5,
             "unit": "mph",
-            "label": "gust",
-            "window_hours": 1
+            "label": "P90 gust",
+            "window_hours": 3
           }
         ],
-        "likelihood_category": null,
-        "risk_method": "krno_threshold_deterministic_core",
-        "gust_max_mph": 13.9,
+        "likelihood_category": "extremely_unlikely",
+        "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+        "gust_max_mph": 10.5,
         "values": {
           "impact_level": 1,
-          "risk_method": "krno_threshold_deterministic_core",
-          "peak_gust_mph": 13.9,
-          "gust_max_mph": 13.9,
-          "wind_mph": null,
-          "direction_deg": null,
-          "value": 13.9,
+          "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
+          "peak_gust_mph": 10.5,
+          "gust_max_mph": 10.5,
+          "p90_gust_mph": 10.5,
+          "probabilities": {
+            "prob_gt_30_mph": 0.0,
+            "prob_gt_45_mph": 0.0,
+            "prob_gt_58_mph": 0.0,
+            "prob_gt_65_mph": 0.0
+          },
+          "probability": 0.0,
+          "value": 10.5,
           "unit": "mph"
-        }
+        },
+        "display_label": "P90 gust",
+        "display_value": "10 mph",
+        "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
+        "p90_gust_mph": 10.5,
+        "probabilities": {
+          "prob_gt_30_mph": 0.0,
+          "prob_gt_45_mph": 0.0,
+          "prob_gt_58_mph": 0.0,
+          "prob_gt_65_mph": 0.0
+        },
+        "native_probability_thresholds": [
+          {
+            "threshold_mps": 8.746,
+            "threshold_mph": 19.6,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 11.318,
+            "threshold_mph": 25.3,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 15.433,
+            "threshold_mph": 34.5,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 17.491,
+            "threshold_mph": 39.1,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 21.092,
+            "threshold_mph": 47.2,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 24.693,
+            "threshold_mph": 55.2,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 28.809,
+            "threshold_mph": 64.4,
+            "probability": 0.0
+          },
+          {
+            "threshold_mps": 32.924,
+            "threshold_mph": 73.6,
+            "probability": 0.0
+          }
+        ]
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
