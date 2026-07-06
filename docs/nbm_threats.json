@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 06Z",
-  "generated_utc": "2026-07-06T08:51:15Z",
+  "generated_utc": "2026-07-06T12:32:36Z",
   "cycle_utc_iso": "2026-07-06T06:00:00Z",
   "cycle": "NBM 06Z",
   "valid_period": {
@@ -17,21 +17,21 @@
       "id": "WIND",
       "title": "Wind",
       "name": "Wind",
-      "prob": 59.072463768115945,
-      "probability": 59.072463768115945,
+      "prob": 38.90579710144928,
+      "probability": 38.90579710144928,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
       "level": 2,
       "impact_level": 2,
-      "metric": "Max gust 31 mph",
+      "metric": "Max gust 26 mph",
       "display_label": "Max gust",
-      "display_value": "31 mph",
+      "display_value": "26 mph",
       "window": "72 hr",
-      "peak_start_fxx": 49,
-      "peak_end_fxx": 72,
-      "source_fxx": 72,
-      "peak_valid_utc": "2026-07-08T06:00:00Z",
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
+      "peak_valid_utc": "2026-07-07T06:00:00Z",
       "driver": "NBM QMD 24-hour maximum gust probabilities at KRNO",
       "methodology": "Wind summary uses QMD 24-hour maximum gust probability-of-threshold exceedance for the 0-24, 24-48, and 48-72 hour windows mapped through the KRNO likelihood-vs-impact risk matrix.",
       "data_status": "live",
@@ -57,35 +57,11 @@
       "daily_values": [
         {
           "fxx": 24,
-          "gust_mph": 32.2,
-          "valid_utc": "2026-07-06T06:00:00Z",
-          "probabilities": {
-            "prob_gt_30_mph": 57.9,
-            "prob_gt_45_mph": 8.1,
-            "prob_gt_58_mph": 0.7,
-            "prob_gt_65_mph": 0.0
-          },
-          "risk": 2
-        },
-        {
-          "fxx": 48,
-          "gust_mph": 25.1,
+          "gust_mph": 25.9,
           "valid_utc": "2026-07-07T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 31.3,
-            "prob_gt_45_mph": 0.3,
-            "prob_gt_58_mph": 0.0,
-            "prob_gt_65_mph": 0.0
-          },
-          "risk": 1
-        },
-        {
-          "fxx": 72,
-          "gust_mph": 31.1,
-          "valid_utc": "2026-07-08T06:00:00Z",
-          "probabilities": {
-            "prob_gt_30_mph": 59.1,
-            "prob_gt_45_mph": 1.4,
+            "prob_gt_30_mph": 38.9,
+            "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
@@ -918,7 +894,7 @@
     {
       "id": "WIND",
       "risk": 2,
-      "probability": 59.072463768115945,
+      "probability": 38.90579710144928,
       "level": 2
     },
     {
