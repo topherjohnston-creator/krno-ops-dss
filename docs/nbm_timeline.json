@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 18Z",
-  "generated_utc": "2026-07-08T20:48:28Z",
+  "generated_utc": "2026-07-08T21:50:25Z",
   "cycle_utc_iso": "2026-07-08T18:00:00Z",
   "cycle": "NBM 18Z",
   "valid_period": {
@@ -15501,11 +15501,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 1,
-        "prob": 0.0,
-        "probability": 0.0,
-        "metric": "P90 gust 8 mph",
-        "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 75,
+        "prob": null,
+        "probability": null,
+        "metric": "Gust 4 mph",
+        "driver": "NBM core deterministic wind/gust at KRNO",
+        "source_fxx": 69,
         "peak_valid_utc": "2026-07-11T15:00:00Z",
         "valid_start_utc": "2026-07-11T12:00:00Z",
         "valid_end_utc": "2026-07-11T15:00:00Z",
@@ -15513,97 +15513,35 @@
         "end_fxx": 69,
         "window_hours": 3,
         "data_status": "live",
-        "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "method": "nbm_core_aws_gridpoint",
+        "source": "NOAA NBM core AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 75,
+            "fxx": 69,
             "valid_utc": "2026-07-11T15:00:00Z",
-            "p90_gust_mph": 7.6,
-            "gust_mph": 7.6,
-            "probabilities": {
-              "prob_gt_30_mph": 0.0,
-              "prob_gt_45_mph": 0.0,
-              "prob_gt_58_mph": 0.0,
-              "prob_gt_65_mph": 0.0
-            },
-            "value": 7.6,
+            "gust_mph": 4.3,
+            "wind_mph": null,
+            "direction_deg": null,
+            "gust_max_mph": 4.3,
+            "value": 4.3,
             "unit": "mph",
-            "label": "P90 gust",
+            "label": "gust",
             "window_hours": 3
           }
         ],
-        "likelihood_category": "extremely_unlikely",
-        "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 7.6,
+        "likelihood_category": null,
+        "risk_method": "krno_threshold_deterministic_core",
+        "gust_max_mph": 4.3,
         "values": {
           "impact_level": 1,
-          "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 7.6,
-          "gust_max_mph": 7.6,
-          "p90_gust_mph": 7.6,
-          "probabilities": {
-            "prob_gt_30_mph": 0.0,
-            "prob_gt_45_mph": 0.0,
-            "prob_gt_58_mph": 0.0,
-            "prob_gt_65_mph": 0.0
-          },
-          "probability": 0.0,
-          "value": 7.6,
+          "risk_method": "krno_threshold_deterministic_core",
+          "peak_gust_mph": 4.3,
+          "gust_max_mph": 4.3,
+          "wind_mph": null,
+          "direction_deg": null,
+          "value": 4.3,
           "unit": "mph"
-        },
-        "display_label": "P90 gust",
-        "display_value": "8 mph",
-        "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 7.6,
-        "probabilities": {
-          "prob_gt_30_mph": 0.0,
-          "prob_gt_45_mph": 0.0,
-          "prob_gt_58_mph": 0.0,
-          "prob_gt_65_mph": 0.0
-        },
-        "native_probability_thresholds": [
-          {
-            "threshold_mps": 8.746,
-            "threshold_mph": 19.6,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 11.318,
-            "threshold_mph": 25.3,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 15.433,
-            "threshold_mph": 34.5,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 17.491,
-            "threshold_mph": 39.1,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 21.092,
-            "threshold_mph": 47.2,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 24.693,
-            "threshold_mph": 55.2,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 28.809,
-            "threshold_mph": 64.4,
-            "probability": 0.0
-          },
-          {
-            "threshold_mps": 32.924,
-            "threshold_mph": 73.6,
-            "probability": 0.0
-          }
-        ]
+        }
       },
       "LIGHTNING": {
         "id": "LIGHTNING",
