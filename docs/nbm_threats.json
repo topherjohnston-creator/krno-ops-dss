@@ -3,26 +3,22 @@
   "site_name": "Reno-Tahoe International Airport",
   "lat": 39.4991,
   "lon": -119.7681,
-  "source": "NOAA NBM core AWS 06Z",
-<<<<<<< Updated upstream
-  "generated_utc": "2026-07-10T12:18:09Z",
-=======
-  "generated_utc": "2026-07-10T12:16:08Z",
->>>>>>> Stashed changes
-  "cycle_utc_iso": "2026-07-10T06:00:00Z",
-  "cycle": "NBM 06Z",
+  "source": "NOAA NBM core AWS 12Z",
+  "generated_utc": "2026-07-10T15:01:52Z",
+  "cycle_utc_iso": "2026-07-10T12:00:00Z",
+  "cycle": "NBM 12Z",
   "valid_period": {
     "hours": 72,
-    "start_utc": "2026-07-10T06:00:00Z",
-    "end_utc": "2026-07-13T06:00:00Z"
+    "start_utc": "2026-07-10T12:00:00Z",
+    "end_utc": "2026-07-13T12:00:00Z"
   },
   "threats": {
     "WIND": {
       "id": "WIND",
       "title": "Wind",
       "name": "Wind",
-      "prob": 76.28985507246377,
-      "probability": 76.28985507246377,
+      "prob": 78.2463768115942,
+      "probability": 78.2463768115942,
       "risk": 2,
       "risk_level": 2,
       "risk_label": "Minor",
@@ -32,9 +28,9 @@
       "display_label": "Max gust",
       "display_value": "37 mph",
       "window": "72 hr",
-      "peak_start_fxx": 25,
-      "peak_end_fxx": 48,
-      "source_fxx": 48,
+      "peak_start_fxx": 1,
+      "peak_end_fxx": 24,
+      "source_fxx": 24,
       "peak_valid_utc": "2026-07-11T06:00:00Z",
       "driver": "NBM QMD 24-hour maximum gust probabilities at KRNO",
       "methodology": "Wind summary uses QMD 24-hour maximum gust probability-of-threshold exceedance for the 0-24, 24-48, and 48-72 hour windows mapped through the KRNO likelihood-vs-impact risk matrix.",
@@ -57,15 +53,15 @@
       "likelihood_category": "likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_24hr_max_gust",
       "source": "NOAA NBM QMD AWS 06Z",
-      "source_cycle_utc_iso": "2026-07-10T06:00:00Z",
+      "source_cycle_utc_iso": "2026-07-10T12:00:00Z",
       "daily_values": [
         {
           "fxx": 24,
-          "gust_mph": 28.4,
-          "valid_utc": "2026-07-10T06:00:00Z",
+          "gust_mph": 37.1,
+          "valid_utc": "2026-07-11T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 48.1,
-            "prob_gt_45_mph": 0.0,
+            "prob_gt_30_mph": 78.2,
+            "prob_gt_45_mph": 12.3,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
@@ -73,11 +69,11 @@
         },
         {
           "fxx": 48,
-          "gust_mph": 37.4,
-          "valid_utc": "2026-07-11T06:00:00Z",
+          "gust_mph": 33.1,
+          "valid_utc": "2026-07-12T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 76.3,
-            "prob_gt_45_mph": 18.0,
+            "prob_gt_30_mph": 66.4,
+            "prob_gt_45_mph": 4.3,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
@@ -85,12 +81,12 @@
         },
         {
           "fxx": 72,
-          "gust_mph": 32.0,
-          "valid_utc": "2026-07-12T06:00:00Z",
+          "gust_mph": 33.8,
+          "valid_utc": "2026-07-13T06:00:00Z",
           "probabilities": {
-            "prob_gt_30_mph": 61.8,
-            "prob_gt_45_mph": 4.8,
-            "prob_gt_58_mph": 0.0,
+            "prob_gt_30_mph": 64.2,
+            "prob_gt_45_mph": 9.8,
+            "prob_gt_58_mph": 0.7,
             "prob_gt_65_mph": 0.0
           },
           "risk": 2
@@ -101,8 +97,8 @@
       "id": "LIGHTNING",
       "title": "Lightning",
       "name": "Lightning",
-      "prob": 5.0,
-      "probability": 5.0,
+      "prob": 6.0,
+      "probability": 6.0,
       "risk": 1,
       "risk_level": 1,
       "risk_label": "Little to None",
@@ -110,11 +106,11 @@
       "impact_level": 2,
       "metric": "Peak 3-hour thunder probability",
       "display_label": "Peak 3-hour thunder probability",
-      "display_value": "Thunder 5%",
+      "display_value": "Thunder 6%",
       "window": "72 hr",
-      "peak_start_fxx": 64,
-      "peak_end_fxx": 66,
-      "source_fxx": 66,
+      "peak_start_fxx": 58,
+      "peak_end_fxx": 60,
+      "source_fxx": 60,
       "peak_valid_utc": "2026-07-13T00:00:00Z",
       "driver": "NBM core 3-hour thunder probability at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
@@ -130,7 +126,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "SNOW": {
       "id": "SNOW",
@@ -150,7 +146,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-07-10T09:00:00Z",
+      "peak_valid_utc": "2026-07-10T15:00:00Z",
       "driver": "NBM core snow amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -171,7 +167,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "VISIBILITY": {
       "id": "VISIBILITY",
@@ -191,7 +187,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-07-10T09:00:00Z",
+      "peak_valid_utc": "2026-07-10T15:00:00Z",
       "driver": "NBM core visibility at KRNO",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -212,7 +208,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "FZRA": {
       "id": "FZRA",
@@ -232,7 +228,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 3,
-      "peak_valid_utc": "2026-07-10T09:00:00Z",
+      "peak_valid_utc": "2026-07-10T15:00:00Z",
       "driver": "NBM core fzra amount summarized over 72 hours",
       "methodology": "NBM AWS core gridpoint values summarized over the 72-hour DSS window.",
       "data_status": "live",
@@ -253,7 +249,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_core",
-      "source": "NOAA NBM core AWS 06Z"
+      "source": "NOAA NBM core AWS 12Z"
     },
     "FLASH_FREEZE": {
       "id": "FLASH_FREEZE",
@@ -273,7 +269,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 3,
       "source_fxx": 9,
-      "peak_valid_utc": "2026-07-10T09:00:00Z",
+      "peak_valid_utc": "2026-07-10T15:00:00Z",
       "driver": "NBM QMD temperature probability and wet-surface probability at KRNO",
       "methodology": "Flash-freeze summary uses the highest 3-hour joint probability of wet surface and cold temperature threshold.",
       "data_status": "live",
@@ -294,7 +290,7 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_joint_probability_qmd_temperature_wet_surface",
-      "source": "NOAA NBM QMD AWS 00Z"
+      "source": "NOAA NBM QMD AWS 06Z"
     },
     "RAIN": {
       "id": "RAIN",
@@ -314,7 +310,7 @@
       "peak_start_fxx": 1,
       "peak_end_fxx": 6,
       "source_fxx": 6,
-      "peak_valid_utc": "2026-07-10T06:00:00Z",
+      "peak_valid_utc": "2026-07-10T12:00:00Z",
       "driver": "NBM QMD 6-hour precipitation probabilities and deterministic precipitation at KRNO",
       "methodology": "Rain summary uses QMD 6-hour precipitation windows mapped to the KRNO rain/flooding impact table and likelihood-vs-impact matrix.",
       "data_status": "live",
@@ -335,11 +331,11 @@
       ],
       "likelihood_category": "extremely_unlikely",
       "risk_method": "krno_threshold_probability_matrix_qmd_6hr_precip",
-      "source": "NOAA NBM QMD AWS 00Z",
+      "source": "NOAA NBM QMD AWS 06Z",
       "six_hour_values": [
         {
           "fxx": 6,
-          "valid_utc": "2026-07-10T06:00:00Z",
+          "valid_utc": "2026-07-10T12:00:00Z",
           "start_fxx": 1,
           "end_fxx": 6,
           "amount_in": 0.0,
@@ -355,7 +351,7 @@
         },
         {
           "fxx": 12,
-          "valid_utc": "2026-07-10T12:00:00Z",
+          "valid_utc": "2026-07-10T18:00:00Z",
           "start_fxx": 7,
           "end_fxx": 12,
           "amount_in": 0.0,
@@ -371,7 +367,7 @@
         },
         {
           "fxx": 18,
-          "valid_utc": "2026-07-10T18:00:00Z",
+          "valid_utc": "2026-07-11T00:00:00Z",
           "start_fxx": 13,
           "end_fxx": 18,
           "amount_in": 0.0,
@@ -387,7 +383,7 @@
         },
         {
           "fxx": 24,
-          "valid_utc": "2026-07-11T00:00:00Z",
+          "valid_utc": "2026-07-11T06:00:00Z",
           "start_fxx": 19,
           "end_fxx": 24,
           "amount_in": 0.0,
@@ -403,7 +399,7 @@
         },
         {
           "fxx": 30,
-          "valid_utc": "2026-07-11T06:00:00Z",
+          "valid_utc": "2026-07-11T12:00:00Z",
           "start_fxx": 25,
           "end_fxx": 30,
           "amount_in": 0.0,
@@ -419,7 +415,7 @@
         },
         {
           "fxx": 36,
-          "valid_utc": "2026-07-11T12:00:00Z",
+          "valid_utc": "2026-07-11T18:00:00Z",
           "start_fxx": 31,
           "end_fxx": 36,
           "amount_in": 0.0,
@@ -435,7 +431,7 @@
         },
         {
           "fxx": 42,
-          "valid_utc": "2026-07-11T18:00:00Z",
+          "valid_utc": "2026-07-12T00:00:00Z",
           "start_fxx": 37,
           "end_fxx": 42,
           "amount_in": 0.0,
@@ -451,7 +447,7 @@
         },
         {
           "fxx": 48,
-          "valid_utc": "2026-07-12T00:00:00Z",
+          "valid_utc": "2026-07-12T06:00:00Z",
           "start_fxx": 43,
           "end_fxx": 48,
           "amount_in": 0.0,
@@ -467,7 +463,7 @@
         },
         {
           "fxx": 54,
-          "valid_utc": "2026-07-12T06:00:00Z",
+          "valid_utc": "2026-07-12T12:00:00Z",
           "start_fxx": 49,
           "end_fxx": 54,
           "amount_in": 0.0,
@@ -483,7 +479,7 @@
         },
         {
           "fxx": 60,
-          "valid_utc": "2026-07-12T12:00:00Z",
+          "valid_utc": "2026-07-12T18:00:00Z",
           "start_fxx": 55,
           "end_fxx": 60,
           "amount_in": 0.0,
@@ -499,7 +495,7 @@
         },
         {
           "fxx": 66,
-          "valid_utc": "2026-07-12T18:00:00Z",
+          "valid_utc": "2026-07-13T00:00:00Z",
           "start_fxx": 61,
           "end_fxx": 66,
           "amount_in": 0.0,
@@ -515,7 +511,7 @@
         },
         {
           "fxx": 72,
-          "valid_utc": "2026-07-13T00:00:00Z",
+          "valid_utc": "2026-07-13T06:00:00Z",
           "start_fxx": 67,
           "end_fxx": 72,
           "amount_in": 0.0,
@@ -535,20 +531,20 @@
       "id": "TEMPERATURE",
       "title": "TEMPERATURE",
       "name": "TEMPERATURE",
-      "prob": 100.0,
-      "probability": 100.0,
-      "risk": 2,
-      "risk_level": 2,
-      "risk_label": "Minor",
-      "level": 2,
-      "impact_level": 2,
-      "metric": "Max 93\u00b0F / Min 62\u00b0F",
+      "prob": 71.8,
+      "probability": 71.8,
+      "risk": 3,
+      "risk_level": 3,
+      "risk_label": "Moderate",
+      "level": 3,
+      "impact_level": 3,
+      "metric": "Max 96\u00b0F / Min 62\u00b0F",
       "display_label": "Max / Min",
-      "display_value": "93\u00b0F / 62\u00b0F",
+      "display_value": "96\u00b0F / 62\u00b0F",
       "window": "72 hr",
-      "peak_start_fxx": 40,
-      "peak_end_fxx": 42,
-      "source_fxx": 48,
+      "peak_start_fxx": 34,
+      "peak_end_fxx": 36,
+      "source_fxx": 42,
       "peak_valid_utc": "2026-07-12T00:00:00Z",
       "driver": "NBM QMD 24-hour max/min temperature probabilities at KRNO",
       "methodology": "Temperature summary uses QMD 24-hour max-temperature and min-temperature probability-of-threshold exceedance for cold and date-specific KRNO heat thresholds, mapped through the KRNO likelihood-vs-impact risk matrix.",
@@ -568,15 +564,15 @@
           "source": "NBM/QMD 3-hour temperature probabilities with KRNO heat thresholds"
         }
       ],
-      "likelihood_category": "very_likely",
+      "likelihood_category": "likely",
       "risk_method": "krno_threshold_probability_matrix_qmd_temperature",
-      "source": "NOAA NBM QMD AWS 00Z",
+      "source": "NOAA NBM QMD AWS 06Z",
       "daily_values": [
         {
           "fxx": 24,
-          "valid_utc": "2026-07-11T00:00:00Z",
+          "valid_utc": "2026-07-11T06:00:00Z",
           "window_kind": "max",
-          "temp_f": 92.6,
+          "temp_f": 96.5,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -587,8 +583,8 @@
           "risk": 2,
           "probabilities": {
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 38.8,
-            "prob_heat_impact_4": 0.0
+            "prob_heat_impact_3": 40.8,
+            "prob_heat_impact_4": 2.0
           },
           "native_cold_probability_thresholds": [
             {
@@ -616,12 +612,12 @@
             {
               "threshold_k": 305.372,
               "threshold_f": 90.0,
-              "probability": 97.0
+              "probability": 99.0
             },
             {
               "threshold_k": 310.928,
               "threshold_f": 100.0,
-              "probability": 0.0
+              "probability": 2.0
             },
             {
               "threshold_k": 316.483,
@@ -639,21 +635,21 @@
         },
         {
           "fxx": 48,
-          "valid_utc": "2026-07-12T00:00:00Z",
+          "valid_utc": "2026-07-12T06:00:00Z",
           "window_kind": "max",
-          "temp_f": 97.7,
+          "temp_f": 100.1,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
             "4": 100.0,
             "5": null
           },
-          "impact_level": 2,
-          "risk": 2,
+          "impact_level": 3,
+          "risk": 3,
           "probabilities": {
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 43.6,
-            "prob_heat_impact_4": 6.0
+            "prob_heat_impact_3": 71.8,
+            "prob_heat_impact_4": 53.0
           },
           "native_cold_probability_thresholds": [
             {
@@ -686,7 +682,7 @@
             {
               "threshold_k": 310.928,
               "threshold_f": 100.0,
-              "probability": 6.0
+              "probability": 53.0
             },
             {
               "threshold_k": 316.483,
@@ -699,14 +695,14 @@
               "probability": 0.0
             }
           ],
-          "selected_probability": 100.0,
-          "selected_probability_key": "prob_heat_impact_2"
+          "selected_probability": 71.8,
+          "selected_probability_key": "prob_heat_impact_3"
         },
         {
           "fxx": 72,
-          "valid_utc": "2026-07-13T00:00:00Z",
+          "valid_utc": "2026-07-13T06:00:00Z",
           "window_kind": "max",
-          "temp_f": 92.1,
+          "temp_f": 94.7,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -717,7 +713,7 @@
           "risk": 2,
           "probabilities": {
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 29.2,
+            "prob_heat_impact_3": 37.6,
             "prob_heat_impact_4": 0.0
           },
           "native_cold_probability_thresholds": [
@@ -741,12 +737,12 @@
             {
               "threshold_k": 299.817,
               "threshold_f": 80.0,
-              "probability": 97.0
+              "probability": 100.0
             },
             {
               "threshold_k": 305.372,
               "threshold_f": 90.0,
-              "probability": 73.0
+              "probability": 94.0
             },
             {
               "threshold_k": 310.928,
@@ -769,9 +765,9 @@
         },
         {
           "fxx": 36,
-          "valid_utc": "2026-07-11T12:00:00Z",
+          "valid_utc": "2026-07-11T18:00:00Z",
           "window_kind": "min",
-          "temp_f": 61.7,
+          "temp_f": 62.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -788,8 +784,28 @@
           },
           "native_cold_probability_thresholds": [
             {
+              "threshold_k": 233.15,
+              "threshold_f": -40.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 244.261,
+              "threshold_f": -20.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 249.817,
+              "threshold_f": -10.0,
+              "probability": 0.0
+            },
+            {
               "threshold_k": 255.372,
               "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 260.928,
+              "threshold_f": 10.0,
               "probability": 0.0
             },
             {
@@ -801,32 +817,17 @@
               "threshold_k": 273.15,
               "threshold_f": 32.0,
               "probability": 0.0
+            },
+            {
+              "threshold_k": 275.372,
+              "threshold_f": 36.0,
+              "probability": 0.0
             }
           ],
           "native_heat_probability_thresholds": [
             {
               "threshold_k": 299.817,
               "threshold_f": 80.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 305.372,
-              "threshold_f": 90.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 310.928,
-              "threshold_f": 100.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 316.483,
-              "threshold_f": 110.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 322.039,
-              "threshold_f": 120.0,
               "probability": 0.0
             }
           ],
@@ -835,9 +836,9 @@
         },
         {
           "fxx": 60,
-          "valid_utc": "2026-07-12T12:00:00Z",
+          "valid_utc": "2026-07-12T18:00:00Z",
           "window_kind": "min",
-          "temp_f": 67.7,
+          "temp_f": 67.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 96.0,
@@ -854,8 +855,28 @@
           },
           "native_cold_probability_thresholds": [
             {
+              "threshold_k": 233.15,
+              "threshold_f": -40.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 244.261,
+              "threshold_f": -20.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 249.817,
+              "threshold_f": -10.0,
+              "probability": 0.0
+            },
+            {
               "threshold_k": 255.372,
               "threshold_f": -0.0,
+              "probability": 0.0
+            },
+            {
+              "threshold_k": 260.928,
+              "threshold_f": 10.0,
               "probability": 0.0
             },
             {
@@ -867,32 +888,17 @@
               "threshold_k": 273.15,
               "threshold_f": 32.0,
               "probability": 0.0
+            },
+            {
+              "threshold_k": 275.372,
+              "threshold_f": 36.0,
+              "probability": 0.0
             }
           ],
           "native_heat_probability_thresholds": [
             {
               "threshold_k": 299.817,
               "threshold_f": 80.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 305.372,
-              "threshold_f": 90.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 310.928,
-              "threshold_f": 100.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 316.483,
-              "threshold_f": 110.0,
-              "probability": 0.0
-            },
-            {
-              "threshold_k": 322.039,
-              "threshold_f": 120.0,
               "probability": 0.0
             }
           ],
@@ -922,13 +928,13 @@
     {
       "id": "WIND",
       "risk": 2,
-      "probability": 76.28985507246377,
+      "probability": 78.2463768115942,
       "level": 2
     },
     {
       "id": "LIGHTNING",
       "risk": 1,
-      "probability": 5.0,
+      "probability": 6.0,
       "level": 1
     },
     {
@@ -963,9 +969,9 @@
     },
     {
       "id": "TEMPERATURE",
-      "risk": 2,
-      "probability": 100.0,
-      "level": 2
+      "risk": 3,
+      "probability": 71.8,
+      "level": 3
     }
   ],
   "methodology": "Risk follows the KRNO DSS method: determine hazard impact level from the approved threshold table, then apply the likelihood-vs-impact matrix when a probability is available. Deterministic-only fields use the impact category directly and are flagged with deterministic likelihood metadata.",
