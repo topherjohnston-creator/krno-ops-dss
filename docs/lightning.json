@@ -6,35 +6,17 @@
   "source": "NOAA GOES-18 GLM-L2-LCFA",
   "satellite": "GOES-18",
   "product": "GLM-L2-LCFA",
-  "generated_utc": "2026-07-14T23:29:39Z",
+  "generated_utc": "2026-07-15T00:52:33Z",
   "status": "ok",
   "message": null,
   "window_minutes": 15,
   "scan_lookback_minutes": 20,
   "search_radius_nm": 25,
-  "alert_level": "monitor_25_nm",
-  "alert_label": "GLM lightning inside 25 nm",
-  "total_count": 1,
-  "last_strike": {
-    "datetime": "2026-07-14T23:25:28Z",
-    "age_minutes": 4.2,
-    "distance_nm": 23.4,
-    "bearing_degrees": 94,
-    "bearing_cardinal": "E",
-    "source_type": "GLM group",
-    "quality": 0,
-    "energy_j": 3.4880996338916906e-14
-  },
-  "nearest_strike": {
-    "datetime": "2026-07-14T23:25:28Z",
-    "age_minutes": 4.2,
-    "distance_nm": 23.4,
-    "bearing_degrees": 94,
-    "bearing_cardinal": "E",
-    "source_type": "GLM group",
-    "quality": 0,
-    "energy_j": 3.4880996338916906e-14
-  },
+  "alert_level": "none",
+  "alert_label": "No GLM lightning detected",
+  "total_count": 0,
+  "last_strike": null,
+  "nearest_strike": null,
   "rings": {
     "within_10_nm": {
       "count": 0,
@@ -49,29 +31,18 @@
       "last_utc": null
     },
     "within_25_nm": {
-      "count": 1,
-      "last_utc": "2026-07-14T23:25:28Z"
+      "count": 0,
+      "last_utc": null
     }
   },
   "counts": {
-    "groups": 109432,
-    "flashes": 12544,
-    "events": 241848
+    "groups": 144860,
+    "flashes": 12674,
+    "events": 325640
   },
   "processed_file_count": 55,
-  "latest_file": "GLM-L2-LCFA/2026/195/23/OR_GLM-L2-LCFA_G18_s20261952329000_e20261952329200_c20261952329214.nc",
+  "latest_file": "GLM-L2-LCFA/2026/196/00/OR_GLM-L2-LCFA_G18_s20261960052000_e20261960052200_c20261960052216.nc",
   "errors": [],
-  "strikes": [
-    {
-      "datetime": "2026-07-14T23:25:28Z",
-      "age_minutes": 4.2,
-      "distance_nm": 23.4,
-      "bearing_degrees": 94,
-      "bearing_cardinal": "E",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 3.4880996338916906e-14
-    }
-  ],
+  "strikes": [],
   "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
 }
