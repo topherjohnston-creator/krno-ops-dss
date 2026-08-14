@@ -6,112 +6,43 @@
   "source": "NOAA GOES-18 GLM-L2-LCFA",
   "satellite": "GOES-18",
   "product": "GLM-L2-LCFA",
-  "generated_utc": "2026-08-14T21:52:47Z",
+  "generated_utc": "2026-08-14T22:09:17Z",
   "status": "ok",
   "message": null,
   "window_minutes": 15,
   "scan_lookback_minutes": 20,
   "search_radius_nm": 25,
-  "alert_level": "monitor_15_nm",
-  "alert_label": "GLM lightning inside 15 nm",
-  "total_count": 5,
-  "last_strike": {
-    "datetime": "2026-08-14T21:52:02Z",
-    "age_minutes": 0.7,
-    "distance_nm": 14.8,
-    "bearing_degrees": 144,
-    "bearing_cardinal": "SE",
-    "source_type": "GLM group",
-    "quality": 0,
-    "energy_j": 2.2849099152175752e-15
-  },
-  "nearest_strike": {
-    "datetime": "2026-08-14T21:52:02Z",
-    "age_minutes": 0.7,
-    "distance_nm": 14.8,
-    "bearing_degrees": 144,
-    "bearing_cardinal": "SE",
-    "source_type": "GLM group",
-    "quality": 0,
-    "energy_j": 2.2849099152175752e-15
-  },
+  "alert_level": "none",
+  "alert_label": "No GLM lightning detected",
+  "total_count": 0,
+  "last_strike": null,
+  "nearest_strike": null,
   "rings": {
     "within_10_nm": {
       "count": 0,
       "last_utc": null
     },
     "within_15_nm": {
-      "count": 5,
-      "last_utc": "2026-08-14T21:52:02Z"
+      "count": 0,
+      "last_utc": null
     },
     "within_20_nm": {
-      "count": 5,
-      "last_utc": "2026-08-14T21:52:02Z"
+      "count": 0,
+      "last_utc": null
     },
     "within_25_nm": {
-      "count": 5,
-      "last_utc": "2026-08-14T21:52:02Z"
+      "count": 0,
+      "last_utc": null
     }
   },
   "counts": {
-    "groups": 143755,
-    "flashes": 18741,
-    "events": 299663
+    "groups": 76318,
+    "flashes": 10134,
+    "events": 160032
   },
-  "processed_file_count": 55,
-  "latest_file": "GLM-L2-LCFA/2026/226/21/OR_GLM-L2-LCFA_G18_s20262262152200_e20262262152400_c20262262152421.nc",
+  "processed_file_count": 27,
+  "latest_file": "GLM-L2-LCFA/2026/226/22/OR_GLM-L2-LCFA_G18_s20262262208400_e20262262209000_c20262262209018.nc",
   "errors": [],
-  "strikes": [
-    {
-      "datetime": "2026-08-14T21:52:02Z",
-      "age_minutes": 0.7,
-      "distance_nm": 14.8,
-      "bearing_degrees": 144,
-      "bearing_cardinal": "SE",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 2.2849099152175752e-15
-    },
-    {
-      "datetime": "2026-08-14T21:52:02Z",
-      "age_minutes": 0.7,
-      "distance_nm": 14.9,
-      "bearing_degrees": 144,
-      "bearing_cardinal": "SE",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 3.6847419748384496e-15
-    },
-    {
-      "datetime": "2026-08-14T21:52:02Z",
-      "age_minutes": 0.7,
-      "distance_nm": 14.9,
-      "bearing_degrees": 144,
-      "bearing_cardinal": "SE",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 2.8848379407693785e-15
-    },
-    {
-      "datetime": "2026-08-14T21:52:02Z",
-      "age_minutes": 0.7,
-      "distance_nm": 14.9,
-      "bearing_degrees": 144,
-      "bearing_cardinal": "SE",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 2.2849099152175752e-15
-    },
-    {
-      "datetime": "2026-08-14T21:52:02Z",
-      "age_minutes": 0.7,
-      "distance_nm": 14.9,
-      "bearing_degrees": 144,
-      "bearing_cardinal": "SE",
-      "source_type": "GLM group",
-      "quality": 0,
-      "energy_j": 2.484885923734843e-15
-    }
-  ],
+  "strikes": [],
   "methodology": "NOAA GOES-18 GLM Level 2 total-lightning groups are counted inside KRNO 10/15/20/25 nm proximity rings over the latest 15 minutes. GLM detects total lightning and is not a ground-strike network; distances are proximity estimates from GLM group centroids."
 }
