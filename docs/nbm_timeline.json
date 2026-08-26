@@ -4,7 +4,7 @@
   "lat": 39.4991,
   "lon": -119.7681,
   "source": "NOAA NBM core AWS 00Z",
-  "generated_utc": "2026-08-26T01:12:53Z",
+  "generated_utc": "2026-08-26T02:39:54Z",
   "cycle_utc_iso": "2026-08-26T00:00:00Z",
   "cycle": "NBM 00Z",
   "valid_period": {
@@ -275,7 +275,7 @@
       "end_fxx": 54,
       "valid_start_utc": "2026-08-28T03:00:00Z",
       "valid_end_utc": "2026-08-28T06:00:00Z",
-      "WIND": 2,
+      "WIND": 1,
       "LIGHTNING": 1,
       "SNOW": 1,
       "VISIBILITY": 1,
@@ -387,9 +387,9 @@
         "impact_level": 2,
         "prob": 1.0,
         "probability": 1.0,
-        "metric": "P90 gust 14 mph",
+        "metric": "P90 gust 15 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 15,
+        "source_fxx": 9,
         "peak_valid_utc": "2026-08-26T03:00:00Z",
         "valid_start_utc": "2026-08-26T00:00:00Z",
         "valid_end_utc": "2026-08-26T03:00:00Z",
@@ -398,20 +398,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 15,
+            "fxx": 9,
             "valid_utc": "2026-08-26T03:00:00Z",
-            "p90_gust_mph": 13.6,
-            "gust_mph": 13.6,
+            "p90_gust_mph": 15.0,
+            "gust_mph": 15.0,
             "probabilities": {
               "prob_gt_30_mph": 1.0,
               "prob_gt_45_mph": 0.3,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 13.6,
+            "value": 15.0,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -419,13 +419,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 13.6,
+        "gust_max_mph": 15.0,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 13.6,
-          "gust_max_mph": 13.6,
-          "p90_gust_mph": 13.6,
+          "peak_gust_mph": 15.0,
+          "gust_max_mph": 15.0,
+          "p90_gust_mph": 15.0,
           "probabilities": {
             "prob_gt_30_mph": 1.0,
             "prob_gt_45_mph": 0.3,
@@ -433,13 +433,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 1.0,
-          "value": 13.6,
+          "value": 15.0,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "14 mph",
+        "display_value": "15 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 13.6,
+        "p90_gust_mph": 15.0,
         "probabilities": {
           "prob_gt_30_mph": 1.0,
           "prob_gt_45_mph": 0.3,
@@ -970,11 +970,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 85.5,
-        "probability": 85.5,
+        "prob": 72.2,
+        "probability": 72.2,
         "metric": "Temp 80\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 15,
+        "source_fxx": 9,
         "peak_valid_utc": "2026-08-26T03:00:00Z",
         "valid_start_utc": "2026-08-26T00:00:00Z",
         "valid_end_utc": "2026-08-26T03:00:00Z",
@@ -983,12 +983,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 15,
+            "fxx": 9,
             "valid_utc": "2026-08-26T03:00:00Z",
-            "temp_f": 79.9,
+            "temp_f": 79.6,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -1003,11 +1003,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 85.5,
+              "prob_heat_impact_2": 72.2,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 79.9,
+            "value": 79.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -1018,7 +1018,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 79.9,
+          "temp_f": 79.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -1033,14 +1033,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 85.5,
+            "prob_heat_impact_2": 72.2,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 85.5,
-          "value": 79.9,
+          "probability": 72.2,
+          "value": 79.6,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -1067,7 +1067,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 45.0
+            "probability": 38.0
           },
           {
             "threshold_k": 305.372,
@@ -1103,9 +1103,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "P90 gust 10 mph",
+        "metric": "P90 gust 13 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 18,
+        "source_fxx": 12,
         "peak_valid_utc": "2026-08-26T06:00:00Z",
         "valid_start_utc": "2026-08-26T03:00:00Z",
         "valid_end_utc": "2026-08-26T06:00:00Z",
@@ -1114,20 +1114,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 18,
+            "fxx": 12,
             "valid_utc": "2026-08-26T06:00:00Z",
-            "p90_gust_mph": 9.8,
-            "gust_mph": 9.8,
+            "p90_gust_mph": 13.0,
+            "gust_mph": 13.0,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 9.8,
+            "value": 13.0,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -1135,13 +1135,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 9.8,
+        "gust_max_mph": 13.0,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 9.8,
-          "gust_max_mph": 9.8,
-          "p90_gust_mph": 9.8,
+          "peak_gust_mph": 13.0,
+          "gust_max_mph": 13.0,
+          "p90_gust_mph": 13.0,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -1149,13 +1149,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 9.8,
+          "value": 13.0,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "10 mph",
+        "display_value": "13 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 9.8,
+        "p90_gust_mph": 13.0,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -1166,7 +1166,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 11.318,
@@ -1688,9 +1688,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 74\u00b0F",
+        "metric": "Temp 73\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 18,
+        "source_fxx": 12,
         "peak_valid_utc": "2026-08-26T06:00:00Z",
         "valid_start_utc": "2026-08-26T03:00:00Z",
         "valid_end_utc": "2026-08-26T06:00:00Z",
@@ -1699,12 +1699,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 18,
+            "fxx": 12,
             "valid_utc": "2026-08-26T06:00:00Z",
-            "temp_f": 74.1,
+            "temp_f": 73.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -1723,7 +1723,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 74.1,
+            "value": 73.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -1734,7 +1734,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 74.1,
+          "temp_f": 73.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -1756,7 +1756,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 74.1,
+          "value": 73.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -1821,7 +1821,7 @@
         "probability": 0.0,
         "metric": "P90 gust 10 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 21,
+        "source_fxx": 15,
         "peak_valid_utc": "2026-08-26T09:00:00Z",
         "valid_start_utc": "2026-08-26T06:00:00Z",
         "valid_end_utc": "2026-08-26T09:00:00Z",
@@ -1830,20 +1830,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 21,
+            "fxx": 15,
             "valid_utc": "2026-08-26T09:00:00Z",
-            "p90_gust_mph": 9.8,
-            "gust_mph": 9.8,
+            "p90_gust_mph": 10.5,
+            "gust_mph": 10.5,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 9.8,
+            "value": 10.5,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -1851,13 +1851,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 9.8,
+        "gust_max_mph": 10.5,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 9.8,
-          "gust_max_mph": 9.8,
-          "p90_gust_mph": 9.8,
+          "peak_gust_mph": 10.5,
+          "gust_max_mph": 10.5,
+          "p90_gust_mph": 10.5,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -1865,13 +1865,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 9.8,
+          "value": 10.5,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "10 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 9.8,
+        "p90_gust_mph": 10.5,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -2406,7 +2406,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 21,
+        "source_fxx": 15,
         "peak_valid_utc": "2026-08-26T09:00:00Z",
         "valid_start_utc": "2026-08-26T06:00:00Z",
         "valid_end_utc": "2026-08-26T09:00:00Z",
@@ -2415,12 +2415,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 21,
+            "fxx": 15,
             "valid_utc": "2026-08-26T09:00:00Z",
-            "temp_f": 68.4,
+            "temp_f": 68.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -2439,7 +2439,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 68.4,
+            "value": 68.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -2450,7 +2450,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 68.4,
+          "temp_f": 68.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -2472,7 +2472,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 68.4,
+          "value": 68.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -2537,7 +2537,7 @@
         "probability": 0.0,
         "metric": "P90 gust 7 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 24,
+        "source_fxx": 18,
         "peak_valid_utc": "2026-08-26T12:00:00Z",
         "valid_start_utc": "2026-08-26T09:00:00Z",
         "valid_end_utc": "2026-08-26T12:00:00Z",
@@ -2546,10 +2546,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 24,
+            "fxx": 18,
             "valid_utc": "2026-08-26T12:00:00Z",
             "p90_gust_mph": 6.7,
             "gust_mph": 6.7,
@@ -3122,7 +3122,7 @@
         "probability": 0.0,
         "metric": "Temp 64\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 24,
+        "source_fxx": 18,
         "peak_valid_utc": "2026-08-26T12:00:00Z",
         "valid_start_utc": "2026-08-26T09:00:00Z",
         "valid_end_utc": "2026-08-26T12:00:00Z",
@@ -3131,12 +3131,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 24,
+            "fxx": 18,
             "valid_utc": "2026-08-26T12:00:00Z",
-            "temp_f": 64.0,
+            "temp_f": 63.6,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -3155,7 +3155,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 64.0,
+            "value": 63.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -3166,7 +3166,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 64.0,
+          "temp_f": 63.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -3188,7 +3188,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 64.0,
+          "value": 63.6,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -3253,7 +3253,7 @@
         "probability": 0.0,
         "metric": "P90 gust 8 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 27,
+        "source_fxx": 21,
         "peak_valid_utc": "2026-08-26T15:00:00Z",
         "valid_start_utc": "2026-08-26T12:00:00Z",
         "valid_end_utc": "2026-08-26T15:00:00Z",
@@ -3262,20 +3262,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 27,
+            "fxx": 21,
             "valid_utc": "2026-08-26T15:00:00Z",
-            "p90_gust_mph": 8.3,
-            "gust_mph": 8.3,
+            "p90_gust_mph": 7.8,
+            "gust_mph": 7.8,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 8.3,
+            "value": 7.8,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -3283,13 +3283,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 8.3,
+        "gust_max_mph": 7.8,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 8.3,
-          "gust_max_mph": 8.3,
-          "p90_gust_mph": 8.3,
+          "peak_gust_mph": 7.8,
+          "gust_max_mph": 7.8,
+          "p90_gust_mph": 7.8,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -3297,13 +3297,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 8.3,
+          "value": 7.8,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "8 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 8.3,
+        "p90_gust_mph": 7.8,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -3836,9 +3836,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 70\u00b0F",
+        "metric": "Temp 69\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 27,
+        "source_fxx": 21,
         "peak_valid_utc": "2026-08-26T15:00:00Z",
         "valid_start_utc": "2026-08-26T12:00:00Z",
         "valid_end_utc": "2026-08-26T15:00:00Z",
@@ -3847,12 +3847,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 27,
+            "fxx": 21,
             "valid_utc": "2026-08-26T15:00:00Z",
-            "temp_f": 69.5,
+            "temp_f": 69.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -3871,7 +3871,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 69.5,
+            "value": 69.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -3882,7 +3882,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 69.5,
+          "temp_f": 69.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -3904,7 +3904,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 69.5,
+          "value": 69.3,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -3967,9 +3967,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "P90 gust 20 mph",
+        "metric": "P90 gust 21 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 30,
+        "source_fxx": 24,
         "peak_valid_utc": "2026-08-26T18:00:00Z",
         "valid_start_utc": "2026-08-26T15:00:00Z",
         "valid_end_utc": "2026-08-26T18:00:00Z",
@@ -3978,20 +3978,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 30,
+            "fxx": 24,
             "valid_utc": "2026-08-26T18:00:00Z",
-            "p90_gust_mph": 20.1,
-            "gust_mph": 20.1,
+            "p90_gust_mph": 20.6,
+            "gust_mph": 20.6,
             "probabilities": {
               "prob_gt_30_mph": 0.5,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 20.1,
+            "value": 20.6,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -3999,13 +3999,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 20.1,
+        "gust_max_mph": 20.6,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 20.1,
-          "gust_max_mph": 20.1,
-          "p90_gust_mph": 20.1,
+          "peak_gust_mph": 20.6,
+          "gust_max_mph": 20.6,
+          "p90_gust_mph": 20.6,
           "probabilities": {
             "prob_gt_30_mph": 0.5,
             "prob_gt_45_mph": 0.0,
@@ -4013,13 +4013,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 20.1,
+          "value": 20.6,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "20 mph",
+        "display_value": "21 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 20.1,
+        "p90_gust_mph": 20.6,
         "probabilities": {
           "prob_gt_30_mph": 0.5,
           "prob_gt_45_mph": 0.0,
@@ -4030,7 +4030,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 13.0
+            "probability": 16.0
           },
           {
             "threshold_mps": 11.318,
@@ -4554,7 +4554,7 @@
         "probability": 100.0,
         "metric": "Temp 84\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 30,
+        "source_fxx": 24,
         "peak_valid_utc": "2026-08-26T18:00:00Z",
         "valid_start_utc": "2026-08-26T15:00:00Z",
         "valid_end_utc": "2026-08-26T18:00:00Z",
@@ -4563,12 +4563,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 30,
+            "fxx": 24,
             "valid_utc": "2026-08-26T18:00:00Z",
-            "temp_f": 84.2,
+            "temp_f": 84.1,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -4587,7 +4587,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 84.2,
+            "value": 84.1,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -4598,7 +4598,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 84.2,
+          "temp_f": 84.1,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -4620,7 +4620,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 84.2,
+          "value": 84.1,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -4681,11 +4681,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 15.206521739130437,
-        "probability": 15.206521739130437,
+        "prob": 19.586956521739133,
+        "probability": 19.586956521739133,
         "metric": "P90 gust 30 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 33,
+        "source_fxx": 27,
         "peak_valid_utc": "2026-08-26T21:00:00Z",
         "valid_start_utc": "2026-08-26T18:00:00Z",
         "valid_end_utc": "2026-08-26T21:00:00Z",
@@ -4694,20 +4694,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 33,
+            "fxx": 27,
             "valid_utc": "2026-08-26T21:00:00Z",
-            "p90_gust_mph": 29.8,
-            "gust_mph": 29.8,
+            "p90_gust_mph": 29.5,
+            "gust_mph": 29.5,
             "probabilities": {
-              "prob_gt_30_mph": 15.2,
+              "prob_gt_30_mph": 19.6,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 29.8,
+            "value": 29.5,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -4715,29 +4715,29 @@
         ],
         "likelihood_category": "unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 29.8,
+        "gust_max_mph": 29.5,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 29.8,
-          "gust_max_mph": 29.8,
-          "p90_gust_mph": 29.8,
+          "peak_gust_mph": 29.5,
+          "gust_max_mph": 29.5,
+          "p90_gust_mph": 29.5,
           "probabilities": {
-            "prob_gt_30_mph": 15.2,
+            "prob_gt_30_mph": 19.6,
             "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 15.206521739130437,
-          "value": 29.8,
+          "probability": 19.586956521739133,
+          "value": 29.5,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "30 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 29.8,
+        "p90_gust_mph": 29.5,
         "probabilities": {
-          "prob_gt_30_mph": 15.2,
+          "prob_gt_30_mph": 19.6,
           "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
@@ -4746,17 +4746,17 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 74.0
+            "probability": 75.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 29.0
+            "probability": 39.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 2.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 17.491,
@@ -5270,7 +5270,7 @@
         "probability": 100.0,
         "metric": "Temp 91\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 33,
+        "source_fxx": 27,
         "peak_valid_utc": "2026-08-26T21:00:00Z",
         "valid_start_utc": "2026-08-26T18:00:00Z",
         "valid_end_utc": "2026-08-26T21:00:00Z",
@@ -5279,12 +5279,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 33,
+            "fxx": 27,
             "valid_utc": "2026-08-26T21:00:00Z",
-            "temp_f": 90.9,
+            "temp_f": 90.8,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -5300,10 +5300,10 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 32.0,
-              "prob_heat_impact_4": 19.2
+              "prob_heat_impact_3": 32.5,
+              "prob_heat_impact_4": 19.5
             },
-            "value": 90.9,
+            "value": 90.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -5314,7 +5314,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 90.9,
+          "temp_f": 90.8,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -5330,13 +5330,13 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 32.0,
-            "prob_heat_impact_4": 19.2
+            "prob_heat_impact_3": 32.5,
+            "prob_heat_impact_4": 19.5
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 90.9,
+          "value": 90.8,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -5368,7 +5368,7 @@
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 64.0
+            "probability": 65.0
           },
           {
             "threshold_k": 310.928,
@@ -5397,11 +5397,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 29.010869565217394,
-        "probability": 29.010869565217394,
-        "metric": "P90 gust 33 mph",
+        "prob": 29.47826086956522,
+        "probability": 29.47826086956522,
+        "metric": "P90 gust 32 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 36,
+        "source_fxx": 30,
         "peak_valid_utc": "2026-08-27T00:00:00Z",
         "valid_start_utc": "2026-08-26T21:00:00Z",
         "valid_end_utc": "2026-08-27T00:00:00Z",
@@ -5410,20 +5410,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 36,
+            "fxx": 30,
             "valid_utc": "2026-08-27T00:00:00Z",
-            "p90_gust_mph": 33.3,
-            "gust_mph": 33.3,
+            "p90_gust_mph": 32.4,
+            "gust_mph": 32.4,
             "probabilities": {
-              "prob_gt_30_mph": 29.0,
+              "prob_gt_30_mph": 29.5,
               "prob_gt_45_mph": 0.3,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 33.3,
+            "value": 32.4,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -5431,29 +5431,29 @@
         ],
         "likelihood_category": "unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 33.3,
+        "gust_max_mph": 32.4,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 33.3,
-          "gust_max_mph": 33.3,
-          "p90_gust_mph": 33.3,
+          "peak_gust_mph": 32.4,
+          "gust_max_mph": 32.4,
+          "p90_gust_mph": 32.4,
           "probabilities": {
-            "prob_gt_30_mph": 29.0,
+            "prob_gt_30_mph": 29.5,
             "prob_gt_45_mph": 0.3,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 29.010869565217394,
-          "value": 33.3,
+          "probability": 29.47826086956522,
+          "value": 32.4,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "33 mph",
+        "display_value": "32 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 33.3,
+        "p90_gust_mph": 32.4,
         "probabilities": {
-          "prob_gt_30_mph": 29.0,
+          "prob_gt_30_mph": 29.5,
           "prob_gt_45_mph": 0.3,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
@@ -5462,17 +5462,17 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 89.0
+            "probability": 91.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 52.0
+            "probability": 54.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 7.0
+            "probability": 6.0
           },
           {
             "threshold_mps": 17.491,
@@ -5986,7 +5986,7 @@
         "probability": 100.0,
         "metric": "Temp 90\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 36,
+        "source_fxx": 30,
         "peak_valid_utc": "2026-08-27T00:00:00Z",
         "valid_start_utc": "2026-08-26T21:00:00Z",
         "valid_end_utc": "2026-08-27T00:00:00Z",
@@ -5995,12 +5995,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 36,
+            "fxx": 30,
             "valid_utc": "2026-08-27T00:00:00Z",
-            "temp_f": 90.0,
+            "temp_f": 89.8,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -6016,10 +6016,10 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 24.5,
-              "prob_heat_impact_4": 14.7
+              "prob_heat_impact_3": 23.5,
+              "prob_heat_impact_4": 14.1
             },
-            "value": 90.0,
+            "value": 89.8,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -6030,7 +6030,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 90.0,
+          "temp_f": 89.8,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -6046,13 +6046,13 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 24.5,
-            "prob_heat_impact_4": 14.7
+            "prob_heat_impact_3": 23.5,
+            "prob_heat_impact_4": 14.1
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 90.0,
+          "value": 89.8,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -6084,7 +6084,7 @@
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 49.0
+            "probability": 47.0
           },
           {
             "threshold_k": 310.928,
@@ -6117,7 +6117,7 @@
         "probability": 1.0,
         "metric": "P90 gust 17 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 39,
+        "source_fxx": 33,
         "peak_valid_utc": "2026-08-27T03:00:00Z",
         "valid_start_utc": "2026-08-27T00:00:00Z",
         "valid_end_utc": "2026-08-27T03:00:00Z",
@@ -6126,20 +6126,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 39,
+            "fxx": 33,
             "valid_utc": "2026-08-27T03:00:00Z",
-            "p90_gust_mph": 17.2,
-            "gust_mph": 17.2,
+            "p90_gust_mph": 16.8,
+            "gust_mph": 16.8,
             "probabilities": {
               "prob_gt_30_mph": 1.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 17.2,
+            "value": 16.8,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -6147,13 +6147,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 17.2,
+        "gust_max_mph": 16.8,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 17.2,
-          "gust_max_mph": 17.2,
-          "p90_gust_mph": 17.2,
+          "peak_gust_mph": 16.8,
+          "gust_max_mph": 16.8,
+          "p90_gust_mph": 16.8,
           "probabilities": {
             "prob_gt_30_mph": 1.0,
             "prob_gt_45_mph": 0.0,
@@ -6161,13 +6161,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 1.0,
-          "value": 17.2,
+          "value": 16.8,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "17 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 17.2,
+        "p90_gust_mph": 16.8,
         "probabilities": {
           "prob_gt_30_mph": 1.0,
           "prob_gt_45_mph": 0.0,
@@ -6178,7 +6178,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 5.0
+            "probability": 6.0
           },
           {
             "threshold_mps": 11.318,
@@ -6702,7 +6702,7 @@
         "probability": 100.0,
         "metric": "Temp 80\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 39,
+        "source_fxx": 33,
         "peak_valid_utc": "2026-08-27T03:00:00Z",
         "valid_start_utc": "2026-08-27T00:00:00Z",
         "valid_end_utc": "2026-08-27T03:00:00Z",
@@ -6711,12 +6711,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 39,
+            "fxx": 33,
             "valid_utc": "2026-08-27T03:00:00Z",
-            "temp_f": 80.2,
+            "temp_f": 80.1,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -6735,7 +6735,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 80.2,
+            "value": 80.1,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -6746,7 +6746,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 80.2,
+          "temp_f": 80.1,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -6768,7 +6768,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 80.2,
+          "value": 80.1,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -6795,7 +6795,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 57.0
+            "probability": 53.0
           },
           {
             "threshold_k": 305.372,
@@ -6831,9 +6831,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "P90 gust 14 mph",
+        "metric": "P90 gust 15 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 42,
+        "source_fxx": 36,
         "peak_valid_utc": "2026-08-27T06:00:00Z",
         "valid_start_utc": "2026-08-27T03:00:00Z",
         "valid_end_utc": "2026-08-27T06:00:00Z",
@@ -6842,20 +6842,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 42,
+            "fxx": 36,
             "valid_utc": "2026-08-27T06:00:00Z",
-            "p90_gust_mph": 14.3,
-            "gust_mph": 14.3,
+            "p90_gust_mph": 14.8,
+            "gust_mph": 14.8,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 14.3,
+            "value": 14.8,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -6863,13 +6863,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 14.3,
+        "gust_max_mph": 14.8,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 14.3,
-          "gust_max_mph": 14.3,
-          "p90_gust_mph": 14.3,
+          "peak_gust_mph": 14.8,
+          "gust_max_mph": 14.8,
+          "p90_gust_mph": 14.8,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -6877,13 +6877,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 14.3,
+          "value": 14.8,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "14 mph",
+        "display_value": "15 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 14.3,
+        "p90_gust_mph": 14.8,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -6894,7 +6894,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 1.0
+            "probability": 5.0
           },
           {
             "threshold_mps": 11.318,
@@ -7418,7 +7418,7 @@
         "probability": 0.0,
         "metric": "Temp 74\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 42,
+        "source_fxx": 36,
         "peak_valid_utc": "2026-08-27T06:00:00Z",
         "valid_start_utc": "2026-08-27T03:00:00Z",
         "valid_end_utc": "2026-08-27T06:00:00Z",
@@ -7427,12 +7427,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 42,
+            "fxx": 36,
             "valid_utc": "2026-08-27T06:00:00Z",
-            "temp_f": 73.8,
+            "temp_f": 73.7,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -7451,7 +7451,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 73.8,
+            "value": 73.7,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -7462,7 +7462,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 73.8,
+          "temp_f": 73.7,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -7484,7 +7484,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 73.8,
+          "value": 73.7,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -7547,9 +7547,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "P90 gust 13 mph",
+        "metric": "P90 gust 14 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 45,
+        "source_fxx": 39,
         "peak_valid_utc": "2026-08-27T09:00:00Z",
         "valid_start_utc": "2026-08-27T06:00:00Z",
         "valid_end_utc": "2026-08-27T09:00:00Z",
@@ -7558,20 +7558,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 45,
+            "fxx": 39,
             "valid_utc": "2026-08-27T09:00:00Z",
-            "p90_gust_mph": 13.0,
-            "gust_mph": 13.0,
+            "p90_gust_mph": 13.6,
+            "gust_mph": 13.6,
             "probabilities": {
-              "prob_gt_30_mph": 0.0,
+              "prob_gt_30_mph": 0.5,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 13.0,
+            "value": 13.6,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -7579,29 +7579,29 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 13.0,
+        "gust_max_mph": 13.6,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 13.0,
-          "gust_max_mph": 13.0,
-          "p90_gust_mph": 13.0,
+          "peak_gust_mph": 13.6,
+          "gust_max_mph": 13.6,
+          "p90_gust_mph": 13.6,
           "probabilities": {
-            "prob_gt_30_mph": 0.0,
+            "prob_gt_30_mph": 0.5,
             "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 13.0,
+          "value": 13.6,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "13 mph",
+        "display_value": "14 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 13.0,
+        "p90_gust_mph": 13.6,
         "probabilities": {
-          "prob_gt_30_mph": 0.0,
+          "prob_gt_30_mph": 0.5,
           "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
@@ -7610,12 +7610,12 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 15.433,
@@ -8134,7 +8134,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 45,
+        "source_fxx": 39,
         "peak_valid_utc": "2026-08-27T09:00:00Z",
         "valid_start_utc": "2026-08-27T06:00:00Z",
         "valid_end_utc": "2026-08-27T09:00:00Z",
@@ -8143,12 +8143,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 45,
+            "fxx": 39,
             "valid_utc": "2026-08-27T09:00:00Z",
-            "temp_f": 68.3,
+            "temp_f": 68.1,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -8167,7 +8167,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 68.3,
+            "value": 68.1,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8178,7 +8178,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 68.3,
+          "temp_f": 68.1,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -8200,7 +8200,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 68.3,
+          "value": 68.1,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -8265,7 +8265,7 @@
         "probability": 0.0,
         "metric": "P90 gust 7 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 48,
+        "source_fxx": 42,
         "peak_valid_utc": "2026-08-27T12:00:00Z",
         "valid_start_utc": "2026-08-27T09:00:00Z",
         "valid_end_utc": "2026-08-27T12:00:00Z",
@@ -8274,10 +8274,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 48,
+            "fxx": 42,
             "valid_utc": "2026-08-27T12:00:00Z",
             "p90_gust_mph": 7.4,
             "gust_mph": 7.4,
@@ -8848,9 +8848,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "Temp 64\u00b0F",
+        "metric": "Temp 63\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 48,
+        "source_fxx": 42,
         "peak_valid_utc": "2026-08-27T12:00:00Z",
         "valid_start_utc": "2026-08-27T09:00:00Z",
         "valid_end_utc": "2026-08-27T12:00:00Z",
@@ -8859,12 +8859,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 48,
+            "fxx": 42,
             "valid_utc": "2026-08-27T12:00:00Z",
-            "temp_f": 63.6,
+            "temp_f": 63.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -8883,7 +8883,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 63.6,
+            "value": 63.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -8894,7 +8894,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 63.6,
+          "temp_f": 63.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -8916,7 +8916,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 63.6,
+          "value": 63.3,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -8981,7 +8981,7 @@
         "probability": 0.0,
         "metric": "P90 gust 9 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 51,
+        "source_fxx": 45,
         "peak_valid_utc": "2026-08-27T15:00:00Z",
         "valid_start_utc": "2026-08-27T12:00:00Z",
         "valid_end_utc": "2026-08-27T15:00:00Z",
@@ -8990,10 +8990,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 51,
+            "fxx": 45,
             "valid_utc": "2026-08-27T15:00:00Z",
             "p90_gust_mph": 8.9,
             "gust_mph": 8.9,
@@ -9566,7 +9566,7 @@
         "probability": 0.0,
         "metric": "Temp 69\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 51,
+        "source_fxx": 45,
         "peak_valid_utc": "2026-08-27T15:00:00Z",
         "valid_start_utc": "2026-08-27T12:00:00Z",
         "valid_end_utc": "2026-08-27T15:00:00Z",
@@ -9575,10 +9575,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 51,
+            "fxx": 45,
             "valid_utc": "2026-08-27T15:00:00Z",
             "temp_f": 68.9,
             "heat_thresholds": {
@@ -9697,7 +9697,7 @@
         "probability": 0.0,
         "metric": "P90 gust 19 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 54,
+        "source_fxx": 48,
         "peak_valid_utc": "2026-08-27T18:00:00Z",
         "valid_start_utc": "2026-08-27T15:00:00Z",
         "valid_end_utc": "2026-08-27T18:00:00Z",
@@ -9706,20 +9706,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 54,
+            "fxx": 48,
             "valid_utc": "2026-08-27T18:00:00Z",
-            "p90_gust_mph": 18.8,
-            "gust_mph": 18.8,
+            "p90_gust_mph": 19.0,
+            "gust_mph": 19.0,
             "probabilities": {
               "prob_gt_30_mph": 0.5,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 18.8,
+            "value": 19.0,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -9727,13 +9727,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 18.8,
+        "gust_max_mph": 19.0,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 18.8,
-          "gust_max_mph": 18.8,
-          "p90_gust_mph": 18.8,
+          "peak_gust_mph": 19.0,
+          "gust_max_mph": 19.0,
+          "p90_gust_mph": 19.0,
           "probabilities": {
             "prob_gt_30_mph": 0.5,
             "prob_gt_45_mph": 0.0,
@@ -9741,13 +9741,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 18.8,
+          "value": 19.0,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "19 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 18.8,
+        "p90_gust_mph": 19.0,
         "probabilities": {
           "prob_gt_30_mph": 0.5,
           "prob_gt_45_mph": 0.0,
@@ -9758,7 +9758,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 8.0
+            "probability": 9.0
           },
           {
             "threshold_mps": 11.318,
@@ -10282,7 +10282,7 @@
         "probability": 100.0,
         "metric": "Temp 83\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 54,
+        "source_fxx": 48,
         "peak_valid_utc": "2026-08-27T18:00:00Z",
         "valid_start_utc": "2026-08-27T15:00:00Z",
         "valid_end_utc": "2026-08-27T18:00:00Z",
@@ -10291,12 +10291,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 54,
+            "fxx": 48,
             "valid_utc": "2026-08-27T18:00:00Z",
-            "temp_f": 83.3,
+            "temp_f": 83.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -10315,7 +10315,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 83.3,
+            "value": 83.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -10326,7 +10326,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 83.3,
+          "temp_f": 83.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -10348,7 +10348,7 @@
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 83.3,
+          "value": 83.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -10375,7 +10375,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 98.0
+            "probability": 99.0
           },
           {
             "threshold_k": 305.372,
@@ -10409,11 +10409,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 25.032608695652176,
-        "probability": 25.032608695652176,
-        "metric": "P90 gust 31 mph",
+        "prob": 20.6304347826087,
+        "probability": 20.6304347826087,
+        "metric": "P90 gust 32 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 57,
+        "source_fxx": 51,
         "peak_valid_utc": "2026-08-27T21:00:00Z",
         "valid_start_utc": "2026-08-27T18:00:00Z",
         "valid_end_utc": "2026-08-27T21:00:00Z",
@@ -10422,20 +10422,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 57,
+            "fxx": 51,
             "valid_utc": "2026-08-27T21:00:00Z",
-            "p90_gust_mph": 30.9,
-            "gust_mph": 30.9,
+            "p90_gust_mph": 32.0,
+            "gust_mph": 32.0,
             "probabilities": {
-              "prob_gt_30_mph": 25.0,
-              "prob_gt_45_mph": 0.0,
+              "prob_gt_30_mph": 20.6,
+              "prob_gt_45_mph": 0.3,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 30.9,
+            "value": 32.0,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -10443,30 +10443,30 @@
         ],
         "likelihood_category": "unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 30.9,
+        "gust_max_mph": 32.0,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 30.9,
-          "gust_max_mph": 30.9,
-          "p90_gust_mph": 30.9,
+          "peak_gust_mph": 32.0,
+          "gust_max_mph": 32.0,
+          "p90_gust_mph": 32.0,
           "probabilities": {
-            "prob_gt_30_mph": 25.0,
-            "prob_gt_45_mph": 0.0,
+            "prob_gt_30_mph": 20.6,
+            "prob_gt_45_mph": 0.3,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 25.032608695652176,
-          "value": 30.9,
+          "probability": 20.6304347826087,
+          "value": 32.0,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "31 mph",
+        "display_value": "32 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 30.9,
+        "p90_gust_mph": 32.0,
         "probabilities": {
-          "prob_gt_30_mph": 25.0,
-          "prob_gt_45_mph": 0.0,
+          "prob_gt_30_mph": 20.6,
+          "prob_gt_45_mph": 0.3,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -10474,12 +10474,12 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 70.0
+            "probability": 71.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 47.0
+            "probability": 38.0
           },
           {
             "threshold_mps": 15.433,
@@ -10489,7 +10489,7 @@
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 21.092,
@@ -10998,7 +10998,7 @@
         "probability": 100.0,
         "metric": "Temp 90\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 57,
+        "source_fxx": 51,
         "peak_valid_utc": "2026-08-27T21:00:00Z",
         "valid_start_utc": "2026-08-27T18:00:00Z",
         "valid_end_utc": "2026-08-27T21:00:00Z",
@@ -11007,10 +11007,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 57,
+            "fxx": 51,
             "valid_utc": "2026-08-27T21:00:00Z",
             "temp_f": 90.3,
             "heat_thresholds": {
@@ -11028,8 +11028,8 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 29.0,
-              "prob_heat_impact_4": 17.4
+              "prob_heat_impact_3": 27.0,
+              "prob_heat_impact_4": 16.2
             },
             "value": 90.3,
             "unit": "\u00b0F",
@@ -11058,8 +11058,8 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 29.0,
-            "prob_heat_impact_4": 17.4
+            "prob_heat_impact_3": 27.0,
+            "prob_heat_impact_4": 16.2
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
@@ -11091,12 +11091,12 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 98.0
+            "probability": 100.0
           },
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 58.0
+            "probability": 54.0
           },
           {
             "threshold_k": 310.928,
@@ -11125,11 +11125,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 46.413043478260875,
-        "probability": 46.413043478260875,
+        "prob": 44.8804347826087,
+        "probability": 44.8804347826087,
         "metric": "P90 gust 37 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 60,
+        "source_fxx": 54,
         "peak_valid_utc": "2026-08-28T00:00:00Z",
         "valid_start_utc": "2026-08-27T21:00:00Z",
         "valid_end_utc": "2026-08-28T00:00:00Z",
@@ -11138,16 +11138,16 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 54,
             "valid_utc": "2026-08-28T00:00:00Z",
             "p90_gust_mph": 36.7,
             "gust_mph": 36.7,
             "probabilities": {
-              "prob_gt_30_mph": 46.4,
-              "prob_gt_45_mph": 1.4,
+              "prob_gt_30_mph": 44.9,
+              "prob_gt_45_mph": 1.1,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
@@ -11167,12 +11167,12 @@
           "gust_max_mph": 36.7,
           "p90_gust_mph": 36.7,
           "probabilities": {
-            "prob_gt_30_mph": 46.4,
-            "prob_gt_45_mph": 1.4,
+            "prob_gt_30_mph": 44.9,
+            "prob_gt_45_mph": 1.1,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 46.413043478260875,
+          "probability": 44.8804347826087,
           "value": 36.7,
           "unit": "mph"
         },
@@ -11181,8 +11181,8 @@
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
         "p90_gust_mph": 36.7,
         "probabilities": {
-          "prob_gt_30_mph": 46.4,
-          "prob_gt_45_mph": 1.4,
+          "prob_gt_30_mph": 44.9,
+          "prob_gt_45_mph": 1.1,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -11190,7 +11190,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 92.0
+            "probability": 95.0
           },
           {
             "threshold_mps": 11.318,
@@ -11200,12 +11200,12 @@
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 20.0
+            "probability": 17.0
           },
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 5.0
+            "probability": 4.0
           },
           {
             "threshold_mps": 21.092,
@@ -11714,7 +11714,7 @@
         "probability": 100.0,
         "metric": "Temp 89\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 60,
+        "source_fxx": 54,
         "peak_valid_utc": "2026-08-28T00:00:00Z",
         "valid_start_utc": "2026-08-27T21:00:00Z",
         "valid_end_utc": "2026-08-28T00:00:00Z",
@@ -11723,12 +11723,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 60,
+            "fxx": 54,
             "valid_utc": "2026-08-28T00:00:00Z",
-            "temp_f": 88.8,
+            "temp_f": 88.7,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -11744,10 +11744,10 @@
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
               "prob_heat_impact_2": 100.0,
-              "prob_heat_impact_3": 6.5,
-              "prob_heat_impact_4": 3.9
+              "prob_heat_impact_3": 9.0,
+              "prob_heat_impact_4": 5.4
             },
-            "value": 88.8,
+            "value": 88.7,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -11758,7 +11758,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 88.8,
+          "temp_f": 88.7,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -11774,13 +11774,13 @@
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
             "prob_heat_impact_2": 100.0,
-            "prob_heat_impact_3": 6.5,
-            "prob_heat_impact_4": 3.9
+            "prob_heat_impact_3": 9.0,
+            "prob_heat_impact_4": 5.4
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
           "probability": 100.0,
-          "value": 88.8,
+          "value": 88.7,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -11807,12 +11807,12 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 99.0
+            "probability": 100.0
           },
           {
             "threshold_k": 305.372,
             "threshold_f": 90.0,
-            "probability": 13.0
+            "probability": 18.0
           },
           {
             "threshold_k": 310.928,
@@ -11845,7 +11845,7 @@
         "probability": 5.423913043478262,
         "metric": "P90 gust 25 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 63,
+        "source_fxx": 57,
         "peak_valid_utc": "2026-08-28T03:00:00Z",
         "valid_start_utc": "2026-08-28T00:00:00Z",
         "valid_end_utc": "2026-08-28T03:00:00Z",
@@ -11854,20 +11854,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 63,
+            "fxx": 57,
             "valid_utc": "2026-08-28T03:00:00Z",
-            "p90_gust_mph": 24.8,
-            "gust_mph": 24.8,
+            "p90_gust_mph": 24.6,
+            "gust_mph": 24.6,
             "probabilities": {
               "prob_gt_30_mph": 5.4,
-              "prob_gt_45_mph": 0.3,
+              "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 24.8,
+            "value": 24.6,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -11875,30 +11875,30 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 24.8,
+        "gust_max_mph": 24.6,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 24.8,
-          "gust_max_mph": 24.8,
-          "p90_gust_mph": 24.8,
+          "peak_gust_mph": 24.6,
+          "gust_max_mph": 24.6,
+          "p90_gust_mph": 24.6,
           "probabilities": {
             "prob_gt_30_mph": 5.4,
-            "prob_gt_45_mph": 0.3,
+            "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
           "probability": 5.423913043478262,
-          "value": 24.8,
+          "value": 24.6,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "25 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 24.8,
+        "p90_gust_mph": 24.6,
         "probabilities": {
           "prob_gt_30_mph": 5.4,
-          "prob_gt_45_mph": 0.3,
+          "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -11906,7 +11906,7 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 26.0
+            "probability": 23.0
           },
           {
             "threshold_mps": 11.318,
@@ -11921,7 +11921,7 @@
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 1.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 21.092,
@@ -12320,11 +12320,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 83.6,
-        "probability": 83.6,
+        "prob": 81.7,
+        "probability": 81.7,
         "metric": "Temp 80\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 63,
+        "source_fxx": 57,
         "peak_valid_utc": "2026-08-28T03:00:00Z",
         "valid_start_utc": "2026-08-28T00:00:00Z",
         "valid_end_utc": "2026-08-28T03:00:00Z",
@@ -12333,12 +12333,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 63,
+            "fxx": 57,
             "valid_utc": "2026-08-28T03:00:00Z",
-            "temp_f": 79.7,
+            "temp_f": 79.6,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -12353,11 +12353,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 83.6,
+              "prob_heat_impact_2": 81.7,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 79.7,
+            "value": 79.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12368,7 +12368,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 79.7,
+          "temp_f": 79.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -12383,14 +12383,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 83.6,
+            "prob_heat_impact_2": 81.7,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 83.6,
-          "value": 79.7,
+          "probability": 81.7,
+          "value": 79.6,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -12417,7 +12417,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 44.0
+            "probability": 43.0
           },
           {
             "threshold_k": 305.372,
@@ -12447,15 +12447,15 @@
         "id": "WIND",
         "label": "Wind",
         "name": "Wind",
-        "risk": 2,
-        "risk_label": "Minor",
-        "level": 2,
-        "impact_level": 3,
-        "prob": 2.0,
-        "probability": 2.0,
-        "metric": "P90 gust 18 mph",
+        "risk": 1,
+        "risk_label": "Little to None",
+        "level": 1,
+        "impact_level": 1,
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "P90 gust 16 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 66,
+        "source_fxx": 60,
         "peak_valid_utc": "2026-08-28T06:00:00Z",
         "valid_start_utc": "2026-08-28T03:00:00Z",
         "valid_end_utc": "2026-08-28T06:00:00Z",
@@ -12464,20 +12464,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 66,
+            "fxx": 60,
             "valid_utc": "2026-08-28T06:00:00Z",
-            "p90_gust_mph": 17.9,
-            "gust_mph": 17.9,
+            "p90_gust_mph": 16.3,
+            "gust_mph": 16.3,
             "probabilities": {
-              "prob_gt_30_mph": 3.0,
-              "prob_gt_45_mph": 2.0,
+              "prob_gt_30_mph": 0.5,
+              "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 17.9,
+            "value": 16.3,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -12485,30 +12485,30 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 17.9,
+        "gust_max_mph": 16.3,
         "values": {
-          "impact_level": 3,
+          "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 17.9,
-          "gust_max_mph": 17.9,
-          "p90_gust_mph": 17.9,
+          "peak_gust_mph": 16.3,
+          "gust_max_mph": 16.3,
+          "p90_gust_mph": 16.3,
           "probabilities": {
-            "prob_gt_30_mph": 3.0,
-            "prob_gt_45_mph": 2.0,
+            "prob_gt_30_mph": 0.5,
+            "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 2.0,
-          "value": 17.9,
+          "probability": 0.0,
+          "value": 16.3,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "18 mph",
+        "display_value": "16 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 17.9,
+        "p90_gust_mph": 16.3,
         "probabilities": {
-          "prob_gt_30_mph": 3.0,
-          "prob_gt_45_mph": 2.0,
+          "prob_gt_30_mph": 0.5,
+          "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -12516,27 +12516,27 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 8.0
+            "probability": 4.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 4.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 2.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 2.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 21.092,
             "threshold_mph": 47.2,
-            "probability": 2.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 24.693,
@@ -12930,11 +12930,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 5.7,
-        "probability": 5.7,
+        "prob": 7.6,
+        "probability": 7.6,
         "metric": "Temp 75\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 66,
+        "source_fxx": 60,
         "peak_valid_utc": "2026-08-28T06:00:00Z",
         "valid_start_utc": "2026-08-28T03:00:00Z",
         "valid_end_utc": "2026-08-28T06:00:00Z",
@@ -12943,12 +12943,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 66,
+            "fxx": 60,
             "valid_utc": "2026-08-28T06:00:00Z",
-            "temp_f": 75.0,
+            "temp_f": 75.3,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -12963,11 +12963,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 5.7,
+              "prob_heat_impact_2": 7.6,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 75.0,
+            "value": 75.3,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -12978,7 +12978,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 75.0,
+          "temp_f": 75.3,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -12993,14 +12993,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 5.7,
+            "prob_heat_impact_2": 7.6,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 5.7,
-          "value": 75.0,
+          "probability": 7.6,
+          "value": 75.3,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -13027,7 +13027,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 3.0
+            "probability": 4.0
           },
           {
             "threshold_k": 305.372,
@@ -13060,12 +13060,12 @@
         "risk": 1,
         "risk_label": "Little to None",
         "level": 1,
-        "impact_level": 2,
-        "prob": 3.445652173913044,
-        "probability": 3.445652173913044,
-        "metric": "P90 gust 14 mph",
+        "impact_level": 1,
+        "prob": 0.0,
+        "probability": 0.0,
+        "metric": "P90 gust 11 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 69,
+        "source_fxx": 63,
         "peak_valid_utc": "2026-08-28T09:00:00Z",
         "valid_start_utc": "2026-08-28T06:00:00Z",
         "valid_end_utc": "2026-08-28T09:00:00Z",
@@ -13074,20 +13074,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 69,
+            "fxx": 63,
             "valid_utc": "2026-08-28T09:00:00Z",
-            "p90_gust_mph": 14.3,
-            "gust_mph": 14.3,
+            "p90_gust_mph": 11.2,
+            "gust_mph": 11.2,
             "probabilities": {
-              "prob_gt_30_mph": 3.4,
-              "prob_gt_45_mph": 0.3,
+              "prob_gt_30_mph": 0.5,
+              "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 14.3,
+            "value": 11.2,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -13095,30 +13095,30 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 14.3,
+        "gust_max_mph": 11.2,
         "values": {
-          "impact_level": 2,
+          "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 14.3,
-          "gust_max_mph": 14.3,
-          "p90_gust_mph": 14.3,
+          "peak_gust_mph": 11.2,
+          "gust_max_mph": 11.2,
+          "p90_gust_mph": 11.2,
           "probabilities": {
-            "prob_gt_30_mph": 3.4,
-            "prob_gt_45_mph": 0.3,
+            "prob_gt_30_mph": 0.5,
+            "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 3.445652173913044,
-          "value": 14.3,
+          "probability": 0.0,
+          "value": 11.2,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "14 mph",
+        "display_value": "11 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 14.3,
+        "p90_gust_mph": 11.2,
         "probabilities": {
-          "prob_gt_30_mph": 3.4,
-          "prob_gt_45_mph": 0.3,
+          "prob_gt_30_mph": 0.5,
+          "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -13126,22 +13126,22 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 8.0
+            "probability": 2.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 6.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 1.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 1.0
+            "probability": 0.0
           },
           {
             "threshold_mps": 21.092,
@@ -13544,7 +13544,7 @@
         "probability": 0.0,
         "metric": "Temp 70\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 69,
+        "source_fxx": 63,
         "peak_valid_utc": "2026-08-28T09:00:00Z",
         "valid_start_utc": "2026-08-28T06:00:00Z",
         "valid_end_utc": "2026-08-28T09:00:00Z",
@@ -13553,12 +13553,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 69,
+            "fxx": 63,
             "valid_utc": "2026-08-28T09:00:00Z",
-            "temp_f": 70.1,
+            "temp_f": 70.2,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -13577,7 +13577,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 70.1,
+            "value": 70.2,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -13588,7 +13588,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 70.1,
+          "temp_f": 70.2,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -13610,7 +13610,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 70.1,
+          "value": 70.2,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -13675,7 +13675,7 @@
         "probability": 0.0,
         "metric": "P90 gust 8 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 72,
+        "source_fxx": 66,
         "peak_valid_utc": "2026-08-28T12:00:00Z",
         "valid_start_utc": "2026-08-28T09:00:00Z",
         "valid_end_utc": "2026-08-28T12:00:00Z",
@@ -13684,20 +13684,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 72,
+            "fxx": 66,
             "valid_utc": "2026-08-28T12:00:00Z",
-            "p90_gust_mph": 8.5,
-            "gust_mph": 8.5,
+            "p90_gust_mph": 8.1,
+            "gust_mph": 8.1,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 8.5,
+            "value": 8.1,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -13705,13 +13705,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 8.5,
+        "gust_max_mph": 8.1,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 8.5,
-          "gust_max_mph": 8.5,
-          "p90_gust_mph": 8.5,
+          "peak_gust_mph": 8.1,
+          "gust_max_mph": 8.1,
+          "p90_gust_mph": 8.1,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -13719,13 +13719,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 8.5,
+          "value": 8.1,
           "unit": "mph"
         },
         "display_label": "P90 gust",
         "display_value": "8 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 8.5,
+        "p90_gust_mph": 8.1,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -14154,7 +14154,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 72,
+        "source_fxx": 66,
         "peak_valid_utc": "2026-08-28T12:00:00Z",
         "valid_start_utc": "2026-08-28T09:00:00Z",
         "valid_end_utc": "2026-08-28T12:00:00Z",
@@ -14163,12 +14163,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 72,
+            "fxx": 66,
             "valid_utc": "2026-08-28T12:00:00Z",
-            "temp_f": 67.5,
+            "temp_f": 67.6,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -14187,7 +14187,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 67.5,
+            "value": 67.6,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -14198,7 +14198,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 67.5,
+          "temp_f": 67.6,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -14220,7 +14220,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 67.5,
+          "value": 67.6,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -14283,9 +14283,9 @@
         "impact_level": 1,
         "prob": 0.0,
         "probability": 0.0,
-        "metric": "P90 gust 13 mph",
+        "metric": "P90 gust 14 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 75,
+        "source_fxx": 69,
         "peak_valid_utc": "2026-08-28T15:00:00Z",
         "valid_start_utc": "2026-08-28T12:00:00Z",
         "valid_end_utc": "2026-08-28T15:00:00Z",
@@ -14294,20 +14294,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 75,
+            "fxx": 69,
             "valid_utc": "2026-08-28T15:00:00Z",
-            "p90_gust_mph": 12.8,
-            "gust_mph": 12.8,
+            "p90_gust_mph": 13.6,
+            "gust_mph": 13.6,
             "probabilities": {
               "prob_gt_30_mph": 0.0,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 12.8,
+            "value": 13.6,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -14315,13 +14315,13 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 12.8,
+        "gust_max_mph": 13.6,
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 12.8,
-          "gust_max_mph": 12.8,
-          "p90_gust_mph": 12.8,
+          "peak_gust_mph": 13.6,
+          "gust_max_mph": 13.6,
+          "p90_gust_mph": 13.6,
           "probabilities": {
             "prob_gt_30_mph": 0.0,
             "prob_gt_45_mph": 0.0,
@@ -14329,13 +14329,13 @@
             "prob_gt_65_mph": 0.0
           },
           "probability": 0.0,
-          "value": 12.8,
+          "value": 13.6,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "13 mph",
+        "display_value": "14 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 12.8,
+        "p90_gust_mph": 13.6,
         "probabilities": {
           "prob_gt_30_mph": 0.0,
           "prob_gt_45_mph": 0.0,
@@ -14764,7 +14764,7 @@
         "probability": 0.0,
         "metric": "Temp 68\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 75,
+        "source_fxx": 69,
         "peak_valid_utc": "2026-08-28T15:00:00Z",
         "valid_start_utc": "2026-08-28T12:00:00Z",
         "valid_end_utc": "2026-08-28T15:00:00Z",
@@ -14773,12 +14773,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 75,
+            "fxx": 69,
             "valid_utc": "2026-08-28T15:00:00Z",
-            "temp_f": 68.3,
+            "temp_f": 67.9,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -14797,7 +14797,7 @@
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 68.3,
+            "value": 67.9,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -14808,7 +14808,7 @@
         "values": {
           "impact_level": 1,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 68.3,
+          "temp_f": 67.9,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -14830,7 +14830,7 @@
           "selected_probability_key": null,
           "timing_kind": "peak",
           "probability": 0.0,
-          "value": 68.3,
+          "value": 67.9,
           "unit": "\u00b0F"
         },
         "selected_probability_key": null,
@@ -14891,11 +14891,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 3.423913043478261,
-        "probability": 3.423913043478261,
-        "metric": "P90 gust 24 mph",
+        "prob": 4.4021739130434785,
+        "probability": 4.4021739130434785,
+        "metric": "P90 gust 22 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 78,
+        "source_fxx": 72,
         "peak_valid_utc": "2026-08-28T18:00:00Z",
         "valid_start_utc": "2026-08-28T15:00:00Z",
         "valid_end_utc": "2026-08-28T18:00:00Z",
@@ -14904,20 +14904,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 78,
+            "fxx": 72,
             "valid_utc": "2026-08-28T18:00:00Z",
-            "p90_gust_mph": 23.5,
-            "gust_mph": 23.5,
+            "p90_gust_mph": 21.9,
+            "gust_mph": 21.9,
             "probabilities": {
-              "prob_gt_30_mph": 3.4,
+              "prob_gt_30_mph": 4.4,
               "prob_gt_45_mph": 0.0,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 23.5,
+            "value": 21.9,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -14925,29 +14925,29 @@
         ],
         "likelihood_category": "extremely_unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 23.5,
+        "gust_max_mph": 21.9,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 23.5,
-          "gust_max_mph": 23.5,
-          "p90_gust_mph": 23.5,
+          "peak_gust_mph": 21.9,
+          "gust_max_mph": 21.9,
+          "p90_gust_mph": 21.9,
           "probabilities": {
-            "prob_gt_30_mph": 3.4,
+            "prob_gt_30_mph": 4.4,
             "prob_gt_45_mph": 0.0,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 3.423913043478261,
-          "value": 23.5,
+          "probability": 4.4021739130434785,
+          "value": 21.9,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "24 mph",
+        "display_value": "22 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 23.5,
+        "p90_gust_mph": 21.9,
         "probabilities": {
-          "prob_gt_30_mph": 3.4,
+          "prob_gt_30_mph": 4.4,
           "prob_gt_45_mph": 0.0,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
@@ -14956,12 +14956,12 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 19.0
+            "probability": 13.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 7.0
+            "probability": 9.0
           },
           {
             "threshold_mps": 15.433,
@@ -15370,11 +15370,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 45.6,
-        "probability": 45.6,
+        "prob": 38.0,
+        "probability": 38.0,
         "metric": "Temp 76\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 78,
+        "source_fxx": 72,
         "peak_valid_utc": "2026-08-28T18:00:00Z",
         "valid_start_utc": "2026-08-28T15:00:00Z",
         "valid_end_utc": "2026-08-28T18:00:00Z",
@@ -15383,12 +15383,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 78,
+            "fxx": 72,
             "valid_utc": "2026-08-28T18:00:00Z",
-            "temp_f": 76.5,
+            "temp_f": 76.0,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -15403,11 +15403,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 45.6,
+              "prob_heat_impact_2": 38.0,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 76.5,
+            "value": 76.0,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -15418,7 +15418,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 76.5,
+          "temp_f": 76.0,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -15433,14 +15433,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 45.6,
+            "prob_heat_impact_2": 38.0,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 45.6,
-          "value": 76.5,
+          "probability": 38.0,
+          "value": 76.0,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -15467,7 +15467,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 24.0
+            "probability": 20.0
           },
           {
             "threshold_k": 305.372,
@@ -15501,11 +15501,11 @@
         "risk_label": "Little to None",
         "level": 1,
         "impact_level": 2,
-        "prob": 21.695652173913047,
-        "probability": 21.695652173913047,
-        "metric": "P90 gust 33 mph",
+        "prob": 20.206521739130437,
+        "probability": 20.206521739130437,
+        "metric": "P90 gust 34 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 81,
+        "source_fxx": 75,
         "peak_valid_utc": "2026-08-28T21:00:00Z",
         "valid_start_utc": "2026-08-28T18:00:00Z",
         "valid_end_utc": "2026-08-28T21:00:00Z",
@@ -15514,20 +15514,20 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 81,
+            "fxx": 75,
             "valid_utc": "2026-08-28T21:00:00Z",
-            "p90_gust_mph": 33.3,
-            "gust_mph": 33.3,
+            "p90_gust_mph": 33.6,
+            "gust_mph": 33.6,
             "probabilities": {
-              "prob_gt_30_mph": 21.7,
-              "prob_gt_45_mph": 0.0,
+              "prob_gt_30_mph": 20.2,
+              "prob_gt_45_mph": 0.3,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
-            "value": 33.3,
+            "value": 33.6,
             "unit": "mph",
             "label": "P90 gust",
             "window_hours": 3
@@ -15535,30 +15535,30 @@
         ],
         "likelihood_category": "unlikely",
         "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-        "gust_max_mph": 33.3,
+        "gust_max_mph": 33.6,
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_gust_percentiles",
-          "peak_gust_mph": 33.3,
-          "gust_max_mph": 33.3,
-          "p90_gust_mph": 33.3,
+          "peak_gust_mph": 33.6,
+          "gust_max_mph": 33.6,
+          "p90_gust_mph": 33.6,
           "probabilities": {
-            "prob_gt_30_mph": 21.7,
-            "prob_gt_45_mph": 0.0,
+            "prob_gt_30_mph": 20.2,
+            "prob_gt_45_mph": 0.3,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 21.695652173913047,
-          "value": 33.3,
+          "probability": 20.206521739130437,
+          "value": 33.6,
           "unit": "mph"
         },
         "display_label": "P90 gust",
-        "display_value": "33 mph",
+        "display_value": "34 mph",
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
-        "p90_gust_mph": 33.3,
+        "p90_gust_mph": 33.6,
         "probabilities": {
-          "prob_gt_30_mph": 21.7,
-          "prob_gt_45_mph": 0.0,
+          "prob_gt_30_mph": 20.2,
+          "prob_gt_45_mph": 0.3,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -15566,22 +15566,22 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 58.0
+            "probability": 56.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 36.0
+            "probability": 34.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 8.0
+            "probability": 7.0
           },
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 21.092,
@@ -15980,11 +15980,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 74.1,
-        "probability": 74.1,
-        "metric": "Temp 78\u00b0F",
+        "prob": 72.2,
+        "probability": 72.2,
+        "metric": "Temp 77\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 81,
+        "source_fxx": 75,
         "peak_valid_utc": "2026-08-28T21:00:00Z",
         "valid_start_utc": "2026-08-28T18:00:00Z",
         "valid_end_utc": "2026-08-28T21:00:00Z",
@@ -15993,12 +15993,12 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 81,
+            "fxx": 75,
             "valid_utc": "2026-08-28T21:00:00Z",
-            "temp_f": 77.6,
+            "temp_f": 77.4,
             "heat_thresholds": {
               "2": 71.0,
               "3": 95.0,
@@ -16013,11 +16013,11 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 74.1,
+              "prob_heat_impact_2": 72.2,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
-            "value": 77.6,
+            "value": 77.4,
             "unit": "\u00b0F",
             "label": "temp",
             "window_hours": 3
@@ -16028,7 +16028,7 @@
         "values": {
           "impact_level": 2,
           "risk_method": "krno_threshold_probability_matrix_qmd_temperature_timeline",
-          "temp_f": 77.6,
+          "temp_f": 77.4,
           "heat_thresholds": {
             "2": 71.0,
             "3": 95.0,
@@ -16043,14 +16043,14 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 74.1,
+            "prob_heat_impact_2": 72.2,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 74.1,
-          "value": 77.6,
+          "probability": 72.2,
+          "value": 77.4,
           "unit": "\u00b0F"
         },
         "selected_probability_key": "prob_heat_impact_2",
@@ -16077,7 +16077,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 39.0
+            "probability": 38.0
           },
           {
             "threshold_k": 305.372,
@@ -16111,11 +16111,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 3,
-        "prob": 0.8148148148148158,
-        "probability": 0.8148148148148158,
+        "prob": 2.6296296296296315,
+        "probability": 2.6296296296296315,
         "metric": "P90 gust 35 mph",
         "driver": "NBM QMD 10-meter wind gust percentiles and probability-of-threshold exceedance at KRNO",
-        "source_fxx": 84,
+        "source_fxx": 78,
         "peak_valid_utc": "2026-08-29T00:00:00Z",
         "valid_start_utc": "2026-08-28T21:00:00Z",
         "valid_end_utc": "2026-08-29T00:00:00Z",
@@ -16124,16 +16124,16 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 84,
+            "fxx": 78,
             "valid_utc": "2026-08-29T00:00:00Z",
             "p90_gust_mph": 35.3,
             "gust_mph": 35.3,
             "probabilities": {
-              "prob_gt_30_mph": 30.2,
-              "prob_gt_45_mph": 0.8,
+              "prob_gt_30_mph": 30.1,
+              "prob_gt_45_mph": 2.6,
               "prob_gt_58_mph": 0.0,
               "prob_gt_65_mph": 0.0
             },
@@ -16153,12 +16153,12 @@
           "gust_max_mph": 35.3,
           "p90_gust_mph": 35.3,
           "probabilities": {
-            "prob_gt_30_mph": 30.2,
-            "prob_gt_45_mph": 0.8,
+            "prob_gt_30_mph": 30.1,
+            "prob_gt_45_mph": 2.6,
             "prob_gt_58_mph": 0.0,
             "prob_gt_65_mph": 0.0
           },
-          "probability": 0.8148148148148158,
+          "probability": 2.6296296296296315,
           "value": 35.3,
           "unit": "mph"
         },
@@ -16167,8 +16167,8 @@
         "methodology": "Wind timeline uses QMD P90 gust for display and QMD probability-of-threshold exceedance mapped through the KRNO likelihood-vs-impact risk matrix.",
         "p90_gust_mph": 35.3,
         "probabilities": {
-          "prob_gt_30_mph": 30.2,
-          "prob_gt_45_mph": 0.8,
+          "prob_gt_30_mph": 30.1,
+          "prob_gt_45_mph": 2.6,
           "prob_gt_58_mph": 0.0,
           "prob_gt_65_mph": 0.0
         },
@@ -16176,27 +16176,27 @@
           {
             "threshold_mps": 8.746,
             "threshold_mph": 19.6,
-            "probability": 61.0
+            "probability": 66.0
           },
           {
             "threshold_mps": 11.318,
             "threshold_mph": 25.3,
-            "probability": 46.0
+            "probability": 49.0
           },
           {
             "threshold_mps": 15.433,
             "threshold_mph": 34.5,
-            "probability": 15.0
+            "probability": 12.0
           },
           {
             "threshold_mps": 17.491,
             "threshold_mph": 39.1,
-            "probability": 3.0
+            "probability": 7.0
           },
           {
             "threshold_mps": 21.092,
             "threshold_mph": 47.2,
-            "probability": 0.0
+            "probability": 1.0
           },
           {
             "threshold_mps": 24.693,
@@ -16590,11 +16590,11 @@
         "risk_label": "Minor",
         "level": 2,
         "impact_level": 2,
-        "prob": 81.7,
-        "probability": 81.7,
+        "prob": 79.8,
+        "probability": 79.8,
         "metric": "Temp 79\u00b0F",
         "driver": "NBM QMD 2-meter temperature probability thresholds at KRNO",
-        "source_fxx": 84,
+        "source_fxx": 78,
         "peak_valid_utc": "2026-08-29T00:00:00Z",
         "valid_start_utc": "2026-08-28T21:00:00Z",
         "valid_end_utc": "2026-08-29T00:00:00Z",
@@ -16603,10 +16603,10 @@
         "window_hours": 3,
         "data_status": "live",
         "method": "nbm_qmd_aws_gridpoint",
-        "source": "NOAA NBM QMD AWS 12Z",
+        "source": "NOAA NBM QMD AWS 18Z",
         "hourly_values": [
           {
-            "fxx": 84,
+            "fxx": 78,
             "valid_utc": "2026-08-29T00:00:00Z",
             "temp_f": 78.8,
             "heat_thresholds": {
@@ -16623,7 +16623,7 @@
               "prob_lt_32_f": 0.0,
               "prob_lt_36_f": 0.0,
               "prob_lt_40_f": 0.0,
-              "prob_heat_impact_2": 81.7,
+              "prob_heat_impact_2": 79.8,
               "prob_heat_impact_3": 0.0,
               "prob_heat_impact_4": 0.0
             },
@@ -16653,13 +16653,13 @@
             "prob_lt_32_f": 0.0,
             "prob_lt_36_f": 0.0,
             "prob_lt_40_f": 0.0,
-            "prob_heat_impact_2": 81.7,
+            "prob_heat_impact_2": 79.8,
             "prob_heat_impact_3": 0.0,
             "prob_heat_impact_4": 0.0
           },
           "selected_probability_key": "prob_heat_impact_2",
           "timing_kind": "peak",
-          "probability": 81.7,
+          "probability": 79.8,
           "value": 78.8,
           "unit": "\u00b0F"
         },
@@ -16687,7 +16687,7 @@
           {
             "threshold_k": 299.817,
             "threshold_f": 80.0,
-            "probability": 43.0
+            "probability": 42.0
           },
           {
             "threshold_k": 305.372,
